@@ -35,11 +35,11 @@ possibleTileCoords m =
     let
         createRows : Int -> Int -> List Position
         createRows yp xp =
-            if xp < (m.width * 64) then
-                { x = xp, y = yp } :: createRows yp (xp + 64)
+            if xp < (m.width * m.tileSize) then
+                { x = xp, y = yp } :: createRows yp (xp + m.tileSize)
 
-            else if yp < (m.height * 64) then
-                { x = 0, y = yp + 64 } :: createRows (yp + 64) (0 + 64)
+            else if yp < (m.height * m.tileSize) then
+                { x = 0, y = yp + m.tileSize } :: createRows (yp + m.tileSize) (0 + m.tileSize)
 
             else
                 []

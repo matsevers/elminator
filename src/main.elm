@@ -13,7 +13,6 @@ import Objects.Manager exposing (..)
 import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import Tiles.Global exposing (..)
 import Time exposing (..)
 
 
@@ -56,17 +55,17 @@ view model =
         , Html.Attributes.style "justify-content" "center"
         ]
         [ Svg.svg
-            [ Svg.Attributes.width (String.fromInt (Tiles.Global.options.tileSize * model.map.width))
-            , Svg.Attributes.height (String.fromInt (Tiles.Global.options.tileSize * model.map.height))
+            [ Svg.Attributes.width (String.fromInt (model.map.tileSize * model.map.width))
+            , Svg.Attributes.height (String.fromInt (model.map.tileSize * model.map.height))
             , Svg.Attributes.viewBox
                 ("0 0 "
                     ++ String.fromInt
-                        (Tiles.Global.options.tileSize
+                        (model.map.tileSize
                             * model.map.width
                         )
                     ++ " "
                     ++ String.fromInt
-                        (Tiles.Global.options.tileSize
+                        (model.map.tileSize
                             * model.map.height
                         )
                 )

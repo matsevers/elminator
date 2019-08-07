@@ -8,6 +8,7 @@ type alias Map msg =
     , width : Int
     , height : Int
     , starter : Int
+    , tileSize : Int
     , startPositions : List Position
     , background : List (GameObject msg)
     , gameObjects : List (GameObject msg)

@@ -11,6 +11,7 @@ model =
     , width = 20
     , height = 10
     , starter = 1
+    , tileSize = 64
     , startPositions = []
     , background = [ Objects.Tiles.Background.dust { x = 0, y = 0 } ]
     , gameObjects = []
