@@ -7,28 +7,42 @@ import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
 import Map.Generator exposing (..)
+import Map.Types exposing (..)
+import Map.Variations.DustRace exposing (..)
 import Objects.Manager exposing (..)
+import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Tiles.Global exposing (..)
+import Time exposing (..)
+
+
+type State
+    = Menu
+    | Paused
+    | Finished
+    | Stopping
+    | Starting
+    | Running
 
 
 type alias Model =
-    { map : List (Svg Msg)
-    , objects : List (GameObject Msg)
+    { state : State
+    , map : Map.Types.Map Msg -- Records of Map options
     , player1 : GameObject Msg
     }
 
 
 type Msg
     = KeyDown Action
+    | Move
     | None
 
 
 initialModel : Model
 initialModel =
-    { map = Map.Generator.map
-    , objects = []
+    { state = Running
+    , map = Map.Variations.DustRace.model
     , player1 = Objects.Manager.ambulance
     }
 
@@ -42,22 +56,22 @@ view model =
         , Html.Attributes.style "justify-content" "center"
         ]
         [ Svg.svg
-            [ Svg.Attributes.width (String.fromInt (Tiles.Global.options.tileSize * Map.Generator.options.width))
-            , Svg.Attributes.height (String.fromInt (Tiles.Global.options.tileSize * Map.Generator.options.height))
+            [ Svg.Attributes.width (String.fromInt (Tiles.Global.options.tileSize * model.map.width))
+            , Svg.Attributes.height (String.fromInt (Tiles.Global.options.tileSize * model.map.height))
             , Svg.Attributes.viewBox
                 ("0 0 "
                     ++ String.fromInt
                         (Tiles.Global.options.tileSize
-                            * Map.Generator.options.width
+                            * model.map.width
                         )
                     ++ " "
                     ++ String.fromInt
                         (Tiles.Global.options.tileSize
-                            * Map.Generator.options.height
+                            * model.map.height
                         )
                 )
             ]
-            (model.map ++ Objects.Manager.render [ model.player1 ])
+            (Objects.Manager.render (Map.Generator.map model.map ++ [ model.player1 ]))
         ]
 
 
@@ -112,6 +126,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ onKeyDown (Json.Decode.map KeyDown keyDecoder)
+        , Time.every 200 (\_ -> Move)
         ]
 
 

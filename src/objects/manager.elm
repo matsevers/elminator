@@ -1,50 +1,27 @@
-module Objects.Manager exposing (Collider, GameObject, Position, Render(..), Size, Sprite, ambulance, render)
+module Objects.Manager exposing (ambulance, render)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
+import Objects.Types exposing (GameObject)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-type alias Position =
-    { x : Int
-    , y : Int
-    }
 
-
-type alias Size =
-    { height : Int
-    , width : Int
-    }
-
-
-type alias Collider msg =
-    Svg msg
-
-
-type alias Sprite msg =
-    Svg msg
-
-
-type Render msg
-    = Render (Sprite msg) (Collider msg)
-
-
-type alias GameObject msg =
-    { identifier : Int
-    , size : Size
-    , position : Position
-    , sprite : String
-    , collider : Svg msg
-    , rotate : Int
-    , speed : Int
-    }
+-- --
+-- type alias Collider msg =
+--     Svg msg
+-- type alias Sprite msg =
+--     Svg msg
+-- type Render msg
+--     = Render (Sprite msg) (Collider msg)
+-- --
 
 
 ambulance : GameObject msg
 ambulance =
-    { identifier = 1
+    { identifier = "Player1"
     , position = { x = 200, y = 200 }
     , collider = Svg.rect [] []
     , sprite = "assets/carAmbulance.png"
@@ -72,7 +49,11 @@ render l =
                 , Svg.Attributes.x (String.fromInt x.position.x)
                 , Svg.Attributes.y (String.fromInt x.position.y)
                 , Svg.Attributes.transform
-                    ("translate(200, 200) rotate("
+                    ("translate("
+                        ++ String.fromInt x.size.width
+                        ++ ","
+                        ++ String.fromInt x.size.height
+                        ++ ") rotate("
                         ++ String.fromInt x.rotate
                         ++ " "
                         ++ String.fromFloat (Basics.toFloat x.position.x + Basics.toFloat x.size.width / 2)

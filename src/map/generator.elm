@@ -1,55 +1,45 @@
-module Map.Generator exposing (map, options, possibleTileCoords)
+module Map.Generator exposing (fill, map, possibleTileCoords)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
+import Map.Types exposing (..)
+import Objects.Manager exposing (..)
+import Objects.Tiles.Background exposing (..)
+import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-import Tiles.Global exposing (..)
-import Tiles.TileBackground exposing (..)
-import Tiles.TileRoadLeftRight exposing (..)
-import Tiles.TileRoadTopRight exposing (..)
-import Tiles.TileRoadUpDown exposing (..)
 
 
+map : Map.Types.Map msg -> List (GameObject msg)
+map m =
+    case m.background of
+        x :: xs ->
+            fill x (possibleTileCoords m) ++ map { m | background = xs }
 
--- Map Options
-
-
-options =
-    { width = 20 -- tiles
-    , height = 10 -- tiles
-    }
-
-
-map : List  (Svg msg)
-map =
- (fill Tiles.TileBackground.tile possibleTileCoords
-            ++ fill Tiles.TileRoadUpDown.tile [ ( 64, 64 ), ( 64, 128 ), ( 64, 192 ) ]
-            ++ fill Tiles.TileRoadTopRight.tile [ ( 64, 256 ) ]
-            ++ fill Tiles.TileRoadLeftRight.tile [ ( 128, 256 ) ]
-        )
-
-
-fill : (( Int, Int ) -> Svg msg) -> List ( Int, Int ) -> List (Svg msg)
-fill f l =
-    case l of
         [] ->
             []
 
+
+fill : GameObject msg -> List Position -> List (GameObject msg)
+fill f l =
+    case l of
         x :: xs ->
-            f x :: fill f xs
+            { f | position = x } :: fill f xs
+
+        [] ->
+            []
 
 
-possibleTileCoords : List ( Int, Int )
-possibleTileCoords =
+possibleTileCoords : Map.Types.Map msg -> List Position
+possibleTileCoords m =
     let
-        createRows : Int -> Int -> List ( Int, Int )
+        createRows : Int -> Int -> List Position
         createRows yp xp =
-            if xp < (options.width * Tiles.Global.options.tileSize) then
-                ( xp, yp ) :: createRows yp (xp + Tiles.Global.options.tileSize)
+            if xp < (m.width * 64) then
+                { x = xp, y = yp } :: createRows yp (xp + 64)
 
-            else if yp < (options.height * Tiles.Global.options.tileSize) then
-                ( 0, yp + Tiles.Global.options.tileSize ) :: createRows (yp + Tiles.Global.options.tileSize) (0 + Tiles.Global.options.tileSize)
+            else if yp < (m.height * 64) then
+                { x = 0, y = yp + 64 } :: createRows (yp + 64) (0 + 64)
 
             else
                 []
