@@ -17,7 +17,7 @@ map m =
             fill x (possibleTileCoords m) ++ map { m | background = xs }
 
         [] ->
-            []
+            [] ++ m.gameObjects
 
 
 fill : GameObject msg -> List Position -> List (GameObject msg)

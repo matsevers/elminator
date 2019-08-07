@@ -1,16 +1,16 @@
-module Objects.Tiles.Background exposing (dust)
+module Objects.Tiles.Road exposing (straight)
 
 import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-dust : Position -> GameObject msg
-dust position =
-    { identifier = "BackgroundDust"
+straight : Position -> GameObject msg
+straight position =
+    { identifier = "RoadStraight"
     , position = position
     , collider = Svg.rect [] []
-    , sprite = "assets/background.png"
+    , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
     , speed = 0
