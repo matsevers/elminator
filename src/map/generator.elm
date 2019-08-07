@@ -21,25 +21,9 @@ options =
     }
 
 
-map : Svg msg
+map : List  (Svg msg)
 map =
-    Svg.svg
-        [ Svg.Attributes.width (String.fromInt (Tiles.Global.options.tileSize * options.width))
-        , Svg.Attributes.height (String.fromInt (Tiles.Global.options.tileSize * options.height))
-        , Svg.Attributes.viewBox
-            ("0 0 "
-                ++ String.fromInt
-                    (Tiles.Global.options.tileSize
-                        * options.width
-                    )
-                ++ " "
-                ++ String.fromInt
-                    (Tiles.Global.options.tileSize
-                        * options.height
-                    )
-            )
-        ]
-        (fill Tiles.TileBackground.tile possibleTileCoords
+ (fill Tiles.TileBackground.tile possibleTileCoords
             ++ fill Tiles.TileRoadUpDown.tile [ ( 64, 64 ), ( 64, 128 ), ( 64, 192 ) ]
             ++ fill Tiles.TileRoadTopRight.tile [ ( 64, 256 ) ]
             ++ fill Tiles.TileRoadLeftRight.tile [ ( 128, 256 ) ]
