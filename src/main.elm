@@ -101,18 +101,23 @@ update msg model =
                         position =
                             model.player1.position
                     in
-                    ( { model
-                        | player1 =
-                            { player1
-                                | position =
-                                    { position
-                                        | y = position.y - round (cos (degrees (toFloat player1.rotate)) * 20)
-                                        , x = position.x + round (sin (degrees (toFloat player1.rotate)) * 20)
+                    case player1.position of
+                        Position p ->
+                            ( { model
+                                | player1 =
+                                    { player1
+                                        | position =
+                                            Position
+                                                { x = p.x + round (sin (degrees (toFloat player1.rotate)) * 20)
+                                                , y = p.y - round (cos (degrees (toFloat player1.rotate)) * 20)
+                                                }
                                     }
-                            }
-                      }
-                    , Cmd.none
-                    )
+                              }
+                            , Cmd.none
+                            )
+
+                        _ ->
+                            ( model, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )

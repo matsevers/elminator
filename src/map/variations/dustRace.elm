@@ -15,6 +15,13 @@ model =
     , starter = 1
     , tileSize = 64
     , startPositions = []
-    , background = [ Objects.Tiles.Background.dust { x = 0, y = 0 } ]
-    , gameObjects = [ Objects.Tiles.Road.straight { x = 100, y = 0 } ]
+    , background = [ Objects.Tiles.Background.dust None ]
+    , gameObjects =
+        Map.Generator.fill
+            (Objects.Tiles.Road.straight
+                None
+            )
+            [ Position { x = 64, y = 128 }, Position { x = 64, y = 192 }, Position { x = 64, y = 256 } ]
+            ++ [ Map.Generator.rotate (Objects.Tiles.Road.curveTopRight (Position { x = 64, y = 320 })) 90
+               ]
     }

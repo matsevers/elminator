@@ -1,12 +1,14 @@
-module Objects.Types exposing (GameObject, Position, Size)
+module Objects.Types exposing (GameObject, Position(..), Size)
 
 import Svg exposing (..)
 
 
-type alias Position =
-    { x : Int
-    , y : Int
-    }
+type Position
+    = Position
+        { x : Int
+        , y : Int
+        }
+    | None
 
 
 type alias Size =

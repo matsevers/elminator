@@ -1,4 +1,4 @@
-module Map.Generator exposing (fill, map, possibleTileCoords)
+module Map.Generator exposing (fill, map, possibleTileCoords, rotate)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
@@ -30,16 +30,21 @@ fill f l =
             []
 
 
+rotate : GameObject msg -> Int -> GameObject msg
+rotate gO r =
+    { gO | rotate = r }
+
+
 possibleTileCoords : Map.Types.Map msg -> List Position
 possibleTileCoords m =
     let
         createRows : Int -> Int -> List Position
         createRows yp xp =
             if xp < (m.width * m.tileSize) then
-                { x = xp, y = yp } :: createRows yp (xp + m.tileSize)
+                Position { x = xp, y = yp } :: createRows yp (xp + m.tileSize)
 
             else if yp < (m.height * m.tileSize) then
-                { x = 0, y = yp + m.tileSize } :: createRows (yp + m.tileSize) (0 + m.tileSize)
+                Position { x = 0, y = yp + m.tileSize } :: createRows (yp + m.tileSize) (0 + m.tileSize)
 
             else
                 []
