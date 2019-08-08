@@ -4,12 +4,26 @@ import Objects.Types exposing (GameObject, Position)
 
 
 type alias Map msg =
-    { name : String
-    , width : Int
-    , height : Int
-    , starter : Int
-    , tileSize : Int
-    , startPositions : List Position
-    , background : List (GameObject msg)
-    , gameObjects : List (GameObject msg)
+    { meta :
+        { name : String
+        , description : String
+        }
+    , dimension :
+        { width : Int
+        , height : Int
+        , tileSize : Int
+        }
+    , options :
+        { starter : Int
+        , labs : Int
+        , startPositions : List Position
+        }
+    , gameObjects :
+        { background : GameObject msg
+        , roads : List (GameObject msg)
+        , checkPoints : List (GameObject msg)
+        , startLine : GameObject msg
+        , finishLine : GameObject msg
+        , decor : List (GameObject msg)
+        }
     }

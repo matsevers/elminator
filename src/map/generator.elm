@@ -12,12 +12,11 @@ import Svg.Attributes exposing (..)
 
 map : Map.Types.Map msg -> List (GameObject msg)
 map m =
-    case m.background of
-        x :: xs ->
-            fill x (possibleTileCoords m) ++ map { m | background = xs }
-
-        [] ->
-            [] ++ m.gameObjects
+    fill m.gameObjects.background (possibleTileCoords m)
+        ++ m.gameObjects.roads
+        ++ [ m.gameObjects.startLine, m.gameObjects.finishLine ]
+        ++ m.gameObjects.checkPoints
+        ++ m.gameObjects.decor
 
 
 fill : GameObject msg -> List Position -> List (GameObject msg)
@@ -45,11 +44,11 @@ possibleTileCoords m =
     let
         createRows : Int -> Int -> List Position
         createRows yp xp =
-            if xp < (m.width * m.tileSize) then
-                Position { x = xp, y = yp } :: createRows yp (xp + m.tileSize)
+            if xp < (m.dimension.width * m.dimension.tileSize) then
+                Position { x = xp, y = yp } :: createRows yp (xp + m.dimension.tileSize)
 
-            else if yp < (m.height * m.tileSize) then
-                Position { x = 0, y = yp + m.tileSize } :: createRows (yp + m.tileSize) (0 + m.tileSize)
+            else if yp < (m.dimension.height * m.dimension.tileSize) then
+                Position { x = 0, y = yp + m.dimension.tileSize } :: createRows (yp + m.dimension.tileSize) (0 + m.dimension.tileSize)
 
             else
                 []

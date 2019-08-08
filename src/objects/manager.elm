@@ -25,7 +25,7 @@ ambulance =
     , position = Objects.Types.Position { x = 200, y = 200 }
     , collider = Svg.rect [] []
     , sprite = "assets/carAmbulance.png"
-    , size = { height = 64, width = 64 }
+    , size = { height = 32, width = 32 }
     , rotate = 0
     , speed = 100
     }

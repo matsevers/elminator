@@ -27,8 +27,9 @@ type State
 
 type alias Model =
     { state : State
-    , map : Map.Types.Map Msg -- Records of Map options
+    , map : Map.Types.Map Msg -- Records of Map
     , player1 : GameObject Msg
+    , lab : Int
     }
 
 
@@ -43,6 +44,7 @@ initialModel =
     { state = Running
     , map = Map.Variations.DustRace.model
     , player1 = Objects.Manager.ambulance
+    , lab = 0
     }
 
 
@@ -51,26 +53,53 @@ view model =
     div
         [ Html.Attributes.style "display" "flex"
         , Html.Attributes.style "flex" "1"
+        , Html.Attributes.style "flex-direction" "column"
         , Html.Attributes.style "align-items" "center"
         , Html.Attributes.style "justify-content" "center"
         ]
         [ Svg.svg
-            [ Svg.Attributes.width (String.fromInt (model.map.tileSize * model.map.width))
-            , Svg.Attributes.height (String.fromInt (model.map.tileSize * model.map.height))
+            [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
+            , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
             , Svg.Attributes.viewBox
                 ("0 0 "
                     ++ String.fromInt
-                        (model.map.tileSize
-                            * model.map.width
+                        (model.map.dimension.tileSize
+                            * model.map.dimension.width
                         )
                     ++ " "
                     ++ String.fromInt
-                        (model.map.tileSize
-                            * model.map.height
+                        (model.map.dimension.tileSize
+                            * model.map.dimension.height
                         )
                 )
             ]
             (Objects.Manager.render (Map.Generator.map model.map ++ [ model.player1 ]))
+        , div
+            [ Html.Attributes.style "background" "red"
+            ]
+            [ Svg.svg
+                [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
+                , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
+                , Svg.Attributes.viewBox
+                    ("0 0 "
+                        ++ String.fromInt
+                            (model.map.dimension.tileSize
+                                * model.map.dimension.width
+                                * 4
+                            )
+                        ++ " "
+                        ++ String.fromInt
+                            (model.map.dimension.tileSize
+                                * model.map.dimension.height
+                                * 4
+                            )
+                    )
+                ]
+                (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.player1 ]))
+            , div
+                []
+                []
+            ]
         ]
 
 
