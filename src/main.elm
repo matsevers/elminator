@@ -14,6 +14,7 @@ import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Time exposing (..)
+import Ui.Speedometer exposing (..)
 
 
 type State
@@ -53,29 +54,15 @@ view model =
     div
         [ Html.Attributes.style "display" "flex"
         , Html.Attributes.style "flex" "1"
-        , Html.Attributes.style "flex-direction" "column"
+        , Html.Attributes.style "flex-direction" "row"
         , Html.Attributes.style "align-items" "center"
         , Html.Attributes.style "justify-content" "center"
         ]
-        [ Svg.svg
-            [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
-            , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
-            , Svg.Attributes.viewBox
-                ("0 0 "
-                    ++ String.fromInt
-                        (model.map.dimension.tileSize
-                            * model.map.dimension.width
-                        )
-                    ++ " "
-                    ++ String.fromInt
-                        (model.map.dimension.tileSize
-                            * model.map.dimension.height
-                        )
-                )
-            ]
-            (Objects.Manager.render (Map.Generator.map model.map ++ [ model.player1 ]))
+        [ div []
+            []
         , div
-            [ Html.Attributes.style "background" "red"
+            [ Html.Attributes.style "display" "flex"
+            , Html.Attributes.style "flex-direction" "column"
             ]
             [ Svg.svg
                 [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
@@ -85,21 +72,52 @@ view model =
                         ++ String.fromInt
                             (model.map.dimension.tileSize
                                 * model.map.dimension.width
-                                * 4
                             )
                         ++ " "
                         ++ String.fromInt
                             (model.map.dimension.tileSize
                                 * model.map.dimension.height
-                                * 4
                             )
                     )
                 ]
-                (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.player1 ]))
+                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.player1 ]))
             , div
-                []
-                []
+                [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
+                , Html.Attributes.style "display" "flex"
+                , Html.Attributes.style "flex" "1"
+                , Html.Attributes.style "flex-direction" "row"
+                , Html.Attributes.style "align-items" "stretch"
+                ]
+                [ div
+                    [ Html.Attributes.style "flex" "1" ]
+                    [ Ui.Speedometer.element 0 0 0 ]
+                , div
+                    [ Html.Attributes.style "flex" "1" ]
+                    [ Html.text "Test" ]
+                , Svg.svg
+                    [ Html.Attributes.style "flex" "1"
+                    , Svg.Attributes.width
+                        "100%"
+                    , Svg.Attributes.height "100%"
+                    , Svg.Attributes.viewBox
+                        ("0 0 "
+                            ++ String.fromInt
+                                (model.map.dimension.tileSize
+                                    * model.map.dimension.width
+                                )
+                            ++ " "
+                            ++ String.fromInt
+                                (model.map.dimension.tileSize
+                                    * model.map.dimension.height
+                                )
+                        )
+                    ]
+                    (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.player1 ]))
+                ]
             ]
+        , div
+            []
+            []
         ]
 
 

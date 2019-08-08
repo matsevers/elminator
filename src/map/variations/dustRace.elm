@@ -47,7 +47,31 @@ finishLine =
 
 decor : List (GameObject msg)
 decor =
-    [ Map.Generator.position Objects.Tiles.Decor.platformBlue (Position { x = 392, y = 0 }) ]
+    [ Map.Generator.position Objects.Tiles.Decor.platformBlue (Position { x = 392, y = 0 })
+    ]
+        ++ Map.Generator.fill Objects.Tiles.Decor.bush1
+            [ Position { x = 384, y = 0 }
+            , Position { x = 590, y = 0 }
+            ]
+        ++ Map.Generator.fill Objects.Tiles.Decor.bush2
+            [ Position { x = 448, y = 320 }
+            , Position { x = 576, y = 384 }
+            ]
+        ++ Map.Generator.fill Objects.Tiles.Decor.rock1
+            [ Position { x = 890, y = 448 }
+            , Position { x = 170, y = 170 }
+            ]
+        ++ Map.Generator.fill Objects.Tiles.Decor.rock2
+            [ Position { x = 170, y = 256 }
+            ]
+        ++ Map.Generator.fill Objects.Tiles.Decor.tree2
+            [ Position { x = 32, y = 365 }
+            , Position { x = 96, y = 390 }
+            , Position { x = 160, y = 370 }
+            , Position { x = 0, y = 250 }
+            , Position { x = 0, y = 310 }
+            , Position { x = 192, y = 320 }
+            ]
 
 
 roads : List (GameObject msg)

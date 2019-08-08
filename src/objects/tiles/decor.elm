@@ -1,4 +1,4 @@
-module Objects.Tiles.Decor exposing (finishLine, platformBlue, startLine)
+module Objects.Tiles.Decor exposing (bush1, bush2, finishLine, platformBlue, rock1, rock2, startLine, tree1, tree2)
 
 import Objects.Types exposing (..)
 import Svg exposing (..)
@@ -36,6 +36,78 @@ platformBlue =
     , collider = Svg.rect [] []
     , sprite = "assets/decor/Pavilion_01.png"
     , size = { height = 64, width = 128 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+bush1 : GameObject msg
+bush1 =
+    { identifier = "Bush1"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Bush_01.png"
+    , size = { height = 64, width = 64 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+bush2 : GameObject msg
+bush2 =
+    { identifier = "Bush2"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Bush_02.png"
+    , size = { height = 64, width = 64 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+rock1 : GameObject msg
+rock1 =
+    { identifier = "Rock1"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Rock_01.png"
+    , size = { height = 32, width = 32 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+rock2 : GameObject msg
+rock2 =
+    { identifier = "Rock2"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Rock_02.png"
+    , size = { height = 32, width = 32 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+tree1 : GameObject msg
+tree1 =
+    { identifier = "Tree1"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Tree_01.png"
+    , size = { height = 64, width = 64 }
+    , rotate = 0
+    , speed = 0
+    }
+
+
+tree2 : GameObject msg
+tree2 =
+    { identifier = "Tree2"
+    , position = None
+    , collider = Svg.rect [] []
+    , sprite = "assets/decor/Tree_02.png"
+    , size = { height = 64, width = 64 }
     , rotate = 0
     , speed = 0
     }
