@@ -5,10 +5,10 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-straight : Position -> GameObject msg
-straight position =
+straight : GameObject msg
+straight =
     { identifier = "RoadStraight"
-    , position = position
+    , position = None
     , collider = Svg.rect [] []
     , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
@@ -17,10 +17,10 @@ straight position =
     }
 
 
-curveTopRight : Position -> GameObject msg
-curveTopRight position =
+curveTopRight : GameObject msg
+curveTopRight =
     { identifier = "RoadStraight"
-    , position = position
+    , position = None
     , collider = Svg.rect [] []
     , sprite = "assets/roadCurve.png"
     , size = { height = 64, width = 64 }
