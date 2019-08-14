@@ -12,6 +12,7 @@ type alias Map msg =
         { width : Int
         , height : Int
         , tileSize : Int
+        , viewScale : Float
         }
     , options :
         { starter : Int

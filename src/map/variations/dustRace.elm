@@ -12,12 +12,13 @@ model : Map.Types.Map msg
 model =
     { meta =
         { name = "Dust Race"
-        , description = "Es wird Staubig!"
+        , description = "Es wird staubig!"
         }
     , dimension =
         { width = 17
         , height = 10
         , tileSize = 64
+        , viewScale = 2
         }
     , options =
         { starter = 1
