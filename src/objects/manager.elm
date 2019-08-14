@@ -8,31 +8,20 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-
--- --
--- type alias Collider msg =
---     Svg msg
--- type alias Sprite msg =
---     Svg msg
--- type Render msg
---     = Render (Sprite msg) (Collider msg)
--- --
-
-
 ambulance : GameObject msg
 ambulance =
     { identifier = "ambulance"
-    , position = Objects.Types.Position { x = 450, y = 130 }
+    , position = Objects.Types.Position { x = 450, y = 100 }
     , collider = Svg.rect [] []
     , sprite = "assets/carAmbulance.png"
     , size = { height = 32, width = 32 }
     , rotate = 90
-    , speed = 100
+    , motion =
+        { speed = 0
+        , maxForwardSpeed = 100
+        , maxBackwardSpeed = 20
+        }
     }
-
-
-
--- move GameObject msg -> List (Svg msg)
 
 
 render : List (GameObject msg) -> List (Svg msg)

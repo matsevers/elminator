@@ -1,4 +1,4 @@
-module Objects.Types exposing (GameObject, Position(..), Size)
+module Objects.Types exposing (GameObject, Motion, Position(..), Size)
 
 import Svg exposing (..)
 
@@ -17,6 +17,13 @@ type alias Size =
     }
 
 
+type alias Motion =
+    { speed : Int
+    , maxForwardSpeed : Int
+    , maxBackwardSpeed : Int
+    }
+
+
 type alias GameObject msg =
     { identifier : String
     , size : Size
@@ -24,5 +31,5 @@ type alias GameObject msg =
     , sprite : String
     , collider : Svg msg
     , rotate : Int
-    , speed : Int
+    , motion : Motion
     }

@@ -43,6 +43,15 @@ type Msg
     | None
 
 
+
+-- Intervall in miliseconds
+
+
+frequence : Float
+frequence =
+    40
+
+
 initialModel : Model
 initialModel =
     { state = Running
@@ -110,7 +119,7 @@ view model =
                 ]
                 [ div
                     [ Html.Attributes.style "flex" "1" ]
-                    [ Ui.Speedometer.element 100 0 100 ]
+                    [ Ui.Speedometer.element model.myPlayer.controlledObject.motion.speed 0 model.myPlayer.controlledObject.motion.maxForwardSpeed ]
                 , div
                     [ Html.Attributes.style "flex" "1" ]
                     [ Html.text "Test" ]
@@ -156,6 +165,9 @@ update msg model =
         position =
             controlledObject.position
 
+        motion =
+            controlledObject.motion
+
         listKeys =
             [ storedKeys.forward, storedKeys.backward, storedKeys.left, storedKeys.right ]
     in
@@ -196,17 +208,13 @@ update msg model =
 
         Interval ->
             let
-                maxKraft : Int
-                maxKraft =
-                    10
-
                 kraftVor : Int
                 kraftVor =
-                    4
+                    1
 
                 kraftRuck : Int
                 kraftRuck =
-                    -2
+                    -1
 
                 winkel : Int
                 winkel =
@@ -245,6 +253,38 @@ update msg model =
 
                                 _ ->
                                     0 + calcForce xs
+
+                updateMotion : Objects.Types.Motion -> Int -> Objects.Types.Motion
+                updateMotion m cSpeed =
+                    if cSpeed == 0 then
+                        -- Abbremsen
+                        if m.speed > 0 then
+                            { m | speed = m.speed + kraftRuck }
+
+                        else if m.speed < 0 then
+                            { m | speed = m.speed - kraftRuck }
+
+                        else
+                            m
+
+                    else if cSpeed > 0 then
+                        -- Beschleunigen
+                        if (m.speed + cSpeed) <= m.maxForwardSpeed then
+                            { m | speed = m.speed + cSpeed }
+
+                        else
+                            { m | speed = m.maxForwardSpeed }
+
+                    else if cSpeed < 0 then
+                        -- Rückwarts / Bremsen
+                        if (m.speed + cSpeed) >= -m.maxBackwardSpeed then
+                            { m | speed = m.speed + cSpeed }
+
+                        else
+                            { m | speed = -m.maxBackwardSpeed }
+
+                    else
+                        m
             in
             case controlledObject.position of
                 Position p ->
@@ -254,10 +294,11 @@ update msg model =
                                 | controlledObject =
                                     { controlledObject
                                         | rotate = modBy 360 (controlledObject.rotate + calcAngle listKeys)
+                                        , motion = updateMotion motion (calcForce listKeys)
                                         , position =
                                             Position
-                                                { x = p.x + round (sin (degrees (toFloat controlledObject.rotate)) * toFloat (calcForce listKeys))
-                                                , y = p.y - round (cos (degrees (toFloat controlledObject.rotate)) * toFloat (calcForce listKeys))
+                                                { x = p.x + round (sin (degrees (toFloat controlledObject.rotate)) * toFloat motion.speed / frequence * 4)
+                                                , y = p.y - round (cos (degrees (toFloat controlledObject.rotate)) * toFloat motion.speed / frequence * 4)
                                                 }
                                     }
                             }
@@ -277,7 +318,7 @@ subscriptions model =
     Sub.batch
         [ onKeyDown (Json.Decode.map KeyDown keyDecoder)
         , onKeyUp (Json.Decode.map KeyUp keyDecoder)
-        , Time.every 40 (\_ -> Interval)
+        , Time.every frequence (\_ -> Interval)
         ]
 
 
