@@ -6,12 +6,12 @@ import Svg.Attributes exposing (..)
 
 width : Int
 width =
-    250
+    200
 
 
 height : Int
 height =
-    250
+    200
 
 
 outerBorderWidth : Int
@@ -44,7 +44,7 @@ valueStrokes min max =
     let
         angleList : Int -> Int -> Int -> List Int
         angleList counter interval stop =
-            if (counter + interval) <= stop then
+            if (counter + interval) <= stop + interval then
                 counter :: angleList (counter + interval) interval stop
 
             else
@@ -73,9 +73,9 @@ valueStrokes min max =
                 [] ->
                     []
     in
-    generateStrokes (angleList -100 40 140) 5 30 "#c6c6c6"
+    generateStrokes (Debug.log "winkel" (angleList -100 40 100)) 5 30 "#c6c6c6"
         ++ generateStrokes (angleList -100 5 60) 2 20 "#c6c6c6"
-        ++ generateStrokes (angleList 65 5 100) 2 20 "#af1616"
+        ++ generateStrokes (angleList 65 5 95) 2 20 "#af1616"
 
 
 pin : Int -> Int -> Int -> Int -> Int -> List (Svg msg)
@@ -92,9 +92,9 @@ pin speed minSpeed maxSpeed startAngle endAngle =
     in
     [ Svg.line
         [ stroke "#c91616"
-        , strokeWidth "10"
-        , x1 (String.fromInt (round (centerX + sin (degrees calcSpeedDegree))))
-        , y1 (String.fromInt (round (centerY - cos (degrees calcSpeedDegree))))
+        , strokeWidth (String.fromInt (width // 25))
+        , x1 (String.fromFloat centerX)
+        , y1 (String.fromFloat centerY)
         , x2 (String.fromInt (round (centerX + sin (degrees calcSpeedDegree) * radius * 0.75)))
         , y2 (String.fromInt (round (centerY - cos (degrees calcSpeedDegree) * radius * 0.75)))
         ]
@@ -132,5 +132,5 @@ element currentSpeed minSpeed maxSpeed =
          , Svg.text_ [ x "50%", y "75%", fontSize "22", fontFamily "Arial", textAnchor "middle" ] [ text (String.fromInt currentSpeed) ]
          ]
             ++ valueStrokes minSpeed maxSpeed
-            ++ pin currentSpeed minSpeed maxSpeed -100 140
+            ++ pin currentSpeed minSpeed maxSpeed -100 100
         )

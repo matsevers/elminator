@@ -112,6 +112,8 @@ view model =
                 (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]))
             , div
                 [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
+                , Html.Attributes.style "border-radius" "0px 0px 20px 20px"
+                , Html.Attributes.style "padding" "40px"
                 , Html.Attributes.style "display" "flex"
                 , Html.Attributes.style "flex" "1"
                 , Html.Attributes.style "flex-direction" "row"
