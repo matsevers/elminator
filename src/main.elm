@@ -90,7 +90,7 @@ view model =
                 ]
                 [ div
                     [ Html.Attributes.style "flex" "1" ]
-                    [ Ui.Speedometer.element 0 0 0 ]
+                    [ Ui.Speedometer.element 100 0 100 ]
                 , div
                     [ Html.Attributes.style "flex" "1" ]
                     [ Html.text "Test" ]
