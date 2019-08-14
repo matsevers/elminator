@@ -13,7 +13,7 @@ startLine =
     , sprite = ""
     , size = { height = 20, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -25,7 +25,7 @@ finishLine =
     , sprite = "assets/decor/Finish.png"
     , size = { height = 20, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -37,7 +37,7 @@ platformBlue =
     , sprite = "assets/decor/Pavilion_01.png"
     , size = { height = 64, width = 128 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -49,7 +49,7 @@ bush1 =
     , sprite = "assets/decor/Bush_01.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -61,7 +61,7 @@ bush2 =
     , sprite = "assets/decor/Bush_02.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -73,7 +73,7 @@ rock1 =
     , sprite = "assets/decor/Rock_01.png"
     , size = { height = 32, width = 32 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -85,7 +85,7 @@ rock2 =
     , sprite = "assets/decor/Rock_02.png"
     , size = { height = 32, width = 32 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -97,7 +97,7 @@ tree1 =
     , sprite = "assets/decor/Tree_01.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -109,5 +109,5 @@ tree2 =
     , sprite = "assets/decor/Tree_02.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }

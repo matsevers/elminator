@@ -13,7 +13,7 @@ straight =
     , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
 
 
@@ -25,5 +25,5 @@ curveTopRight =
     , sprite = "assets/roadCurve.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , speed = 0
+    , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
     }
