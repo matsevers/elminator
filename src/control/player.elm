@@ -9,7 +9,8 @@ type alias Keys =
 
 
 type alias Player msg =
-    { identifier : String
+    { name : String
+    , identifier : String
     , assignedKeys :
         { forward : Keys
         , backward : Keys

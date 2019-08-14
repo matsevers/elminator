@@ -58,6 +58,7 @@ initialModel =
     , map = Map.Variations.DustRace.model
     , myPlayer =
         { identifier = "blue"
+        , name = "Player 1"
         , assignedKeys =
             { forward = Control.Global.W
             , backward = Control.Global.S
