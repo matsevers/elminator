@@ -80,76 +80,109 @@ initialModel =
 
 view : Model -> Html Msg
 view model =
-    div
-        [ Html.Attributes.style "display" "flex"
-        , Html.Attributes.style "flex" "1"
-        , Html.Attributes.style "flex-direction" "row"
-        , Html.Attributes.style "align-items" "center"
-        , Html.Attributes.style "justify-content" "center"
-        ]
-        [ div []
-            []
-        , div
-            [ Html.Attributes.style "display" "flex"
-            , Html.Attributes.style "flex-direction" "column"
-            ]
-            [ Svg.svg
-                [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
-                , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
-                , Svg.Attributes.viewBox
-                    ("0 0 "
-                        ++ String.fromInt
-                            (model.map.dimension.tileSize
-                                * model.map.dimension.width
-                            )
-                        ++ " "
-                        ++ String.fromInt
-                            (model.map.dimension.tileSize
-                                * model.map.dimension.height
-                            )
-                    )
-                ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]))
-            , div
-                [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
-                , Html.Attributes.style "border-radius" "0px 0px 20px 20px"
-                , Html.Attributes.style "padding" "40px"
-                , Html.Attributes.style "display" "flex"
+    case model.myPlayer.controlledObject.position of
+        Position p ->
+            div
+                [ Html.Attributes.style "display" "flex"
                 , Html.Attributes.style "flex" "1"
                 , Html.Attributes.style "flex-direction" "row"
-                , Html.Attributes.style "align-items" "stretch"
+                , Html.Attributes.style "align-items" "center"
+                , Html.Attributes.style "justify-content" "center"
                 ]
-                [ div
-                    [ Html.Attributes.style "flex" "1" ]
-                    [ Ui.Speedometer.element model.myPlayer.controlledObject.motion.speed 0 model.myPlayer.controlledObject.motion.maxForwardSpeed ]
+                [ div []
+                    []
                 , div
-                    [ Html.Attributes.style "flex" "1" ]
-                    [ Html.text "Test" ]
-                , Svg.svg
-                    [ Html.Attributes.style "flex" "1"
-                    , Svg.Attributes.width
-                        "100%"
-                    , Svg.Attributes.height "100%"
-                    , Svg.Attributes.viewBox
-                        ("0 0 "
-                            ++ String.fromInt
-                                (model.map.dimension.tileSize
-                                    * model.map.dimension.width
-                                )
-                            ++ " "
-                            ++ String.fromInt
-                                (model.map.dimension.tileSize
-                                    * model.map.dimension.height
-                                )
-                        )
+                    [ Html.Attributes.style "display" "flex"
+                    , Html.Attributes.style "flex-direction" "column"
+                    , Html.Attributes.style "border" "10px solid rgb(32,32,32)"
+                    , Html.Attributes.style "border-radius" "20px"
+                    , Html.Attributes.style "background-color" "rgb(32,32,32)"
                     ]
-                    (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]))
+                    [ Svg.svg
+                        [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
+                        , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
+                        , Html.Attributes.style "background" "#000"
+                        , Html.Attributes.style "border-radius" "10px"
+                        , Svg.Attributes.viewBox
+                            (String.fromInt
+                                (p.x
+                                    - round
+                                        (toFloat model.map.dimension.tileSize
+                                            * toFloat model.map.dimension.width
+                                            / 2
+                                            / model.map.dimension.viewScale
+                                        )
+                                )
+                                ++ " "
+                                ++ String.fromInt
+                                    (p.y
+                                        - round
+                                            (toFloat model.map.dimension.tileSize
+                                                * toFloat model.map.dimension.height
+                                                / 2
+                                                / model.map.dimension.viewScale
+                                            )
+                                    )
+                                ++ " "
+                                ++ String.fromInt
+                                    (round
+                                        (toFloat model.map.dimension.tileSize
+                                            * toFloat model.map.dimension.width
+                                            / model.map.dimension.viewScale
+                                        )
+                                    )
+                                ++ " "
+                                ++ String.fromInt
+                                    (round
+                                        (toFloat model.map.dimension.tileSize
+                                            * toFloat model.map.dimension.height
+                                            / model.map.dimension.viewScale
+                                        )
+                                    )
+                            )
+                        ]
+                        (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]))
+                    , div
+                        [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
+                        , Html.Attributes.style "padding" "40px 0px 40px 0px"
+                        , Html.Attributes.style "display" "flex"
+                        , Html.Attributes.style "flex" "1"
+                        , Html.Attributes.style "flex-direction" "row"
+                        , Html.Attributes.style "align-items" "stretch"
+                        ]
+                        [ div
+                            [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "justify-content" "center", Html.Attributes.style "border-right" "2px solid #3f3d3d" ]
+                            [ Ui.Speedometer.element model.myPlayer.controlledObject.motion.speed 0 model.myPlayer.controlledObject.motion.maxForwardSpeed ]
+                        , div
+                            [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "border-right" "2px solid #3f3d3d", Html.Attributes.style "justify-content" "center" ]
+                            [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "261px", Html.Attributes.style "height" "51px" ] [] ]
+                        , Svg.svg
+                            [ Html.Attributes.style "flex" "1"
+                            , Html.Attributes.style "display" "flex"
+                            , Html.Attributes.style "justify-content" "center"
+                            , Svg.Attributes.viewBox
+                                ("0 0 "
+                                    ++ String.fromInt
+                                        (model.map.dimension.tileSize
+                                            * model.map.dimension.width
+                                        )
+                                    ++ " "
+                                    ++ String.fromInt
+                                        (model.map.dimension.tileSize
+                                            * model.map.dimension.height
+                                        )
+                                )
+                            ]
+                            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]))
+                        ]
+                    ]
+                , div
+                    []
+                    []
                 ]
-            ]
-        , div
-            []
-            []
-        ]
+
+        _ ->
+            div [] []
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
