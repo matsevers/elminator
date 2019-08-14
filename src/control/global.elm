@@ -8,6 +8,7 @@ type Keys
     | A
     | S
     | D
+    | Space
     | Other
 
 

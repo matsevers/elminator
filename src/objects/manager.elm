@@ -21,12 +21,12 @@ import Svg.Attributes exposing (..)
 
 ambulance : GameObject msg
 ambulance =
-    { identifier = "Player1"
-    , position = Objects.Types.Position { x = 200, y = 200 }
+    { identifier = "ambulance"
+    , position = Objects.Types.Position { x = 450, y = 130 }
     , collider = Svg.rect [] []
     , sprite = "assets/carAmbulance.png"
     , size = { height = 32, width = 32 }
-    , rotate = 0
+    , rotate = 90
     , speed = 100
     }
 

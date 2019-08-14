@@ -3,6 +3,7 @@ module Main exposing (Model, main)
 import Browser
 import Browser.Events exposing (..)
 import Control.Global exposing (..)
+import Control.Player exposing (..)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
@@ -29,14 +30,16 @@ type State
 type alias Model =
     { state : State
     , map : Map.Types.Map Msg -- Records of Map
-    , player1 : GameObject Msg
+    , myPlayer : Player Msg
+    , onlinePlayers : List (Player Msg)
     , lab : Int
     }
 
 
 type Msg
     = KeyDown Action
-    | Move
+    | KeyUp Action
+    | Interval
     | None
 
 
@@ -44,7 +47,24 @@ initialModel : Model
 initialModel =
     { state = Running
     , map = Map.Variations.DustRace.model
-    , player1 = Objects.Manager.ambulance
+    , myPlayer =
+        { identifier = "blue"
+        , assignedKeys =
+            { forward = Control.Global.W
+            , backward = Control.Global.S
+            , left = Control.Global.A
+            , right = Control.Global.D
+            , action = Control.Global.Space
+            }
+        , storedKeys =
+            { forward = Control.Global.Nothing
+            , backward = Control.Global.Nothing
+            , left = Control.Global.Nothing
+            , right = Control.Global.Nothing
+            }
+        , controlledObject = Objects.Manager.ambulance
+        }
+    , onlinePlayers = []
     , lab = 0
     }
 
@@ -80,7 +100,7 @@ view model =
                             )
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.player1 ]))
+                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]))
             , div
                 [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
                 , Html.Attributes.style "display" "flex"
@@ -112,7 +132,7 @@ view model =
                                 )
                         )
                     ]
-                    (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.player1 ]))
+                    (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]))
                 ]
             ]
         , div
@@ -123,48 +143,127 @@ view model =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    let
+        myPlayer =
+            model.myPlayer
+
+        storedKeys =
+            myPlayer.storedKeys
+
+        controlledObject =
+            myPlayer.controlledObject
+
+        position =
+            controlledObject.position
+
+        listKeys =
+            [ storedKeys.forward, storedKeys.backward, storedKeys.left, storedKeys.right ]
+    in
     case msg of
         KeyDown action ->
             case action of
-                Right ->
-                    let
-                        player1 =
-                            model.player1
-                    in
-                    ( { model | player1 = { player1 | rotate = modBy 360 (player1.rotate + 5) } }, Cmd.none )
+                Forward ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Control.Global.Forward } } }, Cmd.none )
+
+                Backward ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Control.Global.Backward } } }, Cmd.none )
 
                 Left ->
-                    let
-                        player1 =
-                            model.player1
-                    in
-                    ( { model | player1 = { player1 | rotate = modBy 360 (player1.rotate - 5) } }, Cmd.none )
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Control.Global.Left } } }, Cmd.none )
 
+                Right ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Control.Global.Right } } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        KeyUp action ->
+            case action of
                 Forward ->
-                    let
-                        player1 =
-                            model.player1
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Control.Global.Nothing } } }, Cmd.none )
 
-                        position =
-                            model.player1.position
-                    in
-                    case player1.position of
-                        Position p ->
-                            ( { model
-                                | player1 =
-                                    { player1
-                                        | position =
+                Backward ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Control.Global.Nothing } } }, Cmd.none )
+
+                Left ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Control.Global.Nothing } } }, Cmd.none )
+
+                Right ->
+                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Control.Global.Nothing } } }, Cmd.none )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        Interval ->
+            let
+                maxKraft : Int
+                maxKraft =
+                    10
+
+                kraftVor : Int
+                kraftVor =
+                    4
+
+                kraftRuck : Int
+                kraftRuck =
+                    -2
+
+                winkel : Int
+                winkel =
+                    8
+
+                calcAngle : List Action -> Int
+                calcAngle l =
+                    case l of
+                        x :: xs ->
+                            case x of
+                                Left ->
+                                    -winkel + calcAngle xs
+
+                                Right ->
+                                    winkel + calcAngle xs
+
+                                _ ->
+                                    0 + calcAngle xs
+
+                        [] ->
+                            0
+
+                calcForce : List Action -> Int
+                calcForce l =
+                    case l of
+                        [] ->
+                            0
+
+                        x :: xs ->
+                            case x of
+                                Forward ->
+                                    kraftVor + calcForce xs
+
+                                Backward ->
+                                    kraftRuck + calcForce xs
+
+                                _ ->
+                                    0 + calcForce xs
+            in
+            case controlledObject.position of
+                Position p ->
+                    ( { model
+                        | myPlayer =
+                            { myPlayer
+                                | controlledObject =
+                                    { controlledObject
+                                        | rotate = modBy 360 (controlledObject.rotate + calcAngle listKeys)
+                                        , position =
                                             Position
-                                                { x = p.x + round (sin (degrees (toFloat player1.rotate)) * 20)
-                                                , y = p.y - round (cos (degrees (toFloat player1.rotate)) * 20)
+                                                { x = p.x + round (sin (degrees (toFloat controlledObject.rotate)) * toFloat (calcForce listKeys))
+                                                , y = p.y - round (cos (degrees (toFloat controlledObject.rotate)) * toFloat (calcForce listKeys))
                                                 }
                                     }
-                              }
-                            , Cmd.none
-                            )
-
-                        _ ->
-                            ( model, Cmd.none )
+                            }
+                      }
+                    , Cmd.none
+                    )
 
                 _ ->
                     ( model, Cmd.none )
@@ -177,7 +276,8 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
         [ onKeyDown (Json.Decode.map KeyDown keyDecoder)
-        , Time.every 200 (\_ -> Move)
+        , onKeyUp (Json.Decode.map KeyUp keyDecoder)
+        , Time.every 40 (\_ -> Interval)
         ]
 
 
