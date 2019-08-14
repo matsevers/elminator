@@ -51,11 +51,7 @@ render l =
                         , Svg.Attributes.x (String.fromInt p.x)
                         , Svg.Attributes.y (String.fromInt p.y)
                         , Svg.Attributes.transform
-                            ("translate("
-                                ++ String.fromInt x.size.width
-                                ++ ","
-                                ++ String.fromInt x.size.height
-                                ++ ") rotate("
+                            (" rotate("
                                 ++ String.fromInt x.rotate
                                 ++ " "
                                 ++ String.fromFloat (Basics.toFloat p.x + Basics.toFloat x.size.width / 2)

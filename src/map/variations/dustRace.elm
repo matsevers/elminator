@@ -37,17 +37,17 @@ model =
 
 startLine : GameObject msg
 startLine =
-    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.startLine 90) (Position { x = 448, y = 128 })
+    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.startLine 90) (Position { x = 512, y = 84 })
 
 
 finishLine : GameObject msg
 finishLine =
-    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.finishLine 90) (Position { x = 448, y = 128 })
+    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.finishLine 90) (Position { x = 512, y = 84 })
 
 
 decor : List (GameObject msg)
 decor =
-    [ Map.Generator.position Objects.Tiles.Decor.platformBlue (Position { x = 392, y = 0 })
+    [ Map.Generator.position Objects.Tiles.Decor.platformBlue (Position { x = 448, y = 0 })
     ]
         ++ Map.Generator.fill Objects.Tiles.Decor.bush1
             [ Position { x = 384, y = 0 }
@@ -58,11 +58,11 @@ decor =
             , Position { x = 576, y = 384 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.rock1
-            [ Position { x = 890, y = 448 }
-            , Position { x = 170, y = 170 }
+            [ Position { x = 858, y = 416 }
+            , Position { x = 138, y = 138 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.rock2
-            [ Position { x = 170, y = 256 }
+            [ Position { x = 138, y = 224 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.tree2
             [ Position { x = 32, y = 365 }
