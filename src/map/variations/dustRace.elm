@@ -15,8 +15,8 @@ model =
         , description = "Es wird staubig!"
         }
     , dimension =
-        { width = 17
-        , height = 10
+        { width = 16
+        , height = 8
         , tileSize = 64
         , viewScale = 2
         }
