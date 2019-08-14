@@ -73,7 +73,7 @@ valueStrokes min max =
                 [] ->
                     []
     in
-    generateStrokes (Debug.log "winkel" (angleList -100 40 100)) 5 30 "#c6c6c6"
+    generateStrokes (angleList -100 40 100) 5 30 "#c6c6c6"
         ++ generateStrokes (angleList -100 5 60) 2 20 "#c6c6c6"
         ++ generateStrokes (angleList 65 5 95) 2 20 "#af1616"
 
