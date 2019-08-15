@@ -6,6 +6,7 @@ import Map.Types exposing (..)
 
 type Msg
     = KeyEvent KeyEvent Action
+    | ChangeScene State
     | Tick
     | None
 

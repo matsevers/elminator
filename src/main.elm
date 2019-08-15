@@ -15,11 +15,13 @@ import Objects.Types exposing (..)
 import Time exposing (..)
 import Types exposing (Model, Msg(..), State(..))
 import Ui.Playground exposing (..)
+import Ui.Scenes.MainMenu.View exposing (..)
+import Ui.Scenes.Manager exposing (..)
 
 
 initialModel : Model
 initialModel =
-    { state = Running
+    { state = Menu
     , frequence = 40
     , map = Map.Variations.DustRace.model
     , myPlayer =
@@ -46,8 +48,13 @@ initialModel =
 
 
 view : Model -> Html Msg
-view =
-    Ui.Playground.element
+view model =
+    case model.state of
+        Running ->
+            Ui.Playground.element model
+
+        _ ->
+            Ui.Scenes.MainMenu.View.view model
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -58,6 +65,9 @@ update msg model =
 
         Tick ->
             Control.Player.update model
+
+        ChangeScene s ->
+            Ui.Scenes.Manager.changeTo s model
 
         _ ->
             ( model, Cmd.none )

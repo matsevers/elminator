@@ -14,27 +14,33 @@ import Ui.Cockpit exposing (..)
 element : Model -> Html Msg
 element model =
     div
-        [ Html.Attributes.style "display" "flex"
-        , Html.Attributes.style "flex" "1"
-        , Html.Attributes.style "flex-direction" "row"
-        , Html.Attributes.style "align-items" "center"
-        , Html.Attributes.style "justify-content" "center"
+        [ Html.Attributes.style "height" "100vh"
+        , Html.Attributes.style "background-color" "#141617"
+        , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
         ]
-        [ div []
-            []
-        , div
+        [ div
             [ Html.Attributes.style "display" "flex"
-            , Html.Attributes.style "flex-direction" "column"
-            , Html.Attributes.style "border" "10px solid rgb(32,32,32)"
-            , Html.Attributes.style "border-radius" "20px"
-            , Html.Attributes.style "background-color" "rgb(32,32,32)"
+            , Html.Attributes.style "flex" "1"
+            , Html.Attributes.style "flex-direction" "row"
+            , Html.Attributes.style "align-items" "center"
+            , Html.Attributes.style "justify-content" "center"
             ]
-            [ playground model
-            , Ui.Cockpit.element model
+            [ div []
+                []
+            , div
+                [ Html.Attributes.style "display" "flex"
+                , Html.Attributes.style "flex-direction" "column"
+                , Html.Attributes.style "border" "10px solid rgb(32,32,32)"
+                , Html.Attributes.style "border-radius" "20px"
+                , Html.Attributes.style "background-color" "rgb(32,32,32)"
+                ]
+                [ playground model
+                , Ui.Cockpit.element model
+                ]
+            , div
+                []
+                []
             ]
-        , div
-            []
-            []
         ]
 
 
