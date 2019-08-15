@@ -1,23 +1,7 @@
-module Control.Global exposing (Action(..), Keys(..), keyDecoder, toKey)
+module Control.Global exposing (keyDecoder, toKey)
 
+import Control.Types exposing (Action(..))
 import Json.Decode exposing (..)
-
-
-type Keys
-    = W
-    | A
-    | S
-    | D
-    | Space
-    | Other
-
-
-type Action
-    = Forward
-    | Backward
-    | Left
-    | Right
-    | Nothing
 
 
 keyDecoder : Json.Decode.Decoder Action
@@ -41,4 +25,4 @@ toKey val =
             Right
 
         _ ->
-            Nothing
+            Control.Types.Nothing

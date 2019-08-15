@@ -1,13 +1,11 @@
 module Types exposing (Model, Msg(..), State(..))
 
-import Control.Global exposing (..)
-import Control.Player exposing (..)
+import Control.Types exposing (..)
 import Map.Types exposing (..)
 
 
 type Msg
-    = KeyDown Action
-    | KeyUp Action
+    = KeyEvent KeyEvent Action
     | Interval
     | None
 

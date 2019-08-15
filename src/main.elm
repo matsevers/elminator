@@ -3,6 +3,8 @@ module Main exposing (main)
 import Browser
 import Browser.Events exposing (..)
 import Control.Global exposing (..)
+import Control.Player exposing (..)
+import Control.Types exposing (..)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
@@ -37,17 +39,17 @@ initialModel =
         { identifier = "blue"
         , name = "Player 1"
         , assignedKeys =
-            { forward = Control.Global.W
-            , backward = Control.Global.S
-            , left = Control.Global.A
-            , right = Control.Global.D
-            , action = Control.Global.Space
+            { forward = Control.Types.W
+            , backward = Control.Types.S
+            , left = Control.Types.A
+            , right = Control.Types.D
+            , action = Control.Types.Space
             }
         , storedKeys =
-            { forward = Control.Global.Nothing
-            , backward = Control.Global.Nothing
-            , left = Control.Global.Nothing
-            , right = Control.Global.Nothing
+            { forward = Control.Types.Nothing
+            , backward = Control.Types.Nothing
+            , left = Control.Types.Nothing
+            , right = Control.Types.Nothing
             }
         , controlledObject = Objects.Manager.ambulance
         }
@@ -83,39 +85,8 @@ update msg model =
             [ storedKeys.forward, storedKeys.backward, storedKeys.left, storedKeys.right ]
     in
     case msg of
-        KeyDown action ->
-            case action of
-                Forward ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Control.Global.Forward } } }, Cmd.none )
-
-                Backward ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Control.Global.Backward } } }, Cmd.none )
-
-                Left ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Control.Global.Left } } }, Cmd.none )
-
-                Right ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Control.Global.Right } } }, Cmd.none )
-
-                _ ->
-                    ( model, Cmd.none )
-
-        KeyUp action ->
-            case action of
-                Forward ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Control.Global.Nothing } } }, Cmd.none )
-
-                Backward ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Control.Global.Nothing } } }, Cmd.none )
-
-                Left ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Control.Global.Nothing } } }, Cmd.none )
-
-                Right ->
-                    ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Control.Global.Nothing } } }, Cmd.none )
-
-                _ ->
-                    ( model, Cmd.none )
+        KeyEvent event action ->
+            Control.Player.applyInput model event action
 
         Interval ->
             let
@@ -227,8 +198,8 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ onKeyDown (Json.Decode.map KeyDown keyDecoder)
-        , onKeyUp (Json.Decode.map KeyUp keyDecoder)
+        [ onKeyDown (Json.Decode.map (KeyEvent Pressed) keyDecoder)
+        , onKeyUp (Json.Decode.map (KeyEvent Released) keyDecoder)
         , Time.every frequence (\_ -> Interval)
         ]
 
