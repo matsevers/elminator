@@ -21,7 +21,7 @@ element model =
         ]
         [ div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "justify-content" "center", Html.Attributes.style "border-right" "2px solid #3f3d3d" ]
-            [ Ui.Speedometer.element model.myPlayer.controlledObject.motion.speed 0 model.myPlayer.controlledObject.motion.maxForwardSpeed ]
+            [ Ui.Speedometer.element (round model.myPlayer.controlledObject.motion.speed) 0 (round model.myPlayer.controlledObject.motion.maxForwardSpeed) ]
         , div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "border-right" "2px solid #3f3d3d", Html.Attributes.style "justify-content" "center" ]
             [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "261px", Html.Attributes.style "height" "51px" ] [] ]

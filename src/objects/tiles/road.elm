@@ -14,6 +14,10 @@ straight =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -26,4 +30,8 @@ curveTopRight =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }

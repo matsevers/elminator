@@ -1,4 +1,4 @@
-module Map.Generator exposing (fill, map, position, possibleTileCoords, rotate)
+module Map.Generator exposing (fill, map, possibleTileCoords)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
@@ -27,16 +27,6 @@ fill f l =
 
         [] ->
             []
-
-
-rotate : GameObject msg -> Int -> GameObject msg
-rotate gO r =
-    { gO | rotate = r }
-
-
-position : GameObject msg -> Position -> GameObject msg
-position gO p =
-    { gO | position = p }
 
 
 possibleTileCoords : Map.Types.Map msg -> List Position

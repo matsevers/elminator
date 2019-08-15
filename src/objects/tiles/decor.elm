@@ -14,6 +14,10 @@ startLine =
     , size = { height = 20, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -26,6 +30,10 @@ finishLine =
     , size = { height = 20, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -38,6 +46,10 @@ platformBlue =
     , size = { height = 64, width = 128 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -50,6 +62,10 @@ bush1 =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -62,6 +78,10 @@ bush2 =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -74,6 +94,10 @@ rock1 =
     , size = { height = 32, width = 32 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -86,6 +110,10 @@ rock2 =
     , size = { height = 32, width = 32 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -98,6 +126,10 @@ tree1 =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }
 
 
@@ -110,4 +142,8 @@ tree2 =
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 }
+    , physics =
+        { forceForward = 0
+        , forceBackward = 0
+        }
     }

@@ -2,6 +2,7 @@ module Map.Variations.DustRace exposing (model)
 
 import Map.Generator exposing (..)
 import Map.Types exposing (..)
+import Objects.Manager exposing (..)
 import Objects.Tiles.Background exposing (..)
 import Objects.Tiles.Decor exposing (..)
 import Objects.Tiles.Road exposing (..)
@@ -38,17 +39,17 @@ model =
 
 startLine : GameObject msg
 startLine =
-    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.startLine 90) (Position { x = 512, y = 84 })
+    Objects.Manager.position (Position { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.startLine)
 
 
 finishLine : GameObject msg
 finishLine =
-    Map.Generator.position (Map.Generator.rotate Objects.Tiles.Decor.finishLine 90) (Position { x = 512, y = 84 })
+    Objects.Manager.position (Position { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.finishLine)
 
 
 decor : List (GameObject msg)
 decor =
-    [ Map.Generator.position Objects.Tiles.Decor.platformBlue (Position { x = 448, y = 0 })
+    [ Objects.Manager.position (Position { x = 448, y = 0 }) Objects.Tiles.Decor.platformBlue
     ]
         ++ Map.Generator.fill Objects.Tiles.Decor.bush1
             [ Position { x = 384, y = 0 }
@@ -92,7 +93,7 @@ roads =
         ]
         ++ Map.Generator.fill
             --Left/Right--
-            (Map.Generator.rotate Objects.Tiles.Road.straight 90)
+            (Objects.Manager.rotate 90 Objects.Tiles.Road.straight)
             [ Position { x = 128, y = 64 }
             , Position { x = 192, y = 64 }
             , Position { x = 256, y = 64 }
@@ -118,23 +119,23 @@ roads =
             ]
         ++ Map.Generator.fill
             --Down/Right--
-            (Map.Generator.rotate Objects.Tiles.Road.curveTopRight 90)
+            (Objects.Manager.rotate 90 Objects.Tiles.Road.curveTopRight)
             [ Position { x = 64, y = 64 }
             , Position { x = 128, y = 256 }
             ]
         ++ Map.Generator.fill
             --Top/Right--
-            (Map.Generator.rotate Objects.Tiles.Road.curveTopRight 0)
+            (Objects.Manager.rotate 0 Objects.Tiles.Road.curveTopRight)
             [ Position { x = 64, y = 320 }, Position { x = 512, y = 448 } ]
         ++ Map.Generator.fill
             --Left/Top--
-            (Map.Generator.rotate Objects.Tiles.Road.curveTopRight 270)
+            (Objects.Manager.rotate 270 Objects.Tiles.Road.curveTopRight)
             [ Position { x = 128, y = 320 }
             , Position { x = 896, y = 448 }
             ]
         ++ Map.Generator.fill
             --Left/Down-
-            (Map.Generator.rotate Objects.Tiles.Road.curveTopRight 180)
+            (Objects.Manager.rotate 180 Objects.Tiles.Road.curveTopRight)
             [ Position { x = 512, y = 256 }
             , Position { x = 896, y = 64 }
             ]

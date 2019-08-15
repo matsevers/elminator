@@ -1,8 +1,8 @@
-module Objects.Manager exposing (ambulance, render)
+module Objects.Manager exposing (ambulance, applyMotionFunction, motion, position, render, rotate)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
-import Objects.Types exposing (GameObject)
+import Objects.Types exposing (..)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -21,7 +21,35 @@ ambulance =
         , maxForwardSpeed = 80
         , maxBackwardSpeed = 20
         }
+    , physics =
+        { forceForward = 2
+        , forceBackward = -1
+        }
     }
+
+
+applyMotionFunction : (Objects.Types.GameObject msg -> Float -> Float) -> Objects.Types.GameObject msg -> Float -> Objects.Types.Motion
+applyMotionFunction f gO forceInput =
+    let
+        m =
+            gO.motion
+    in
+    { m | speed = f gO forceInput }
+
+
+rotate : Int -> GameObject msg -> GameObject msg
+rotate r gO =
+    { gO | rotate = r }
+
+
+position : Position -> GameObject msg -> GameObject msg
+position p gO =
+    { gO | position = p }
+
+
+motion : Motion -> GameObject msg -> GameObject msg
+motion m gO =
+    { gO | motion = m }
 
 
 render : List (GameObject msg) -> List (Svg msg)
