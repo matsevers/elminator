@@ -18,7 +18,7 @@ ambulance =
     , rotate = 90
     , motion =
         { speed = 0
-        , maxForwardSpeed = 100
+        , maxForwardSpeed = 80
         , maxBackwardSpeed = 20
         }
     }

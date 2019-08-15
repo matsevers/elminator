@@ -129,8 +129,8 @@ element currentSpeed minSpeed maxSpeed =
             [ cx (String.fromInt (width // 2)), cy (String.fromInt (height // 2)), r (String.fromInt (width // 2 - outerBorderWidth)), Svg.Attributes.fill "#f2f2f2" ]
             []
          , Svg.text_ [ x "50%", y "85%", fontSize "22", fontFamily "Arial", textAnchor "middle" ] [ text "km/h" ]
-         , Svg.text_ [ x "50%", y "75%", fontSize "22", fontFamily "Arial", textAnchor "middle" ] [ text (String.fromInt currentSpeed) ]
+         , Svg.text_ [ x "50%", y "75%", fontSize "22", fontFamily "Arial", textAnchor "middle" ] [ text (String.fromInt (abs currentSpeed)) ]
          ]
             ++ valueStrokes minSpeed maxSpeed
-            ++ pin currentSpeed minSpeed maxSpeed -100 100
+            ++ pin (abs currentSpeed) minSpeed maxSpeed -100 100
         )
