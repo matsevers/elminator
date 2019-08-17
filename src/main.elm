@@ -21,7 +21,7 @@ import Ui.Scenes.Manager exposing (..)
 
 initialModel : Model
 initialModel =
-    { state = Menu
+    { state = Running
     , frequence = 40
     , map = Map.Variations.DustRace.model
     , myPlayer =

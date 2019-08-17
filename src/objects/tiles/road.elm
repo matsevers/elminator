@@ -5,11 +5,11 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-straight : GameObject msg
+straight : GameObject
 straight =
     { identifier = "RoadStraight"
-    , position = None
-    , collider = Svg.rect [] []
+    , position = PositionUnset
+    , collider = [ ColliderUnset ]
     , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
@@ -21,11 +21,11 @@ straight =
     }
 
 
-curveTopRight : GameObject msg
+curveTopRight : GameObject
 curveTopRight =
     { identifier = "RoadStraight"
-    , position = None
-    , collider = Svg.rect [] []
+    , position = PositionUnset
+    , collider = [ ColliderUnset ]
     , sprite = "assets/roadCurve.png"
     , size = { height = 64, width = 64 }
     , rotate = 0

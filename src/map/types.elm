@@ -3,7 +3,7 @@ module Map.Types exposing (Map)
 import Objects.Types exposing (GameObject, Position)
 
 
-type alias Map msg =
+type alias Map =
     { meta :
         { name : String
         , description : String
@@ -20,11 +20,11 @@ type alias Map msg =
         , startPositions : List Position
         }
     , gameObjects :
-        { background : GameObject msg
-        , roads : List (GameObject msg)
-        , checkPoints : List (GameObject msg)
-        , startLine : GameObject msg
-        , finishLine : GameObject msg
-        , decor : List (GameObject msg)
+        { background : GameObject
+        , roads : List GameObject
+        , checkPoints : List GameObject
+        , startLine : GameObject
+        , finishLine : GameObject
+        , decor : List GameObject
         }
     }

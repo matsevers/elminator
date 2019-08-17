@@ -5,11 +5,11 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-dust : GameObject msg
+dust : GameObject
 dust =
     { identifier = "BackgroundDust"
-    , position = None
-    , collider = Svg.rect [] []
+    , position = PositionUnset
+    , collider = [ ColliderUnset ]
     , sprite = "assets/background.png"
     , size = { height = 64, width = 64 }
     , rotate = 0

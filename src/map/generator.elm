@@ -10,7 +10,7 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-map : Map.Types.Map msg -> List (GameObject msg)
+map : Map.Types.Map -> List GameObject
 map m =
     fill m.gameObjects.background (possibleTileCoords m)
         ++ m.gameObjects.roads
@@ -19,7 +19,7 @@ map m =
         ++ m.gameObjects.decor
 
 
-fill : GameObject msg -> List Position -> List (GameObject msg)
+fill : GameObject -> List Position -> List GameObject
 fill f l =
     case l of
         x :: xs ->
@@ -29,7 +29,7 @@ fill f l =
             []
 
 
-possibleTileCoords : Map.Types.Map msg -> List Position
+possibleTileCoords : Map.Types.Map -> List Position
 possibleTileCoords m =
     let
         createRows : Int -> Int -> List Position

@@ -9,7 +9,7 @@ import Objects.Tiles.Road exposing (..)
 import Objects.Types exposing (..)
 
 
-model : Map.Types.Map msg
+model : Map.Types.Map
 model =
     { meta =
         { name = "Dust Race"
@@ -37,17 +37,17 @@ model =
     }
 
 
-startLine : GameObject msg
+startLine : GameObject
 startLine =
     Objects.Manager.position (Position { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.startLine)
 
 
-finishLine : GameObject msg
+finishLine : GameObject
 finishLine =
     Objects.Manager.position (Position { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.finishLine)
 
 
-decor : List (GameObject msg)
+decor : List GameObject
 decor =
     [ Objects.Manager.position (Position { x = 448, y = 0 }) Objects.Tiles.Decor.platformBlue
     ]
@@ -76,7 +76,7 @@ decor =
             ]
 
 
-roads : List (GameObject msg)
+roads : List GameObject
 roads =
     Map.Generator.fill Objects.Tiles.Road.straight
         --Top/Down--

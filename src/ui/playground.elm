@@ -91,7 +91,7 @@ playground model =
                             )
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]))
+                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
 
         _ ->
             div [] []

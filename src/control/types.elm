@@ -25,7 +25,7 @@ type KeyEvent
     | Released
 
 
-type alias Player msg =
+type alias Player =
     { name : String
     , identifier : String
     , assignedKeys :
@@ -41,5 +41,5 @@ type alias Player msg =
         , left : Action
         , right : Action
         }
-    , controlledObject : GameObject msg
+    , controlledObject : GameObject
     }

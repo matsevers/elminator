@@ -42,5 +42,5 @@ element model =
                         )
                 )
             ]
-            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]))
+            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
         ]

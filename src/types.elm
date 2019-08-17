@@ -23,8 +23,8 @@ type State
 type alias Model =
     { state : State
     , frequence : Float
-    , map : Map.Types.Map Msg -- Records of Map
-    , myPlayer : Player Msg
-    , onlinePlayers : List (Player Msg)
+    , map : Map.Types.Map -- Records of Map
+    , myPlayer : Player
+    , onlinePlayers : List Player
     , lab : Int
     }

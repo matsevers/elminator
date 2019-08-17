@@ -1,4 +1,4 @@
-module Objects.Types exposing (GameObject, Motion, Physics, Position(..), Size)
+module Objects.Types exposing (Collider(..), GameObject, Motion, Physics, Position(..), Size)
 
 import Svg exposing (..)
 
@@ -8,7 +8,7 @@ type Position
         { x : Int
         , y : Int
         }
-    | None
+    | PositionUnset
 
 
 type alias Size =
@@ -30,12 +30,31 @@ type alias Physics =
     }
 
 
-type alias GameObject msg =
+type Collider
+    = Rect
+        { height : Int
+        , width : Int
+        , position : Position
+        }
+    | Circle
+        { radiant : Int
+        , position : Position
+        }
+    | ColliderUnset
+
+
+type alias Impact =
+    { duration : Int
+    , function : GameObject -> GameObject
+    }
+
+
+type alias GameObject =
     { identifier : String
     , size : Size
     , position : Position
     , sprite : String
-    , collider : Svg msg
+    , collider : List Collider
     , rotate : Int
     , motion : Motion
     , physics : Physics
