@@ -97,6 +97,15 @@ render l player =
                         , Svg.Attributes.y (String.fromInt p.y)
                         , Svg.Attributes.stroke (collisionDetected player.controlledObject x)
                         , Svg.Attributes.fillOpacity "0"
+                        , Svg.Attributes.transform
+                            (" rotate("
+                                ++ String.fromInt x.rotate
+                                ++ " "
+                                ++ String.fromFloat (Basics.toFloat p.x + Basics.toFloat x.size.width / 2)
+                                ++ " "
+                                ++ String.fromFloat (Basics.toFloat p.y + Basics.toFloat x.size.height / 2)
+                                ++ ")"
+                            )
                         ]
                         []
                     ]
