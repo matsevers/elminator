@@ -10,7 +10,23 @@ straight : GameObject
 straight =
     { identifier = "RoadStraight"
     , position = Nothing
-    , collider = Nothing
+    , collider =
+        Just
+            (Rect
+                { height = 64
+                , width = 64
+                , position = { x = 0, y = 0 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { trigger = "road"
+                            , duration = 0
+                            , overrideBackgroundImpact = True
+                            , function = identity
+                            }
+                        )
+                }
+            )
     , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
@@ -23,7 +39,23 @@ curveTopRight : GameObject
 curveTopRight =
     { identifier = "RoadStraight"
     , position = Nothing
-    , collider = Nothing
+    , collider =
+        Just
+            (Rect
+                { height = 64
+                , width = 64
+                , position = { x = 0, y = 0 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { trigger = "road"
+                            , duration = 0
+                            , overrideBackgroundImpact = True
+                            , function = identity
+                            }
+                        )
+                }
+            )
     , sprite = "assets/roadCurve.png"
     , size = { height = 64, width = 64 }
     , rotate = 0

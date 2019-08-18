@@ -61,6 +61,7 @@ bush1 =
                         (Impact
                             { trigger = "Bush1"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )
@@ -89,6 +90,7 @@ bush2 =
                         (Impact
                             { trigger = "Bush2"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )
@@ -117,6 +119,7 @@ rock1 =
                         (Impact
                             { trigger = "Rock1"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )
@@ -145,6 +148,7 @@ rock2 =
                         (Impact
                             { trigger = "Rock2"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )
@@ -173,6 +177,7 @@ tree1 =
                         (Impact
                             { trigger = "Tree1"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )
@@ -201,6 +206,7 @@ tree2 =
                         (Impact
                             { trigger = "Tree2"
                             , duration = 100
+                            , overrideBackgroundImpact = True
                             , function = Objects.Physics.bump
                             }
                         )

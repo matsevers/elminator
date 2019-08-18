@@ -44,6 +44,7 @@ type Collider
 type Impact
     = Impact
         { trigger : String
+        , overrideBackgroundImpact : Bool
         , duration : Float
         , function : GameObject -> GameObject
         }

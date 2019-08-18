@@ -1,6 +1,7 @@
 module Objects.Physics exposing (bump, checkCollision, linear, slowDown, update)
 
 import Control.Types exposing (..)
+import List exposing (..)
 import Objects.Types exposing (..)
 import Types exposing (..)
 
@@ -63,6 +64,21 @@ update model =
                         ++ model.map.gameObjects.background
                    )
 
+        checkToRemoveBackgroundImpact : List Impact -> List Impact
+        checkToRemoveBackgroundImpact l =
+            let
+                filterBackgroundImpact : Impact -> Bool
+                filterBackgroundImpact impact =
+                    case impact of
+                        Impact i ->
+                            not (i.trigger == "background") && i.overrideBackgroundImpact
+            in
+            if length l > 1 then
+                List.filter filterBackgroundImpact l
+
+            else
+                l
+
         addImpactHelper : Physics -> Maybe Collider -> Physics
         addImpactHelper physics collider =
             case collider of
@@ -71,7 +87,7 @@ update model =
                         Rect r ->
                             case r.impactFunction of
                                 Just impact ->
-                                    { physics | impacts = impact :: physics.impacts }
+                                    { physics | impacts = checkToRemoveBackgroundImpact <| impact :: physics.impacts }
 
                                 Maybe.Nothing ->
                                     physics
@@ -217,8 +233,8 @@ slowDown gO =
     let
         slowDownHelper : Motion -> Float
         slowDownHelper motion =
-            if motion.speed > 0 then
-                -motion.maxBackwardSpeed
+            if motion.speed > 20 then
+                motion.speed - 8
 
             else
                 motion.speed
