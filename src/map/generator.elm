@@ -23,7 +23,7 @@ fill : GameObject -> List Position -> List GameObject
 fill f l =
     case l of
         x :: xs ->
-            { f | position = x } :: fill f xs
+            { f | position = Just x } :: fill f xs
 
         [] ->
             []
@@ -35,10 +35,10 @@ possibleTileCoords m =
         createRows : Int -> Int -> List Position
         createRows yp xp =
             if xp < (m.dimension.width * m.dimension.tileSize) then
-                Position { x = xp, y = yp } :: createRows yp (xp + m.dimension.tileSize)
+                { x = xp, y = yp } :: createRows yp (xp + m.dimension.tileSize)
 
             else if yp < (m.dimension.height * m.dimension.tileSize) then
-                Position { x = 0, y = yp + m.dimension.tileSize } :: createRows (yp + m.dimension.tileSize) (0 + m.dimension.tileSize)
+                { x = 0, y = yp + m.dimension.tileSize } :: createRows (yp + m.dimension.tileSize) (0 + m.dimension.tileSize)
 
             else
                 []

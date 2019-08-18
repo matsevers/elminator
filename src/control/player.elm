@@ -18,6 +18,11 @@ forceBackward =
     -1
 
 
+forceBrake : Float
+forceBrake =
+    -10
+
+
 angle : Int
 angle =
     6
@@ -109,7 +114,7 @@ convertInputToForce l =
                     0 + convertInputToForce xs
 
 
-update : Model -> ( Model, Cmd Msg )
+update : Model -> Model
 update model =
     let
         myPlayer =
@@ -122,24 +127,27 @@ update model =
             [ myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right ]
     in
     case gO.position of
-        Position p ->
-            ( { model
-                | myPlayer =
-                    { myPlayer
-                        | controlledObject =
-                            Objects.Manager.position
-                                (Position
-                                    { x = p.x + round (sin (degrees (toFloat gO.rotate)) * gO.motion.speed / model.frequence * 4)
-                                    , y = p.y - round (cos (degrees (toFloat gO.rotate)) * gO.motion.speed / model.frequence * 4)
-                                    }
-                                )
-                            <|
-                                Objects.Manager.motion (applyMotionFunction linear gO (convertInputToForce listKeys)) <|
-                                    Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+        Just p ->
+            case gO.motion of
+                Just m ->
+                    { model
+                        | myPlayer =
+                            { myPlayer
+                                | controlledObject =
+                                    Objects.Manager.position
+                                        (Just
+                                            { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                            , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                            }
+                                        )
+                                    <|
+                                        Objects.Manager.motion (Just (applyMotionFunction linear gO (convertInputToForce listKeys))) <|
+                                            Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                            }
                     }
-              }
-            , Cmd.none
-            )
 
-        _ ->
-            ( model, Cmd.none )
+                Maybe.Nothing ->
+                    model
+
+        Maybe.Nothing ->
+            model

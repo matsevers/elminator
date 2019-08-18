@@ -11,6 +11,7 @@ import Json.Decode exposing (..)
 import Map.Generator exposing (..)
 import Map.Variations.DustRace exposing (..)
 import Objects.Manager exposing (..)
+import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
 import Time exposing (..)
 import Types exposing (Model, Msg(..), State(..))
@@ -64,7 +65,7 @@ update msg model =
             Control.Player.applyInput model event action
 
         Tick ->
-            Control.Player.update model
+            ( Objects.Physics.update <| Control.Player.update model, Cmd.none )
 
         ChangeScene s ->
             Ui.Scenes.Manager.changeTo s model

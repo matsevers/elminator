@@ -11,6 +11,10 @@ import Ui.Speedometer exposing (..)
 
 element : Model -> Html Types.Msg
 element model =
+    let
+        motion =
+            Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } model.myPlayer.controlledObject.motion
+    in
     div
         [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
         , Html.Attributes.style "padding" "40px 0px 40px 0px"
@@ -21,7 +25,7 @@ element model =
         ]
         [ div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "justify-content" "center", Html.Attributes.style "border-right" "2px solid #3f3d3d" ]
-            [ Ui.Speedometer.element (round model.myPlayer.controlledObject.motion.speed) 0 (round model.myPlayer.controlledObject.motion.maxForwardSpeed) ]
+            [ Ui.Speedometer.element (round motion.speed) 0 (round motion.maxForwardSpeed) ]
         , div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "border-right" "2px solid #3f3d3d", Html.Attributes.style "justify-content" "center" ]
             [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "261px", Html.Attributes.style "height" "51px" ] [] ]

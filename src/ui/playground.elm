@@ -47,7 +47,7 @@ element model =
 playground : Model -> Html Msg
 playground model =
     case model.myPlayer.controlledObject.position of
-        Position p ->
+        Just p ->
             Svg.svg
                 [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
                 , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
@@ -93,5 +93,5 @@ playground model =
                 ]
                 (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
 
-        _ ->
+        Maybe.Nothing ->
             div [] []

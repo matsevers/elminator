@@ -13,20 +13,23 @@ import Svg.Attributes exposing (..)
 ambulance : GameObject
 ambulance =
     { identifier = "ambulance"
-    , position = Objects.Types.Position { x = 450, y = 100 }
-    , collider = [ Rect { width = 32, height = 32, position = Position { x = 0, y = 0 } } ]
-    , sprite = "assets/carAmbulance.png"
     , size = { height = 32, width = 32 }
+    , position = Just { x = 450, y = 100 }
+    , sprite = "assets/carAmbulance.png"
+    , collider = [ Rect { width = 32, height = 32, position = Just { x = 0, y = 0 } } ]
     , rotate = 90
     , motion =
-        { speed = 0
-        , maxForwardSpeed = 80
-        , maxBackwardSpeed = 20
-        }
+        Just
+            { speed = 0
+            , maxForwardSpeed = 80
+            , maxBackwardSpeed = 20
+            }
     , physics =
-        { forceForward = 2
-        , forceBackward = -1
-        }
+        Just
+            { forceForward = 2
+            , forceBackward = -1
+            , impacts = []
+            }
     }
 
 
@@ -34,7 +37,7 @@ applyMotionFunction : (Objects.Types.GameObject -> Float -> Float) -> Objects.Ty
 applyMotionFunction f gO forceInput =
     let
         m =
-            gO.motion
+            Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } gO.motion
     in
     { m | speed = f gO forceInput }
 
@@ -44,12 +47,12 @@ rotate r gO =
     { gO | rotate = r }
 
 
-position : Position -> GameObject -> GameObject
+position : Maybe Position -> GameObject -> GameObject
 position p gO =
     { gO | position = p }
 
 
-motion : Motion -> GameObject -> GameObject
+motion : Maybe Motion -> GameObject -> GameObject
 motion m gO =
     { gO | motion = m }
 
@@ -71,20 +74,23 @@ render l player =
 
         x :: xs ->
             case x.position of
-                Objects.Types.Position p ->
+                Maybe.Nothing ->
+                    render xs player
+
+                Just posX ->
                     [ Svg.image
                         [ Svg.Attributes.xlinkHref x.sprite
                         , Svg.Attributes.width (String.fromInt x.size.width)
                         , Svg.Attributes.height (String.fromInt x.size.height)
-                        , Svg.Attributes.x (String.fromInt p.x)
-                        , Svg.Attributes.y (String.fromInt p.y)
+                        , Svg.Attributes.x (String.fromInt posX.x)
+                        , Svg.Attributes.y (String.fromInt posX.y)
                         , Svg.Attributes.transform
                             (" rotate("
                                 ++ String.fromInt x.rotate
                                 ++ " "
-                                ++ String.fromFloat (Basics.toFloat p.x + Basics.toFloat x.size.width / 2)
+                                ++ String.fromFloat (Basics.toFloat posX.x + Basics.toFloat x.size.width / 2)
                                 ++ " "
-                                ++ String.fromFloat (Basics.toFloat p.y + Basics.toFloat x.size.height / 2)
+                                ++ String.fromFloat (Basics.toFloat posX.y + Basics.toFloat x.size.height / 2)
                                 ++ ")"
                             )
                         ]
@@ -93,23 +99,20 @@ render l player =
                         [ Svg.Attributes.xlinkHref x.sprite
                         , Svg.Attributes.width (String.fromInt x.size.width)
                         , Svg.Attributes.height (String.fromInt x.size.height)
-                        , Svg.Attributes.x (String.fromInt p.x)
-                        , Svg.Attributes.y (String.fromInt p.y)
+                        , Svg.Attributes.x (String.fromInt posX.x)
+                        , Svg.Attributes.y (String.fromInt posX.y)
                         , Svg.Attributes.stroke (collisionDetected player.controlledObject x)
                         , Svg.Attributes.fillOpacity "0"
                         , Svg.Attributes.transform
                             (" rotate("
                                 ++ String.fromInt x.rotate
                                 ++ " "
-                                ++ String.fromFloat (Basics.toFloat p.x + Basics.toFloat x.size.width / 2)
+                                ++ String.fromFloat (Basics.toFloat posX.x + Basics.toFloat x.size.width / 2)
                                 ++ " "
-                                ++ String.fromFloat (Basics.toFloat p.y + Basics.toFloat x.size.height / 2)
+                                ++ String.fromFloat (Basics.toFloat posX.y + Basics.toFloat x.size.height / 2)
                                 ++ ")"
                             )
                         ]
                         []
                     ]
                         ++ render xs player
-
-                Objects.Types.PositionUnset ->
-                    render xs player

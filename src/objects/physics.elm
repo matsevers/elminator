@@ -1,40 +1,53 @@
-module Objects.Physics exposing (checkCollision, linear)
+module Objects.Physics exposing (checkCollision, linear, update)
 
 import Control.Types exposing (..)
 import Objects.Types exposing (..)
+import Types exposing (..)
 
 
 linear : Objects.Types.GameObject -> Float -> Float
 linear gO forceInput =
+    let
+        motion =
+            Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } gO.motion
+
+        physics =
+            Maybe.withDefault { forceForward = 0, forceBackward = 0, impacts = [] } gO.physics
+    in
     if forceInput == 0 then
         -- Abbremsen
-        if gO.motion.speed > 0 then
-            gO.motion.speed + gO.physics.forceBackward
+        if motion.speed > 0 then
+            motion.speed + physics.forceBackward
 
-        else if gO.motion.speed < 0 then
-            gO.motion.speed - gO.physics.forceBackward
+        else if motion.speed < 0 then
+            motion.speed - physics.forceBackward
 
         else
-            gO.motion.speed
+            motion.speed
 
     else if forceInput > 0 then
         -- Beschleunigen
-        if (gO.motion.speed + forceInput) <= gO.motion.maxForwardSpeed then
-            gO.motion.speed + forceInput
+        if (motion.speed + forceInput) <= motion.maxForwardSpeed then
+            motion.speed + forceInput
 
         else
-            gO.motion.maxForwardSpeed
+            motion.maxForwardSpeed
 
     else if forceInput < 0 then
         -- Rückwarts / Bremsen
-        if (gO.motion.speed + forceInput) >= -gO.motion.maxBackwardSpeed then
-            gO.motion.speed + forceInput
+        if (motion.speed + forceInput) >= -motion.maxBackwardSpeed then
+            motion.speed + forceInput
 
         else
-            -gO.motion.maxBackwardSpeed
+            -motion.maxBackwardSpeed
 
     else
-        gO.motion.speed
+        motion.speed
+
+
+update : Model -> Model
+update model =
+    model
 
 
 checkCollision : GameObject -> GameObject -> Bool
@@ -51,29 +64,15 @@ checkCollision gO1 gO2 =
 
         detection : Collider -> List Collider -> Bool
         detection c l =
-            -- case l of
-            --     x :: xs ->
-            --         -- check collision c with x
-            --         calc c x || detection c xs
-            --     [] ->
-            --         False
             case c of
-                ColliderUnset ->
-                    False
-
                 Rect r ->
-                    case r.position of
-                        Position p ->
-                            -- g01 collider
-                            case l of
-                                x :: xs ->
-                                    -- check collision c with x
-                                    calc c x || detection c xs
+                    -- g01 collider
+                    case l of
+                        x :: xs ->
+                            -- check collision c with x
+                            calc c x || detection c xs
 
-                                [] ->
-                                    False
-
-                        _ ->
+                        [] ->
                             False
 
                 _ ->
@@ -81,35 +80,35 @@ checkCollision gO1 gO2 =
 
         calc : Collider -> Collider -> Bool
         calc c1 c2 =
-            case gO1.position of
-                PositionUnset ->
-                    False
+            case c1 of
+                Rect r1 ->
+                    case r1.position of
+                        Just p1 ->
+                            case c2 of
+                                Rect r2 ->
+                                    case r2.position of
+                                        Just p2 ->
+                                            not
+                                                (p2.x
+                                                    > (p1.x + r1.width)
+                                                    || (p2.x + r2.width)
+                                                    < p1.x
+                                                    || p2.y
+                                                    > (p1.y + r1.height)
+                                                    || (p2.y + r2.height)
+                                                    < p1.y
+                                                )
 
-                Position pos1 ->
-                    case gO2.position of
-                        PositionUnset ->
+                                        Maybe.Nothing ->
+                                            False
+
+                                _ ->
+                                    False
+
+                        Maybe.Nothing ->
                             False
 
-                        Position pos2 ->
-                            not
-                                (pos2.x
-                                    > (pos1.x + gO1.size.width)
-                                    || (pos2.x + gO2.size.width)
-                                    < pos1.x
-                                    || pos2.y
-                                    > (pos1.y + gO1.size.height)
-                                    || (pos2.y + gO2.size.height)
-                                    < pos1.y
-                                )
-    in
-    case gO1.position of
-        PositionUnset ->
-            False
-
-        Position pos1 ->
-            case gO2.position of
-                PositionUnset ->
+                _ ->
                     False
-
-                Position pos2 ->
-                    detectionHelp gO1.collider gO2.collider
+    in
+    detectionHelp gO1.collider gO2.collider
