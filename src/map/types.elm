@@ -20,7 +20,7 @@ type alias Map =
         , startPositions : List Position
         }
     , gameObjects :
-        { background : GameObject
+        { background : List GameObject
         , roads : List GameObject
         , trigger : List GameObject
         , startLine : GameObject

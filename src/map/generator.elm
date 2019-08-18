@@ -12,7 +12,8 @@ import Svg.Attributes exposing (..)
 
 map : Map.Types.Map -> List GameObject
 map m =
-    fill m.gameObjects.background (possibleTileCoords m)
+    m.gameObjects.background
+        --fill m.gameObjects.background (possibleTileCoords m)
         ++ m.gameObjects.roads
         ++ [ m.gameObjects.startLine, m.gameObjects.finishLine ]
         ++ m.gameObjects.trigger

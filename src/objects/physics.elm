@@ -15,7 +15,7 @@ linear gO forceInput =
             Maybe.withDefault { forceForward = 0, forceBackward = 0, impacts = [] } gO.physics
     in
     if forceInput == 0 then
-        -- Abbremsen
+        -- Auto Abbremsen
         if motion.speed > 0 then
             motion.speed + physics.forceBackward
 
@@ -60,6 +60,7 @@ update model =
                 :: (model.map.gameObjects.decor
                         ++ model.map.gameObjects.roads
                         ++ model.map.gameObjects.trigger
+                        ++ model.map.gameObjects.background
                    )
 
         addImpactHelper : Physics -> Maybe Collider -> Physics
@@ -213,9 +214,18 @@ bump gO =
 
 slowDown : GameObject -> GameObject
 slowDown gO =
+    let
+        slowDownHelper : Motion -> Float
+        slowDownHelper motion =
+            if motion.speed > 0 then
+                -motion.maxBackwardSpeed
+
+            else
+                motion.speed
+    in
     case gO.motion of
         Just motion ->
-            { gO | motion = Just { motion | speed = linear gO -(motion.maxForwardSpeed / 5) } }
+            { gO | motion = Just { motion | speed = slowDownHelper motion } }
 
         Maybe.Nothing ->
             gO

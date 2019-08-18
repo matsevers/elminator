@@ -11,6 +11,18 @@ import Objects.Types exposing (..)
 
 model : Map.Types.Map
 model =
+    let
+        map =
+            init
+
+        gameObjects =
+            init.gameObjects
+    in
+    { map | gameObjects = { gameObjects | background = fill background (possibleTileCoords map) } }
+
+
+init : Map.Types.Map
+init =
     { meta =
         { name = "Dust Race"
         , description = "Es wird staubig!"
@@ -27,7 +39,7 @@ model =
         , startPositions = [ { x = 448, y = 128 } ]
         }
     , gameObjects =
-        { background = Objects.Tiles.Background.dust
+        { background = []
         , roads = roads
         , trigger = []
         , startLine = startLine
@@ -35,6 +47,11 @@ model =
         , decor = decor
         }
     }
+
+
+background : GameObject
+background =
+    Objects.Tiles.Background.dust
 
 
 startLine : GameObject
