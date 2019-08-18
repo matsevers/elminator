@@ -15,7 +15,7 @@ map m =
     fill m.gameObjects.background (possibleTileCoords m)
         ++ m.gameObjects.roads
         ++ [ m.gameObjects.startLine, m.gameObjects.finishLine ]
-        ++ m.gameObjects.checkPoints
+        ++ m.gameObjects.trigger
         ++ m.gameObjects.decor
 
 

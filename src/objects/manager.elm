@@ -16,7 +16,15 @@ ambulance =
     , size = { height = 32, width = 32 }
     , position = Just { x = 450, y = 100 }
     , sprite = "assets/carAmbulance.png"
-    , collider = [ Rect { width = 32, height = 32, position = Just { x = 0, y = 0 } } ]
+    , collider =
+        Just
+            (Rect
+                { width = 8
+                , height = 8
+                , position = { x = 12, y = 12 }
+                , impactFunction = Maybe.Nothing
+                }
+            )
     , rotate = 90
     , motion =
         Just
@@ -59,7 +67,7 @@ motion m gO =
 
 collisionDetected : GameObject -> GameObject -> String
 collisionDetected gO1 gO2 =
-    if checkCollision gO1 gO2 then
+    if not (checkCollision gO1 gO2 == Maybe.Nothing) then
         "green"
 
     else
@@ -95,24 +103,35 @@ render l player =
                             )
                         ]
                         []
-                    , Svg.rect
-                        [ Svg.Attributes.xlinkHref x.sprite
-                        , Svg.Attributes.width (String.fromInt x.size.width)
-                        , Svg.Attributes.height (String.fromInt x.size.height)
-                        , Svg.Attributes.x (String.fromInt posX.x)
-                        , Svg.Attributes.y (String.fromInt posX.y)
-                        , Svg.Attributes.stroke (collisionDetected player.controlledObject x)
-                        , Svg.Attributes.fillOpacity "0"
-                        , Svg.Attributes.transform
-                            (" rotate("
-                                ++ String.fromInt x.rotate
-                                ++ " "
-                                ++ String.fromFloat (Basics.toFloat posX.x + Basics.toFloat x.size.width / 2)
-                                ++ " "
-                                ++ String.fromFloat (Basics.toFloat posX.y + Basics.toFloat x.size.height / 2)
-                                ++ ")"
-                            )
-                        ]
-                        []
                     ]
+                        ++ renderCollider x player.controlledObject
                         ++ render xs player
+
+
+renderCollider : GameObject -> GameObject -> List (Svg msg)
+renderCollider gO player =
+    case gO.position of
+        Just p ->
+            case gO.collider of
+                Just c ->
+                    case c of
+                        Rect r ->
+                            [ Svg.rect
+                                [ Svg.Attributes.width (String.fromInt r.width)
+                                , Svg.Attributes.height (String.fromInt r.height)
+                                , Svg.Attributes.x (String.fromInt (p.x + r.position.x))
+                                , Svg.Attributes.y (String.fromInt (p.y + r.position.y))
+                                , Svg.Attributes.stroke (collisionDetected player gO)
+                                , Svg.Attributes.fillOpacity "0"
+                                ]
+                                []
+                            ]
+
+                        _ ->
+                            []
+
+                Maybe.Nothing ->
+                    []
+
+        Maybe.Nothing ->
+            []

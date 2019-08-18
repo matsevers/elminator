@@ -1,4 +1,4 @@
-module Objects.Physics exposing (checkCollision, linear, update)
+module Objects.Physics exposing (bump, checkCollision, linear, slowDown, update)
 
 import Control.Types exposing (..)
 import Objects.Types exposing (..)
@@ -47,68 +47,175 @@ linear gO forceInput =
 
 update : Model -> Model
 update model =
-    model
-
-
-checkCollision : GameObject -> GameObject -> Bool
-checkCollision gO1 gO2 =
     let
-        detectionHelp : List Collider -> List Collider -> Bool
-        detectionHelp l1 l2 =
-            case l1 of
+        controlledObject =
+            model.myPlayer.controlledObject
+
+        myPlayer =
+            model.myPlayer
+
+        objectList =
+            model.map.gameObjects.startLine
+                :: model.map.gameObjects.finishLine
+                :: (model.map.gameObjects.decor
+                        ++ model.map.gameObjects.roads
+                        ++ model.map.gameObjects.trigger
+                   )
+
+        addImpactHelper : Physics -> Maybe Collider -> Physics
+        addImpactHelper physics collider =
+            case collider of
+                Just c ->
+                    case c of
+                        Rect r ->
+                            case r.impactFunction of
+                                Just impact ->
+                                    { physics | impacts = impact :: physics.impacts }
+
+                                Maybe.Nothing ->
+                                    physics
+
+                        _ ->
+                            physics
+
+                Maybe.Nothing ->
+                    physics
+
+        addImpact : List GameObject -> GameObject -> GameObject
+        addImpact l gO =
+            case l of
                 x :: xs ->
-                    detection x l2 || detectionHelp xs l2
-
-                [] ->
-                    False
-
-        detection : Collider -> List Collider -> Bool
-        detection c l =
-            case c of
-                Rect r ->
-                    -- g01 collider
-                    case l of
-                        x :: xs ->
-                            -- check collision c with x
-                            calc c x || detection c xs
-
-                        [] ->
-                            False
-
-                _ ->
-                    False
-
-        calc : Collider -> Collider -> Bool
-        calc c1 c2 =
-            case c1 of
-                Rect r1 ->
-                    case r1.position of
-                        Just p1 ->
-                            case c2 of
-                                Rect r2 ->
-                                    case r2.position of
-                                        Just p2 ->
-                                            not
-                                                (p2.x
-                                                    > (p1.x + r1.width)
-                                                    || (p2.x + r2.width)
-                                                    < p1.x
-                                                    || p2.y
-                                                    > (p1.y + r1.height)
-                                                    || (p2.y + r2.height)
-                                                    < p1.y
-                                                )
-
-                                        Maybe.Nothing ->
-                                            False
-
-                                _ ->
-                                    False
+                    case gO.physics of
+                        Just p ->
+                            addImpact xs { gO | physics = Just (addImpactHelper p (checkCollision gO x)) }
 
                         Maybe.Nothing ->
-                            False
+                            gO
 
-                _ ->
-                    False
+                [] ->
+                    gO
+
+        runImpactHelper : List Impact -> GameObject -> GameObject
+        runImpactHelper l gO =
+            case l of
+                x :: xs ->
+                    case x of
+                        Impact impact ->
+                            runImpactHelper xs (impact.function gO)
+
+                [] ->
+                    gO
+
+        updateImpactHelper : List Impact -> List Impact
+        updateImpactHelper l =
+            case l of
+                x :: xs ->
+                    case x of
+                        Impact impact ->
+                            if impact.duration > 0 + model.frequence then
+                                Impact { impact | duration = impact.duration - model.frequence } :: updateImpactHelper xs
+
+                            else
+                                updateImpactHelper xs
+
+                [] ->
+                    l
+
+        updateImpacts : GameObject -> GameObject
+        updateImpacts gO =
+            case gO.physics of
+                Just p ->
+                    { gO | physics = Just { p | impacts = updateImpactHelper p.impacts } }
+
+                Maybe.Nothing ->
+                    gO
+
+        runImpact : GameObject -> GameObject
+        runImpact gO =
+            case gO.physics of
+                Just p ->
+                    runImpactHelper p.impacts gO
+
+                Maybe.Nothing ->
+                    gO
     in
-    detectionHelp gO1.collider gO2.collider
+    { model | myPlayer = { myPlayer | controlledObject = updateImpacts <| runImpact <| addImpact objectList controlledObject } }
+
+
+checkCollision : GameObject -> GameObject -> Maybe Collider
+checkCollision gO1 gO2 =
+    let
+        calcRect : Maybe Collider -> Maybe Collider -> Maybe Collider
+        calcRect collider1 collider2 =
+            case collider1 of
+                Just c1 ->
+                    case collider2 of
+                        Just c2 ->
+                            case gO1.position of
+                                Just p1 ->
+                                    case gO2.position of
+                                        Just p2 ->
+                                            case c1 of
+                                                Rect r1 ->
+                                                    case c2 of
+                                                        Rect r2 ->
+                                                            if
+                                                                not
+                                                                    ((p2.x + r2.position.x)
+                                                                        > (p1.x + r1.position.x + r1.width)
+                                                                        || (p2.x + r2.position.x + r2.width)
+                                                                        < (p1.x + r1.position.x)
+                                                                        || (p2.y + r2.position.y)
+                                                                        > (p1.y + r1.position.y + r1.height)
+                                                                        || (p2.y + r2.position.y + r2.height)
+                                                                        < (p1.y + r1.position.y)
+                                                                    )
+                                                            then
+                                                                Just c2
+
+                                                            else
+                                                                Maybe.Nothing
+
+                                                        _ ->
+                                                            Maybe.Nothing
+
+                                                _ ->
+                                                    Maybe.Nothing
+
+                                        Maybe.Nothing ->
+                                            Maybe.Nothing
+
+                                Maybe.Nothing ->
+                                    Maybe.Nothing
+
+                        Maybe.Nothing ->
+                            Maybe.Nothing
+
+                Maybe.Nothing ->
+                    Maybe.Nothing
+    in
+    if not (gO1.identifier == gO2.identifier) then
+        calcRect gO1.collider gO2.collider
+
+    else
+        Maybe.Nothing
+
+
+bump : GameObject -> GameObject
+bump gO =
+    case gO.motion of
+        Just motion ->
+            { gO | motion = Just { motion | speed = linear gO -motion.maxForwardSpeed } }
+
+        Maybe.Nothing ->
+            gO
+
+
+slowDown : GameObject -> GameObject
+slowDown gO =
+    case gO.motion of
+        Just motion ->
+            { gO | motion = Just { motion | speed = linear gO -(motion.maxForwardSpeed / 5) } }
+
+        Maybe.Nothing ->
+            gO

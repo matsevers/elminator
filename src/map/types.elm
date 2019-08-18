@@ -22,7 +22,7 @@ type alias Map =
     , gameObjects :
         { background : GameObject
         , roads : List GameObject
-        , checkPoints : List GameObject
+        , trigger : List GameObject
         , startLine : GameObject
         , finishLine : GameObject
         , decor : List GameObject

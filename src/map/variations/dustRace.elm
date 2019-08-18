@@ -29,7 +29,7 @@ model =
     , gameObjects =
         { background = Objects.Tiles.Background.dust
         , roads = roads
-        , checkPoints = []
+        , trigger = []
         , startLine = startLine
         , finishLine = finishLine
         , decor = decor
@@ -44,7 +44,7 @@ startLine =
 
 finishLine : GameObject
 finishLine =
-    Objects.Manager.position (Just { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.finishLine)
+    Objects.Manager.position (Just { x = 512, y = 65 }) (Objects.Manager.rotate 0 Objects.Tiles.Decor.finishLine)
 
 
 decor : List GameObject

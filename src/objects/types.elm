@@ -31,17 +31,20 @@ type Collider
     = Rect
         { height : Int
         , width : Int
-        , position : Maybe Position
+        , position : Position
+        , impactFunction : Maybe Impact
         }
     | Circle
         { radiant : Int
-        , position : Maybe Position
+        , position : Position
+        , impactFunction : Maybe Impact
         }
 
 
 type Impact
     = Impact
-        { duration : Int
+        { trigger : String
+        , duration : Float
         , function : GameObject -> GameObject
         }
 
@@ -51,7 +54,7 @@ type alias GameObject =
     , size : Size
     , position : Maybe Position
     , sprite : String
-    , collider : List Collider
+    , collider : Maybe Collider
     , rotate : Int
     , motion : Maybe Motion
     , physics : Maybe Physics
