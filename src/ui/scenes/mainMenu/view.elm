@@ -4,9 +4,10 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Types exposing (..)
+import Ui.Scenes.MainMenu.MapPicker exposing (..)
 
 
-view : model -> Html Msg
+view : Model -> Html Msg
 view model =
     div
         [ Html.Attributes.style "height" "100vh"
@@ -19,6 +20,7 @@ view model =
         ]
         [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "70vh", Html.Attributes.style "height" "auto" ]
             []
+        , Ui.Scenes.MainMenu.MapPicker.view model
         , button
             [ Html.Attributes.style "padding" "20px"
             , Html.Attributes.style "background-color" "#f21d9c"

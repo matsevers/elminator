@@ -4452,6 +4452,9 @@ var elm$core$Set$toList = function (_n0) {
 	return elm$core$Dict$keys(dict);
 };
 var elm$core$List$cons = _List_cons;
+var elm$core$Maybe$Just = function (a) {
+	return {$: 'Just', a: a};
+};
 var author$project$Map$Generator$fill = F2(
 	function (f, l) {
 		if (l.b) {
@@ -4461,29 +4464,533 @@ var author$project$Map$Generator$fill = F2(
 				elm$core$List$cons,
 				_Utils_update(
 					f,
-					{position: x}),
+					{
+						position: elm$core$Maybe$Just(x)
+					}),
 				A2(author$project$Map$Generator$fill, f, xs));
 		} else {
 			return _List_Nil;
 		}
 	});
+var elm$core$Basics$add = _Basics_add;
+var elm$core$Basics$lt = _Utils_lt;
+var elm$core$Basics$mul = _Basics_mul;
+var author$project$Map$Generator$possibleTileCoords = function (m) {
+	var createRows = F2(
+		function (yp, xp) {
+			return (_Utils_cmp(xp, m.dimension.width * m.dimension.tileSize) < 0) ? A2(
+				elm$core$List$cons,
+				{x: xp, y: yp},
+				A2(createRows, yp, xp + m.dimension.tileSize)) : ((_Utils_cmp(yp, m.dimension.height * m.dimension.tileSize) < 0) ? A2(
+				elm$core$List$cons,
+				{x: 0, y: yp + m.dimension.tileSize},
+				A2(createRows, yp + m.dimension.tileSize, 0 + m.dimension.tileSize)) : _List_Nil);
+		});
+	return A2(createRows, 0, 0);
+};
+var elm$core$Basics$gt = _Utils_gt;
+var elm$core$Basics$sub = _Basics_sub;
+var author$project$Objects$Physics$slowDown = function (gO) {
+	var slowDownHelper = function (motion) {
+		return (motion.speed > 20) ? (motion.speed - 8) : motion.speed;
+	};
+	var _n0 = gO.motion;
+	if (_n0.$ === 'Just') {
+		var motion = _n0.a;
+		return _Utils_update(
+			gO,
+			{
+				motion: elm$core$Maybe$Just(
+					_Utils_update(
+						motion,
+						{
+							speed: slowDownHelper(motion)
+						}))
+			});
+	} else {
+		return gO;
+	}
+};
+var author$project$Objects$Types$Impact = function (a) {
+	return {$: 'Impact', a: a};
+};
+var author$project$Objects$Types$Rect = function (a) {
+	return {$: 'Rect', a: a};
+};
+var elm$core$Basics$False = {$: 'False'};
+var elm$core$Basics$identity = function (x) {
+	return x;
+};
+var elm$core$Maybe$Nothing = {$: 'Nothing'};
+var author$project$Objects$Tiles$Background$dust = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 0, _function: author$project$Objects$Physics$slowDown, overrideBackgroundImpact: false, trigger: 'background'})),
+				position: {x: 0, y: 0},
+				width: 64
+			})),
+	identifier: 'BackgroundDust',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/background.png'
+};
+var author$project$Map$Variations$DustRace$background = author$project$Objects$Tiles$Background$dust;
 var author$project$Objects$Manager$position = F2(
 	function (p, gO) {
 		return _Utils_update(
 			gO,
 			{position: p});
 	});
-var author$project$Objects$Types$None = {$: 'None'};
-var elm$core$Basics$identity = function (x) {
-	return x;
+var elm$core$Basics$eq = _Utils_equal;
+var elm$core$Basics$ge = _Utils_ge;
+var elm$core$Basics$le = _Utils_le;
+var elm$core$Basics$negate = function (n) {
+	return -n;
 };
-var elm$core$Basics$False = {$: 'False'};
-var elm$core$Basics$True = {$: 'True'};
-var elm$core$Result$isOk = function (result) {
-	if (result.$ === 'Ok') {
-		return true;
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var author$project$Objects$Physics$linear = F2(
+	function (gO, forceInput) {
+		var physics = A2(
+			elm$core$Maybe$withDefault,
+			{forceBackward: 0, forceForward: 0, impacts: _List_Nil},
+			gO.physics);
+		var motion = A2(
+			elm$core$Maybe$withDefault,
+			{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
+			gO.motion);
+		return (!forceInput) ? ((motion.speed > 0) ? (motion.speed + physics.forceBackward) : ((motion.speed < 0) ? (motion.speed - physics.forceBackward) : motion.speed)) : ((forceInput > 0) ? ((_Utils_cmp(motion.speed + forceInput, motion.maxForwardSpeed) < 1) ? (motion.speed + forceInput) : motion.maxForwardSpeed) : ((forceInput < 0) ? ((_Utils_cmp(motion.speed + forceInput, -motion.maxBackwardSpeed) > -1) ? (motion.speed + forceInput) : (-motion.maxBackwardSpeed)) : motion.speed));
+	});
+var author$project$Objects$Physics$bump = function (gO) {
+	var _n0 = gO.motion;
+	if (_n0.$ === 'Just') {
+		var motion = _n0.a;
+		return _Utils_update(
+			gO,
+			{
+				motion: elm$core$Maybe$Just(
+					_Utils_update(
+						motion,
+						{
+							speed: A2(author$project$Objects$Physics$linear, gO, -motion.maxForwardSpeed)
+						}))
+			});
 	} else {
-		return false;
+		return gO;
+	}
+};
+var elm$core$Basics$True = {$: 'True'};
+var author$project$Objects$Tiles$Decor$bush1 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 100, _function: author$project$Objects$Physics$bump, overrideBackgroundImpact: true, trigger: 'Bush1'})),
+				position: {x: 0, y: 0},
+				width: 64
+			})),
+	identifier: 'Bush1',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/decor/Bush_01.png'
+};
+var author$project$Objects$Tiles$Decor$bush2 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 100, _function: author$project$Objects$Physics$bump, overrideBackgroundImpact: true, trigger: 'Bush2'})),
+				position: {x: 0, y: 0},
+				width: 64
+			})),
+	identifier: 'Bush2',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/decor/Bush_02.png'
+};
+var author$project$Objects$Tiles$Decor$platformBlue = {
+	collider: elm$core$Maybe$Nothing,
+	identifier: 'PlatformBlue',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 128},
+	sprite: 'assets/decor/Pavilion_01.png'
+};
+var author$project$Objects$Tiles$Decor$rock1 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 20,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 100, _function: author$project$Objects$Physics$bump, overrideBackgroundImpact: true, trigger: 'Rock1'})),
+				position: {x: 0, y: 5},
+				width: 32
+			})),
+	identifier: 'Rock1',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 32, width: 32},
+	sprite: 'assets/decor/Rock_01.png'
+};
+var author$project$Objects$Tiles$Decor$rock2 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 20,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 100, _function: author$project$Objects$Physics$bump, overrideBackgroundImpact: true, trigger: 'Rock2'})),
+				position: {x: 0, y: 5},
+				width: 32
+			})),
+	identifier: 'Rock2',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 32, width: 32},
+	sprite: 'assets/decor/Rock_02.png'
+};
+var author$project$Objects$Tiles$Decor$tree2 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 54,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 100, _function: author$project$Objects$Physics$bump, overrideBackgroundImpact: true, trigger: 'Tree2'})),
+				position: {x: 5, y: 5},
+				width: 54
+			})),
+	identifier: 'Tree2',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/decor/Tree_02.png'
+};
+var elm$core$Basics$append = _Utils_append;
+var author$project$Map$Variations$DustRace$decor = _Utils_ap(
+	_List_fromArray(
+		[
+			A2(
+			author$project$Objects$Manager$position,
+			elm$core$Maybe$Just(
+				{x: 448, y: 0}),
+			author$project$Objects$Tiles$Decor$platformBlue)
+		]),
+	_Utils_ap(
+		A2(
+			author$project$Map$Generator$fill,
+			author$project$Objects$Tiles$Decor$bush1,
+			_List_fromArray(
+				[
+					{x: 384, y: 0},
+					{x: 590, y: 0}
+				])),
+		_Utils_ap(
+			A2(
+				author$project$Map$Generator$fill,
+				author$project$Objects$Tiles$Decor$bush2,
+				_List_fromArray(
+					[
+						{x: 448, y: 320},
+						{x: 576, y: 384}
+					])),
+			_Utils_ap(
+				A2(
+					author$project$Map$Generator$fill,
+					author$project$Objects$Tiles$Decor$rock1,
+					_List_fromArray(
+						[
+							{x: 858, y: 416},
+							{x: 138, y: 138}
+						])),
+				_Utils_ap(
+					A2(
+						author$project$Map$Generator$fill,
+						author$project$Objects$Tiles$Decor$rock2,
+						_List_fromArray(
+							[
+								{x: 138, y: 224}
+							])),
+					A2(
+						author$project$Map$Generator$fill,
+						author$project$Objects$Tiles$Decor$tree2,
+						_List_fromArray(
+							[
+								{x: 32, y: 365},
+								{x: 96, y: 390},
+								{x: 160, y: 370},
+								{x: 0, y: 250},
+								{x: 0, y: 310},
+								{x: 192, y: 320}
+							])))))));
+var author$project$Objects$Manager$rotate = F2(
+	function (r, gO) {
+		return _Utils_update(
+			gO,
+			{rotate: r});
+	});
+var author$project$Objects$Tiles$Decor$finishLine = {
+	collider: elm$core$Maybe$Nothing,
+	identifier: 'FinishLine',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 20},
+	sprite: 'assets/decor/Finish.png'
+};
+var author$project$Map$Variations$DustRace$finishLine = A2(
+	author$project$Objects$Manager$position,
+	elm$core$Maybe$Just(
+		{x: 512, y: 65}),
+	A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Decor$finishLine));
+var author$project$Objects$Tiles$Road$curveTopRight = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 0, _function: elm$core$Basics$identity, overrideBackgroundImpact: true, trigger: 'road'})),
+				position: {x: 0, y: 0},
+				width: 64
+			})),
+	identifier: 'RoadStraight',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/roadCurve.png'
+};
+var author$project$Objects$Tiles$Road$straight = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Objects$Types$Impact(
+						{duration: 0, _function: elm$core$Basics$identity, overrideBackgroundImpact: true, trigger: 'road'})),
+				position: {x: 0, y: 0},
+				width: 64
+			})),
+	identifier: 'RoadStraight',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: 'assets/roadStraight.png'
+};
+var author$project$Map$Variations$DustRace$roads = _Utils_ap(
+	A2(
+		author$project$Map$Generator$fill,
+		author$project$Objects$Tiles$Road$straight,
+		_List_fromArray(
+			[
+				{x: 64, y: 128},
+				{x: 64, y: 192},
+				{x: 64, y: 256},
+				{x: 512, y: 320},
+				{x: 512, y: 384},
+				{x: 896, y: 128},
+				{x: 896, y: 192},
+				{x: 896, y: 256},
+				{x: 896, y: 320},
+				{x: 896, y: 384}
+			])),
+	_Utils_ap(
+		A2(
+			author$project$Map$Generator$fill,
+			A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$straight),
+			_List_fromArray(
+				[
+					{x: 128, y: 64},
+					{x: 192, y: 64},
+					{x: 256, y: 64},
+					{x: 320, y: 64},
+					{x: 384, y: 64},
+					{x: 448, y: 64},
+					{x: 512, y: 64},
+					{x: 576, y: 64},
+					{x: 640, y: 64},
+					{x: 704, y: 64},
+					{x: 768, y: 64},
+					{x: 832, y: 64},
+					{x: 192, y: 256},
+					{x: 256, y: 256},
+					{x: 320, y: 256},
+					{x: 384, y: 256},
+					{x: 448, y: 256},
+					{x: 576, y: 448},
+					{x: 640, y: 448},
+					{x: 704, y: 448},
+					{x: 768, y: 448},
+					{x: 832, y: 448}
+				])),
+		_Utils_ap(
+			A2(
+				author$project$Map$Generator$fill,
+				A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
+				_List_fromArray(
+					[
+						{x: 64, y: 64},
+						{x: 128, y: 256}
+					])),
+			_Utils_ap(
+				A2(
+					author$project$Map$Generator$fill,
+					A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
+					_List_fromArray(
+						[
+							{x: 64, y: 320},
+							{x: 512, y: 448}
+						])),
+				_Utils_ap(
+					A2(
+						author$project$Map$Generator$fill,
+						A2(author$project$Objects$Manager$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
+						_List_fromArray(
+							[
+								{x: 128, y: 320},
+								{x: 896, y: 448}
+							])),
+					A2(
+						author$project$Map$Generator$fill,
+						A2(author$project$Objects$Manager$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
+						_List_fromArray(
+							[
+								{x: 512, y: 256},
+								{x: 896, y: 64}
+							])))))));
+var author$project$Objects$Tiles$Decor$startLine = {
+	collider: elm$core$Maybe$Nothing,
+	identifier: 'StartLine',
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 20, width: 64},
+	sprite: ''
+};
+var author$project$Map$Variations$DustRace$startLine = A2(
+	author$project$Objects$Manager$position,
+	elm$core$Maybe$Just(
+		{x: 512, y: 84}),
+	A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Decor$startLine));
+var author$project$Map$Variations$DustRace$init = {
+	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
+	gameObjects: {background: _List_Nil, decor: author$project$Map$Variations$DustRace$decor, finishLine: author$project$Map$Variations$DustRace$finishLine, roads: author$project$Map$Variations$DustRace$roads, startLine: author$project$Map$Variations$DustRace$startLine, trigger: _List_Nil},
+	meta: {description: 'Es wird staubig!', name: 'Dust Race'},
+	options: {
+		labs: 2,
+		startPositions: _List_fromArray(
+			[
+				{x: 448, y: 128}
+			]),
+		starter: 1
+	}
+};
+var author$project$Map$Variations$DustRace$model = function () {
+	var map = author$project$Map$Variations$DustRace$init;
+	var gameObjects = author$project$Map$Variations$DustRace$init.gameObjects;
+	return _Utils_update(
+		map,
+		{
+			gameObjects: _Utils_update(
+				gameObjects,
+				{
+					background: A2(
+						author$project$Map$Generator$fill,
+						author$project$Map$Variations$DustRace$background,
+						author$project$Map$Generator$possibleTileCoords(map))
+				})
+		});
+}();
+var author$project$Objects$Manager$ambulance = {
+	collider: elm$core$Maybe$Just(
+		author$project$Objects$Types$Rect(
+			{
+				height: 8,
+				impactFunction: elm$core$Maybe$Nothing,
+				position: {x: 12, y: 12},
+				width: 8
+			})),
+	identifier: 'ambulance',
+	motion: elm$core$Maybe$Just(
+		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0}),
+	physics: elm$core$Maybe$Just(
+		{forceBackward: -1, forceForward: 2, impacts: _List_Nil}),
+	position: elm$core$Maybe$Just(
+		{x: 450, y: 100}),
+	rotate: 90,
+	size: {height: 32, width: 32},
+	sprite: 'assets/carAmbulance.png'
+};
+var author$project$Types$Running = {$: 'Running'};
+var author$project$Main$initialModel = {
+	frequence: 40,
+	lab: 0,
+	map: author$project$Map$Variations$DustRace$model,
+	myPlayer: {
+		assignedKeys: {action: author$project$Control$Types$Space, backward: author$project$Control$Types$S, forward: author$project$Control$Types$W, left: author$project$Control$Types$A, right: author$project$Control$Types$D},
+		controlledObject: author$project$Objects$Manager$ambulance,
+		identifier: 'blue',
+		name: 'Player 1',
+		storedKeys: {backward: author$project$Control$Types$Nothing, forward: author$project$Control$Types$Nothing, left: author$project$Control$Types$Nothing, right: author$project$Control$Types$Nothing}
+	},
+	onlinePlayers: _List_Nil,
+	state: author$project$Types$Running
+};
+var author$project$Control$Types$Backward = {$: 'Backward'};
+var author$project$Control$Types$Forward = {$: 'Forward'};
+var author$project$Control$Types$Left = {$: 'Left'};
+var author$project$Control$Types$Right = {$: 'Right'};
+var author$project$Control$Global$toKey = function (val) {
+	switch (val) {
+		case 'w':
+			return author$project$Control$Types$Forward;
+		case 'a':
+			return author$project$Control$Types$Left;
+		case 's':
+			return author$project$Control$Types$Backward;
+		case 'd':
+			return author$project$Control$Types$Right;
+		default:
+			return author$project$Control$Types$Nothing;
 	}
 };
 var elm$core$Array$branchFactor = 32;
@@ -4557,7 +5064,6 @@ var elm$core$Basics$apR = F2(
 	function (x, f) {
 		return f(x);
 	});
-var elm$core$Basics$eq = _Utils_equal;
 var elm$core$Tuple$first = function (_n0) {
 	var x = _n0.a;
 	return x;
@@ -4578,19 +5084,15 @@ var elm$core$Array$treeFromBuilder = F2(
 			}
 		}
 	});
-var elm$core$Basics$add = _Basics_add;
 var elm$core$Basics$apL = F2(
 	function (f, x) {
 		return f(x);
 	});
 var elm$core$Basics$floor = _Basics_floor;
-var elm$core$Basics$gt = _Utils_gt;
 var elm$core$Basics$max = F2(
 	function (x, y) {
 		return (_Utils_cmp(x, y) > 0) ? x : y;
 	});
-var elm$core$Basics$mul = _Basics_mul;
-var elm$core$Basics$sub = _Basics_sub;
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
@@ -4616,7 +5118,6 @@ var elm$core$Array$builderToArray = F2(
 		}
 	});
 var elm$core$Basics$idiv = _Basics_idiv;
-var elm$core$Basics$lt = _Utils_lt;
 var elm$core$Elm$JsArray$initialize = _JsArray_initialize;
 var elm$core$Array$initializeHelp = F5(
 	function (fn, fromIndex, len, nodeList, tail) {
@@ -4644,7 +5145,6 @@ var elm$core$Array$initializeHelp = F5(
 			}
 		}
 	});
-var elm$core$Basics$le = _Utils_le;
 var elm$core$Basics$remainderBy = _Basics_remainderBy;
 var elm$core$Array$initialize = F2(
 	function (len, fn) {
@@ -4657,15 +5157,18 @@ var elm$core$Array$initialize = F2(
 			return A5(elm$core$Array$initializeHelp, fn, initialFromIndex, len, _List_Nil, tail);
 		}
 	});
-var elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
-};
-var elm$core$Maybe$Nothing = {$: 'Nothing'};
 var elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
 };
 var elm$core$Result$Ok = function (a) {
 	return {$: 'Ok', a: a};
+};
+var elm$core$Result$isOk = function (result) {
+	if (result.$ === 'Ok') {
+		return true;
+	} else {
+		return false;
+	}
 };
 var elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
@@ -4683,7 +5186,6 @@ var elm$json$Json$Decode$OneOf = function (a) {
 	return {$: 'OneOf', a: a};
 };
 var elm$core$Basics$and = _Basics_and;
-var elm$core$Basics$append = _Utils_append;
 var elm$core$Basics$or = _Basics_or;
 var elm$core$Char$toCode = _Char_toCode;
 var elm$core$Char$isLower = function (_char) {
@@ -4872,404 +5374,8 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 			}
 		}
 	});
-var elm$json$Json$Decode$map = _Json_map1;
-var elm$json$Json$Decode$map2 = _Json_map2;
-var elm$json$Json$Decode$succeed = _Json_succeed;
-var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
-	switch (handler.$) {
-		case 'Normal':
-			return 0;
-		case 'MayStopPropagation':
-			return 1;
-		case 'MayPreventDefault':
-			return 2;
-		default:
-			return 3;
-	}
-};
-var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
-var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
-var author$project$Objects$Tiles$Decor$bush1 = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'Bush1',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Bush_01.png'
-};
-var author$project$Objects$Tiles$Decor$bush2 = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'Bush2',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Bush_02.png'
-};
-var author$project$Objects$Tiles$Decor$platformBlue = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'PlatformBlue',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 128},
-	sprite: 'assets/decor/Pavilion_01.png'
-};
-var author$project$Objects$Tiles$Decor$rock1 = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'Rock1',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 32, width: 32},
-	sprite: 'assets/decor/Rock_01.png'
-};
-var author$project$Objects$Tiles$Decor$rock2 = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'Rock2',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 32, width: 32},
-	sprite: 'assets/decor/Rock_02.png'
-};
-var author$project$Objects$Tiles$Decor$tree2 = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'Tree2',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Tree_02.png'
-};
-var author$project$Objects$Types$Position = function (a) {
-	return {$: 'Position', a: a};
-};
-var author$project$Map$Variations$DustRace$decor = _Utils_ap(
-	_List_fromArray(
-		[
-			A2(
-			author$project$Objects$Manager$position,
-			author$project$Objects$Types$Position(
-				{x: 448, y: 0}),
-			author$project$Objects$Tiles$Decor$platformBlue)
-		]),
-	_Utils_ap(
-		A2(
-			author$project$Map$Generator$fill,
-			author$project$Objects$Tiles$Decor$bush1,
-			_List_fromArray(
-				[
-					author$project$Objects$Types$Position(
-					{x: 384, y: 0}),
-					author$project$Objects$Types$Position(
-					{x: 590, y: 0})
-				])),
-		_Utils_ap(
-			A2(
-				author$project$Map$Generator$fill,
-				author$project$Objects$Tiles$Decor$bush2,
-				_List_fromArray(
-					[
-						author$project$Objects$Types$Position(
-						{x: 448, y: 320}),
-						author$project$Objects$Types$Position(
-						{x: 576, y: 384})
-					])),
-			_Utils_ap(
-				A2(
-					author$project$Map$Generator$fill,
-					author$project$Objects$Tiles$Decor$rock1,
-					_List_fromArray(
-						[
-							author$project$Objects$Types$Position(
-							{x: 858, y: 416}),
-							author$project$Objects$Types$Position(
-							{x: 138, y: 138})
-						])),
-				_Utils_ap(
-					A2(
-						author$project$Map$Generator$fill,
-						author$project$Objects$Tiles$Decor$rock2,
-						_List_fromArray(
-							[
-								author$project$Objects$Types$Position(
-								{x: 138, y: 224})
-							])),
-					A2(
-						author$project$Map$Generator$fill,
-						author$project$Objects$Tiles$Decor$tree2,
-						_List_fromArray(
-							[
-								author$project$Objects$Types$Position(
-								{x: 32, y: 365}),
-								author$project$Objects$Types$Position(
-								{x: 96, y: 390}),
-								author$project$Objects$Types$Position(
-								{x: 160, y: 370}),
-								author$project$Objects$Types$Position(
-								{x: 0, y: 250}),
-								author$project$Objects$Types$Position(
-								{x: 0, y: 310}),
-								author$project$Objects$Types$Position(
-								{x: 192, y: 320})
-							])))))));
-var author$project$Objects$Manager$rotate = F2(
-	function (r, gO) {
-		return _Utils_update(
-			gO,
-			{rotate: r});
-	});
-var author$project$Objects$Tiles$Decor$finishLine = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'FinishLine',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 20, width: 64},
-	sprite: 'assets/decor/Finish.png'
-};
-var author$project$Map$Variations$DustRace$finishLine = A2(
-	author$project$Objects$Manager$position,
-	author$project$Objects$Types$Position(
-		{x: 512, y: 84}),
-	A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Decor$finishLine));
-var author$project$Objects$Tiles$Road$curveTopRight = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'RoadStraight',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/roadCurve.png'
-};
-var author$project$Objects$Tiles$Road$straight = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'RoadStraight',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/roadStraight.png'
-};
-var author$project$Map$Variations$DustRace$roads = _Utils_ap(
-	A2(
-		author$project$Map$Generator$fill,
-		author$project$Objects$Tiles$Road$straight,
-		_List_fromArray(
-			[
-				author$project$Objects$Types$Position(
-				{x: 64, y: 128}),
-				author$project$Objects$Types$Position(
-				{x: 64, y: 192}),
-				author$project$Objects$Types$Position(
-				{x: 64, y: 256}),
-				author$project$Objects$Types$Position(
-				{x: 512, y: 320}),
-				author$project$Objects$Types$Position(
-				{x: 512, y: 384}),
-				author$project$Objects$Types$Position(
-				{x: 896, y: 128}),
-				author$project$Objects$Types$Position(
-				{x: 896, y: 192}),
-				author$project$Objects$Types$Position(
-				{x: 896, y: 256}),
-				author$project$Objects$Types$Position(
-				{x: 896, y: 320}),
-				author$project$Objects$Types$Position(
-				{x: 896, y: 384})
-			])),
-	_Utils_ap(
-		A2(
-			author$project$Map$Generator$fill,
-			A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$straight),
-			_List_fromArray(
-				[
-					author$project$Objects$Types$Position(
-					{x: 128, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 192, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 256, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 320, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 384, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 448, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 512, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 576, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 640, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 704, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 768, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 832, y: 64}),
-					author$project$Objects$Types$Position(
-					{x: 192, y: 256}),
-					author$project$Objects$Types$Position(
-					{x: 256, y: 256}),
-					author$project$Objects$Types$Position(
-					{x: 320, y: 256}),
-					author$project$Objects$Types$Position(
-					{x: 384, y: 256}),
-					author$project$Objects$Types$Position(
-					{x: 448, y: 256}),
-					author$project$Objects$Types$Position(
-					{x: 576, y: 448}),
-					author$project$Objects$Types$Position(
-					{x: 640, y: 448}),
-					author$project$Objects$Types$Position(
-					{x: 704, y: 448}),
-					author$project$Objects$Types$Position(
-					{x: 768, y: 448}),
-					author$project$Objects$Types$Position(
-					{x: 832, y: 448})
-				])),
-		_Utils_ap(
-			A2(
-				author$project$Map$Generator$fill,
-				A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
-				_List_fromArray(
-					[
-						author$project$Objects$Types$Position(
-						{x: 64, y: 64}),
-						author$project$Objects$Types$Position(
-						{x: 128, y: 256})
-					])),
-			_Utils_ap(
-				A2(
-					author$project$Map$Generator$fill,
-					A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
-					_List_fromArray(
-						[
-							author$project$Objects$Types$Position(
-							{x: 64, y: 320}),
-							author$project$Objects$Types$Position(
-							{x: 512, y: 448})
-						])),
-				_Utils_ap(
-					A2(
-						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
-						_List_fromArray(
-							[
-								author$project$Objects$Types$Position(
-								{x: 128, y: 320}),
-								author$project$Objects$Types$Position(
-								{x: 896, y: 448})
-							])),
-					A2(
-						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
-						_List_fromArray(
-							[
-								author$project$Objects$Types$Position(
-								{x: 512, y: 256}),
-								author$project$Objects$Types$Position(
-								{x: 896, y: 64})
-							])))))));
-var author$project$Objects$Tiles$Decor$startLine = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'StartLine',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 20, width: 64},
-	sprite: ''
-};
-var author$project$Map$Variations$DustRace$startLine = A2(
-	author$project$Objects$Manager$position,
-	author$project$Objects$Types$Position(
-		{x: 512, y: 84}),
-	A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Decor$startLine));
-var author$project$Objects$Tiles$Background$dust = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'BackgroundDust',
-	motion: {maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-	physics: {forceBackward: 0, forceForward: 0},
-	position: author$project$Objects$Types$None,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/background.png'
-};
-var author$project$Map$Variations$DustRace$model = {
-	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
-	gameObjects: {background: author$project$Objects$Tiles$Background$dust, checkPoints: _List_Nil, decor: author$project$Map$Variations$DustRace$decor, finishLine: author$project$Map$Variations$DustRace$finishLine, roads: author$project$Map$Variations$DustRace$roads, startLine: author$project$Map$Variations$DustRace$startLine},
-	meta: {description: 'Es wird staubig!', name: 'Dust Race'},
-	options: {
-		labs: 2,
-		startPositions: _List_fromArray(
-			[
-				author$project$Objects$Types$Position(
-				{x: 448, y: 128})
-			]),
-		starter: 1
-	}
-};
-var elm$core$Basics$negate = function (n) {
-	return -n;
-};
-var author$project$Objects$Manager$ambulance = {
-	collider: A2(elm$svg$Svg$rect, _List_Nil, _List_Nil),
-	identifier: 'ambulance',
-	motion: {maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0},
-	physics: {forceBackward: -1, forceForward: 2},
-	position: author$project$Objects$Types$Position(
-		{x: 450, y: 100}),
-	rotate: 90,
-	size: {height: 32, width: 32},
-	sprite: 'assets/carAmbulance.png'
-};
-var author$project$Types$Menu = {$: 'Menu'};
-var author$project$Main$initialModel = {
-	frequence: 40,
-	lab: 0,
-	map: author$project$Map$Variations$DustRace$model,
-	myPlayer: {
-		assignedKeys: {action: author$project$Control$Types$Space, backward: author$project$Control$Types$S, forward: author$project$Control$Types$W, left: author$project$Control$Types$A, right: author$project$Control$Types$D},
-		controlledObject: author$project$Objects$Manager$ambulance,
-		identifier: 'blue',
-		name: 'Player 1',
-		storedKeys: {backward: author$project$Control$Types$Nothing, forward: author$project$Control$Types$Nothing, left: author$project$Control$Types$Nothing, right: author$project$Control$Types$Nothing}
-	},
-	onlinePlayers: _List_Nil,
-	state: author$project$Types$Menu
-};
-var author$project$Control$Types$Backward = {$: 'Backward'};
-var author$project$Control$Types$Forward = {$: 'Forward'};
-var author$project$Control$Types$Left = {$: 'Left'};
-var author$project$Control$Types$Right = {$: 'Right'};
-var author$project$Control$Global$toKey = function (val) {
-	switch (val) {
-		case 'w':
-			return author$project$Control$Types$Forward;
-		case 'a':
-			return author$project$Control$Types$Left;
-		case 's':
-			return author$project$Control$Types$Backward;
-		case 'd':
-			return author$project$Control$Types$Right;
-		default:
-			return author$project$Control$Types$Nothing;
-	}
-};
 var elm$json$Json$Decode$field = _Json_decodeField;
+var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$string = _Json_decodeString;
 var author$project$Control$Global$keyDecoder = A2(
 	elm$json$Json$Decode$map,
@@ -5482,6 +5588,20 @@ var elm$core$Task$perform = F2(
 			elm$core$Task$Perform(
 				A2(elm$core$Task$map, toMessage, task)));
 	});
+var elm$json$Json$Decode$map2 = _Json_map2;
+var elm$json$Json$Decode$succeed = _Json_succeed;
+var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
+	switch (handler.$) {
+		case 'Normal':
+			return 0;
+		case 'MayStopPropagation':
+			return 1;
+		case 'MayPreventDefault':
+			return 2;
+		default:
+			return 3;
+	}
+};
 var elm$core$String$length = _String_length;
 var elm$core$String$slice = _String_slice;
 var elm$core$String$dropLeft = F2(
@@ -6390,7 +6510,10 @@ var author$project$Control$Player$convertInputToForce = function (l) {
 };
 var author$project$Objects$Manager$applyMotionFunction = F3(
 	function (f, gO, forceInput) {
-		var m = gO.motion;
+		var m = A2(
+			elm$core$Maybe$withDefault,
+			{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
+			gO.motion);
 		return _Utils_update(
 			m,
 			{
@@ -6402,11 +6525,6 @@ var author$project$Objects$Manager$motion = F2(
 		return _Utils_update(
 			gO,
 			{motion: m});
-	});
-var elm$core$Basics$ge = _Utils_ge;
-var author$project$Objects$Physics$linear = F2(
-	function (gO, forceInput) {
-		return (!forceInput) ? ((gO.motion.speed > 0) ? (gO.motion.speed + gO.physics.forceBackward) : ((gO.motion.speed < 0) ? (gO.motion.speed - gO.physics.forceBackward) : gO.motion.speed)) : ((forceInput > 0) ? ((_Utils_cmp(gO.motion.speed + forceInput, gO.motion.maxForwardSpeed) < 1) ? (gO.motion.speed + forceInput) : gO.motion.maxForwardSpeed) : ((forceInput < 0) ? ((_Utils_cmp(gO.motion.speed + forceInput, -gO.motion.maxBackwardSpeed) > -1) ? (gO.motion.speed + forceInput) : (-gO.motion.maxBackwardSpeed)) : gO.motion.speed));
 	});
 var elm$core$Basics$cos = _Basics_cos;
 var elm$core$Basics$pi = _Basics_pi;
@@ -6422,10 +6540,12 @@ var author$project$Control$Player$update = function (model) {
 		[myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right]);
 	var gO = myPlayer.controlledObject;
 	var _n0 = gO.position;
-	if (_n0.$ === 'Position') {
+	if (_n0.$ === 'Just') {
 		var p = _n0.a;
-		return _Utils_Tuple2(
-			_Utils_update(
+		var _n1 = gO.motion;
+		if (_n1.$ === 'Just') {
+			var m = _n1.a;
+			return _Utils_update(
 				model,
 				{
 					myPlayer: _Utils_update(
@@ -6433,22 +6553,23 @@ var author$project$Control$Player$update = function (model) {
 						{
 							controlledObject: A2(
 								author$project$Objects$Manager$position,
-								author$project$Objects$Types$Position(
+								elm$core$Maybe$Just(
 									{
 										x: p.x + elm$core$Basics$round(
 											((elm$core$Basics$sin(
-												elm$core$Basics$degrees(gO.rotate)) * gO.motion.speed) / model.frequence) * 4),
+												elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4),
 										y: p.y - elm$core$Basics$round(
 											((elm$core$Basics$cos(
-												elm$core$Basics$degrees(gO.rotate)) * gO.motion.speed) / model.frequence) * 4)
+												elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4)
 									}),
 								A2(
 									author$project$Objects$Manager$motion,
-									A3(
-										author$project$Objects$Manager$applyMotionFunction,
-										author$project$Objects$Physics$linear,
-										gO,
-										author$project$Control$Player$convertInputToForce(listKeys)),
+									elm$core$Maybe$Just(
+										A3(
+											author$project$Objects$Manager$applyMotionFunction,
+											author$project$Objects$Physics$linear,
+											gO,
+											author$project$Control$Player$convertInputToForce(listKeys))),
 									A2(
 										author$project$Objects$Manager$rotate,
 										A2(
@@ -6457,11 +6578,224 @@ var author$project$Control$Player$update = function (model) {
 											gO.rotate + author$project$Control$Player$convertInputToAngle(listKeys)),
 										gO)))
 						})
-				}),
-			elm$core$Platform$Cmd$none);
+				});
+		} else {
+			return model;
+		}
 	} else {
-		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		return model;
 	}
+};
+var elm$core$Basics$not = _Basics_not;
+var author$project$Objects$Physics$checkCollision = F2(
+	function (gO1, gO2) {
+		var calcRect = F2(
+			function (collider1, collider2) {
+				if (collider1.$ === 'Just') {
+					var c1 = collider1.a;
+					if (collider2.$ === 'Just') {
+						var c2 = collider2.a;
+						var _n2 = gO1.position;
+						if (_n2.$ === 'Just') {
+							var p1 = _n2.a;
+							var _n3 = gO2.position;
+							if (_n3.$ === 'Just') {
+								var p2 = _n3.a;
+								if (c1.$ === 'Rect') {
+									var r1 = c1.a;
+									if (c2.$ === 'Rect') {
+										var r2 = c2.a;
+										return (!((_Utils_cmp(p2.x + r2.position.x, (p1.x + r1.position.x) + r1.width) > 0) || ((_Utils_cmp((p2.x + r2.position.x) + r2.width, p1.x + r1.position.x) < 0) || ((_Utils_cmp(p2.y + r2.position.y, (p1.y + r1.position.y) + r1.height) > 0) || (_Utils_cmp((p2.y + r2.position.y) + r2.height, p1.y + r1.position.y) < 0))))) ? elm$core$Maybe$Just(c2) : elm$core$Maybe$Nothing;
+									} else {
+										return elm$core$Maybe$Nothing;
+									}
+								} else {
+									return elm$core$Maybe$Nothing;
+								}
+							} else {
+								return elm$core$Maybe$Nothing;
+							}
+						} else {
+							return elm$core$Maybe$Nothing;
+						}
+					} else {
+						return elm$core$Maybe$Nothing;
+					}
+				} else {
+					return elm$core$Maybe$Nothing;
+				}
+			});
+		return (!_Utils_eq(gO1.identifier, gO2.identifier)) ? A2(calcRect, gO1.collider, gO2.collider) : elm$core$Maybe$Nothing;
+	});
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var author$project$Objects$Physics$update = function (model) {
+	var updateImpactHelper = function (l) {
+		updateImpactHelper:
+		while (true) {
+			if (l.b) {
+				var x = l.a;
+				var xs = l.b;
+				var impact = x.a;
+				if (_Utils_cmp(impact.duration, 0 + model.frequence) > 0) {
+					return A2(
+						elm$core$List$cons,
+						author$project$Objects$Types$Impact(
+							_Utils_update(
+								impact,
+								{duration: impact.duration - model.frequence})),
+						updateImpactHelper(xs));
+				} else {
+					var $temp$l = xs;
+					l = $temp$l;
+					continue updateImpactHelper;
+				}
+			} else {
+				return l;
+			}
+		}
+	};
+	var updateImpacts = function (gO) {
+		var _n11 = gO.physics;
+		if (_n11.$ === 'Just') {
+			var p = _n11.a;
+			return _Utils_update(
+				gO,
+				{
+					physics: elm$core$Maybe$Just(
+						_Utils_update(
+							p,
+							{
+								impacts: updateImpactHelper(p.impacts)
+							}))
+				});
+		} else {
+			return gO;
+		}
+	};
+	var runImpactHelper = F2(
+		function (l, gO) {
+			runImpactHelper:
+			while (true) {
+				if (l.b) {
+					var x = l.a;
+					var xs = l.b;
+					var impact = x.a;
+					var $temp$l = xs,
+						$temp$gO = impact._function(gO);
+					l = $temp$l;
+					gO = $temp$gO;
+					continue runImpactHelper;
+				} else {
+					return gO;
+				}
+			}
+		});
+	var runImpact = function (gO) {
+		var _n10 = gO.physics;
+		if (_n10.$ === 'Just') {
+			var p = _n10.a;
+			return A2(runImpactHelper, p.impacts, gO);
+		} else {
+			return gO;
+		}
+	};
+	var objectList = A2(
+		elm$core$List$cons,
+		model.map.gameObjects.startLine,
+		A2(
+			elm$core$List$cons,
+			model.map.gameObjects.finishLine,
+			_Utils_ap(
+				model.map.gameObjects.decor,
+				_Utils_ap(
+					model.map.gameObjects.roads,
+					_Utils_ap(model.map.gameObjects.trigger, model.map.gameObjects.background)))));
+	var myPlayer = model.myPlayer;
+	var controlledObject = model.myPlayer.controlledObject;
+	var checkToRemoveBackgroundImpact = function (l) {
+		var filterBackgroundImpact = function (impact) {
+			var i = impact.a;
+			return (!(i.trigger === 'background')) && i.overrideBackgroundImpact;
+		};
+		return (elm$core$List$length(l) > 1) ? A2(elm$core$List$filter, filterBackgroundImpact, l) : l;
+	};
+	var addImpactHelper = F2(
+		function (physics, collider) {
+			if (collider.$ === 'Just') {
+				var c = collider.a;
+				if (c.$ === 'Rect') {
+					var r = c.a;
+					var _n8 = r.impactFunction;
+					if (_n8.$ === 'Just') {
+						var impact = _n8.a;
+						return _Utils_update(
+							physics,
+							{
+								impacts: checkToRemoveBackgroundImpact(
+									A2(elm$core$List$cons, impact, physics.impacts))
+							});
+					} else {
+						return physics;
+					}
+				} else {
+					return physics;
+				}
+			} else {
+				return physics;
+			}
+		});
+	var addImpact = F2(
+		function (l, gO) {
+			addImpact:
+			while (true) {
+				if (l.b) {
+					var x = l.a;
+					var xs = l.b;
+					var _n5 = gO.physics;
+					if (_n5.$ === 'Just') {
+						var p = _n5.a;
+						var $temp$l = xs,
+							$temp$gO = _Utils_update(
+							gO,
+							{
+								physics: elm$core$Maybe$Just(
+									A2(
+										addImpactHelper,
+										p,
+										A2(author$project$Objects$Physics$checkCollision, gO, x)))
+							});
+						l = $temp$l;
+						gO = $temp$gO;
+						continue addImpact;
+					} else {
+						return gO;
+					}
+				} else {
+					return gO;
+				}
+			}
+		});
+	return _Utils_update(
+		model,
+		{
+			myPlayer: _Utils_update(
+				myPlayer,
+				{
+					controlledObject: updateImpacts(
+						runImpact(
+							A2(addImpact, objectList, controlledObject)))
+				})
+		});
 };
 var author$project$Ui$Scenes$Manager$changeTo = F2(
 	function (state, model) {
@@ -6479,7 +6813,10 @@ var author$project$Main$update = F2(
 				var action = msg.b;
 				return A3(author$project$Control$Player$applyInput, model, event, action);
 			case 'Tick':
-				return author$project$Control$Player$update(model);
+				return _Utils_Tuple2(
+					author$project$Objects$Physics$update(
+						author$project$Control$Player$update(model)),
+					elm$core$Platform$Cmd$none);
 			case 'ChangeScene':
 				var s = msg.a;
 				return A2(author$project$Ui$Scenes$Manager$changeTo, s, model);
@@ -6487,12 +6824,63 @@ var author$project$Main$update = F2(
 				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 		}
 	});
-var elm$core$String$fromFloat = _String_fromNumber;
-var elm$svg$Svg$image = elm$svg$Svg$trustedNode('image');
+var author$project$Objects$Manager$collisionDetected = F2(
+	function (gO1, gO2) {
+		return (!_Utils_eq(
+			A2(author$project$Objects$Physics$checkCollision, gO1, gO2),
+			elm$core$Maybe$Nothing)) ? 'green' : 'red';
+	});
+var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
+var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
+var elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
 var elm$svg$Svg$Attributes$height = _VirtualDom_attribute('height');
-var elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
+var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
+var elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
+var author$project$Objects$Manager$renderCollider = F2(
+	function (gO, player) {
+		var _n0 = gO.position;
+		if (_n0.$ === 'Just') {
+			var p = _n0.a;
+			var _n1 = gO.collider;
+			if (_n1.$ === 'Just') {
+				var c = _n1.a;
+				if (c.$ === 'Rect') {
+					var r = c.a;
+					return _List_fromArray(
+						[
+							A2(
+							elm$svg$Svg$rect,
+							_List_fromArray(
+								[
+									elm$svg$Svg$Attributes$width(
+									elm$core$String$fromInt(r.width)),
+									elm$svg$Svg$Attributes$height(
+									elm$core$String$fromInt(r.height)),
+									elm$svg$Svg$Attributes$x(
+									elm$core$String$fromInt(p.x + r.position.x)),
+									elm$svg$Svg$Attributes$y(
+									elm$core$String$fromInt(p.y + r.position.y)),
+									elm$svg$Svg$Attributes$stroke(
+									A2(author$project$Objects$Manager$collisionDetected, player, gO)),
+									elm$svg$Svg$Attributes$fillOpacity('0')
+								]),
+							_List_Nil)
+						]);
+				} else {
+					return _List_Nil;
+				}
+			} else {
+				return _List_Nil;
+			}
+		} else {
+			return _List_Nil;
+		}
+	});
+var elm$core$String$fromFloat = _String_fromNumber;
+var elm$svg$Svg$image = elm$svg$Svg$trustedNode('image');
+var elm$svg$Svg$Attributes$transform = _VirtualDom_attribute('transform');
 var elm$svg$Svg$Attributes$xlinkHref = function (value) {
 	return A3(
 		_VirtualDom_attributeNS,
@@ -6500,48 +6888,52 @@ var elm$svg$Svg$Attributes$xlinkHref = function (value) {
 		'xlink:href',
 		_VirtualDom_noJavaScriptUri(value));
 };
-var elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var author$project$Objects$Manager$render = function (l) {
-	render:
-	while (true) {
-		if (!l.b) {
-			return _List_Nil;
-		} else {
-			var x = l.a;
-			var xs = l.b;
-			var _n1 = x.position;
-			if (_n1.$ === 'Position') {
-				var p = _n1.a;
-				return _Utils_ap(
-					_List_fromArray(
-						[
-							A2(
-							elm$svg$Svg$image,
-							_List_fromArray(
-								[
-									elm$svg$Svg$Attributes$xlinkHref(x.sprite),
-									elm$svg$Svg$Attributes$width(
-									elm$core$String$fromInt(x.size.width)),
-									elm$svg$Svg$Attributes$height(
-									elm$core$String$fromInt(x.size.height)),
-									elm$svg$Svg$Attributes$x(
-									elm$core$String$fromInt(p.x)),
-									elm$svg$Svg$Attributes$y(
-									elm$core$String$fromInt(p.y)),
-									elm$svg$Svg$Attributes$transform(
-									' rotate(' + (elm$core$String$fromInt(x.rotate) + (' ' + (elm$core$String$fromFloat(p.x + (x.size.width / 2)) + (' ' + (elm$core$String$fromFloat(p.y + (x.size.height / 2)) + ')'))))))
-								]),
-							_List_Nil)
-						]),
-					author$project$Objects$Manager$render(xs));
+var author$project$Objects$Manager$render = F2(
+	function (l, player) {
+		render:
+		while (true) {
+			if (!l.b) {
+				return _List_Nil;
 			} else {
-				var $temp$l = xs;
-				l = $temp$l;
-				continue render;
+				var x = l.a;
+				var xs = l.b;
+				var _n1 = x.position;
+				if (_n1.$ === 'Nothing') {
+					var $temp$l = xs,
+						$temp$player = player;
+					l = $temp$l;
+					player = $temp$player;
+					continue render;
+				} else {
+					var posX = _n1.a;
+					return _Utils_ap(
+						_List_fromArray(
+							[
+								A2(
+								elm$svg$Svg$image,
+								_List_fromArray(
+									[
+										elm$svg$Svg$Attributes$xlinkHref(x.sprite),
+										elm$svg$Svg$Attributes$width(
+										elm$core$String$fromInt(x.size.width)),
+										elm$svg$Svg$Attributes$height(
+										elm$core$String$fromInt(x.size.height)),
+										elm$svg$Svg$Attributes$x(
+										elm$core$String$fromInt(posX.x)),
+										elm$svg$Svg$Attributes$y(
+										elm$core$String$fromInt(posX.y)),
+										elm$svg$Svg$Attributes$transform(
+										' rotate(' + (elm$core$String$fromInt(x.rotate) + (' ' + (elm$core$String$fromFloat(posX.x + (x.size.width / 2)) + (' ' + (elm$core$String$fromFloat(posX.y + (x.size.height / 2)) + ')'))))))
+									]),
+								_List_Nil)
+							]),
+						_Utils_ap(
+							A2(author$project$Objects$Manager$renderCollider, x, player.controlledObject),
+							A2(author$project$Objects$Manager$render, xs, player)));
+				}
 			}
 		}
-	}
-};
+	});
 var author$project$Ui$Speedometer$height = 200;
 var author$project$Ui$Speedometer$width = 200;
 var author$project$Ui$Speedometer$outerBorderWidth = (author$project$Ui$Speedometer$width / 50) | 0;
@@ -6555,7 +6947,6 @@ var elm$svg$Svg$Attributes$cx = _VirtualDom_attribute('cx');
 var elm$svg$Svg$Attributes$cy = _VirtualDom_attribute('cy');
 var elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var elm$svg$Svg$Attributes$r = _VirtualDom_attribute('r');
-var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var elm$svg$Svg$Attributes$strokeWidth = _VirtualDom_attribute('stroke-width');
 var elm$svg$Svg$Attributes$x1 = _VirtualDom_attribute('x1');
 var elm$svg$Svg$Attributes$x2 = _VirtualDom_attribute('x2');
@@ -6794,6 +7185,10 @@ var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var author$project$Ui$Cockpit$element = function (model) {
+	var motion = A2(
+		elm$core$Maybe$withDefault,
+		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
+		model.myPlayer.controlledObject.motion);
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
@@ -6820,9 +7215,9 @@ var author$project$Ui$Cockpit$element = function (model) {
 					[
 						A3(
 						author$project$Ui$Speedometer$element,
-						elm$core$Basics$round(model.myPlayer.controlledObject.motion.speed),
+						elm$core$Basics$round(motion.speed),
 						0,
-						elm$core$Basics$round(model.myPlayer.controlledObject.motion.maxForwardSpeed))
+						elm$core$Basics$round(motion.maxForwardSpeed))
 					])),
 				A2(
 				elm$html$Html$div,
@@ -6855,44 +7250,28 @@ var author$project$Ui$Cockpit$element = function (model) {
 						elm$svg$Svg$Attributes$viewBox(
 						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
 					]),
-				author$project$Objects$Manager$render(
+				A2(
+					author$project$Objects$Manager$render,
 					_Utils_ap(
 						model.map.gameObjects.roads,
 						_List_fromArray(
-							[model.myPlayer.controlledObject]))))
+							[model.myPlayer.controlledObject])),
+					model.myPlayer))
 			]));
-};
-var author$project$Map$Generator$possibleTileCoords = function (m) {
-	var createRows = F2(
-		function (yp, xp) {
-			return (_Utils_cmp(xp, m.dimension.width * m.dimension.tileSize) < 0) ? A2(
-				elm$core$List$cons,
-				author$project$Objects$Types$Position(
-					{x: xp, y: yp}),
-				A2(createRows, yp, xp + m.dimension.tileSize)) : ((_Utils_cmp(yp, m.dimension.height * m.dimension.tileSize) < 0) ? A2(
-				elm$core$List$cons,
-				author$project$Objects$Types$Position(
-					{x: 0, y: yp + m.dimension.tileSize}),
-				A2(createRows, yp + m.dimension.tileSize, 0 + m.dimension.tileSize)) : _List_Nil);
-		});
-	return A2(createRows, 0, 0);
 };
 var author$project$Map$Generator$map = function (m) {
 	return _Utils_ap(
-		A2(
-			author$project$Map$Generator$fill,
-			m.gameObjects.background,
-			author$project$Map$Generator$possibleTileCoords(m)),
+		m.gameObjects.background,
 		_Utils_ap(
 			m.gameObjects.roads,
 			_Utils_ap(
 				_List_fromArray(
 					[m.gameObjects.startLine, m.gameObjects.finishLine]),
-				_Utils_ap(m.gameObjects.checkPoints, m.gameObjects.decor))));
+				_Utils_ap(m.gameObjects.trigger, m.gameObjects.decor))));
 };
 var author$project$Ui$Playground$playground = function (model) {
 	var _n0 = model.myPlayer.controlledObject.position;
-	if (_n0.$ === 'Position') {
+	if (_n0.$ === 'Just') {
 		var p = _n0.a;
 		return A2(
 			elm$svg$Svg$svg,
@@ -6911,11 +7290,13 @@ var author$project$Ui$Playground$playground = function (model) {
 						elm$core$Basics$round((model.map.dimension.tileSize * model.map.dimension.width) / model.map.dimension.viewScale)) + (' ' + elm$core$String$fromInt(
 						elm$core$Basics$round((model.map.dimension.tileSize * model.map.dimension.height) / model.map.dimension.viewScale))))))))
 				]),
-			author$project$Objects$Manager$render(
+			A2(
+				author$project$Objects$Manager$render,
 				_Utils_ap(
 					author$project$Map$Generator$map(model.map),
 					_List_fromArray(
-						[model.myPlayer.controlledObject]))));
+						[model.myPlayer.controlledObject])),
+				model.myPlayer));
 	} else {
 		return A2(elm$html$Html$div, _List_Nil, _List_Nil);
 	}
@@ -6966,7 +7347,6 @@ var author$project$Ui$Playground$element = function (model) {
 var author$project$Types$ChangeScene = function (a) {
 	return {$: 'ChangeScene', a: a};
 };
-var author$project$Types$Running = {$: 'Running'};
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$virtual_dom$VirtualDom$Normal = function (a) {

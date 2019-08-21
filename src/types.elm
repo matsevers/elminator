@@ -7,6 +7,7 @@ import Map.Types exposing (..)
 type Msg
     = KeyEvent KeyEvent Action
     | ChangeScene State
+    | ChangeMap Map
     | Tick
     | None
 
@@ -23,6 +24,7 @@ type State
 type alias Model =
     { state : State
     , frequence : Float
+    , availableMaps : List Map.Types.Map
     , map : Map.Types.Map -- Records of Map
     , myPlayer : Player
     , onlinePlayers : List Player

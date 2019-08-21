@@ -10,6 +10,7 @@ import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
 import Map.Generator exposing (..)
 import Map.Variations.DustRace exposing (..)
+import Map.Variations.SummerBreeze exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
@@ -22,8 +23,9 @@ import Ui.Scenes.Manager exposing (..)
 
 initialModel : Model
 initialModel =
-    { state = Running
+    { state = Menu
     , frequence = 40
+    , availableMaps = [ Map.Variations.DustRace.model, Map.Variations.SummerBreeze.model ]
     , map = Map.Variations.DustRace.model
     , myPlayer =
         { identifier = "blue"
@@ -69,6 +71,9 @@ update msg model =
 
         ChangeScene s ->
             Ui.Scenes.Manager.changeTo s model
+
+        ChangeMap m ->
+            ( { model | map = m }, Cmd.none )
 
         _ ->
             ( model, Cmd.none )
