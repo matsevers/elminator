@@ -25,7 +25,7 @@ init : Map.Types.Map
 init =
     { meta =
         { name = "Dust Race"
-        , description = "Es wird staubig!"
+        , description = "The dirty one!"
         }
     , dimension =
         { width = 16

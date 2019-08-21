@@ -14,7 +14,7 @@ import Ui.Cockpit exposing (..)
 element : Model -> Html Msg
 element model =
     div
-        [ Html.Attributes.style "height" "100vh"
+        [ Html.Attributes.style "height" "98vh"
         , Html.Attributes.style "background-color" "#141617"
         , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
         ]

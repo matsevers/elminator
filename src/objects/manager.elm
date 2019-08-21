@@ -1,4 +1,4 @@
-module Objects.Manager exposing (ambulance, applyMotionFunction, motion, position, render, rotate)
+module Objects.Manager exposing (applyMotionFunction, motion, position, render, rotate)
 
 import Control.Types exposing (..)
 import Html exposing (Html, div)
@@ -8,37 +8,6 @@ import Objects.Types exposing (..)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-
-
-ambulance : GameObject
-ambulance =
-    { identifier = "ambulance"
-    , size = { height = 32, width = 32 }
-    , position = Just { x = 450, y = 100 }
-    , sprite = "assets/carAmbulance.png"
-    , collider =
-        Just
-            (Rect
-                { width = 8
-                , height = 8
-                , position = { x = 12, y = 12 }
-                , impactFunction = Maybe.Nothing
-                }
-            )
-    , rotate = 90
-    , motion =
-        Just
-            { speed = 0
-            , maxForwardSpeed = 80
-            , maxBackwardSpeed = 20
-            }
-    , physics =
-        Just
-            { forceForward = 2
-            , forceBackward = -1
-            , impacts = []
-            }
-    }
 
 
 applyMotionFunction : (Objects.Types.GameObject -> Float -> Float) -> Objects.Types.GameObject -> Float -> Objects.Types.Motion

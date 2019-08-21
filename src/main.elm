@@ -11,12 +11,16 @@ import Json.Decode exposing (..)
 import Map.Generator exposing (..)
 import Map.Variations.DustRace exposing (..)
 import Map.Variations.SummerBreeze exposing (..)
+import Objects.Cars.Ambulance exposing (..)
+import Objects.Cars.Police exposing (..)
+import Objects.Cars.Taxi exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
 import Time exposing (..)
 import Types exposing (Model, Msg(..), State(..))
 import Ui.Playground exposing (..)
+import Ui.Scenes.MainMenu.Actions exposing (..)
 import Ui.Scenes.MainMenu.View exposing (..)
 import Ui.Scenes.Manager exposing (..)
 
@@ -25,6 +29,7 @@ initialModel : Model
 initialModel =
     { state = Menu
     , frequence = 40
+    , availableCars = [ Objects.Cars.Taxi.model, Objects.Cars.Ambulance.model, Objects.Cars.Police.model ]
     , availableMaps = [ Map.Variations.DustRace.model, Map.Variations.SummerBreeze.model ]
     , map = Map.Variations.DustRace.model
     , myPlayer =
@@ -43,7 +48,7 @@ initialModel =
             , left = Control.Types.Nothing
             , right = Control.Types.Nothing
             }
-        , controlledObject = Objects.Manager.ambulance
+        , controlledObject = Objects.Cars.Taxi.model
         }
     , onlinePlayers = []
     , lab = 0
@@ -73,7 +78,10 @@ update msg model =
             Ui.Scenes.Manager.changeTo s model
 
         ChangeMap m ->
-            ( { model | map = m }, Cmd.none )
+            Ui.Scenes.MainMenu.Actions.changeMap model m
+
+        ChangeCar c ->
+            Ui.Scenes.MainMenu.Actions.changeCar model c
 
         _ ->
             ( model, Cmd.none )

@@ -1,28 +1,27 @@
-module Ui.Scenes.MainMenu.MapPicker exposing (view)
+module Ui.Scenes.MainMenu.CarPicker exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Map.Types exposing (..)
+import Objects.Types exposing (..)
 import Types exposing (..)
 
 
 view : Model -> List (Html Msg)
 view model =
-    renderMaps
-        model.availableMaps
-        model
+    renderCars model.availableCars model
 
 
-renderMaps : List Map.Types.Map -> Model -> List (Html Msg)
-renderMaps l model =
+renderCars : List Objects.Types.GameObject -> Model -> List (Html Msg)
+renderCars l model =
     let
-        renderMap : Map.Types.Map -> Html Msg
-        renderMap map =
+        renderCar : Objects.Types.GameObject -> Html Msg
+        renderCar car =
             let
                 checkSelection : List (Html.Attribute msg)
                 checkSelection =
-                    if map.meta.name == model.map.meta.name then
+                    if car.identifier == model.myPlayer.controlledObject.identifier then
                         [ style "background-color" "rgba(255,255,255, 0.4)" ]
 
                     else
@@ -39,14 +38,16 @@ renderMaps l model =
                  , style "margin" "10px"
                  , style "cursor" "pointer"
                  , onClick
-                    (ChangeMap
-                        map
+                    (ChangeCar
+                        car
                     )
                  ]
                     ++ checkSelection
                 )
-                [ div [ style "font-size" "20px" ] [ text map.meta.name ]
-                , div [] [ text map.meta.description ]
+                [ div [ style "font-size" "20px", style "display" "flex", style "justify-content" "space-between", style "width" "100%" ]
+                    [ div [] [ text car.identifier ]
+                    , Html.img [ Html.Attributes.src car.sprite, Html.Attributes.style "height" "25px" ] []
+                    ]
                 ]
     in
     case l of
@@ -54,4 +55,4 @@ renderMaps l model =
             []
 
         x :: xs ->
-            renderMap x :: renderMaps xs model
+            renderCar x :: renderCars xs model
