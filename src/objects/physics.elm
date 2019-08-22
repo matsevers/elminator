@@ -1,4 +1,4 @@
-module Objects.Physics exposing (bump, checkCollision, linear, slowDown, update)
+module Objects.Physics exposing (acceleration, addImpact, autoBrake, bump, checkCollision, counterforce, getDirectionFromGameObject, getDirectionFromImpact, overwriteBrake, overwriteSpeedLimits, restrictSpeed, runImpact, setSpeed, slowDown, update, updateImpacts)
 
 import Control.Types exposing (..)
 import List exposing (..)
@@ -185,76 +185,105 @@ checkCollision gO1 gO2 =
         Maybe.Nothing
 
 
-linear : Objects.Types.GameObject -> Float -> Float
-linear gO forceInput =
-    let
-        motion =
-            Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } gO.motion
 
-        physics =
-            Maybe.withDefault { forceForward = 0, forceBackward = 0, impacts = [] } gO.physics
-    in
-    if forceInput == 0 then
-        -- Auto Abbremsen
-        if motion.speed > 0 then
-            motion.speed + physics.forceBackward
+-- Speed functions
 
-        else if motion.speed < 0 then
-            motion.speed - physics.forceBackward
 
-        else
-            motion.speed
+acceleration : Float -> GameObject -> GameObject
+acceleration acc gO =
+    case gO.motion of
+        Just motion ->
+            restrictSpeed <| { gO | motion = Just { motion | speed = motion.speed + acc } }
 
-    else if forceInput > 0 then
-        -- Beschleunigen
-        if (motion.speed + forceInput) <= motion.maxForwardSpeed then
-            motion.speed + forceInput
+        Maybe.Nothing ->
+            gO
 
-        else
-            motion.maxForwardSpeed
 
-    else if forceInput < 0 then
-        -- Rückwarts / Bremsen
-        if (motion.speed + forceInput) >= -motion.maxBackwardSpeed then
-            motion.speed + forceInput
+autoBrake : Float -> GameObject -> GameObject
+autoBrake force gO =
+    if force == 0 then
+        case gO.motion of
+            Just motion ->
+                overwriteBrake ((motion.maxForwardSpeed + motion.maxBackwardSpeed) / 60) gO
 
-        else
-            -motion.maxBackwardSpeed
+            Maybe.Nothing ->
+                gO
 
     else
-        motion.speed
+        gO
+
+
+overwriteBrake : Float -> GameObject -> GameObject
+overwriteBrake bra gO =
+    case gO.motion of
+        Just motion ->
+            if (motion.speed - bra) > 0 then
+                setSpeed (motion.speed - bra) gO
+
+            else if (motion.speed + bra) < 0 then
+                setSpeed (motion.speed + bra) gO
+
+            else
+                setSpeed 0 gO
+
+        Maybe.Nothing ->
+            gO
+
+
+counterforce : Float -> GameObject -> GameObject
+counterforce force gO =
+    case gO.motion of
+        Just motion ->
+            -- brake if player triggers forward but car drives backward
+            if force >= 1 && motion.speed < 0 then
+                autoBrake 0 gO
+                -- brake if player triggers backward but car drives forward
+
+            else if force <= -1 && motion.speed > 0 then
+                autoBrake 0 gO
+
+            else
+                gO
+
+        Maybe.Nothing ->
+            gO
 
 
 
 -- Impact Function
 
 
-getForceFromImpact : Impact -> Float
-getForceFromImpact impact =
+getDirectionFromGameObject : GameObject -> Float
+getDirectionFromGameObject gO =
+    case gO.motion of
+        Just motion ->
+            if motion.speed > 0 then
+                1
+
+            else if motion.speed < 0 then
+                -1
+
+            else
+                0
+
+        Maybe.Nothing ->
+            0
+
+
+getDirectionFromImpact : Impact -> Float
+getDirectionFromImpact impact =
     case impact of
         Impact i ->
             case i.unmodifiedObject of
-                Just unmodified ->
-                    case unmodified.motion of
-                        Just motion ->
-                            if motion.speed > 0 then
-                                1
-
-                            else if motion.speed < 0 then
-                                -1
-
-                            else
-                                0
-
-                        Maybe.Nothing ->
-                            0
+                Just gameObject ->
+                    getDirectionFromGameObject gameObject
 
                 Maybe.Nothing ->
                     0
 
 
-updateSpeed : Float -> GameObject -> GameObject
-updateSpeed speed gO =
+setSpeed : Float -> GameObject -> GameObject
+setSpeed speed gO =
     case gO.motion of
         Just motion ->
             { gO | motion = Just { motion | speed = speed } }
@@ -268,13 +297,13 @@ overwriteSpeedLimits maxForwardSpeed maxBackwardSpeed gO =
     case gO.motion of
         Just motion ->
             if motion.speed > maxForwardSpeed then
-                updateSpeed maxForwardSpeed gO
+                setSpeed maxForwardSpeed gO
 
             else if motion.speed < -maxBackwardSpeed then
-                updateSpeed -maxBackwardSpeed gO
+                setSpeed -maxBackwardSpeed gO
 
             else
-                updateSpeed motion.speed gO
+                setSpeed motion.speed gO
 
         Maybe.Nothing ->
             gO
@@ -292,11 +321,11 @@ restrictSpeed gO =
 
 bump : Impact -> GameObject -> GameObject
 bump impact gO =
-    if getForceFromImpact impact > 0 then
-        overwriteSpeedLimits 20 20 <| updateSpeed -80 gO
+    if getDirectionFromImpact impact > 0 then
+        overwriteSpeedLimits 40 20 <| setSpeed -80 gO
 
-    else if getForceFromImpact impact < 0 then
-        overwriteSpeedLimits 20 20 <| updateSpeed 80 gO
+    else if getDirectionFromImpact impact < 0 then
+        overwriteSpeedLimits 20 20 <| setSpeed 80 gO
 
     else
         gO
@@ -304,13 +333,4 @@ bump impact gO =
 
 slowDown : Impact -> GameObject -> GameObject
 slowDown impact gO =
-    case gO.motion of
-        Just motion ->
-            if motion.speed > 20 then
-                { gO | motion = Just { motion | speed = motion.speed - 8 } }
-
-            else
-                { gO | motion = Just { motion | speed = motion.speed } }
-
-        Maybe.Nothing ->
-            gO
+    overwriteSpeedLimits 20 20 gO

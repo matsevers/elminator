@@ -141,8 +141,10 @@ update model =
                                             }
                                         )
                                     <|
-                                        Objects.Manager.motion (Just (applyMotionFunction linear gO (convertInputToForce listKeys))) <|
-                                            Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                                        counterforce (convertInputToForce listKeys) <|
+                                            autoBrake (convertInputToForce listKeys) <|
+                                                acceleration (convertInputToForce listKeys) <|
+                                                    Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
                             }
                     }
 

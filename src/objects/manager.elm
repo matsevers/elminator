@@ -1,4 +1,4 @@
-module Objects.Manager exposing (applyMotionFunction, motion, position, render, rotate)
+module Objects.Manager exposing (motion, position, render, rotate)
 
 import Control.Types exposing (..)
 import Html exposing (Html, div)
@@ -8,15 +8,6 @@ import Objects.Types exposing (..)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-
-
-applyMotionFunction : (Objects.Types.GameObject -> Float -> Float) -> Objects.Types.GameObject -> Float -> Objects.Types.Motion
-applyMotionFunction f gO forceInput =
-    let
-        m =
-            Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } gO.motion
-    in
-    { m | speed = f gO forceInput }
 
 
 rotate : Int -> GameObject -> GameObject
