@@ -16,10 +16,7 @@ type Msg
 
 type State
     = Menu
-    | Paused
     | Finished
-    | Stopping
-    | Starting
     | Running
 
 
