@@ -1,14 +1,14 @@
-module Objects.Cars.Taxi exposing (model)
+module Objects.Vehicle.Police exposing (model)
 
 import Objects.Types exposing (..)
 
 
 model : GameObject
 model =
-    { identifier = "Taxi"
+    { identifier = "Police"
     , size = { height = 32, width = 32 }
     , position = Just { x = 450, y = 100 }
-    , sprite = "assets/cars/taxi.png"
+    , sprite = "assets/cars/police.png"
     , collider =
         Just
             (Rect
@@ -27,7 +27,7 @@ model =
             }
     , physics =
         Just
-            { forceForward = 2
+            { forceForward = 3
             , forceBackward = -1
             , impacts = []
             }

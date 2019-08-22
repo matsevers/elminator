@@ -1,4 +1,4 @@
-module Map.Variations.SummerBreeze exposing (model)
+module Map.Track.SummerBreeze exposing (model)
 
 import Map.Generator exposing (..)
 import Map.Types exposing (..)

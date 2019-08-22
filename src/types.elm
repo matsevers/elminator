@@ -1,4 +1,4 @@
-module Types exposing (Model, Msg(..), State(..))
+module Types exposing (MainMenuMessage(..), Model, Msg(..), SceneMessage(..), State(..))
 
 import Control.Types exposing (..)
 import Map.Types exposing (..)
@@ -6,10 +6,10 @@ import Objects.Types exposing (..)
 
 
 type Msg
-    = KeyEvent KeyEvent Action
-    | ChangeScene State
-    | ChangeMap Map
-    | ChangeCar GameObject
+    = ChangeScene State
+    | MainMenu MainMenuMessage
+    | SceneManager SceneMessage
+    | Control Model KeyEvent Action
     | Tick
     | None
 
@@ -30,3 +30,16 @@ type alias Model =
     , onlinePlayers : List Player
     , lab : Int
     }
+
+
+
+-- SCENE MESSAGES
+
+
+type MainMenuMessage
+    = ChangeCar Model GameObject
+    | ChangeMap Model Map
+
+
+type SceneMessage
+    = ChangeTo Model State

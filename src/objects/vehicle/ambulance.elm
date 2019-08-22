@@ -1,4 +1,4 @@
-module Objects.Cars.Ambulance exposing (model)
+module Objects.Vehicle.Ambulance exposing (model)
 
 import Objects.Types exposing (..)
 

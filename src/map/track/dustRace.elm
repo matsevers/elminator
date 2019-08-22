@@ -1,4 +1,4 @@
-module Map.Variations.DustRace exposing (model)
+module Map.Track.DustRace exposing (model)
 
 import Map.Generator exposing (..)
 import Map.Types exposing (..)

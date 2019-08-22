@@ -69,8 +69,11 @@ view model =
             , Html.Attributes.style "border-width" "0px"
             , Html.Attributes.style "font-size" "20px"
             , onClick
-                (ChangeScene
-                    Running
+                (SceneManager
+                    (ChangeTo
+                        model
+                        Running
+                    )
                 )
             ]
             [ text "Start the engines" ]

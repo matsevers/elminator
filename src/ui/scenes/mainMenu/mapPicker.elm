@@ -39,8 +39,11 @@ renderMaps l model =
                  , style "margin" "10px"
                  , style "cursor" "pointer"
                  , onClick
-                    (ChangeMap
-                        map
+                    (MainMenu
+                        (ChangeMap
+                            model
+                            map
+                        )
                     )
                  ]
                     ++ checkSelection

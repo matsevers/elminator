@@ -3,25 +3,24 @@ module Main exposing (main)
 import Browser
 import Browser.Events exposing (..)
 import Control.Global exposing (..)
+import Control.Module exposing (..)
 import Control.Player exposing (..)
 import Control.Types exposing (..)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
+import List exposing (..)
 import Map.Generator exposing (..)
-import Map.Variations.DustRace exposing (..)
-import Map.Variations.SummerBreeze exposing (..)
-import Objects.Cars.Ambulance exposing (..)
-import Objects.Cars.Police exposing (..)
-import Objects.Cars.Taxi exposing (..)
+import Map.Track.Module exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
+import Objects.Vehicle.Module
 import Time exposing (..)
-import Types exposing (Model, Msg(..), State(..))
-import Ui.Scenes.MainMenu.Actions exposing (..)
+import Types exposing (..)
+import Ui.Scenes.MainMenu.Module exposing (..)
 import Ui.Scenes.MainMenu.View exposing (..)
-import Ui.Scenes.Manager exposing (..)
+import Ui.Scenes.Module exposing (..)
 import Ui.Scenes.Playground.View exposing (..)
 
 
@@ -29,9 +28,9 @@ initialModel : Model
 initialModel =
     { state = Menu
     , frequence = 40
-    , availableCars = [ Objects.Cars.Taxi.model, Objects.Cars.Ambulance.model, Objects.Cars.Police.model ]
-    , availableMaps = [ Map.Variations.DustRace.model, Map.Variations.SummerBreeze.model ]
-    , map = Map.Variations.DustRace.model
+    , availableCars = Objects.Vehicle.Module.vehicles
+    , availableMaps = Map.Track.Module.tracks
+    , map = Map.Track.Module.defaultTrack
     , myPlayer =
         { identifier = "blue"
         , name = "Player 1"
@@ -48,7 +47,7 @@ initialModel =
             , left = Control.Types.Nothing
             , right = Control.Types.Nothing
             }
-        , controlledObject = Objects.Cars.Taxi.model
+        , controlledObject = Objects.Vehicle.Module.defaultVehicle
         }
     , onlinePlayers = []
     , lab = 0
@@ -71,20 +70,17 @@ view model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        KeyEvent event action ->
-            Control.Player.applyInput model event action
-
         Tick ->
             ( Objects.Physics.update <| Control.Player.update model, Cmd.none )
 
-        ChangeScene s ->
-            Ui.Scenes.Manager.changeTo s model
+        Control _ event action ->
+            Control.Module.update event action model
 
-        ChangeMap m ->
-            Ui.Scenes.MainMenu.Actions.changeMap model m
+        MainMenu m ->
+            Ui.Scenes.MainMenu.Module.update m model
 
-        ChangeCar c ->
-            Ui.Scenes.MainMenu.Actions.changeCar model c
+        SceneManager m ->
+            Ui.Scenes.Module.update m model
 
         _ ->
             ( model, Cmd.none )
@@ -93,8 +89,8 @@ update msg model =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.batch
-        [ onKeyDown (Json.Decode.map (KeyEvent Pressed) keyDecoder)
-        , onKeyUp (Json.Decode.map (KeyEvent Released) keyDecoder)
+        [ onKeyDown (Json.Decode.map (Control model Pressed) keyDecoder)
+        , onKeyUp (Json.Decode.map (Control model Released) keyDecoder)
         , Time.every model.frequence (\_ -> Tick)
         ]
 

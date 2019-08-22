@@ -38,8 +38,11 @@ renderCars l model =
                  , style "margin" "10px"
                  , style "cursor" "pointer"
                  , onClick
-                    (ChangeCar
-                        car
+                    (MainMenu
+                        (ChangeCar
+                            model
+                            car
+                        )
                     )
                  ]
                     ++ checkSelection
