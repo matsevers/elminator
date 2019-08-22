@@ -19,10 +19,10 @@ import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
 import Time exposing (..)
 import Types exposing (Model, Msg(..), State(..))
-import Ui.Playground exposing (..)
 import Ui.Scenes.MainMenu.Actions exposing (..)
 import Ui.Scenes.MainMenu.View exposing (..)
 import Ui.Scenes.Manager exposing (..)
+import Ui.Scenes.Playground.View exposing (..)
 
 
 initialModel : Model
@@ -59,7 +59,10 @@ view : Model -> Html Msg
 view model =
     case model.state of
         Running ->
-            Ui.Playground.element model
+            Ui.Scenes.Playground.View.view model
+
+        Menu ->
+            Ui.Scenes.MainMenu.View.view model
 
         _ ->
             Ui.Scenes.MainMenu.View.view model

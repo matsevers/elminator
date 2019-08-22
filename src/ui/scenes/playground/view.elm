@@ -1,4 +1,4 @@
-module Ui.Playground exposing (element)
+module Ui.Scenes.Playground.View exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -8,11 +8,11 @@ import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
-import Ui.Cockpit exposing (..)
+import Ui.Scenes.Playground.Cockpit exposing (..)
 
 
-element : Model -> Html Msg
-element model =
+view : Model -> Html Msg
+view model =
     div
         [ Html.Attributes.style "height" "98vh"
         , Html.Attributes.style "background-color" "#141617"
@@ -35,7 +35,7 @@ element model =
                 , Html.Attributes.style "background-color" "rgb(32,32,32)"
                 ]
                 [ playground model
-                , Ui.Cockpit.element model
+                , Ui.Scenes.Playground.Cockpit.element model
                 ]
             , div
                 []

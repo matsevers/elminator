@@ -1,4 +1,4 @@
-module Ui.Speedometer exposing (element)
+module Ui.Scenes.Playground.Speedometer exposing (element)
 
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

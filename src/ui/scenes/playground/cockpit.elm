@@ -1,4 +1,4 @@
-module Ui.Cockpit exposing (element)
+module Ui.Scenes.Playground.Cockpit exposing (element)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -6,7 +6,7 @@ import Objects.Manager exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
-import Ui.Speedometer exposing (..)
+import Ui.Scenes.Playground.Speedometer exposing (..)
 
 
 element : Model -> Html Types.Msg
@@ -25,7 +25,7 @@ element model =
         ]
         [ div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "justify-content" "center", Html.Attributes.style "border-right" "2px solid #3f3d3d" ]
-            [ Ui.Speedometer.element (round motion.speed) 0 (round motion.maxForwardSpeed) ]
+            [ Ui.Scenes.Playground.Speedometer.element (round motion.speed) 0 (round motion.maxForwardSpeed) ]
         , div
             [ Html.Attributes.style "flex" "1", Html.Attributes.style "display" "flex", Html.Attributes.style "border-right" "2px solid #3f3d3d", Html.Attributes.style "justify-content" "center" ]
             [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "261px", Html.Attributes.style "height" "51px" ] [] ]
