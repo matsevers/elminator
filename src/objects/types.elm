@@ -46,7 +46,8 @@ type Impact
         { trigger : String
         , overrideBackgroundImpact : Bool
         , duration : Float
-        , function : GameObject -> GameObject
+        , function : Maybe (Impact -> GameObject -> GameObject)
+        , unmodifiedObject : Maybe GameObject
         }
 
 

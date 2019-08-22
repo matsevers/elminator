@@ -22,7 +22,8 @@ straight =
                             { trigger = "road"
                             , duration = 0
                             , overrideBackgroundImpact = True
-                            , function = identity
+                            , function = Maybe.Nothing
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -51,7 +52,8 @@ curveTopRight =
                             { trigger = "road"
                             , duration = 0
                             , overrideBackgroundImpact = True
-                            , function = identity
+                            , function = Maybe.Nothing
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }

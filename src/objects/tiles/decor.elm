@@ -62,7 +62,8 @@ bush1 =
                             { trigger = "Bush1"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -91,7 +92,8 @@ bush2 =
                             { trigger = "Bush2"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -120,7 +122,8 @@ rock1 =
                             { trigger = "Rock1"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -149,7 +152,8 @@ rock2 =
                             { trigger = "Rock2"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -178,7 +182,8 @@ tree1 =
                             { trigger = "Tree1"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -207,7 +212,8 @@ tree2 =
                             { trigger = "Tree2"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Objects.Physics.bump
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }

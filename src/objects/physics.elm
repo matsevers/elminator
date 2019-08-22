@@ -55,13 +55,20 @@ addImpact l gO =
 
         addImpactHelper : Physics -> Maybe Collider -> Physics
         addImpactHelper physics collider =
+            let
+                updateUnmodifiedGameobject : Impact -> Impact
+                updateUnmodifiedGameobject impact =
+                    case impact of
+                        Impact i ->
+                            Impact { i | unmodifiedObject = Just gO }
+            in
             case collider of
                 Just c ->
                     case c of
                         Rect r ->
                             case r.impactFunction of
                                 Just impact ->
-                                    { physics | impacts = checkToRemoveBackgroundImpact <| impact :: physics.impacts }
+                                    { physics | impacts = checkToRemoveBackgroundImpact <| (updateUnmodifiedGameobject impact :: physics.impacts) }
 
                                 Maybe.Nothing ->
                                     physics
@@ -121,7 +128,12 @@ runImpact gO =
                 x :: xs ->
                     case x of
                         Impact impact ->
-                            iterateThroughImpact xs (impact.function gameObject)
+                            case impact.function of
+                                Just f ->
+                                    iterateThroughImpact xs (f (Impact impact) gameObject)
+
+                                Maybe.Nothing ->
+                                    gameObject
 
                 [] ->
                     gameObject
@@ -213,18 +225,85 @@ linear gO forceInput =
         motion.speed
 
 
-bump : GameObject -> GameObject
-bump gO =
+
+-- Impact Function
+
+
+getForceFromImpact : Impact -> Float
+getForceFromImpact impact =
+    case impact of
+        Impact i ->
+            case i.unmodifiedObject of
+                Just unmodified ->
+                    case unmodified.motion of
+                        Just motion ->
+                            if motion.speed > 0 then
+                                1
+
+                            else if motion.speed < 0 then
+                                -1
+
+                            else
+                                0
+
+                        Maybe.Nothing ->
+                            0
+
+                Maybe.Nothing ->
+                    0
+
+
+updateSpeed : Float -> GameObject -> GameObject
+updateSpeed speed gO =
     case gO.motion of
         Just motion ->
-            { gO | motion = Just { motion | speed = linear gO -motion.maxForwardSpeed } }
+            { gO | motion = Just { motion | speed = speed } }
 
         Maybe.Nothing ->
             gO
 
 
-slowDown : GameObject -> GameObject
-slowDown gO =
+overwriteSpeedLimits : Float -> Float -> GameObject -> GameObject
+overwriteSpeedLimits maxForwardSpeed maxBackwardSpeed gO =
+    case gO.motion of
+        Just motion ->
+            if motion.speed > maxForwardSpeed then
+                updateSpeed maxForwardSpeed gO
+
+            else if motion.speed < -maxBackwardSpeed then
+                updateSpeed -maxBackwardSpeed gO
+
+            else
+                updateSpeed motion.speed gO
+
+        Maybe.Nothing ->
+            gO
+
+
+restrictSpeed : GameObject -> GameObject
+restrictSpeed gO =
+    case gO.motion of
+        Just motion ->
+            overwriteSpeedLimits motion.maxForwardSpeed motion.maxBackwardSpeed gO
+
+        Maybe.Nothing ->
+            gO
+
+
+bump : Impact -> GameObject -> GameObject
+bump impact gO =
+    if getForceFromImpact impact > 0 then
+        overwriteSpeedLimits 20 20 <| updateSpeed -80 gO
+
+    else if getForceFromImpact impact < 0 then
+        overwriteSpeedLimits 20 20 <| updateSpeed 80 gO
+
+    else
+        gO
+
+
+slowDown : Impact -> GameObject -> GameObject
+slowDown impact gO =
     case gO.motion of
         Just motion ->
             if motion.speed > 20 then

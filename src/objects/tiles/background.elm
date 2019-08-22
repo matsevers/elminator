@@ -22,7 +22,8 @@ dust =
                             { trigger = "background"
                             , duration = 0
                             , overrideBackgroundImpact = False
-                            , function = Objects.Physics.slowDown
+                            , function = Just Objects.Physics.slowDown
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
@@ -51,7 +52,8 @@ grass =
                             { trigger = "background"
                             , duration = 0
                             , overrideBackgroundImpact = False
-                            , function = Objects.Physics.slowDown
+                            , function = Just Objects.Physics.slowDown
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
                 }
