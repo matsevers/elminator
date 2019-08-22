@@ -88,19 +88,25 @@ addImpact l gO =
 updateImpacts : Model -> GameObject -> GameObject
 updateImpacts model gO =
     let
-        updateImpact : Impact -> Impact
-        updateImpact impact =
+        reduceDuration : Impact -> Impact
+        reduceDuration impact =
             case impact of
                 Impact i ->
-                    if i.duration > 0 + model.frequence then
+                    if i.duration > 0 then
                         Impact { i | duration = i.duration - model.frequence }
 
                     else
                         impact
+
+        removeExpiredImpacts : Impact -> Bool
+        removeExpiredImpacts impact =
+            case impact of
+                Impact i ->
+                    i.duration > 0
     in
     case gO.physics of
         Just p ->
-            { gO | physics = Just { p | impacts = map updateImpact p.impacts } }
+            { gO | physics = Just { p | impacts = filter removeExpiredImpacts (map reduceDuration p.impacts) } }
 
         Maybe.Nothing ->
             gO

@@ -60,9 +60,3 @@ type alias GameObject =
     , motion : Maybe Motion
     , physics : Maybe Physics
     }
-
-
-type alias Trigger =
-    { identifier : String
-    , function : Model -> Model
-    }
