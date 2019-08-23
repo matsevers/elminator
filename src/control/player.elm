@@ -8,26 +8,6 @@ import Objects.Types exposing (..)
 import Types exposing (..)
 
 
-forceForward : Float
-forceForward =
-    2
-
-
-forceBackward : Float
-forceBackward =
-    -1
-
-
-forceBrake : Float
-forceBrake =
-    -10
-
-
-angle : Int
-angle =
-    6
-
-
 applyInput : Model -> KeyEvent -> Action -> ( Model, Cmd Msg )
 applyInput model event action =
     let
@@ -80,6 +60,10 @@ applyInput model event action =
 
 convertInputToAngle : List Action -> Int
 convertInputToAngle l =
+    let
+        angle =
+            5
+    in
     case l of
         x :: xs ->
             case x of
@@ -105,10 +89,10 @@ convertInputToForce l =
         x :: xs ->
             case x of
                 Forward ->
-                    forceForward + convertInputToForce xs
+                    2 + convertInputToForce xs
 
                 Backward ->
-                    forceBackward + convertInputToForce xs
+                    -1 + convertInputToForce xs
 
                 _ ->
                     0 + convertInputToForce xs

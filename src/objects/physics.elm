@@ -213,6 +213,27 @@ autoBrake force gO =
         gO
 
 
+brakeTo : Float -> GameObject -> GameObject
+brakeTo limit gO =
+    case gO.motion of
+        Just motion ->
+            let
+                brakeFactor =
+                    motion.speed / 7.5
+            in
+            if motion.speed >= limit + brakeFactor then
+                setSpeed (motion.speed - brakeFactor) gO
+
+            else if motion.speed >= limit then
+                setSpeed limit gO
+
+            else
+                gO
+
+        Maybe.Nothing ->
+            gO
+
+
 overwriteBrake : Float -> GameObject -> GameObject
 overwriteBrake bra gO =
     case gO.motion of
@@ -333,4 +354,5 @@ bump impact gO =
 
 slowDown : Impact -> GameObject -> GameObject
 slowDown impact gO =
-    overwriteSpeedLimits 20 20 gO
+    -- overwriteSpeedLimits 20 20 gO
+    brakeTo 20 gO
