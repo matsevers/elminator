@@ -1,38 +1,9 @@
-module Objects.Tiles.Decor exposing (bush1, bush2, finishLine, platformBlue, rock1, rock2, startLine, tree1, tree2)
+module Objects.Tiles.Decor exposing (bush1, bush2, platformBlue, rock1, rock2, tree1, tree2)
 
 import Objects.Physics exposing (..)
 import Objects.Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
-
-
-startLine : GameObject
-startLine =
-    { identifier = "StartLine"
-    , kind = Objects.Types.Decor
-    , position = Nothing
-    , collider = Nothing
-    , sprite = ""
-    , size = { height = 20, width = 64 }
-    , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
-    }
-
-
-finishLine : GameObject
-finishLine =
-    { identifier = "FinishLine"
-    , kind = Objects.Types.Decor
-    , position = Nothing
-    , collider =
-        Nothing
-    , sprite = "assets/decor/Finish.png"
-    , size = { height = 64, width = 20 }
-    , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
-    }
 
 
 platformBlue : GameObject

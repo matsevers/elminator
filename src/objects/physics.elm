@@ -16,13 +16,10 @@ update model =
             model.myPlayer.controlledObject
 
         objectList =
-            model.map.gameObjects.startLine
-                :: model.map.gameObjects.finishLine
-                :: (model.map.gameObjects.decor
-                        ++ model.map.gameObjects.roads
-                        ++ model.map.gameObjects.trigger
-                        ++ model.map.gameObjects.background
-                   )
+            model.map.gameObjects.trigger
+                ++ model.map.gameObjects.decor
+                ++ model.map.gameObjects.roads
+                ++ model.map.gameObjects.background
     in
     { model
         | myPlayer =

@@ -4,6 +4,7 @@ import Map.Generator exposing (..)
 import Map.Types exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Tiles.Background exposing (..)
+import Objects.Tiles.Checkpoint exposing (..)
 import Objects.Tiles.Decor exposing (..)
 import Objects.Tiles.Road exposing (..)
 import Objects.Types exposing (..)
@@ -41,9 +42,7 @@ init =
     , gameObjects =
         { background = []
         , roads = roads
-        , trigger = []
-        , startLine = startLine
-        , finishLine = finishLine
+        , trigger = startLine :: finishLine :: []
         , decor = decor
         }
     }
@@ -56,12 +55,12 @@ background =
 
 startLine : GameObject
 startLine =
-    Objects.Manager.position (Just { x = 512, y = 84 }) (Objects.Manager.rotate 90 Objects.Tiles.Decor.startLine)
+    Objects.Manager.position (Just { x = 512, y = 65 }) (Objects.Manager.rotate 90 Objects.Tiles.Checkpoint.startLine)
 
 
 finishLine : GameObject
 finishLine =
-    Objects.Manager.position (Just { x = 512, y = 65 }) (Objects.Manager.rotate 0 Objects.Tiles.Decor.finishLine)
+    Objects.Manager.position (Just { x = 512, y = 65 }) (Objects.Manager.rotate 0 Objects.Tiles.Checkpoint.finishLine)
 
 
 decor : List GameObject
