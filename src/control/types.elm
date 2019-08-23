@@ -42,4 +42,6 @@ type alias Player =
         , right : Action
         }
     , controlledObject : GameObject
+    , requiredCheckPoints : List GameObject
+    , snatchedCheckPoints : List GameObject
     }

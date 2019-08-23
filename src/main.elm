@@ -48,6 +48,8 @@ initialModel =
             , right = Control.Types.Nothing
             }
         , controlledObject = Objects.Vehicle.Module.defaultVehicle
+        , requiredCheckPoints = []
+        , snatchedCheckPoints = []
         }
     , onlinePlayers = []
     , lab = 0
