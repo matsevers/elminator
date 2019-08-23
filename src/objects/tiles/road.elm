@@ -9,6 +9,7 @@ import Svg.Attributes exposing (..)
 straight : GameObject
 straight =
     { identifier = "RoadStraight"
+    , kind = Objects.Types.Road
     , position = Nothing
     , collider =
         Just
@@ -39,6 +40,7 @@ straight =
 curveTopRight : GameObject
 curveTopRight =
     { identifier = "RoadStraight"
+    , kind = Objects.Types.Road
     , position = Nothing
     , collider =
         Just

@@ -1,4 +1,13 @@
-module Objects.Types exposing (Collider(..), GameObject, Impact(..), Motion, Physics, Position, Size)
+module Objects.Types exposing (Collider(..), GameObject, Impact(..), Motion, ObjectType(..), Physics, Position, Size)
+
+
+type ObjectType
+    = Event
+    | Checkpoint
+    | Car
+    | Background
+    | Road
+    | Decor
 
 
 type alias Position =
@@ -53,6 +62,7 @@ type Impact
 
 type alias GameObject =
     { identifier : String
+    , kind : ObjectType
     , size : Size
     , position : Maybe Position
     , sprite : String

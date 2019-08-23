@@ -6,6 +6,7 @@ import Objects.Types exposing (..)
 model : GameObject
 model =
     { identifier = "Ambulance"
+    , kind = Objects.Types.Car
     , size = { height = 32, width = 32 }
     , position = Just { x = 450, y = 100 }
     , sprite = "assets/cars/ambulance.png"

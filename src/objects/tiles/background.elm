@@ -9,6 +9,7 @@ import Svg.Attributes exposing (..)
 dust : GameObject
 dust =
     { identifier = "BackgroundDust"
+    , kind = Objects.Types.Background
     , position = Nothing
     , collider =
         Just
@@ -39,6 +40,7 @@ dust =
 grass : GameObject
 grass =
     { identifier = "BackgroundGrass"
+    , kind = Objects.Types.Background
     , position = Nothing
     , collider =
         Just

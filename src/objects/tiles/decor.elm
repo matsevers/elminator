@@ -9,6 +9,7 @@ import Svg.Attributes exposing (..)
 startLine : GameObject
 startLine =
     { identifier = "StartLine"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider = Nothing
     , sprite = ""
@@ -22,6 +23,7 @@ startLine =
 finishLine : GameObject
 finishLine =
     { identifier = "FinishLine"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Nothing
@@ -36,6 +38,7 @@ finishLine =
 platformBlue : GameObject
 platformBlue =
     { identifier = "PlatformBlue"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider = Nothing
     , sprite = "assets/decor/Pavilion_01.png"
@@ -49,6 +52,7 @@ platformBlue =
 bush1 : GameObject
 bush1 =
     { identifier = "Bush1"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
@@ -79,6 +83,7 @@ bush1 =
 bush2 : GameObject
 bush2 =
     { identifier = "Bush2"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
@@ -109,6 +114,7 @@ bush2 =
 rock1 : GameObject
 rock1 =
     { identifier = "Rock1"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
@@ -139,6 +145,7 @@ rock1 =
 rock2 : GameObject
 rock2 =
     { identifier = "Rock2"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
@@ -169,6 +176,7 @@ rock2 =
 tree1 : GameObject
 tree1 =
     { identifier = "Tree1"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
@@ -199,6 +207,7 @@ tree1 =
 tree2 : GameObject
 tree2 =
     { identifier = "Tree2"
+    , kind = Objects.Types.Decor
     , position = Nothing
     , collider =
         Just
