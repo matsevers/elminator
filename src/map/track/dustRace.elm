@@ -59,7 +59,7 @@ startLine =
 
 finishLine : GameObject
 finishLine =
-    Objects.Manager.position (Just { x = 448, y = 65 }) (Objects.Manager.rotate 0 Objects.Tiles.Checkpoint.finishLine)
+    Objects.Manager.position (Just { x = 492, y = 65 }) (Objects.Manager.rotate 0 Objects.Tiles.Checkpoint.finishLine)
 
 
 checkBox : List GameObject

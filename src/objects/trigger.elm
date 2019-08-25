@@ -58,9 +58,9 @@ endCheckpoint gO m =
                 x :: xs -> (approvedHelper x catchedCheckpoints) && approved xs
                 [] -> True
     in
-    --if (Debug.log "finish " (approved neededCheckpoints)) then
-    if (approved neededCheckpoints) then
-        {m | myPlayer = { myPlayer | currentLab = myPlayer.currentLab +1 }}
+    if (Debug.log "finish " (approved neededCheckpoints)) then
+    --if (approved neededCheckpoints) then
+        {m | myPlayer = { myPlayer | currentLab = myPlayer.currentLab +1, catchedCheckpoints = [] }}
     else
         m
      
