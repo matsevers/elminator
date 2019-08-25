@@ -64,12 +64,12 @@ finishLine =
 
 checkBox : List GameObject
 checkBox =
-    [ Objects.Manager.position (Just { x = 896, y = 64 }) (Objects.Tiles.Checkpoint.checkBox "1") 
-    ,Objects.Manager.position (Just { x = 896, y = 448 }) (Objects.Tiles.Checkpoint.checkBox "2") 
-    ,Objects.Manager.position (Just { x = 512, y = 448 }) (Objects.Tiles.Checkpoint.checkBox "3") 
-    ,Objects.Manager.position (Just { x = 512, y = 256 }) (Objects.Tiles.Checkpoint.checkBox "4") 
-    ,Objects.Manager.position (Just { x = 64, y = 320 }) (Objects.Tiles.Checkpoint.checkBox "5") 
-    ,Objects.Manager.position (Just { x = 64, y = 64 }) (Objects.Tiles.Checkpoint.checkBox "6") 
+    [ Objects.Manager.position (Just { x = 896, y = 64 }) (Objects.Tiles.Checkpoint.checkBox "1")
+    , Objects.Manager.position (Just { x = 896, y = 448 }) (Objects.Tiles.Checkpoint.checkBox "2")
+    , Objects.Manager.position (Just { x = 512, y = 448 }) (Objects.Tiles.Checkpoint.checkBox "3")
+    , Objects.Manager.position (Just { x = 512, y = 256 }) (Objects.Tiles.Checkpoint.checkBox "4")
+    , Objects.Manager.position (Just { x = 64, y = 320 }) (Objects.Tiles.Checkpoint.checkBox "5")
+    , Objects.Manager.position (Just { x = 64, y = 64 }) (Objects.Tiles.Checkpoint.checkBox "6")
     ]
 
 

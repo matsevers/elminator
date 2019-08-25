@@ -1,6 +1,4 @@
-module Types exposing (..)
-
-
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, Position, SceneMessage(..), Size, State(..))
 
 
 type Msg
@@ -28,6 +26,7 @@ type alias Model =
     , onlinePlayers : List Player
     , lab : Int
     }
+
 
 
 -- Objects Types
@@ -94,6 +93,7 @@ type alias GameObject =
     , kind : ObjectType
     , size : Size
     , position : Maybe Position
+    , spriteMinimap : Maybe String
     , sprite : String
     , collider : Maybe Collider
     , rotate : Int
@@ -101,7 +101,10 @@ type alias GameObject =
     , physics : Maybe Physics
     }
 
+
+
 -- Control Types
+
 
 type Keys
     = W
@@ -126,8 +129,7 @@ type KeyEvent
 
 
 type alias Player =
-    { name : String
-    , identifier : String
+    { identifier : String
     , assignedKeys :
         { forward : Keys
         , backward : Keys
@@ -144,10 +146,18 @@ type alias Player =
     , currentLab : Int
     , controlledObject : GameObject
     , catchedCheckpoints : List GameObject
+    , label : Maybe Label
+
     }
 
 
--- Map Types 
+type alias Label =
+    { text : String, color : String, size : Int, visible : Bool }
+
+
+
+-- Map Types
+
 
 type alias Map =
     { meta :
@@ -174,6 +184,7 @@ type alias Map =
     }
 
 
+
 -- SCENE MESSAGES
 
 
@@ -184,4 +195,3 @@ type MainMenuMessage
 
 type SceneMessage
     = ChangeTo Model State
-

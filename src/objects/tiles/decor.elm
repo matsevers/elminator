@@ -1,9 +1,9 @@
 module Objects.Tiles.Decor exposing (bush1, bush2, platformBlue, rock1, rock2, tree1, tree2)
 
 import Objects.Physics exposing (..)
-import Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Types exposing (..)
 
 
 platformBlue : GameObject
@@ -13,6 +13,7 @@ platformBlue =
     , position = Maybe.Nothing
     , collider = Maybe.Nothing
     , sprite = "assets/decor/Pavilion_01.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 128 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -37,14 +38,15 @@ bush1 =
                             { identifier = "Bush1"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Just Objects.Physics.bump                            
-                            , unmodifiedObject = Maybe.Nothing                            
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/decor/Bush_01.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -69,14 +71,15 @@ bush2 =
                             { identifier = "Bush2"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Just Objects.Physics.bump                            
-                            , unmodifiedObject = Maybe.Nothing                            
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/decor/Bush_02.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -109,6 +112,7 @@ rock1 =
                 }
             )
     , sprite = "assets/decor/Rock_01.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 32, width = 32 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -137,10 +141,11 @@ rock2 =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/decor/Rock_02.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 32, width = 32 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -169,10 +174,11 @@ tree1 =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/decor/Tree_01.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -201,10 +207,11 @@ tree2 =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/decor/Tree_02.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing

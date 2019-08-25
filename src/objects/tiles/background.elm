@@ -1,9 +1,9 @@
 module Objects.Tiles.Background exposing (dust, grass)
 
 import Objects.Physics exposing (..)
-import Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Types exposing (..)
 
 
 dust : GameObject
@@ -27,10 +27,11 @@ dust =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/background.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -59,10 +60,11 @@ grass =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing        
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = "assets/backgroundGrass.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing

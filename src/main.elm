@@ -31,7 +31,13 @@ initialModel =
     , map = Map.Track.Module.defaultTrack
     , myPlayer =
         { identifier = "blue"
-        , name = "Player 1"
+        , label =
+            Just
+                { text = "Player 1"
+                , color = "#E359E4"
+                , size = 50
+                , visible = True
+                }
         , assignedKeys =
             { forward = Types.W
             , backward = Types.S
