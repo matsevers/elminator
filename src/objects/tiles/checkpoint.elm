@@ -25,7 +25,7 @@ startLine =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Just Objects.Trigger.catchCheckpoint
+                , triggerFunction = Just Objects.Trigger.startCheckpoint
                 }
             )
     , sprite = ""
@@ -41,7 +41,24 @@ finishLine =
     { identifier = "FinishLine"
     , kind = Types.Trigger
     , position = Maybe.Nothing
-    , collider = Maybe.Nothing
+    , collider = Just
+            (Rect
+                { height = 64
+                , width = 20
+                , position = { x = 0, y = 0 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { identifier = "StartLine"
+                            , duration = 100
+                            , overrideBackgroundImpact = True
+                            , function = Maybe.Nothing
+                            , unmodifiedObject = Maybe.Nothing
+                            }
+                        )
+                , triggerFunction = Just Objects.Trigger.catchCheckpoint
+                }
+            )
     , sprite = "assets/decor/Finish.png"
     , size = { height = 64, width = 20 }
     , rotate = 0
@@ -54,7 +71,24 @@ checkBox identifier =
     { identifier = "checkbox-"++identifier
     , kind = Types.Trigger
     , position = Maybe.Nothing
-    , collider = Maybe.Nothing
+    , collider = Just
+            (Rect
+                { height = 64
+                , width = 20
+                , position = { x = 0, y = 0 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { identifier = "StartLine"
+                            , duration = 100
+                            , overrideBackgroundImpact = True
+                            , function = Maybe.Nothing
+                            , unmodifiedObject = Maybe.Nothing
+                            }
+                        )
+                , triggerFunction = Just Objects.Trigger.catchCheckpoint
+                }
+            )
     , sprite = "assets/decor/checkbox.png"
     , size = { height = 64, width = 64 }
     , rotate = 0

@@ -75,11 +75,7 @@ type Collider
         , impactFunction : Maybe Impact
         , triggerFunction : Maybe (GameObject -> Model -> Model)
         }
-    | Circle
-        { radiant : Int
-        , position : Position
-        , impactFunction : Maybe Impact
-        }
+    | MoreFollow
 
 
 type Impact
