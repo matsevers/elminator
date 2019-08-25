@@ -3,10 +3,10 @@ module Objects.Manager exposing (motion, position, render, rotate)
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
 import Objects.Physics exposing (..)
-import Types exposing (..)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Types exposing (..)
 
 
 rotate : Int -> GameObject -> GameObject
@@ -33,8 +33,30 @@ collisionDetected gO1 gO2 =
         "red"
 
 
-render : List GameObject -> Player -> List (Svg msg)
-render l player =
+render : List GameObject -> Player -> Bool -> Bool -> List (Svg msg)
+render l player minimapMode debug =
+    let
+        getSprite : GameObject -> String
+        getSprite gO =
+            if minimapMode then
+                case gO.spriteMinimap of
+                    Just a ->
+                        a
+
+                    _ ->
+                        ""
+
+            else
+                gO.sprite
+
+        getCollider : GameObject -> Maybe GameObject
+        getCollider gO =
+            if debug then
+                Just gO
+
+            else
+                Maybe.Nothing
+    in
     case l of
         [] ->
             []
@@ -42,11 +64,11 @@ render l player =
         x :: xs ->
             case x.position of
                 Maybe.Nothing ->
-                    render xs player
+                    render xs player minimapMode debug
 
                 Just posX ->
                     [ Svg.image
-                        [ Svg.Attributes.xlinkHref x.sprite
+                        [ Svg.Attributes.xlinkHref (getSprite x)
                         , Svg.Attributes.width (String.fromInt x.size.width)
                         , Svg.Attributes.height (String.fromInt x.size.height)
                         , Svg.Attributes.x (String.fromInt posX.x)
@@ -63,30 +85,35 @@ render l player =
                         ]
                         []
                     ]
-                        ++ renderCollider x player.controlledObject
-                        ++ render xs player
+                        ++ renderCollider (getCollider x) player.controlledObject
+                        ++ render xs player minimapMode debug
 
 
-renderCollider : GameObject -> GameObject -> List (Svg msg)
-renderCollider gO player =
-    case gO.position of
-        Just p ->
-            case gO.collider of
-                Just c ->
-                    case c of
-                        Rect r ->
-                            [ Svg.rect
-                                [ Svg.Attributes.width (String.fromInt r.width)
-                                , Svg.Attributes.height (String.fromInt r.height)
-                                , Svg.Attributes.x (String.fromInt (p.x + r.position.x))
-                                , Svg.Attributes.y (String.fromInt (p.y + r.position.y))
-                                , Svg.Attributes.stroke (collisionDetected player gO)
-                                , Svg.Attributes.fillOpacity "0"
-                                ]
-                                []
-                            ]
+renderCollider : Maybe GameObject -> GameObject -> List (Svg msg)
+renderCollider g player =
+    case g of
+        Just gO ->
+            case gO.position of
+                Just p ->
+                    case gO.collider of
+                        Just c ->
+                            case c of
+                                Rect r ->
+                                    [ Svg.rect
+                                        [ Svg.Attributes.width (String.fromInt r.width)
+                                        , Svg.Attributes.height (String.fromInt r.height)
+                                        , Svg.Attributes.x (String.fromInt (p.x + r.position.x))
+                                        , Svg.Attributes.y (String.fromInt (p.y + r.position.y))
+                                        , Svg.Attributes.stroke (collisionDetected player gO)
+                                        , Svg.Attributes.fillOpacity "0"
+                                        ]
+                                        []
+                                    ]
 
-                        _ ->
+                                _ ->
+                                    []
+
+                        Maybe.Nothing ->
                             []
 
                 Maybe.Nothing ->

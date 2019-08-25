@@ -10,6 +10,7 @@ model =
     , size = { height = 32, width = 32 }
     , position = Just { x = 450, y = 100 }
     , sprite = "assets/cars/police.png"
+    , spriteMinimap = Just "assets/cars/police.png"
     , collider =
         Just
             (Rect

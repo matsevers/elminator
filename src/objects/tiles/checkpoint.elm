@@ -1,4 +1,4 @@
-module Objects.Tiles.Checkpoint exposing (..)
+module Objects.Tiles.Checkpoint exposing (checkBox, finishLine, startLine)
 
 import Types exposing (..)
 
@@ -28,6 +28,7 @@ startLine =
                 }
             )
     , sprite = ""
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 20 }
     , rotate = 0
     , motion = Maybe.Nothing
@@ -42,19 +43,22 @@ finishLine =
     , position = Maybe.Nothing
     , collider = Maybe.Nothing
     , sprite = "assets/decor/Finish.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 20 }
     , rotate = 0
     , motion = Maybe.Nothing
     , physics = Maybe.Nothing
     }
 
+
 checkBox : String -> GameObject
 checkBox identifier =
-    { identifier = "checkbox-"++identifier
+    { identifier = "checkbox-" ++ identifier
     , kind = Types.Checkpoint
     , position = Maybe.Nothing
     , collider = Maybe.Nothing
     , sprite = "assets/decor/checkbox.png"
+    , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0
     , motion = Maybe.Nothing

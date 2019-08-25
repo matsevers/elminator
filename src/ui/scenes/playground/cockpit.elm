@@ -9,6 +9,14 @@ import Types exposing (..)
 import Ui.Scenes.Playground.Speedometer exposing (..)
 
 
+minimapMode =
+    True
+
+
+showCollider =
+    False
+
+
 element : Model -> Html Types.Msg
 element model =
     let
@@ -46,5 +54,5 @@ element model =
                         )
                 )
             ]
-            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
+            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider)
         ]

@@ -18,6 +18,14 @@ heightSvg =
     500
 
 
+minimapMode =
+    False
+
+
+showCollider =
+    True
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -84,7 +92,7 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
+                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider)
 
         Maybe.Nothing ->
             div [] []
