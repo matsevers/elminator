@@ -26,7 +26,7 @@ motion m gO =
 
 collisionDetected : GameObject -> GameObject -> String
 collisionDetected gO1 gO2 =
-    if not (checkCollision gO1 gO2 == Maybe.Nothing) then
+    if not ((checkCollision gO1 [gO2]) == [gO2]) then
         "green"
 
     else

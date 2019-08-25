@@ -7,7 +7,7 @@ import Objects.Trigger exposing (..)
 startLine : GameObject
 startLine =
     { identifier = "StartLine"
-    , kind = Types.Checkpoint
+    , kind = Types.Trigger
     , position = Maybe.Nothing
     , collider =
         Just
@@ -39,7 +39,7 @@ startLine =
 finishLine : GameObject
 finishLine =
     { identifier = "FinishLine"
-    , kind = Types.Checkpoint
+    , kind = Types.Trigger
     , position = Maybe.Nothing
     , collider = Maybe.Nothing
     , sprite = "assets/decor/Finish.png"
@@ -52,7 +52,7 @@ finishLine =
 checkBox : String -> GameObject
 checkBox identifier =
     { identifier = "checkbox-"++identifier
-    , kind = Types.Checkpoint
+    , kind = Types.Trigger
     , position = Maybe.Nothing
     , collider = Maybe.Nothing
     , sprite = "assets/decor/checkbox.png"

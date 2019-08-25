@@ -3,8 +3,8 @@ module Objects.Trigger exposing (..)
 import Types exposing (..)
 
 
-handleTrigger : (GameObject -> Model -> Model) -> GameObject -> Model -> Model
-handleTrigger f =
+runTrigger : (GameObject -> Model -> Model) -> GameObject -> Model -> Model
+runTrigger f =
     f
 
 

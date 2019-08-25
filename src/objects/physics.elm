@@ -1,4 +1,4 @@
-module Objects.Physics exposing (acceleration, addImpact, autoBrake, bump, checkCollision, counterforce, getDirectionFromGameObject, getDirectionFromImpact, overwriteBrake, overwriteSpeedLimits, restrictSpeed, runImpact, setSpeed, slowDown, update, updateImpacts)
+module Objects.Physics exposing (..)
 
 import List exposing (..)
 import Types exposing (..)
@@ -18,6 +18,9 @@ update model =
                 ++ model.map.gameObjects.decor
                 ++ model.map.gameObjects.roads
                 ++ model.map.gameObjects.background
+        
+        approvedCollision = { trigger = (checkCollision controlledObject model.map.gameObjects.trigger) ,impacts = (checkCollision controlledObject objectList)}
+
     in
     { model
         | myPlayer =
@@ -25,9 +28,64 @@ update model =
                 | controlledObject =
                     updateImpacts model <|
                         runImpact <|
-                            addImpact objectList controlledObject
+                            addImpact approvedCollision.impacts controlledObject
             }
     }
+
+checkCollision : GameObject -> List (GameObject) -> List (GameObject)
+checkCollision gO l =
+    let
+        helper : GameObject -> GameObject -> Maybe GameObject
+        helper gO1 gO2 =
+            if not (gO1.identifier == gO2.identifier) then
+                case ( gO1.collider, gO2.collider ) of
+                    ( Just c1, Just c2 ) ->
+                        case ( gO1.position, gO2.position ) of
+                            ( Just p1, Just p2 ) ->
+                                case ( c1, c2 ) of
+                                    ( Rect r1, Rect r2 ) ->
+                                        if
+                                            not
+                                                ((p2.x + r2.position.x)
+                                                    > (p1.x + r1.position.x + r1.width)
+                                                    || (p2.x + r2.position.x + r2.width)
+                                                    < (p1.x + r1.position.x)
+                                                    || (p2.y + r2.position.y)
+                                                    > (p1.y + r1.position.y + r1.height)
+                                                    || (p2.y + r2.position.y + r2.height)
+                                                    < (p1.y + r1.position.y)
+                                                )
+                                        then
+                                            --Just c2
+                                            Just gO2
+
+                                        else
+                                            Maybe.Nothing
+
+                                    _ ->
+                                        Maybe.Nothing
+
+                            _ ->
+                                Maybe.Nothing
+
+                    _ ->
+                        Maybe.Nothing
+
+            else
+                Maybe.Nothing
+             
+
+    in
+    case l of 
+        x :: xs -> case helper gO x of 
+                    Just gameObject -> gameObject :: checkCollision gO xs 
+                    Maybe.Nothing -> checkCollision gO xs             
+                        
+        [] -> []
+         
+
+
+
 
 
 addImpact : List GameObject -> GameObject -> GameObject
@@ -77,8 +135,7 @@ addImpact l gO =
     case l of
         x :: xs ->
             case gO.physics of
-                Just p ->
-                    addImpact xs { gO | physics = Just (addImpactHelper p (checkCollision gO x)) }
+                Just p -> addImpact xs { gO | physics = Just (addImpactHelper p x.collider) }                    
 
                 Maybe.Nothing ->
                     gO
@@ -139,46 +196,6 @@ runImpact gO =
 
         Maybe.Nothing ->
             gO
-
-
-checkCollision : GameObject -> GameObject -> Maybe Collider
-checkCollision gO1 gO2 =
-    if not (gO1.identifier == gO2.identifier) then
-        case ( gO1.collider, gO2.collider ) of
-            ( Just c1, Just c2 ) ->
-                case ( gO1.position, gO2.position ) of
-                    ( Just p1, Just p2 ) ->
-                        case ( c1, c2 ) of
-                            ( Rect r1, Rect r2 ) ->
-                                if
-                                    not
-                                        ((p2.x + r2.position.x)
-                                            > (p1.x + r1.position.x + r1.width)
-                                            || (p2.x + r2.position.x + r2.width)
-                                            < (p1.x + r1.position.x)
-                                            || (p2.y + r2.position.y)
-                                            > (p1.y + r1.position.y + r1.height)
-                                            || (p2.y + r2.position.y + r2.height)
-                                            < (p1.y + r1.position.y)
-                                        )
-                                then
-                                    Just c2
-
-                                else
-                                    Maybe.Nothing
-
-                            _ ->
-                                Maybe.Nothing
-
-                    _ ->
-                        Maybe.Nothing
-
-            _ ->
-                Maybe.Nothing
-
-    else
-        Maybe.Nothing
-
 
 
 -- Speed functions

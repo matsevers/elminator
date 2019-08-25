@@ -46,7 +46,6 @@ initialModel =
             , right = Types.Nothing
             }
         , controlledObject = Objects.Vehicle.Module.defaultVehicle
-        , requiredCheckPoints = []
         , catchedCheckPoints = []
         }
     , onlinePlayers = []

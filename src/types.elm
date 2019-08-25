@@ -34,8 +34,7 @@ type alias Model =
 
 
 type ObjectType
-    = Event
-    | Checkpoint
+    = Trigger
     | Car
     | Background
     | Road
@@ -146,7 +145,6 @@ type alias Player =
         , right : Action
         }
     , controlledObject : GameObject
-    , requiredCheckPoints : List GameObject
     , catchedCheckPoints : List GameObject
     }
 
