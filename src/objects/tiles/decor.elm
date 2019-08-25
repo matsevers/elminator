@@ -34,7 +34,7 @@ bush1 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Bush1"
+                            { identifier = "Bush1"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump
@@ -65,7 +65,7 @@ bush2 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Bush2"
+                            { identifier = "Bush2"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump
@@ -96,7 +96,7 @@ rock1 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Rock1"
+                            { identifier = "Rock1"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump
@@ -127,7 +127,7 @@ rock2 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Rock2"
+                            { identifier = "Rock2"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump
@@ -158,7 +158,7 @@ tree1 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Tree1"
+                            { identifier = "Tree1"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump
@@ -189,7 +189,7 @@ tree2 =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "Tree2"
+                            { identifier = "Tree2"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Just Objects.Physics.bump

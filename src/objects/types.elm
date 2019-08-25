@@ -52,7 +52,7 @@ type Collider
 
 type Impact
     = Impact
-        { trigger : String
+        { identifier : String
         , overrideBackgroundImpact : Bool
         , duration : Float
         , function : Maybe (Impact -> GameObject -> GameObject)

@@ -17,7 +17,7 @@ startLine =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "StartLine"
+                            { identifier = "StartLine"
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Nothing

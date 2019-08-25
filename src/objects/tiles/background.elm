@@ -20,7 +20,7 @@ dust =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "background"
+                            { identifier = "background"
                             , duration = 0
                             , overrideBackgroundImpact = False
                             , function = Just Objects.Physics.slowDown
@@ -51,7 +51,7 @@ grass =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "background"
+                            { identifier = "background"
                             , duration = 0
                             , overrideBackgroundImpact = False
                             , function = Just Objects.Physics.slowDown

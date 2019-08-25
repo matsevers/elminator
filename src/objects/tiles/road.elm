@@ -20,7 +20,7 @@ straight =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "road"
+                            { identifier = "road"
                             , duration = 0
                             , overrideBackgroundImpact = True
                             , function = Maybe.Nothing
@@ -51,7 +51,7 @@ curveTopRight =
                 , impactFunction =
                     Just
                         (Impact
-                            { trigger = "road"
+                            { identifier = "road"
                             , duration = 0
                             , overrideBackgroundImpact = True
                             , function = Maybe.Nothing

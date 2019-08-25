@@ -42,7 +42,7 @@ addImpact l gO =
                 filterBackgroundImpact impact =
                     case impact of
                         Impact i ->
-                            not (i.trigger == "background") && i.overrideBackgroundImpact
+                            not (i.identifier == "background") && i.overrideBackgroundImpact
             in
             if length list > 1 then
                 List.filter filterBackgroundImpact list
