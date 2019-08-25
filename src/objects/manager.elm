@@ -33,8 +33,8 @@ collisionDetected gO1 gO2 =
         "red"
 
 
-render : List GameObject -> Player -> Bool -> Bool -> List (Svg msg)
-render l player minimapMode debug =
+render : List GameObject -> Player -> Bool -> Bool -> Bool -> List (Svg msg)
+render l player minimapMode debug labelsEnabled =
     let
         getSprite : GameObject -> String
         getSprite gO =
@@ -64,7 +64,7 @@ render l player minimapMode debug =
         x :: xs ->
             case x.position of
                 Maybe.Nothing ->
-                    render xs player minimapMode debug
+                    render xs player minimapMode debug labelsEnabled
 
                 Just posX ->
                     [ Svg.image
@@ -86,7 +86,8 @@ render l player minimapMode debug =
                         []
                     ]
                         ++ renderCollider (getCollider x) player.controlledObject
-                        ++ render xs player minimapMode debug
+                        ++ render xs player minimapMode debug labelsEnabled
+                        ++ renderPlayer player labelsEnabled
 
 
 renderCollider : Maybe GameObject -> GameObject -> List (Svg msg)
@@ -121,3 +122,45 @@ renderCollider g player =
 
         Maybe.Nothing ->
             []
+
+
+
+-- TODO: Move this function to control/player.elm
+
+
+renderPlayer : Player -> Bool -> List (Svg msg)
+renderPlayer player labelsEnabled =
+    let
+        renderLabel : List (Svg msg)
+        renderLabel =
+            if not labelsEnabled then
+                []
+
+            else
+                case player.label of
+                    Just l ->
+                        if l.visible then
+                            case player.controlledObject.position of
+                                Just pos ->
+                                    [ Svg.text_
+                                        [ x (String.fromInt (pos.x + player.controlledObject.size.width // 2))
+                                        , y (String.fromInt (pos.y - 10))
+                                        , fontFamily "Arial"
+                                        , fill l.color
+                                        , stroke "#000"
+                                        , fontSize (String.fromInt l.size)
+                                        , textAnchor "middle"
+                                        ]
+                                        [ text l.text ]
+                                    ]
+
+                                Maybe.Nothing ->
+                                    []
+
+                        else
+                            []
+
+                    Maybe.Nothing ->
+                        []
+    in
+    renderLabel

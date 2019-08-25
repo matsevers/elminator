@@ -133,8 +133,7 @@ type KeyEvent
 
 
 type alias Player =
-    { name : String
-    , identifier : String
+    { identifier : String
     , assignedKeys :
         { forward : Keys
         , backward : Keys
@@ -151,7 +150,12 @@ type alias Player =
     , controlledObject : GameObject
     , requiredCheckPoints : List GameObject
     , snatchedCheckPoints : List GameObject
+    , label : Maybe Label
     }
+
+
+type alias Label =
+    { text : String, color : String, size : Int, visible : Bool }
 
 
 

@@ -26,6 +26,10 @@ showCollider =
     True
 
 
+showLabel =
+    False
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -92,7 +96,7 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider)
+                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider showLabel)
 
         Maybe.Nothing ->
             div [] []

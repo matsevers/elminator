@@ -17,6 +17,10 @@ showCollider =
     False
 
 
+showLabels =
+    True
+
+
 element : Model -> Html Types.Msg
 element model =
     let
@@ -54,5 +58,5 @@ element model =
                         )
                 )
             ]
-            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider)
+            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider showLabels)
         ]
