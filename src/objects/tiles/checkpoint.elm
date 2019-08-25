@@ -1,6 +1,7 @@
 module Objects.Tiles.Checkpoint exposing (..)
 
 import Types exposing (..)
+import Objects.Trigger exposing (..)
 
 
 startLine : GameObject
@@ -24,7 +25,7 @@ startLine =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
-                , triggerFunction = Maybe.Nothing
+                , triggerFunction = Just Objects.Trigger.catchCheckpoint
                 }
             )
     , sprite = ""

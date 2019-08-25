@@ -47,7 +47,7 @@ initialModel =
             }
         , controlledObject = Objects.Vehicle.Module.defaultVehicle
         , requiredCheckPoints = []
-        , snatchedCheckPoints = []
+        , catchedCheckPoints = []
         }
     , onlinePlayers = []
     , lab = 0
