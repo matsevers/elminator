@@ -2,6 +2,7 @@ module Objects.Physics exposing (..)
 
 import List exposing (..)
 import Types exposing (..)
+import Objects.Trigger exposing (..)
 
 
 update : Model -> Model
@@ -22,7 +23,7 @@ update model =
         approvedCollision = { trigger = (checkCollision controlledObject model.map.gameObjects.trigger) ,impacts = (checkCollision controlledObject objectList)}
 
     in
-    { model
+    Objects.Trigger.runTrigger controlledObject approvedCollision.trigger <| { model
         | myPlayer =
             { myPlayer
                 | controlledObject =

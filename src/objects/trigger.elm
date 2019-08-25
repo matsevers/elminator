@@ -3,9 +3,9 @@ module Objects.Trigger exposing (..)
 import Types exposing (..)
 
 
-runTrigger : (GameObject -> Model -> Model) -> GameObject -> Model -> Model
-runTrigger f =
-    f
+runTrigger : GameObject -> List (GameObject) -> Model -> Model
+runTrigger gO l m =
+    m
 
 
 catchCheckpoint : GameObject -> Model -> Model
