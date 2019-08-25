@@ -16,7 +16,7 @@ element model =
             Maybe.withDefault { speed = 0, maxForwardSpeed = 0, maxBackwardSpeed = 0 } model.myPlayer.controlledObject.motion
     in
     div
-        [ Html.Attributes.style "background-color" "rgb(32, 32, 32)"
+        [ Html.Attributes.style "background-color" "#0b0c0c"
         , Html.Attributes.style "padding" "40px 0px 40px 0px"
         , Html.Attributes.style "display" "flex"
         , Html.Attributes.style "flex" "1"

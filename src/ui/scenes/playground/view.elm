@@ -10,6 +10,14 @@ import Types exposing (..)
 import Ui.Scenes.Playground.Cockpit exposing (..)
 
 
+widthSvg =
+    1000
+
+
+heightSvg =
+    500
+
+
 view : Model -> Html Msg
 view model =
     div
@@ -29,9 +37,9 @@ view model =
             , div
                 [ Html.Attributes.style "display" "flex"
                 , Html.Attributes.style "flex-direction" "column"
-                , Html.Attributes.style "border" "10px solid rgb(32,32,32)"
+                , Html.Attributes.style "border" "10px solid #0b0c0c"
                 , Html.Attributes.style "border-radius" "20px"
-                , Html.Attributes.style "background-color" "rgb(32,32,32)"
+                , Html.Attributes.style "background-color" "#0b0c0c"
                 ]
                 [ playground model
                 , Ui.Scenes.Playground.Cockpit.element model
@@ -48,16 +56,15 @@ playground model =
     case model.myPlayer.controlledObject.position of
         Just p ->
             Svg.svg
-                [ Svg.Attributes.width (String.fromInt (model.map.dimension.tileSize * model.map.dimension.width))
-                , Svg.Attributes.height (String.fromInt (model.map.dimension.tileSize * model.map.dimension.height))
+                [ Svg.Attributes.width (String.fromInt widthSvg ++ "px")
+                , Svg.Attributes.height (String.fromInt heightSvg ++ "px")
                 , Html.Attributes.style "background" "#000"
                 , Html.Attributes.style "border-radius" "10px"
                 , Svg.Attributes.viewBox
                     (String.fromInt
                         (p.x
                             - round
-                                (toFloat model.map.dimension.tileSize
-                                    * toFloat model.map.dimension.width
+                                (toFloat widthSvg
                                     / 2
                                     / model.map.dimension.viewScale
                                 )
@@ -66,28 +73,15 @@ playground model =
                         ++ String.fromInt
                             (p.y
                                 - round
-                                    (toFloat model.map.dimension.tileSize
-                                        * toFloat model.map.dimension.height
+                                    (toFloat heightSvg
                                         / 2
                                         / model.map.dimension.viewScale
                                     )
                             )
                         ++ " "
-                        ++ String.fromInt
-                            (round
-                                (toFloat model.map.dimension.tileSize
-                                    * toFloat model.map.dimension.width
-                                    / model.map.dimension.viewScale
-                                )
-                            )
+                        ++ String.fromInt (round (widthSvg / model.map.dimension.viewScale))
                         ++ " "
-                        ++ String.fromInt
-                            (round
-                                (toFloat model.map.dimension.tileSize
-                                    * toFloat model.map.dimension.height
-                                    / model.map.dimension.viewScale
-                                )
-                            )
+                        ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
                 (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer)
