@@ -1,10 +1,9 @@
 module Objects.Manager exposing (motion, position, render, rotate)
 
-import Control.Types exposing (..)
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
 import Objects.Physics exposing (..)
-import Objects.Types exposing (..)
+import Types exposing (..)
 import String exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)

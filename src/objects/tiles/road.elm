@@ -1,7 +1,7 @@
 module Objects.Tiles.Road exposing (curveTopRight, straight)
 
 import Objects.Physics exposing (..)
-import Objects.Types exposing (..)
+import Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
@@ -9,8 +9,8 @@ import Svg.Attributes exposing (..)
 straight : GameObject
 straight =
     { identifier = "RoadStraight"
-    , kind = Objects.Types.Road
-    , position = Nothing
+    , kind = Types.Road
+    , position = Maybe.Nothing
     , collider =
         Just
             (Rect
@@ -27,21 +27,22 @@ straight =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
+                 , triggerFunction = Maybe.Nothing       
                 }
             )
     , sprite = "assets/roadStraight.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
     }
 
 
 curveTopRight : GameObject
 curveTopRight =
     { identifier = "RoadStraight"
-    , kind = Objects.Types.Road
-    , position = Nothing
+    , kind = Types.Road
+    , position = Maybe.Nothing
     , collider =
         Just
             (Rect
@@ -58,11 +59,12 @@ curveTopRight =
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
+                , triggerFunction = Maybe.Nothing        
                 }
             )
     , sprite = "assets/roadCurve.png"
     , size = { height = 64, width = 64 }
     , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
     }

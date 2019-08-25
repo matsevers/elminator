@@ -1,7 +1,6 @@
 module Control.Update exposing (update)
 
 import Control.Player exposing (..)
-import Control.Types exposing (..)
 import Types exposing (..)
 
 

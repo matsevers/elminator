@@ -1,16 +1,15 @@
 module Map.Track.DustRace exposing (model)
 
 import Map.Generator exposing (..)
-import Map.Types exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Tiles.Background exposing (..)
 import Objects.Tiles.Checkpoint exposing (..)
 import Objects.Tiles.Decor exposing (..)
 import Objects.Tiles.Road exposing (..)
-import Objects.Types exposing (..)
+import Types exposing (..)
 
 
-model : Map.Types.Map
+model : Types.Map
 model =
     let
         map =
@@ -22,7 +21,7 @@ model =
     { map | gameObjects = { gameObjects | background = fill background (possibleTileCoords map) } }
 
 
-init : Map.Types.Map
+init : Types.Map
 init =
     { meta =
         { name = "Dust Race"

@@ -1,8 +1,6 @@
 module Objects.Physics exposing (acceleration, addImpact, autoBrake, bump, checkCollision, counterforce, getDirectionFromGameObject, getDirectionFromImpact, overwriteBrake, overwriteSpeedLimits, restrictSpeed, runImpact, setSpeed, slowDown, update, updateImpacts)
 
-import Control.Types exposing (..)
 import List exposing (..)
-import Objects.Types exposing (..)
 import Types exposing (..)
 
 

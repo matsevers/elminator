@@ -1,7 +1,5 @@
 module Ui.Scenes.MainMenu.Update exposing (changeCar, changeMap, update)
 
-import Map.Types exposing (..)
-import Objects.Types exposing (..)
 import Types exposing (..)
 
 

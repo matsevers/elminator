@@ -1,13 +1,13 @@
 module Objects.Tiles.Checkpoint exposing (finishLine, startLine)
 
-import Objects.Types exposing (..)
+import Types exposing (..)
 
 
 startLine : GameObject
 startLine =
     { identifier = "StartLine"
-    , kind = Objects.Types.Checkpoint
-    , position = Nothing
+    , kind = Types.Checkpoint
+    , position = Maybe.Nothing
     , collider =
         Just
             (Rect
@@ -20,29 +20,30 @@ startLine =
                             { identifier = "StartLine"
                             , duration = 100
                             , overrideBackgroundImpact = True
-                            , function = Nothing
+                            , function = Maybe.Nothing
                             , unmodifiedObject = Maybe.Nothing
                             }
                         )
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , sprite = ""
     , size = { height = 64, width = 20 }
     , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
     }
 
 
 finishLine : GameObject
 finishLine =
     { identifier = "FinishLine"
-    , kind = Objects.Types.Checkpoint
-    , position = Nothing
-    , collider = Nothing
+    , kind = Types.Checkpoint
+    , position = Maybe.Nothing
+    , collider = Maybe.Nothing
     , sprite = "assets/decor/Finish.png"
     , size = { height = 64, width = 20 }
     , rotate = 0
-    , motion = Nothing
-    , physics = Nothing
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
     }

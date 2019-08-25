@@ -5,7 +5,6 @@ import Browser.Events exposing (..)
 import Control.Global exposing (..)
 import Control.Module exposing (..)
 import Control.Player exposing (..)
-import Control.Types exposing (..)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import Json.Decode exposing (..)
@@ -14,7 +13,6 @@ import Map.Generator exposing (..)
 import Map.Track.Module exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
-import Objects.Types exposing (..)
 import Objects.Vehicle.Module
 import Time exposing (..)
 import Types exposing (..)
@@ -35,17 +33,17 @@ initialModel =
         { identifier = "blue"
         , name = "Player 1"
         , assignedKeys =
-            { forward = Control.Types.W
-            , backward = Control.Types.S
-            , left = Control.Types.A
-            , right = Control.Types.D
-            , action = Control.Types.Space
+            { forward = Types.W
+            , backward = Types.S
+            , left = Types.A
+            , right = Types.D
+            , action = Types.Space
             }
         , storedKeys =
-            { forward = Control.Types.Nothing
-            , backward = Control.Types.Nothing
-            , left = Control.Types.Nothing
-            , right = Control.Types.Nothing
+            { forward = Types.Nothing
+            , backward = Types.Nothing
+            , left = Types.Nothing
+            , right = Types.Nothing
             }
         , controlledObject = Objects.Vehicle.Module.defaultVehicle
         , requiredCheckPoints = []

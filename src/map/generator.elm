@@ -2,15 +2,14 @@ module Map.Generator exposing (fill, map, possibleTileCoords)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
-import Map.Types exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Tiles.Background exposing (..)
-import Objects.Types exposing (..)
+import Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 
 
-map : Map.Types.Map -> List GameObject
+map : Types.Map -> List GameObject
 map m =
     m.gameObjects.background
         ++ m.gameObjects.roads
@@ -28,7 +27,7 @@ fill f l =
             []
 
 
-possibleTileCoords : Map.Types.Map -> List Position
+possibleTileCoords : Types.Map -> List Position
 possibleTileCoords m =
     let
         createRows : Int -> Int -> List Position

@@ -3,7 +3,6 @@ module Ui.Scenes.MainMenu.MapPicker exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
-import Map.Types exposing (..)
 import Types exposing (..)
 
 
@@ -14,10 +13,10 @@ view model =
         model
 
 
-renderMaps : List Map.Types.Map -> Model -> List (Html Msg)
+renderMaps : List Types.Map -> Model -> List (Html Msg)
 renderMaps l model =
     let
-        renderMap : Map.Types.Map -> Html Msg
+        renderMap : Types.Map -> Html Msg
         renderMap map =
             let
                 checkSelection : List (Html.Attribute msg)

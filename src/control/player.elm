@@ -1,10 +1,8 @@
 module Control.Player exposing (applyInput, convertInputToAngle, convertInputToForce, update)
 
 import Control.Global exposing (..)
-import Control.Types exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
-import Objects.Types exposing (..)
 import Types exposing (..)
 
 
@@ -40,16 +38,16 @@ applyInput model event action =
                 Released ->
                     case action of
                         Forward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Control.Types.Nothing } } }, Cmd.none )
+                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Types.Nothing } } }, Cmd.none )
 
                         Backward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Control.Types.Nothing } } }, Cmd.none )
+                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Types.Nothing } } }, Cmd.none )
 
                         Left ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Control.Types.Nothing } } }, Cmd.none )
+                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Types.Nothing } } }, Cmd.none )
 
                         Right ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Control.Types.Nothing } } }, Cmd.none )
+                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Types.Nothing } } }, Cmd.none )
 
                         _ ->
                             ( model, Cmd.none )

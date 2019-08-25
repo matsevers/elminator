@@ -1,12 +1,12 @@
 module Objects.Vehicle.Police exposing (model)
 
-import Objects.Types exposing (..)
+import Types exposing (..)
 
 
 model : GameObject
 model =
     { identifier = "Police"
-    , kind = Objects.Types.Car
+    , kind = Types.Car
     , size = { height = 32, width = 32 }
     , position = Just { x = 450, y = 100 }
     , sprite = "assets/cars/police.png"
@@ -17,6 +17,7 @@ model =
                 , height = 8
                 , position = { x = 12, y = 12 }
                 , impactFunction = Maybe.Nothing
+                , triggerFunction = Maybe.Nothing
                 }
             )
     , rotate = 90

@@ -3,8 +3,6 @@ module Ui.Scenes.MainMenu.CarPicker exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
-import Map.Types exposing (..)
-import Objects.Types exposing (..)
 import Types exposing (..)
 
 
@@ -13,10 +11,10 @@ view model =
     renderCars model.availableCars model
 
 
-renderCars : List Objects.Types.GameObject -> Model -> List (Html Msg)
+renderCars : List Types.GameObject -> Model -> List (Html Msg)
 renderCars l model =
     let
-        renderCar : Objects.Types.GameObject -> Html Msg
+        renderCar : Types.GameObject -> Html Msg
         renderCar car =
             let
                 checkSelection : List (Html.Attribute msg)
