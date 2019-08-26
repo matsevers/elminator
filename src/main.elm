@@ -24,7 +24,7 @@ import Ui.Scenes.Playground.View exposing (..)
 
 initialModel : Model
 initialModel =
-    { state = Menu
+    { state = Running
     , frequence = 40
     , availableCars = Objects.Vehicle.Module.vehicles
     , availableMaps = Map.Track.Module.tracks
@@ -33,8 +33,8 @@ initialModel =
         { identifier = "blue"
         , label =
             Just
-                { text = "Player 1"
-                , color = "#E359E4"
+                { text = "Mats"
+                , color = "#F3B1CF"
                 , size = 50
                 , visible = True
                 }
@@ -57,6 +57,7 @@ initialModel =
         }
     , onlinePlayers = []
     , lab = 0
+    , debug = False
     }
 
 

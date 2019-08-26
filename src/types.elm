@@ -25,6 +25,7 @@ type alias Model =
     , myPlayer : Player
     , onlinePlayers : List Player
     , lab : Int
+    , debug : Bool
     }
 
 
@@ -147,7 +148,6 @@ type alias Player =
     , controlledObject : GameObject
     , catchedCheckpoints : List GameObject
     , label : Maybe Label
-
     }
 
 

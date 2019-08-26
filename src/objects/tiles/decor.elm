@@ -29,9 +29,9 @@ bush1 =
     , collider =
         Just
             (Rect
-                { height = 64
-                , width = 64
-                , position = { x = 0, y = 0 }
+                { height = 32
+                , width = 32
+                , position = { x = 16, y = 16 }
                 , impactFunction =
                     Just
                         (Impact
@@ -62,9 +62,9 @@ bush2 =
     , collider =
         Just
             (Rect
-                { height = 64
-                , width = 64
-                , position = { x = 0, y = 0 }
+                { height = 32
+                , width = 32
+                , position = { x = 16, y = 16 }
                 , impactFunction =
                     Just
                         (Impact

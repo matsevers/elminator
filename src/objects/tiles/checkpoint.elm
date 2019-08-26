@@ -1,7 +1,7 @@
 module Objects.Tiles.Checkpoint exposing (checkBox, finishLine, startLine)
 
-import Types exposing (..)
 import Objects.Trigger exposing (..)
+import Types exposing (..)
 
 
 startLine : GameObject
@@ -42,7 +42,8 @@ finishLine =
     { identifier = "FinishLine"
     , kind = Types.Checkpoint
     , position = Maybe.Nothing
-    , collider = Just
+    , collider =
+        Just
             (Rect
                 { height = 64
                 , width = 20
@@ -74,7 +75,8 @@ checkBox identifier =
     { identifier = "checkbox-" ++ identifier
     , kind = Types.Checkpoint
     , position = Maybe.Nothing
-    , collider = Just
+    , collider =
+        Just
             (Rect
                 { height = 64
                 , width = 64
@@ -82,7 +84,7 @@ checkBox identifier =
                 , impactFunction =
                     Just
                         (Impact
-                            { identifier = "checkbox-"++identifier
+                            { identifier = "checkbox-" ++ identifier
                             , duration = 100
                             , overrideBackgroundImpact = True
                             , function = Maybe.Nothing
@@ -92,7 +94,7 @@ checkBox identifier =
                 , triggerFunction = Just Objects.Trigger.catchCheckpoint
                 }
             )
-    , sprite = "assets/decor/checkbox.png"
+    , sprite = "assets/decor/checkboxRoadCurve.png"
     , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0

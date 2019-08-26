@@ -22,10 +22,6 @@ minimapMode =
     False
 
 
-showCollider =
-    True
-
-
 showLabel =
     False
 
@@ -96,7 +92,7 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider showLabel)
+                (Objects.Manager.render (Map.Generator.map model.map ++ model.myPlayer.catchedCheckpoints ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode model.debug showLabel)
 
         Maybe.Nothing ->
             div [] []
