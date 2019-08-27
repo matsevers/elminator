@@ -41,4 +41,5 @@ initialModel =
     , onlinePlayers = []
     , lab = 0
     , debug = False
+    , wsSend = ""
     }

@@ -1,0 +1,72 @@
+<!--------------------------------------------------------------------
+--
+-- index.html
+-- WebSocketClient top-level HTML
+-- Copyright (c) 2018 Bill St. Clair <billstclair@gmail.com>
+-- Some rights reserved.
+-- Distributed under the MIT License
+-- See LICENSE
+--
+---------------------------------------------------------------------->
+
+<html>
+  <head>
+    <title>WebSocketClient Example</title>
+    <!-- Compile your Elm application into index.js. E.g.:
+      -- elm make Main.elm --output site/index.js
+      -->
+    <script type='text/javascript' src='js/elm.js'></script>
+    <script type='text/javascript' src='js/PortFunnel.js'></script>
+    <script type='text/javascript' src='js/PortFunnel/WebSocket.js'></script>
+  </head>
+  <body>
+    <div id='elm'></div>
+    <script type='text/javascript'>
+
+// Initialize your flags here, if you have them.
+var flags = undefined;
+
+// Initialize the name of your main module here.
+// Change "Main" to your application's module name.
+var mainModule = 'Main';
+
+// Change "PortExample" to your application's module name.
+var app = Elm[mainModule].init({
+  node: document.getElementById('elm'),
+  flags: flags
+});
+
+// These are the defaults, so you don't need to pass them.  If you
+// need to use different port names, you can pass them as the
+// 'portNames' property of the second parameter to
+// PortFunnel.subscribe() below:
+// var portNames = ['cmdPort', 'subPort'];
+// PortFunnel.subscribe(app, { portNames: portNames });
+
+PortFunnel.subscribe(app);
+
+// This is used by example/src/simple.elm to parse a JSON string.
+// You can safely remove it from your shipped code, unless you need
+// to parse a JSON string into an Elm Json.Encode.Value.
+// If the ports it wants aren't available, it will do nothing.
+(function() {
+  var ports = app.ports;
+  var parse = ports.parse;
+  var parseReturn = ports.parseReturn;
+  if (parse && parseReturn) {
+    parse.subscribe(function(string) {
+      var result;
+      try {
+        var val = JSON.parse(string);
+        result = val
+      } catch(err) {
+        result = "" + err;
+      }
+      parseReturn.send(result);
+    });
+  }
+})();
+
+    </script>
+  </body>
+</html>

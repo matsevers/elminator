@@ -9,9 +9,11 @@ import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
 import InitialModel exposing (..)
 import Json.Decode exposing (..)
+import Json.Encode exposing (Value)
 import List exposing (..)
 import Map.Generator exposing (..)
 import Map.Track.Module exposing (..)
+import Network.Module exposing (..)
 import Objects.Manager exposing (..)
 import Objects.Physics exposing (..)
 import Objects.Vehicle.Module
@@ -62,6 +64,9 @@ update msg model =
         SceneManager m ->
             Ui.Scenes.Module.update m model
 
+        Websocket m ->
+            Network.Module.update m model
+
         _ ->
             ( model, Cmd.none )
 
@@ -72,6 +77,8 @@ subscriptions model =
         [ onKeyDown (Json.Decode.map (Control model Pressed) keyDecoder)
         , onKeyUp (Json.Decode.map (Control model Released) keyDecoder)
         , Time.every model.frequence (\_ -> Tick)
+        , subPort (\v -> Websocket (Receive v))
+        , parseReturn (\v -> Websocket (Process v))
         ]
 
 

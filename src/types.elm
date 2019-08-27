@@ -1,4 +1,6 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..))
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..), Websocketmsg(..))
+
+import Json.Encode exposing (Value)
 
 
 type Msg
@@ -8,7 +10,14 @@ type Msg
     | Playground PlaygroundMessage
     | Control Model KeyEvent Action
     | Tick
+    | Websocket Websocketmsg
     | None
+
+
+type Websocketmsg
+    = Send
+    | Process Value
+    | Receive Value
 
 
 type State
@@ -28,6 +37,7 @@ type alias Model =
     , onlinePlayers : List Player
     , lab : Int
     , debug : Bool
+    , wsSend : String
     }
 
 
