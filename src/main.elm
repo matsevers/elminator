@@ -7,6 +7,7 @@ import Control.Module exposing (..)
 import Control.Player exposing (..)
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (..)
+import InitialModel exposing (..)
 import Json.Decode exposing (..)
 import List exposing (..)
 import Map.Generator exposing (..)
@@ -16,76 +17,44 @@ import Objects.Physics exposing (..)
 import Objects.Vehicle.Module
 import Time exposing (..)
 import Types exposing (..)
+import Ui.Scenes.FinishMenu.Module exposing (..)
 import Ui.Scenes.MainMenu.Module exposing (..)
 import Ui.Scenes.MainMenu.View exposing (..)
 import Ui.Scenes.Module exposing (..)
-import Ui.Scenes.Playground.View exposing (..)
-
-
-initialModel : Model
-initialModel =
-    { state = Menu
-    , frequence = 40
-    , availableCars = Objects.Vehicle.Module.vehicles
-    , availableMaps = Map.Track.Module.tracks
-    , map = Map.Track.Module.defaultTrack
-    , myPlayer =
-        { identifier = "blue"
-        , label =
-            Just
-                { text = "Mats"
-                , color = "#F3B1CF"
-                , size = 50
-                , visible = True
-                }
-        , assignedKeys =
-            { forward = Types.W
-            , backward = Types.S
-            , left = Types.A
-            , right = Types.D
-            , action = Types.Space
-            }
-        , storedKeys =
-            { forward = Types.Nothing
-            , backward = Types.Nothing
-            , left = Types.Nothing
-            , right = Types.Nothing
-            }
-        , currentLab = 1
-        , controlledObject = Objects.Vehicle.Module.defaultVehicle
-        , catchedCheckpoints = []
-        }
-    , onlinePlayers = []
-    , lab = 0
-    , debug = False
-    }
+import Ui.Scenes.Playground.Module exposing (..)
 
 
 view : Model -> Html Msg
 view model =
     case model.state of
         Running ->
-            Ui.Scenes.Playground.View.view model
+            Ui.Scenes.Playground.Module.view model
+
+        PrepareRace ->
+            Ui.Scenes.Playground.Module.view model
 
         Menu ->
             Ui.Scenes.MainMenu.View.view model
 
-        _ ->
-            Ui.Scenes.MainMenu.View.view model
+        Finished ->
+            Ui.Scenes.FinishMenu.Module.view model
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Tick ->
-            if model.state == Running then
-                ( Objects.Physics.update <| Control.Player.update model, Cmd.none )
+            if model.state == Running || model.state == PrepareRace then
+                ( Objects.Physics.update <| Control.Player.update <| Map.Track.Module.update model, Cmd.none )
 
             else
                 ( model, Cmd.none )
 
         Control _ event action ->
             Control.Module.update event action model
+
+        Playground m ->
+            Ui.Scenes.Playground.Module.update m model
 
         MainMenu m ->
             Ui.Scenes.MainMenu.Module.update m model
@@ -109,7 +78,7 @@ subscriptions model =
 main : Program () Model Msg
 main =
     Browser.element
-        { init = \_ -> ( initialModel, Cmd.none )
+        { init = \_ -> ( InitialModel.initialModel, Cmd.none )
         , subscriptions = subscriptions
         , view = view
         , update = update

@@ -10,5 +10,5 @@ view =
 
 
 update : MainMenuMessage -> Model -> ( Model, Cmd Msg )
-update msg model =
-    Ui.Scenes.MainMenu.Update.update msg model
+update =
+    Ui.Scenes.MainMenu.Update.update

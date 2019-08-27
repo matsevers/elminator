@@ -1,7 +1,8 @@
-module Map.Track.Module exposing (defaultTrack, tracks)
+module Map.Track.Module exposing (defaultTrack, tracks, update)
 
 import Map.Track.DustRace
 import Map.Track.SummerBreeze
+import Map.Track.Update
 import Types exposing (..)
 
 
@@ -13,3 +14,7 @@ tracks =
 defaultTrack : Types.Map
 defaultTrack =
     Map.Track.DustRace.model
+
+
+update =
+    Map.Track.Update.update

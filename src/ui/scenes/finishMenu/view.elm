@@ -1,11 +1,10 @@
-module Ui.Scenes.MainMenu.View exposing (view)
+module Ui.Scenes.FinishMenu.View exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
 import Types exposing (..)
-import Ui.Scenes.MainMenu.CarPicker exposing (..)
-import Ui.Scenes.MainMenu.MapPicker exposing (..)
+import Ui.Scenes.FinishMenu.Update exposing (..)
 
 
 view : Model -> Html Msg
@@ -40,8 +39,8 @@ view model =
                 , Html.Attributes.style "transform" "perspective(400px) rotateY(15deg) rotateX(5deg)"
                 , style "margin" "20px"
                 ]
-                [ text "CHOOSE A RACE TRACK"
-                , div [ style "margin-top" "20px" ] (Ui.Scenes.MainMenu.MapPicker.view model)
+                [ text "YOUR TIME"
+                , div [ style "margin-top" "20px" ] []
                 ]
             , div
                 [ style "flex-basis" "20%"
@@ -57,9 +56,9 @@ view model =
                 , Html.Attributes.style "transform" "perspective(400px) rotateY(-15deg) rotateX(5deg)"
                 , style "margin" "20px"
                 ]
-                [ text "CHOOSE A VEHICLE"
+                [ text "COMPETITIVE POSITION"
                 , div [ style "margin-top" "20px" ]
-                    (Ui.Scenes.MainMenu.CarPicker.view model)
+                    []
                 ]
             ]
         , button
@@ -71,10 +70,10 @@ view model =
             , onClick
                 (SceneManager
                     (ChangeTo
-                        model
-                        PrepareRace
+                        Ui.Scenes.FinishMenu.Update.restoreInitialModel
+                        Menu
                     )
                 )
             ]
-            [ text "Start the engines" ]
+            [ text "Back to Menu" ]
         ]

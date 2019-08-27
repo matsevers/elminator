@@ -1,10 +1,11 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, Position, SceneMessage(..), Size, State(..))
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..))
 
 
 type Msg
     = ChangeScene State
     | MainMenu MainMenuMessage
     | SceneManager SceneMessage
+    | Playground PlaygroundMessage
     | Control Model KeyEvent Action
     | Tick
     | None
@@ -14,6 +15,7 @@ type State
     = Menu
     | Finished
     | Running
+    | PrepareRace
 
 
 type alias Model =
@@ -174,6 +176,7 @@ type alias Map =
         { starter : Int
         , labs : Int
         , startPositions : List Position
+        , prepareRaceTime : Float
         }
     , gameObjects :
         { background : List GameObject
@@ -195,3 +198,7 @@ type MainMenuMessage
 
 type SceneMessage
     = ChangeTo Model State
+
+
+type PlaygroundMessage
+    = NoPlaygroundMessage

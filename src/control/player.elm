@@ -108,30 +108,34 @@ update model =
         listKeys =
             [ myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right ]
     in
-    case gO.position of
-        Just p ->
-            case gO.motion of
-                Just m ->
-                    { model
-                        | myPlayer =
-                            { myPlayer
-                                | controlledObject =
-                                    Objects.Manager.position
-                                        (Just
-                                            { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
-                                            , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
-                                            }
-                                        )
-                                    <|
-                                        counterforce (convertInputToForce listKeys) <|
-                                            autoBrake (convertInputToForce listKeys) <|
-                                                acceleration (convertInputToForce listKeys) <|
-                                                    Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
-                            }
-                    }
+    if model.state == Running then
+        case gO.position of
+            Just p ->
+                case gO.motion of
+                    Just m ->
+                        { model
+                            | myPlayer =
+                                { myPlayer
+                                    | controlledObject =
+                                        Objects.Manager.position
+                                            (Just
+                                                { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                                , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                                }
+                                            )
+                                        <|
+                                            counterforce (convertInputToForce listKeys) <|
+                                                autoBrake (convertInputToForce listKeys) <|
+                                                    acceleration (convertInputToForce listKeys) <|
+                                                        Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                                }
+                        }
 
-                Maybe.Nothing ->
-                    model
+                    Maybe.Nothing ->
+                        model
 
-        Maybe.Nothing ->
-            model
+            Maybe.Nothing ->
+                model
+
+    else
+        model
