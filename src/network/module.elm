@@ -39,7 +39,7 @@ update wsMessage model =
             ( model, Cmd.none )
 
         Send m ->
-            ( model, parse m )
+            ( model, parse m) 
 
 
 wsSendUpdate : Model -> Model
@@ -49,10 +49,10 @@ wsSendUpdate model =
             model.myPlayer
 
         jsonObject =
-            Json.Encode.object (Network.Scheme.encode myPlayer)
+            (Json.Encode.object (Network.Scheme.encode myPlayer))
 
         json =
-            Json.Encode.encode 0 jsonObject
+            (Json.Encode.encode 0 jsonObject)
     in
     { model | wsSend = json }
 
@@ -87,11 +87,11 @@ openJson =
 
 sendJson : String -> String
 sendJson message =
-    let
+    let  
         json =
             String.trim
                 """
-             {"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message": "##placeholder##" }}
+             {"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message": ##placeholder## }}
            """
 
         replacedJson =

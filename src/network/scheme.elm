@@ -6,6 +6,8 @@ import Types exposing (..)
 
 encode : Player -> List ( String, Json.Encode.Value )
 encode player =
-    [ ( "identifier", string player.identifier )
-    , ( "lab", int player.currentLab )
-    ]
+    Debug.log "scheme"
+        [ ( "identifier", string player.identifier )
+        , ( "label", string player.label.text )
+        , ( "lab", int player.currentLab )
+        ]
