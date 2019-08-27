@@ -1,5 +1,7 @@
 module Ui.Scenes.Update exposing (update)
 
+import Cmd.Extra exposing (..)
+import Network.Module exposing (..)
 import Types exposing (..)
 
 
@@ -12,4 +14,4 @@ update msg model =
 
 changeTo : Model -> State -> ( Model, Cmd msg )
 changeTo model state =
-    ( { model | state = state }, Cmd.none )
+    { model | state = state } |> withNoCmd

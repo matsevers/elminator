@@ -3,6 +3,7 @@ module Ui.Scenes.MainMenu.View exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
+import Network.Module exposing (..)
 import Types exposing (..)
 import Ui.Scenes.MainMenu.CarPicker exposing (..)
 import Ui.Scenes.MainMenu.MapPicker exposing (..)
@@ -77,13 +78,4 @@ view model =
                 )
             ]
             [ text "Start the engines" ]
-        , button
-            [ Html.Attributes.style "padding" "30px"
-            , Html.Attributes.style "background-color" "#f21d9c"
-            , Html.Attributes.style "color" "#ffffff"
-            , Html.Attributes.style "border-width" "0px"
-            , Html.Attributes.style "font-size" "20px"
-            , onClick (Websocket Send)
-            ]
-            [ text "Socket Open" ]
         ]

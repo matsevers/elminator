@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Browser
 import Browser.Events exposing (..)
+import Cmd.Extra exposing (..)
 import Control.Global exposing (..)
 import Control.Module exposing (..)
 import Control.Player exposing (..)
@@ -20,6 +21,7 @@ import Objects.Vehicle.Module
 import Time exposing (..)
 import Types exposing (..)
 import Ui.Scenes.FinishMenu.Module exposing (..)
+import Ui.Scenes.FinishMenu.Update exposing (..)
 import Ui.Scenes.MainMenu.Module exposing (..)
 import Ui.Scenes.MainMenu.View exposing (..)
 import Ui.Scenes.Module exposing (..)
@@ -47,10 +49,30 @@ update msg model =
     case msg of
         Tick ->
             if model.state == Running || model.state == PrepareRace then
-                ( Objects.Physics.update <| Control.Player.update <| Map.Track.Module.update model, Cmd.none )
+                (Network.Module.wsSendUpdate <|
+                    Objects.Physics.update <|
+                        Control.Player.update <|
+                            Map.Track.Module.update model
+                )
+                    |> withCmd (Network.Module.send model.wsSend)
 
             else
-                ( model, Cmd.none )
+                model |> withNoCmd
+
+        CloseGame ->
+            model
+                |> withCmd
+                    (Cmd.batch
+                        [ Network.Module.close
+                        , Network.Module.run
+                            (SceneManager
+                                (ChangeTo
+                                    Ui.Scenes.FinishMenu.Update.restoreInitialModel
+                                    Menu
+                                )
+                            )
+                        ]
+                    )
 
         Control _ event action ->
             Control.Module.update event action model
@@ -68,7 +90,7 @@ update msg model =
             Network.Module.update m model
 
         _ ->
-            ( model, Cmd.none )
+            model |> withNoCmd
 
 
 subscriptions : Model -> Sub Msg
@@ -85,7 +107,7 @@ subscriptions model =
 main : Program () Model Msg
 main =
     Browser.element
-        { init = \_ -> ( InitialModel.initialModel, Cmd.none )
+        { init = \_ -> ( InitialModel.initialModel, Network.Module.open )
         , subscriptions = subscriptions
         , view = view
         , update = update

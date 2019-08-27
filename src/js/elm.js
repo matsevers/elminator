@@ -6916,8 +6916,15 @@ var author$project$Main$subscriptions = function (model) {
 				})
 			]));
 };
+var Janiczek$cmd_extra$Cmd$Extra$withCmd = F2(
+	function (cmd, model) {
+		return _Utils_Tuple2(model, cmd);
+	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var Janiczek$cmd_extra$Cmd$Extra$withNoCmd = function (model) {
+	return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+};
 var author$project$Control$Player$applyInput = F3(
 	function (model, event, action) {
 		var myPlayer = model.myPlayer;
@@ -7242,9 +7249,43 @@ var author$project$Map$Track$Update$update = function (model) {
 	}
 };
 var author$project$Map$Track$Module$update = author$project$Map$Track$Update$update;
-var author$project$Network$Module$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
 var elm$core$String$trim = _String_trim;
-var author$project$Network$Module$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"url": "ws://nas.janke.cloud:60000"}}\r\n        ');
+var author$project$Network$Module$closeJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "close", "args": {"key": "elminator", "reason": "Just because."}}\r\n        ');
+var elm$core$Basics$always = F2(
+	function (a, _n0) {
+		return a;
+	});
+var author$project$Network$Module$run = function (m) {
+	return A2(
+		elm$core$Task$perform,
+		elm$core$Basics$always(m),
+		elm$core$Task$succeed(_Utils_Tuple0));
+};
+var author$project$Types$Send = function (a) {
+	return {$: 'Send', a: a};
+};
+var author$project$Network$Module$close = author$project$Network$Module$run(
+	author$project$Types$Websocket(
+		author$project$Types$Send(author$project$Network$Module$closeJson)));
+var elm$core$String$replace = F3(
+	function (before, after, string) {
+		return A2(
+			elm$core$String$join,
+			after,
+			A2(elm$core$String$split, before, string));
+	});
+var author$project$Network$Module$sendJson = function (message) {
+	var json = elm$core$String$trim('\r\n             {"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message": "##placeholder##" }}\r\n           ');
+	var replacedJson = A3(elm$core$String$replace, '##placeholder##', message, json);
+	return replacedJson;
+};
+var author$project$Network$Module$send = function (message) {
+	return author$project$Network$Module$run(
+		author$project$Types$Websocket(
+			author$project$Types$Send(
+				author$project$Network$Module$sendJson(message))));
+};
+var author$project$Network$Module$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
 var elm$json$Json$Encode$string = _Json_wrap;
 var author$project$Network$Module$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
 var author$project$Network$Module$update = F2(
@@ -7267,14 +7308,46 @@ var author$project$Network$Module$update = F2(
 					A2(elm$json$Json$Encode$encode, 0, v));
 				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 			default:
-				var updatedModel = _Utils_update(
-					model,
-					{wsSend: author$project$Network$Module$openJson});
+				var m = wsMessage.a;
 				return _Utils_Tuple2(
-					updatedModel,
-					author$project$Network$Module$parse(updatedModel.wsSend));
+					model,
+					author$project$Network$Module$parse(m));
 		}
 	});
+var elm$json$Json$Encode$int = _Json_wrap;
+var author$project$Network$Scheme$encode = function (player) {
+	return _List_fromArray(
+		[
+			_Utils_Tuple2(
+			'identifier',
+			elm$json$Json$Encode$string(player.identifier)),
+			_Utils_Tuple2(
+			'lab',
+			elm$json$Json$Encode$int(player.currentLab))
+		]);
+};
+var elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n0, obj) {
+					var k = _n0.a;
+					var v = _n0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(_Utils_Tuple0),
+			pairs));
+};
+var author$project$Network$Module$wsSendUpdate = function (model) {
+	var myPlayer = model.myPlayer;
+	var jsonObject = elm$json$Json$Encode$object(
+		author$project$Network$Scheme$encode(myPlayer));
+	var json = A2(elm$json$Json$Encode$encode, 0, jsonObject);
+	return _Utils_update(
+		model,
+		{wsSend: json});
+};
 var elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -7560,6 +7633,14 @@ var author$project$Objects$Physics$update = function (model) {
 					})
 			}));
 };
+var author$project$Types$ChangeTo = F2(
+	function (a, b) {
+		return {$: 'ChangeTo', a: a, b: b};
+	});
+var author$project$Types$SceneManager = function (a) {
+	return {$: 'SceneManager', a: a};
+};
+var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
 var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 	function (model, gO) {
 		var myPlayer = model.myPlayer;
@@ -7594,11 +7675,10 @@ var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 var author$project$Ui$Scenes$MainMenu$Module$update = author$project$Ui$Scenes$MainMenu$Update$update;
 var author$project$Ui$Scenes$Update$changeTo = F2(
 	function (model, state) {
-		return _Utils_Tuple2(
+		return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 			_Utils_update(
 				model,
-				{state: state}),
-			elm$core$Platform$Cmd$none);
+				{state: state}));
 	});
 var author$project$Ui$Scenes$Update$update = F2(
 	function (msg, model) {
@@ -7619,11 +7699,25 @@ var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'Tick':
-				return (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? _Utils_Tuple2(
-					author$project$Objects$Physics$update(
-						author$project$Control$Player$update(
-							author$project$Map$Track$Module$update(model))),
-					elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				return (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
+					Janiczek$cmd_extra$Cmd$Extra$withCmd,
+					author$project$Network$Module$send(model.wsSend),
+					author$project$Network$Module$wsSendUpdate(
+						author$project$Objects$Physics$update(
+							author$project$Control$Player$update(
+								author$project$Map$Track$Module$update(model))))) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
+			case 'CloseGame':
+				return A2(
+					Janiczek$cmd_extra$Cmd$Extra$withCmd,
+					elm$core$Platform$Cmd$batch(
+						_List_fromArray(
+							[
+								author$project$Network$Module$close,
+								author$project$Network$Module$run(
+								author$project$Types$SceneManager(
+									A2(author$project$Types$ChangeTo, author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel, author$project$Types$Menu)))
+							])),
+					model);
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -7641,17 +7735,10 @@ var author$project$Main$update = F2(
 				var m = msg.a;
 				return A2(author$project$Network$Module$update, m, model);
 			default:
-				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
 		}
 	});
-var author$project$Types$ChangeTo = F2(
-	function (a, b) {
-		return {$: 'ChangeTo', a: a, b: b};
-	});
-var author$project$Types$SceneManager = function (a) {
-	return {$: 'SceneManager', a: a};
-};
-var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
+var author$project$Types$CloseGame = {$: 'CloseGame'};
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$img = _VirtualDom_node('img');
@@ -7797,11 +7884,25 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$text('Back to Menu')
+					])),
+				A2(
+				elm$html$Html$button,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'padding', '30px'),
+						A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
+						A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
+						A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
+						A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
+						elm$html$Html$Events$onClick(author$project$Types$CloseGame)
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('Close Game')
 					]))
 			]));
 };
 var author$project$Ui$Scenes$FinishMenu$Module$view = author$project$Ui$Scenes$FinishMenu$View$view;
-var author$project$Types$Send = {$: 'Send'};
 var author$project$Types$ChangeCar = F2(
 	function (a, b) {
 		return {$: 'ChangeCar', a: a, b: b};
@@ -8053,22 +8154,6 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$text('Start the engines')
-					])),
-				A2(
-				elm$html$Html$button,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'padding', '30px'),
-						A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
-						A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
-						A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
-						A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
-						elm$html$Html$Events$onClick(
-						author$project$Types$Websocket(author$project$Types$Send))
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text('Socket Open')
 					]))
 			]));
 };
@@ -8803,11 +8888,15 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
+var author$project$Network$Module$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
+var author$project$Network$Module$open = author$project$Network$Module$run(
+	author$project$Types$Websocket(
+		author$project$Types$Send(author$project$Network$Module$openJson)));
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
 	{
 		init: function (_n0) {
-			return _Utils_Tuple2(author$project$InitialModel$initialModel, elm$core$Platform$Cmd$none);
+			return _Utils_Tuple2(author$project$InitialModel$initialModel, author$project$Network$Module$open);
 		},
 		subscriptions: author$project$Main$subscriptions,
 		update: author$project$Main$update,

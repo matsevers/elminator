@@ -11,11 +11,12 @@ type Msg
     | Control Model KeyEvent Action
     | Tick
     | Websocket Websocketmsg
+    | CloseGame
     | None
 
 
 type Websocketmsg
-    = Send
+    = Send String
     | Process Value
     | Receive Value
 
