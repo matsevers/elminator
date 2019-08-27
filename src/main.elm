@@ -24,7 +24,7 @@ import Ui.Scenes.Playground.View exposing (..)
 
 initialModel : Model
 initialModel =
-    { state = Running
+    { state = Menu
     , frequence = 40
     , availableCars = Objects.Vehicle.Module.vehicles
     , availableMaps = Map.Track.Module.tracks
@@ -78,7 +78,11 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Tick ->
-            ( Objects.Physics.update <| Control.Player.update model, Cmd.none )
+            if model.state == Running then
+                ( Objects.Physics.update <| Control.Player.update model, Cmd.none )
+
+            else
+                ( model, Cmd.none )
 
         Control _ event action ->
             Control.Module.update event action model
