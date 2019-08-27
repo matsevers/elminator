@@ -159,7 +159,7 @@ type alias Player =
     , currentLab : Int
     , controlledObject : GameObject
     , catchedCheckpoints : List GameObject
-    , label : Maybe Label
+    , label : Label
     }
 
 
@@ -204,6 +204,7 @@ type alias Map =
 type MainMenuMessage
     = ChangeCar Model GameObject
     | ChangeMap Model Map
+    | ChangeName Model String
 
 
 type SceneMessage

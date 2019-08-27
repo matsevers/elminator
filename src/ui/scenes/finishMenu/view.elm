@@ -10,7 +10,7 @@ import Ui.Scenes.FinishMenu.Update exposing (..)
 view : Model -> Html Msg
 view model =
     div
-        [ Html.Attributes.style "height" "98vh"
+        [ Html.Attributes.style "height" "100vh"
         , Html.Attributes.style "background-color" "#141617"
         , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
         , Html.Attributes.style "display" "flex"

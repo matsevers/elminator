@@ -15,12 +15,11 @@ initialModel =
     , myPlayer =
         { identifier = "blue"
         , label =
-            Just
-                { text = "Mats"
-                , color = "#F3B1CF"
-                , size = 50
-                , visible = True
-                }
+            { text = "Unnamed Driver"
+            , color = "#F3B1CF"
+            , size = 50
+            , visible = True
+            }
         , assignedKeys =
             { forward = Types.W
             , backward = Types.S

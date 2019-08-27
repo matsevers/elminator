@@ -80,14 +80,6 @@ element model =
                     ]
                     [ Html.text playerName ]
                 ]
-
-        getPlayername =
-            case model.myPlayer.label of
-                Just l ->
-                    l.text
-
-                Maybe.Nothing ->
-                    "unknown"
     in
     div
         [ Html.Attributes.style "background-color" "#0b0c0c"
@@ -115,7 +107,7 @@ element model =
                 , Html.Attributes.style "align-self" "center"
                 ]
                 []
-            , placement "1" getPlayername
+            , placement "1" model.myPlayer.label.text
             , lapInfo
             ]
         , Svg.svg

@@ -2,7 +2,7 @@ module Ui.Scenes.MainMenu.View exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import Network.Module exposing (..)
 import Types exposing (..)
 import Ui.Scenes.MainMenu.CarPicker exposing (..)
@@ -12,7 +12,7 @@ import Ui.Scenes.MainMenu.MapPicker exposing (..)
 view : Model -> Html Msg
 view model =
     div
-        [ Html.Attributes.style "height" "98vh"
+        [ Html.Attributes.style "height" "100vh"
         , Html.Attributes.style "background-color" "#141617"
         , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
         , Html.Attributes.style "display" "flex"
@@ -31,7 +31,7 @@ view model =
                 [ style "display" "flex"
                 , style "flex-basis" "20%"
                 , style "flex-grow" "0"
-                , style "align-items" "center"
+                , style "align-items" "stretch"
                 , style "flex-direction" "column"
                 , style "color" "#fff"
                 , style "font-size" "25px"
@@ -41,14 +41,17 @@ view model =
                 , Html.Attributes.style "transform" "perspective(400px) rotateY(15deg) rotateX(5deg)"
                 , style "margin" "20px"
                 ]
-                [ text "CHOOSE A RACE TRACK"
-                , div [ style "margin-top" "20px" ] (Ui.Scenes.MainMenu.MapPicker.view model)
+                [ div [ style "text-align" "center" ] [ text "CHOOSE A TRACK" ]
+                , div [ style "margin-top" "20px", style "margin-bottom" "20px" ] (Ui.Scenes.MainMenu.MapPicker.view model)
+                , div [ style "text-align" "center" ] [ text "CHOOSE A VEHICLE" ]
+                , div [ style "margin-top" "20px" ]
+                    (Ui.Scenes.MainMenu.CarPicker.view model)
                 ]
             , div
                 [ style "flex-basis" "20%"
                 , style "flex-grow" "0"
                 , style "display" "flex"
-                , style "align-items" "center"
+                , style "align-items" "stretch"
                 , style "flex-direction" "column"
                 , style "color" "#fff"
                 , style "font-size" "25px"
@@ -58,9 +61,23 @@ view model =
                 , Html.Attributes.style "transform" "perspective(400px) rotateY(-15deg) rotateX(5deg)"
                 , style "margin" "20px"
                 ]
-                [ text "CHOOSE A VEHICLE"
-                , div [ style "margin-top" "20px" ]
-                    (Ui.Scenes.MainMenu.CarPicker.view model)
+                [ div [ style "text-align" "center" ] [ text "DRIVERS NAME" ]
+                , div [ style "display" "flex", style "margin-top" "20px" ]
+                    [ div [ style "flex" "1" ] []
+                    , input
+                        [ style "flex" "1"
+                        , style "font-size" "22px"
+                        , style "color" "#fff"
+                        , style "background-color" "transparent"
+                        , style "border" "0px solid #fff"
+                        , style "border-bottom" "1px solid rgba(255,255,255,0.5)"
+                        , placeholder "Text to reverse"
+                        , value model.myPlayer.label.text
+                        , onInput (\x -> MainMenu (ChangeName model x))
+                        ]
+                        []
+                    , div [ style "flex" "1" ] []
+                    ]
                 ]
             ]
         , button
