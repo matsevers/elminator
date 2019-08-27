@@ -11,7 +11,6 @@ type Msg
     | Control Model KeyEvent Action
     | Tick
     | Websocket Websocketmsg
-    | CloseGame
     | None
 
 

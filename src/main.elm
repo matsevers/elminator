@@ -59,21 +59,6 @@ update msg model =
             else
                 model |> withNoCmd
 
-        CloseGame ->
-            model
-                |> withCmd
-                    (Cmd.batch
-                        [ Network.Module.close
-                        , Network.Module.run
-                            (SceneManager
-                                (ChangeTo
-                                    Ui.Scenes.FinishMenu.Update.restoreInitialModel
-                                    Menu
-                                )
-                            )
-                        ]
-                    )
-
         Control _ event action ->
             Control.Module.update event action model
 

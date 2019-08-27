@@ -76,13 +76,4 @@ view model =
                 )
             ]
             [ text "Back to Menu" ]
-        , button
-            [ Html.Attributes.style "padding" "30px"
-            , Html.Attributes.style "background-color" "#f21d9c"
-            , Html.Attributes.style "color" "#ffffff"
-            , Html.Attributes.style "border-width" "0px"
-            , Html.Attributes.style "font-size" "20px"
-            , onClick CloseGame
-            ]
-            [ text "Close Game" ]
         ]
