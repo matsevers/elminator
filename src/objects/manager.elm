@@ -26,7 +26,7 @@ motion m gO =
 
 collisionDetected : GameObject -> GameObject -> String
 collisionDetected gO1 gO2 =
-    if not ((checkCollision gO1 [gO2]) == [gO2]) then
+    if not (checkCollision gO1 [ gO2 ] == [ gO2 ]) then
         "green"
 
     else
@@ -136,31 +136,25 @@ renderPlayer player labelsEnabled =
             if not labelsEnabled then
                 []
 
-            else
-                case player.label of
-                    Just l ->
-                        if l.visible then
-                            case player.controlledObject.position of
-                                Just pos ->
-                                    [ Svg.text_
-                                        [ x (String.fromInt (pos.x + player.controlledObject.size.width // 2))
-                                        , y (String.fromInt (pos.y - 10))
-                                        , fontFamily "Arial"
-                                        , fill l.color
-                                        , stroke "#000"
-                                        , fontSize (String.fromInt l.size)
-                                        , textAnchor "middle"
-                                        ]
-                                        [ text l.text ]
-                                    ]
-
-                                Maybe.Nothing ->
-                                    []
-
-                        else
-                            []
+            else if player.label.visible then
+                case player.controlledObject.position of
+                    Just pos ->
+                        [ Svg.text_
+                            [ x (String.fromInt (pos.x + player.controlledObject.size.width // 2))
+                            , y (String.fromInt (pos.y - 10))
+                            , fontFamily "Arial"
+                            , fill player.label.color
+                            , stroke "#000"
+                            , fontSize (String.fromInt player.label.size)
+                            , textAnchor "middle"
+                            ]
+                            [ text player.label.text ]
+                        ]
 
                     Maybe.Nothing ->
                         []
+
+            else
+                []
     in
     renderLabel
