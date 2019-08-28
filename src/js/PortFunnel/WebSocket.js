@@ -125,9 +125,10 @@
     });
     socket.addEventListener("message", function(event) {
       var message = event.data;
+      // console.log("J-RX", message)
       //console.log("Received for '" + key + "': " + message);
       sub.send(objectReturn("messageReceived",
-                            { key: key, message: message }));
+                            { key: key, message: JSON.parse(message) }));
     });
     socket.addEventListener("close", function(event) {
 	  //console.log("'" + key + "' closed");
@@ -149,8 +150,10 @@
 
   function doSend(args) {
     var key = args.key;
-    var message = args.message;
+    var message = JSON.stringify(args.message);
     var socket = sockets[key];
+
+    //console.log("J-TX", message)
     if (!socket) {
       return socketNotOpenReturn(key, "send", message);
     }
