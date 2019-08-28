@@ -7,6 +7,7 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
 import Ui.Scenes.Playground.Speedometer exposing (..)
+import Ui.Scenes.Playground.TrafficLight exposing (..)
 
 
 minimapMode =

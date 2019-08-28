@@ -8,6 +8,7 @@ import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
 import Ui.Scenes.Playground.Cockpit exposing (..)
+import Ui.Scenes.Playground.TrafficLight exposing (..)
 
 
 widthSvg =
@@ -92,7 +93,9 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ model.myPlayer.catchedCheckpoints ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode model.debug showLabel)
+                (Objects.Manager.render (Map.Generator.map model.map ++ model.myPlayer.catchedCheckpoints ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode model.debug showLabel
+                    ++ Ui.Scenes.Playground.TrafficLight.element model (widthSvg // 2 - 100) 0
+                )
 
         Maybe.Nothing ->
             div [] []

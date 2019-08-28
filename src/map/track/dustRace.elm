@@ -37,7 +37,7 @@ init =
         { starter = 1
         , labs = 1
         , startPositions = [ { x = 448, y = 128 } ]
-        , prepareRaceTime = 1000
+        , prepareRaceTime = 3000
         }
     , gameObjects =
         { background = []
