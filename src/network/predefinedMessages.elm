@@ -11,7 +11,10 @@ openJson =
 
 sendJson : String -> String
 sendJson message =
-    """{"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message":""" ++ message ++ """}}"""
+    String.trim
+        """{"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message":"""
+        ++ message
+        ++ """}}"""
 
 
 closeJson : String

@@ -33,6 +33,8 @@ update wsMessage model =
 
         Send m ->
             let
-                neu = m
+                neu =
+                    -- Debug.log "Send " m
+                    m
             in
-            ( model, parse (Debug.log "Send " neu) )
+            ( model, parse neu )

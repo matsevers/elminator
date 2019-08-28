@@ -36,10 +36,14 @@ wsSendUpdate model =
         myPlayer =
             model.myPlayer
 
+        jsonObject : Value
         jsonObject =
+            -- Json.Encode.object (Debug.log "jsonObjectList " (Network.Scheme.encode myPlayer))
             Json.Encode.object (Network.Scheme.encode myPlayer)
 
+        json : String
         json =
+            -- Debug.log "JsonString" (Json.Encode.encode 0 (Debug.log "JsonValue " jsonObject))
             Json.Encode.encode 0 jsonObject
     in
     { model | wsSend = json }
