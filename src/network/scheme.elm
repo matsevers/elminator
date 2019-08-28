@@ -1,6 +1,7 @@
 module Network.Scheme exposing (decode, encode)
 
 import Json.Decode exposing (..)
+import Json.Decode.Extra exposing (..)
 import Json.Encode exposing (..)
 import List exposing (..)
 import Types exposing (..)
@@ -37,7 +38,7 @@ encode player =
 
 
 type alias Args =
-    { message : String
+    { message : Message
     , key : String
     }
 
@@ -61,163 +62,77 @@ type alias Message =
     }
 
 
-
-{- messageDecoder : Decoder Message
-   messageDecoder =
-       Json.Decode.map2 Message
-           (Json.Decode.map8
-               Message
-               (Json.Decode.field "identifier" Json.Decode.string)
-               (Json.Decode.field "label" Json.Decode.string)
-               (Json.Decode.field "labelCol" Json.Decode.string)
-               (Json.Decode.field "labelSize" Json.Decode.int)
-               (Json.Decode.field "labelVisible" Json.Decode.bool)
-               (Json.Decode.field "currentLab" Json.Decode.int)
-               (Json.Decode.field "catchedCheckpoints" Json.Decode.int)
-               (Json.Decode.field "gOIdentifier" Json.Decode.string)
-           )
-           (Json.Decode.map7 Message
-               (Json.Decode.field "gOPositionX" Json.Decode.int)
-               (Json.Decode.field "gOPositionY" Json.Decode.int)
-               (Json.Decode.field "gOSprite" Json.Decode.string)
-               (Json.Decode.field "gOSpriteMinimap" Json.Decode.string)
-               (Json.Decode.field "gORotate" Json.Decode.int)
-               (Json.Decode.field "gOSizeHeight" Json.Decode.int)
-               (Json.Decode.field "gOSizeWidth" Json.Decode.int)
-           )
--}
+messageDecoder : Decoder Message
+messageDecoder =
+    succeed Message
+        |> Json.Decode.Extra.andMap (Json.Decode.field "identifier" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "label" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "labelCol" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "labelSize" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "labelVisible" Json.Decode.bool)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "currentLab" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "catchedCheckpoints" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOIdentifier" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOPositionX" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOPositionY" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSprite" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSpriteMinimap" Json.Decode.string)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gORotate" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSizeHeight" Json.Decode.int)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSizeWidth" Json.Decode.int)
 
 
 argsDecoder : Decoder Args
 argsDecoder =
-    Json.Decode.map2
-        Args
-        (Json.Decode.field "message" Json.Decode.string)
-        (Json.Decode.field "key" Json.Decode.string)
+    succeed Args
+        |> Json.Decode.Extra.andMap (Json.Decode.field "message" messageDecoder)
+        |> Json.Decode.Extra.andMap (Json.Decode.field "key" Json.Decode.string)
 
 
 decode : String -> Maybe Player
 decode json =
     let
-        j =
-            Debug.log "JSON " json
-
         message =
-            Debug.log "MSG " (Json.Decode.decodeString (field "args" argsDecoder) json)
-
-        {-
-           identifier =
-               Json.Decode.decodeString (field "identifier" Json.Decode.string) message
-
-           label =
-               Json.Decode.decodeString (field "label" Json.Decode.string) message
-
-           labelCol =
-               Json.Decode.decodeString (field "labelCol" Json.Decode.string) message
-
-           labelSize =
-               Json.Decode.decodeString (field "labelSize" Json.Decode.int) message
-
-           labelVisible =
-               Json.Decode.decodeString (field "labelVisible" Json.Decode.bool) message
-
-           currentLab =
-               Json.Decode.decodeString (field "currentLab" Json.Decode.int) message
-
-           gOIdentifier =
-               Json.Decode.decodeString (field "gOIdentifier" Json.Decode.string) message
-
-           catchedCheckpoints =
-               Json.Decode.decodeString (field "catchedCheckpoints" Json.Decode.int) message
-
-           gOPositionX =
-               Json.Decode.decodeString (field "gOPositionX" Json.Decode.int) message
-
-           gOPositionY =
-               Json.Decode.decodeString (field "gOPositionY" Json.Decode.int) message
-
-           gOSprite =
-               Json.Decode.decodeString (field "gOSprite" Json.Decode.string) message
-
-           gOSpriteMinimap =
-               Json.Decode.decodeString (field "gOSpriteMinimap" Json.Decode.string) message
-
-           gORotate =
-               Json.Decode.decodeString (field "gORotate" Json.Decode.int) message
-
-           gOSizeHeight =
-               Json.Decode.decodeString (field "gOSizeHeight" Json.Decode.int) message
-
-           gOSizeWidth =
-               Json.Decode.decodeString (field "gOSizeWidth" Json.Decode.int) message
-
-           l =
-               Debug.log "id" identifier
-        -}
+            Json.Decode.decodeString (field "args" argsDecoder) json
     in
-    Maybe.Nothing
+    case message of
+        Ok m ->
+            let
+                gameObject =
+                    { identifier = m.message.gOIdentifier
+                    , kind = Car
+                    , size = { height = m.message.gOSizeHeight, width = m.message.gOSizeWidth }
+                    , position = Just { x = m.message.gOPositionX, y = m.message.gOPositionY }
+                    , spriteMinimap = Just m.message.gOSprite
+                    , sprite = m.message.gOSprite
+                    , collider = Maybe.Nothing
+                    , rotate = m.message.gORotate
+                    , motion = Maybe.Nothing
+                    , physics = Maybe.Nothing
+                    }
 
+                player =
+                    { identifier = m.message.identifier
+                    , assignedKeys =
+                        { forward = Types.Other
+                        , backward = Types.Other
+                        , left = Types.Other
+                        , right = Types.Other
+                        , action = Types.Other
+                        }
+                    , storedKeys =
+                        { forward = Types.Nothing
+                        , backward = Types.Nothing
+                        , left = Types.Nothing
+                        , right = Types.Nothing
+                        }
+                    , currentLab = m.message.currentLab
+                    , controlledObject = gameObject
+                    , catchedCheckpoints = []
+                    , label = { text = m.message.label, color = m.message.labelCol, size = m.message.labelSize, visible = m.message.labelVisible }
+                    }
+            in
+            Just player
 
-
-{- case ( identifier, label, currentLab ) of
-   ( Ok id, Ok la, Ok cL ) ->
-       case ( gOIdentifier, catchedCheckpoints, gOPositionX ) of
-           ( Ok gOId, Ok cC, Ok pX ) ->
-               case ( gOPositionY, gOSprite, gOSpriteMinimap ) of
-                   ( Ok pY, Ok gOSp, Ok gOSpMi ) ->
-                       case ( gORotate, gOSizeHeight, gOSizeWidth ) of
-                           ( Ok gORo, Ok gOSiHe, Ok gOSoWi ) ->
-                               case ( labelCol, labelSize, labelVisible ) of
-                                   ( Ok lC, Ok lS, Ok lV ) ->
-                                       let
-                                           gameObject =
-                                               { identifier = gOId
-                                               , kind = Car
-                                               , size = { height = gOSiHe, width = gOSoWi }
-                                               , position = Just { x = pX, y = pY }
-                                               , spriteMinimap = Just gOSpMi
-                                               , sprite = gOSp
-                                               , collider = Maybe.Nothing
-                                               , rotate = gORo
-                                               , motion = Maybe.Nothing
-                                               , physics = Maybe.Nothing
-                                               }
-
-                                           player =
-                                               { identifier = id
-                                               , assignedKeys =
-                                                   { forward = Types.Other
-                                                   , backward = Types.Other
-                                                   , left = Types.Other
-                                                   , right = Types.Other
-                                                   , action = Types.Other
-                                                   }
-                                               , storedKeys =
-                                                   { forward = Types.Nothing
-                                                   , backward = Types.Nothing
-                                                   , left = Types.Nothing
-                                                   , right = Types.Nothing
-                                                   }
-                                               , currentLab = cL
-                                               , controlledObject = gameObject
-                                               , catchedCheckpoints = []
-                                               , label = { text = la, color = lC, size = lS, visible = lV }
-                                               }
-                                       in
-                                       Just player
-
-                                   _ ->
-                                       Debug.log "ERROR 1:" Maybe.Nothing
-
-                           _ ->
-                               Debug.log "ERROR 2:" Maybe.Nothing
-
-                   _ ->
-                       Debug.log "ERROR 3:" Maybe.Nothing
-
-           _ ->
-               Debug.log "ERROR 4:" Maybe.Nothing
-
-   _ ->
-       Debug.log "ERROR 5:" Maybe.Nothing
--}
+        _ ->
+            Maybe.Nothing
