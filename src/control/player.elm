@@ -1,9 +1,54 @@
-module Control.Player exposing (applyInput, convertInputToAngle, convertInputToForce, update)
+module Control.Player exposing (applyInput, keyDecoder, update)
 
-import Control.Global exposing (..)
-import Objects.Manager exposing (..)
+import Json.Decode
+import Objects.Module
 import Objects.Physics exposing (..)
 import Types exposing (..)
+
+
+update : Model -> Model
+update model =
+    let
+        myPlayer =
+            model.myPlayer
+
+        gO =
+            myPlayer.controlledObject
+
+        listKeys =
+            [ myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right ]
+    in
+    if model.state == Running then
+        case gO.position of
+            Just p ->
+                case gO.motion of
+                    Just m ->
+                        { model
+                            | myPlayer =
+                                { myPlayer
+                                    | controlledObject =
+                                        Objects.Module.position
+                                            (Just
+                                                { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                                , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                                }
+                                            )
+                                        <|
+                                            counterforce (convertInputToForce listKeys) <|
+                                                autoBrake (convertInputToForce listKeys) <|
+                                                    acceleration (convertInputToForce listKeys) <|
+                                                        Objects.Module.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                                }
+                        }
+
+                    Maybe.Nothing ->
+                        model
+
+            Maybe.Nothing ->
+                model
+
+    else
+        model
 
 
 applyInput : Model -> KeyEvent -> Action -> ( Model, Cmd Msg )
@@ -96,46 +141,25 @@ convertInputToForce l =
                     0 + convertInputToForce xs
 
 
-update : Model -> Model
-update model =
-    let
-        myPlayer =
-            model.myPlayer
+keyDecoder : Json.Decode.Decoder Types.Action
+keyDecoder =
+    Json.Decode.map toKey (Json.Decode.field "key" Json.Decode.string)
 
-        gO =
-            myPlayer.controlledObject
 
-        listKeys =
-            [ myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right ]
-    in
-    if model.state == Running then
-        case gO.position of
-            Just p ->
-                case gO.motion of
-                    Just m ->
-                        { model
-                            | myPlayer =
-                                { myPlayer
-                                    | controlledObject =
-                                        Objects.Manager.position
-                                            (Just
-                                                { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
-                                                , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
-                                                }
-                                            )
-                                        <|
-                                            counterforce (convertInputToForce listKeys) <|
-                                                autoBrake (convertInputToForce listKeys) <|
-                                                    acceleration (convertInputToForce listKeys) <|
-                                                        Objects.Manager.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
-                                }
-                        }
+toKey : String -> Action
+toKey val =
+    case val of
+        "w" ->
+            Forward
 
-                    Maybe.Nothing ->
-                        model
+        "a" ->
+            Left
 
-            Maybe.Nothing ->
-                model
+        "s" ->
+            Backward
 
-    else
-        model
+        "d" ->
+            Right
+
+        _ ->
+            Types.Nothing

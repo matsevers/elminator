@@ -2,7 +2,7 @@ module Ui.Scenes.Playground.Cockpit exposing (element)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Objects.Manager exposing (..)
+import Objects.Module exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
@@ -128,5 +128,14 @@ element model =
                         )
                 )
             ]
-            (Objects.Manager.render (model.map.gameObjects.roads ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode showCollider showLabels)
+            (Objects.Module.render.playground
+                (model.map.gameObjects.roads
+                    ++ [ model.myPlayer.controlledObject ]
+                    ++ List.map (\x -> x.controlledObject) model.onlinePlayers
+                )
+                model.myPlayer
+                minimapMode
+                showCollider
+                showLabels
+            )
         ]

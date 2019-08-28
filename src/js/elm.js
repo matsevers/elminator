@@ -4548,18 +4548,20 @@ var author$project$Objects$Tiles$Background$dust = {
 	spriteMinimap: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$background = author$project$Objects$Tiles$Background$dust;
-var author$project$Objects$Manager$position = F2(
+var author$project$Objects$Utils$position = F2(
 	function (p, gO) {
 		return _Utils_update(
 			gO,
 			{position: p});
 	});
-var author$project$Objects$Manager$rotate = F2(
+var author$project$Objects$Module$position = author$project$Objects$Utils$position;
+var author$project$Objects$Utils$rotate = F2(
 	function (r, gO) {
 		return _Utils_update(
 			gO,
 			{rotate: r});
 	});
+var author$project$Objects$Module$rotate = author$project$Objects$Utils$rotate;
 var elm$core$Basics$eq = _Utils_equal;
 var elm$core$Basics$not = _Basics_not;
 var elm$core$Basics$or = _Basics_or;
@@ -4620,50 +4622,50 @@ var author$project$Objects$Tiles$Checkpoint$checkBox = function (identifier) {
 var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 	[
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		180,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 896, y: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('1'))),
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		270,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 896, y: 448}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('2'))),
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		0,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 512, y: 448}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('3'))),
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		180,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 512, y: 256}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('4'))),
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		0,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 64, y: 320}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('5'))),
 		A2(
-		author$project$Objects$Manager$rotate,
+		author$project$Objects$Module$rotate,
 		90,
 		A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 64, y: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('6')))
@@ -4874,7 +4876,7 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 	_List_fromArray(
 		[
 			A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 448, y: 0}),
 			author$project$Objects$Tiles$Decor$platformBlue)
@@ -5010,10 +5012,10 @@ var author$project$Objects$Tiles$Checkpoint$finishLine = {
 	spriteMinimap: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$finishLine = A2(
-	author$project$Objects$Manager$position,
+	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
 		{x: 492, y: 65}),
-	A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
+	A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
 var author$project$Types$Road = {$: 'Road'};
 var author$project$Objects$Tiles$Road$curveTopRight = {
 	collider: elm$core$Maybe$Just(
@@ -5079,7 +5081,7 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 	_Utils_ap(
 		A2(
 			author$project$Map$Generator$fill,
-			A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$straight),
+			A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$straight),
 			_List_fromArray(
 				[
 					{x: 128, y: 64},
@@ -5108,7 +5110,7 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 		_Utils_ap(
 			A2(
 				author$project$Map$Generator$fill,
-				A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
+				A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
 				_List_fromArray(
 					[
 						{x: 64, y: 64},
@@ -5117,7 +5119,7 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 			_Utils_ap(
 				A2(
 					author$project$Map$Generator$fill,
-					A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
+					A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
 					_List_fromArray(
 						[
 							{x: 64, y: 320},
@@ -5126,7 +5128,7 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 				_Utils_ap(
 					A2(
 						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
+						A2(author$project$Objects$Module$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
 								{x: 128, y: 320},
@@ -5134,7 +5136,7 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 							])),
 					A2(
 						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
+						A2(author$project$Objects$Module$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
 								{x: 512, y: 256},
@@ -5177,10 +5179,10 @@ var author$project$Objects$Tiles$Checkpoint$startLine = {
 	spriteMinimap: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$startLine = A2(
-	author$project$Objects$Manager$position,
+	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
 		{x: 512, y: 65}),
-	A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
+	A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
 var author$project$Map$Track$DustRace$init = {
 	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
 	gameObjects: {
@@ -5194,7 +5196,7 @@ var author$project$Map$Track$DustRace$init = {
 	},
 	meta: {description: 'The dirty one!', name: 'Dust Race'},
 	options: {
-		labs: 1,
+		labs: 2,
 		prepareRaceTime: 3000,
 		startPositions: _List_fromArray(
 			[
@@ -5249,11 +5251,62 @@ var author$project$Objects$Tiles$Background$grass = {
 	spriteMinimap: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$SummerBreeze$background = author$project$Objects$Tiles$Background$grass;
+var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
+	[
+		A2(
+		author$project$Objects$Module$rotate,
+		180,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 896, y: 64}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('1'))),
+		A2(
+		author$project$Objects$Module$rotate,
+		270,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 896, y: 448}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('2'))),
+		A2(
+		author$project$Objects$Module$rotate,
+		0,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 512, y: 448}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('3'))),
+		A2(
+		author$project$Objects$Module$rotate,
+		180,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 512, y: 256}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('4'))),
+		A2(
+		author$project$Objects$Module$rotate,
+		0,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 64, y: 320}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('5'))),
+		A2(
+		author$project$Objects$Module$rotate,
+		90,
+		A2(
+			author$project$Objects$Module$position,
+			elm$core$Maybe$Just(
+				{x: 64, y: 64}),
+			author$project$Objects$Tiles$Checkpoint$checkBox('6')))
+	]);
 var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 	_List_fromArray(
 		[
 			A2(
-			author$project$Objects$Manager$position,
+			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
 				{x: 448, y: 0}),
 			author$project$Objects$Tiles$Decor$platformBlue)
@@ -5306,10 +5359,10 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 								{x: 192, y: 320}
 							])))))));
 var author$project$Map$Track$SummerBreeze$finishLine = A2(
-	author$project$Objects$Manager$position,
+	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 512, y: 65}),
-	A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
+		{x: 492, y: 65}),
+	A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
 var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 	A2(
 		author$project$Map$Generator$fill,
@@ -5330,7 +5383,7 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 	_Utils_ap(
 		A2(
 			author$project$Map$Generator$fill,
-			A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$straight),
+			A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$straight),
 			_List_fromArray(
 				[
 					{x: 128, y: 64},
@@ -5359,7 +5412,7 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 		_Utils_ap(
 			A2(
 				author$project$Map$Generator$fill,
-				A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
+				A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
 				_List_fromArray(
 					[
 						{x: 64, y: 64},
@@ -5368,7 +5421,7 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 			_Utils_ap(
 				A2(
 					author$project$Map$Generator$fill,
-					A2(author$project$Objects$Manager$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
+					A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
 					_List_fromArray(
 						[
 							{x: 64, y: 320},
@@ -5377,7 +5430,7 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 				_Utils_ap(
 					A2(
 						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
+						A2(author$project$Objects$Module$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
 								{x: 128, y: 320},
@@ -5385,17 +5438,17 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 							])),
 					A2(
 						author$project$Map$Generator$fill,
-						A2(author$project$Objects$Manager$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
+						A2(author$project$Objects$Module$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
 								{x: 512, y: 256},
 								{x: 896, y: 64}
 							])))))));
 var author$project$Map$Track$SummerBreeze$startLine = A2(
-	author$project$Objects$Manager$position,
+	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 512, y: 84}),
-	A2(author$project$Objects$Manager$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
+		{x: 512, y: 65}),
+	A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
 var author$project$Map$Track$SummerBreeze$init = {
 	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
 	gameObjects: {
@@ -5405,7 +5458,7 @@ var author$project$Map$Track$SummerBreeze$init = {
 		trigger: A2(
 			elm$core$List$cons,
 			author$project$Map$Track$SummerBreeze$startLine,
-			A2(elm$core$List$cons, author$project$Map$Track$SummerBreeze$finishLine, _List_Nil))
+			A2(elm$core$List$cons, author$project$Map$Track$SummerBreeze$finishLine, author$project$Map$Track$SummerBreeze$checkBox))
 	},
 	meta: {description: 'Loud engines and sunny weather', name: 'Summer Breeze'},
 	options: {
@@ -5540,7 +5593,7 @@ var author$project$Types$Backward = {$: 'Backward'};
 var author$project$Types$Forward = {$: 'Forward'};
 var author$project$Types$Left = {$: 'Left'};
 var author$project$Types$Right = {$: 'Right'};
-var author$project$Control$Global$toKey = function (val) {
+var author$project$Control$Player$toKey = function (val) {
 	switch (val) {
 		case 'w':
 			return author$project$Types$Forward;
@@ -5932,9 +5985,9 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 var elm$json$Json$Decode$field = _Json_decodeField;
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$string = _Json_decodeString;
-var author$project$Control$Global$keyDecoder = A2(
+var author$project$Control$Player$keyDecoder = A2(
 	elm$json$Json$Decode$map,
-	author$project$Control$Global$toKey,
+	author$project$Control$Player$toKey,
 	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string));
 var elm$json$Json$Decode$value = _Json_decodeValue;
 var author$project$Network$Ports$parseReturn = _Platform_incomingPort('parseReturn', elm$json$Json$Decode$value);
@@ -6893,12 +6946,12 @@ var author$project$Main$subscriptions = function (model) {
 				A2(
 					elm$json$Json$Decode$map,
 					A2(author$project$Types$Control, model, author$project$Types$Pressed),
-					author$project$Control$Global$keyDecoder)),
+					author$project$Control$Player$keyDecoder)),
 				elm$browser$Browser$Events$onKeyUp(
 				A2(
 					elm$json$Json$Decode$map,
 					A2(author$project$Types$Control, model, author$project$Types$Released),
-					author$project$Control$Global$keyDecoder)),
+					author$project$Control$Player$keyDecoder)),
 				A2(
 				elm$time$Time$every,
 				model.frequence,
@@ -7186,7 +7239,7 @@ var author$project$Control$Player$update = function (model) {
 							myPlayer,
 							{
 								controlledObject: A2(
-									author$project$Objects$Manager$position,
+									author$project$Objects$Module$position,
 									elm$core$Maybe$Just(
 										{
 											x: p.x + elm$core$Basics$round(
@@ -7206,7 +7259,7 @@ var author$project$Control$Player$update = function (model) {
 												author$project$Objects$Physics$acceleration,
 												author$project$Control$Player$convertInputToForce(listKeys),
 												A2(
-													author$project$Objects$Manager$rotate,
+													author$project$Objects$Module$rotate,
 													A2(
 														elm$core$Basics$modBy,
 														360,
@@ -8441,17 +8494,6 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 					]))
 			]));
 };
-var author$project$Objects$Manager$collisionDetected = F2(
-	function (gO1, gO2) {
-		return (!_Utils_eq(
-			A2(
-				author$project$Objects$Physics$checkCollision,
-				gO1,
-				_List_fromArray(
-					[gO2])),
-			_List_fromArray(
-				[gO2]))) ? 'green' : 'red';
-	});
 var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');
 var elm$svg$Svg$rect = elm$svg$Svg$trustedNode('rect');
 var elm$svg$Svg$Attributes$fillOpacity = _VirtualDom_attribute('fill-opacity');
@@ -8460,13 +8502,24 @@ var elm$svg$Svg$Attributes$stroke = _VirtualDom_attribute('stroke');
 var elm$svg$Svg$Attributes$width = _VirtualDom_attribute('width');
 var elm$svg$Svg$Attributes$x = _VirtualDom_attribute('x');
 var elm$svg$Svg$Attributes$y = _VirtualDom_attribute('y');
-var author$project$Objects$Manager$renderCollider = F2(
-	function (g, player) {
+var author$project$Objects$Render$collider = F2(
+	function (g, p) {
+		var collisionDetected = F2(
+			function (gO1, gO2) {
+				return (!_Utils_eq(
+					A2(
+						author$project$Objects$Physics$checkCollision,
+						gO1,
+						_List_fromArray(
+							[gO2])),
+					_List_fromArray(
+						[gO2]))) ? 'green' : 'red';
+			});
 		if (g.$ === 'Just') {
 			var gO = g.a;
 			var _n1 = gO.position;
 			if (_n1.$ === 'Just') {
-				var p = _n1.a;
+				var pos = _n1.a;
 				var _n2 = gO.collider;
 				if (_n2.$ === 'Just') {
 					var c = _n2.a;
@@ -8483,11 +8536,11 @@ var author$project$Objects$Manager$renderCollider = F2(
 										elm$svg$Svg$Attributes$height(
 										elm$core$String$fromInt(r.height)),
 										elm$svg$Svg$Attributes$x(
-										elm$core$String$fromInt(p.x + r.position.x)),
+										elm$core$String$fromInt(pos.x + r.position.x)),
 										elm$svg$Svg$Attributes$y(
-										elm$core$String$fromInt(p.y + r.position.y)),
+										elm$core$String$fromInt(pos.y + r.position.y)),
 										elm$svg$Svg$Attributes$stroke(
-										A2(author$project$Objects$Manager$collisionDetected, player, gO)),
+										A2(collisionDetected, p, gO)),
 										elm$svg$Svg$Attributes$fillOpacity('0')
 									]),
 								_List_Nil)
@@ -8511,14 +8564,14 @@ var elm$svg$Svg$Attributes$fill = _VirtualDom_attribute('fill');
 var elm$svg$Svg$Attributes$fontFamily = _VirtualDom_attribute('font-family');
 var elm$svg$Svg$Attributes$fontSize = _VirtualDom_attribute('font-size');
 var elm$svg$Svg$Attributes$textAnchor = _VirtualDom_attribute('text-anchor');
-var author$project$Objects$Manager$renderPlayer = F2(
-	function (player, labelsEnabled) {
+var author$project$Objects$Render$player = F2(
+	function (p, labelsEnabled) {
 		var renderLabel = function () {
 			if (!labelsEnabled) {
 				return _List_Nil;
 			} else {
-				if (player.label.visible) {
-					var _n0 = player.controlledObject.position;
+				if (p.label.visible) {
+					var _n0 = p.controlledObject.position;
 					if (_n0.$ === 'Just') {
 						var pos = _n0.a;
 						return _List_fromArray(
@@ -8528,19 +8581,19 @@ var author$project$Objects$Manager$renderPlayer = F2(
 								_List_fromArray(
 									[
 										elm$svg$Svg$Attributes$x(
-										elm$core$String$fromInt(pos.x + ((player.controlledObject.size.width / 2) | 0))),
+										elm$core$String$fromInt(pos.x + ((p.controlledObject.size.width / 2) | 0))),
 										elm$svg$Svg$Attributes$y(
 										elm$core$String$fromInt(pos.y - 10)),
 										elm$svg$Svg$Attributes$fontFamily('Arial'),
-										elm$svg$Svg$Attributes$fill(player.label.color),
+										elm$svg$Svg$Attributes$fill(p.label.color),
 										elm$svg$Svg$Attributes$stroke('#000'),
 										elm$svg$Svg$Attributes$fontSize(
-										elm$core$String$fromInt(player.label.size)),
+										elm$core$String$fromInt(p.label.size)),
 										elm$svg$Svg$Attributes$textAnchor('middle')
 									]),
 								_List_fromArray(
 									[
-										elm$svg$Svg$text(player.label.text)
+										elm$svg$Svg$text(p.label.text)
 									]))
 							]);
 					} else {
@@ -8563,9 +8616,9 @@ var elm$svg$Svg$Attributes$xlinkHref = function (value) {
 		'xlink:href',
 		_VirtualDom_noJavaScriptUri(value));
 };
-var author$project$Objects$Manager$render = F5(
-	function (l, player, minimapMode, debug, labelsEnabled) {
-		render:
+var author$project$Objects$Render$playground = F5(
+	function (l, p, minimapMode, debug, labelsEnabled) {
+		playground:
 		while (true) {
 			var getSprite = function (gO) {
 				if (minimapMode) {
@@ -8591,16 +8644,16 @@ var author$project$Objects$Manager$render = F5(
 				var _n1 = x.position;
 				if (_n1.$ === 'Nothing') {
 					var $temp$l = xs,
-						$temp$player = player,
+						$temp$p = p,
 						$temp$minimapMode = minimapMode,
 						$temp$debug = debug,
 						$temp$labelsEnabled = labelsEnabled;
 					l = $temp$l;
-					player = $temp$player;
+					p = $temp$p;
 					minimapMode = $temp$minimapMode;
 					debug = $temp$debug;
 					labelsEnabled = $temp$labelsEnabled;
-					continue render;
+					continue playground;
 				} else {
 					var posX = _n1.a;
 					return _Utils_ap(
@@ -8627,16 +8680,17 @@ var author$project$Objects$Manager$render = F5(
 							]),
 						_Utils_ap(
 							A2(
-								author$project$Objects$Manager$renderCollider,
+								author$project$Objects$Render$collider,
 								getCollider(x),
-								player.controlledObject),
+								p.controlledObject),
 							_Utils_ap(
-								A5(author$project$Objects$Manager$render, xs, player, minimapMode, debug, labelsEnabled),
-								A2(author$project$Objects$Manager$renderPlayer, player, labelsEnabled))));
+								A5(author$project$Objects$Render$playground, xs, p, minimapMode, debug, labelsEnabled),
+								A2(author$project$Objects$Render$player, p, labelsEnabled))));
 				}
 			}
 		}
 	});
+var author$project$Objects$Module$render = {collider: author$project$Objects$Render$collider, player: author$project$Objects$Render$player, playground: author$project$Objects$Render$playground};
 var author$project$Ui$Scenes$Playground$Cockpit$minimapMode = true;
 var author$project$Ui$Scenes$Playground$Cockpit$showCollider = false;
 var author$project$Ui$Scenes$Playground$Cockpit$showLabels = true;
@@ -9032,11 +9086,18 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
 					]),
 				A5(
-					author$project$Objects$Manager$render,
+					author$project$Objects$Module$render.playground,
 					_Utils_ap(
 						model.map.gameObjects.roads,
-						_List_fromArray(
-							[model.myPlayer.controlledObject])),
+						_Utils_ap(
+							_List_fromArray(
+								[model.myPlayer.controlledObject]),
+							A2(
+								elm$core$List$map,
+								function (x) {
+									return x.controlledObject;
+								},
+								model.onlinePlayers))),
 					model.myPlayer,
 					author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
 					author$project$Ui$Scenes$Playground$Cockpit$showCollider,
@@ -9152,7 +9213,7 @@ var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 				]),
 			_Utils_ap(
 				A5(
-					author$project$Objects$Manager$render,
+					author$project$Objects$Module$render.playground,
 					_Utils_ap(
 						author$project$Map$Generator$map(model.map),
 						_Utils_ap(

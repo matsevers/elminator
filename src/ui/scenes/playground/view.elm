@@ -3,7 +3,7 @@ module Ui.Scenes.Playground.View exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Map.Generator exposing (..)
-import Objects.Manager exposing (..)
+import Objects.Module exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Types exposing (..)
@@ -93,7 +93,7 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render
+                (Objects.Module.render.playground
                     (Map.Generator.map model.map
                         ++ model.myPlayer.catchedCheckpoints
                         ++ List.map (\x -> x.controlledObject) model.onlinePlayers

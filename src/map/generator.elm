@@ -2,11 +2,10 @@ module Map.Generator exposing (fill, map, possibleTileCoords)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
-import Objects.Manager exposing (..)
 import Objects.Tiles.Background exposing (..)
-import Types exposing (..)
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
+import Types exposing (..)
 
 
 map : Types.Map -> List GameObject

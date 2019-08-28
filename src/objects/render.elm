@@ -1,4 +1,4 @@
-module Objects.Manager exposing (motion, position, render, rotate)
+module Objects.Render exposing (collider, player, playground)
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (..)
@@ -9,32 +9,8 @@ import Svg.Attributes exposing (..)
 import Types exposing (..)
 
 
-rotate : Int -> GameObject -> GameObject
-rotate r gO =
-    { gO | rotate = r }
-
-
-position : Maybe Position -> GameObject -> GameObject
-position p gO =
-    { gO | position = p }
-
-
-motion : Maybe Motion -> GameObject -> GameObject
-motion m gO =
-    { gO | motion = m }
-
-
-collisionDetected : GameObject -> GameObject -> String
-collisionDetected gO1 gO2 =
-    if not (checkCollision gO1 [ gO2 ] == [ gO2 ]) then
-        "green"
-
-    else
-        "red"
-
-
-render : List GameObject -> Player -> Bool -> Bool -> Bool -> List (Svg msg)
-render l player minimapMode debug labelsEnabled =
+playground : List GameObject -> Player -> Bool -> Bool -> Bool -> List (Svg msg)
+playground l p minimapMode debug labelsEnabled =
     let
         getSprite : GameObject -> String
         getSprite gO =
@@ -64,7 +40,7 @@ render l player minimapMode debug labelsEnabled =
         x :: xs ->
             case x.position of
                 Maybe.Nothing ->
-                    render xs player minimapMode debug labelsEnabled
+                    playground xs p minimapMode debug labelsEnabled
 
                 Just posX ->
                     [ Svg.image
@@ -85,17 +61,26 @@ render l player minimapMode debug labelsEnabled =
                         ]
                         []
                     ]
-                        ++ renderCollider (getCollider x) player.controlledObject
-                        ++ render xs player minimapMode debug labelsEnabled
-                        ++ renderPlayer player labelsEnabled
+                        ++ collider (getCollider x) p.controlledObject
+                        ++ playground xs p minimapMode debug labelsEnabled
+                        ++ player p labelsEnabled
 
 
-renderCollider : Maybe GameObject -> GameObject -> List (Svg msg)
-renderCollider g player =
+collider : Maybe GameObject -> GameObject -> List (Svg msg)
+collider g p =
+    let
+        collisionDetected : Types.GameObject -> Types.GameObject -> String
+        collisionDetected gO1 gO2 =
+            if not (Objects.Physics.checkCollision gO1 [ gO2 ] == [ gO2 ]) then
+                "green"
+
+            else
+                "red"
+    in
     case g of
         Just gO ->
             case gO.position of
-                Just p ->
+                Just pos ->
                     case gO.collider of
                         Just c ->
                             case c of
@@ -103,9 +88,9 @@ renderCollider g player =
                                     [ Svg.rect
                                         [ Svg.Attributes.width (String.fromInt r.width)
                                         , Svg.Attributes.height (String.fromInt r.height)
-                                        , Svg.Attributes.x (String.fromInt (p.x + r.position.x))
-                                        , Svg.Attributes.y (String.fromInt (p.y + r.position.y))
-                                        , Svg.Attributes.stroke (collisionDetected player gO)
+                                        , Svg.Attributes.x (String.fromInt (pos.x + r.position.x))
+                                        , Svg.Attributes.y (String.fromInt (pos.y + r.position.y))
+                                        , Svg.Attributes.stroke (collisionDetected p gO)
                                         , Svg.Attributes.fillOpacity "0"
                                         ]
                                         []
@@ -124,31 +109,27 @@ renderCollider g player =
             []
 
 
-
--- TODO: Move this function to control/player.elm
-
-
-renderPlayer : Player -> Bool -> List (Svg msg)
-renderPlayer player labelsEnabled =
+player : Player -> Bool -> List (Svg msg)
+player p labelsEnabled =
     let
         renderLabel : List (Svg msg)
         renderLabel =
             if not labelsEnabled then
                 []
 
-            else if player.label.visible then
-                case player.controlledObject.position of
+            else if p.label.visible then
+                case p.controlledObject.position of
                     Just pos ->
                         [ Svg.text_
-                            [ x (String.fromInt (pos.x + player.controlledObject.size.width // 2))
+                            [ x (String.fromInt (pos.x + p.controlledObject.size.width // 2))
                             , y (String.fromInt (pos.y - 10))
                             , fontFamily "Arial"
-                            , fill player.label.color
+                            , fill p.label.color
                             , stroke "#000"
-                            , fontSize (String.fromInt player.label.size)
+                            , fontSize (String.fromInt p.label.size)
                             , textAnchor "middle"
                             ]
-                            [ text player.label.text ]
+                            [ text p.label.text ]
                         ]
 
                     Maybe.Nothing ->

@@ -1,11 +1,11 @@
-module Objects.Physics exposing (..)
+module Objects.Physics exposing (acceleration, addImpact, autoBrake, brakeTo, bump, checkCollision, counterforce, getDirectionFromGameObject, getDirectionFromImpact, overwriteBrake, overwriteSpeedLimits, restrictSpeed, runImpact, setSpeed, slowDown, update, updateImpacts)
 
-import List exposing (..)
-import Types exposing (..)
-import Objects.Trigger exposing (..)
+import List
+import Objects.Trigger
+import Types
 
 
-update : Model -> Model
+update : Types.Model -> Types.Model
 update model =
     let
         myPlayer =
@@ -19,24 +19,29 @@ update model =
                 ++ model.map.gameObjects.decor
                 ++ model.map.gameObjects.roads
                 ++ model.map.gameObjects.background
-        
-        approvedCollision = { trigger = (checkCollision controlledObject model.map.gameObjects.trigger) ,impacts = (checkCollision controlledObject objectList)}
 
-    in
-    Objects.Trigger.runTrigger controlledObject approvedCollision.trigger <| { model
-        | myPlayer =
-            { myPlayer
-                | controlledObject =
-                    updateImpacts model <|
-                        runImpact <|
-                            addImpact approvedCollision.impacts controlledObject
+        approvedCollision =
+            { trigger =
+                checkCollision controlledObject model.map.gameObjects.trigger
+            , impacts = checkCollision controlledObject objectList
             }
-    }
+    in
+    Objects.Trigger.runTrigger controlledObject approvedCollision.trigger <|
+        { model
+            | myPlayer =
+                { myPlayer
+                    | controlledObject =
+                        updateImpacts model <|
+                            runImpact <|
+                                addImpact approvedCollision.impacts controlledObject
+                }
+        }
 
-checkCollision : GameObject -> List (GameObject) -> List (GameObject)
+
+checkCollision : Types.GameObject -> List Types.GameObject -> List Types.GameObject
 checkCollision gO l =
     let
-        helper : GameObject -> GameObject -> Maybe GameObject
+        helper : Types.GameObject -> Types.GameObject -> Maybe Types.GameObject
         helper gO1 gO2 =
             if not (gO1.identifier == gO2.identifier) then
                 case ( gO1.collider, gO2.collider ) of
@@ -44,7 +49,7 @@ checkCollision gO l =
                         case ( gO1.position, gO2.position ) of
                             ( Just p1, Just p2 ) ->
                                 case ( c1, c2 ) of
-                                    ( Rect r1, Rect r2 ) ->
+                                    ( Types.Rect r1, Types.Rect r2 ) ->
                                         if
                                             not
                                                 ((p2.x + r2.position.x)
@@ -74,52 +79,51 @@ checkCollision gO l =
 
             else
                 Maybe.Nothing
-             
-
     in
-    case l of 
-        x :: xs -> case helper gO x of 
-                    Just gameObject -> gameObject :: checkCollision gO xs 
-                    Maybe.Nothing -> checkCollision gO xs             
-                        
-        [] -> []
-         
+    case l of
+        x :: xs ->
+            case helper gO x of
+                Just gameObject ->
+                    gameObject :: checkCollision gO xs
+
+                Maybe.Nothing ->
+                    checkCollision gO xs
+
+        [] ->
+            []
 
 
-
-
-
-addImpact : List GameObject -> GameObject -> GameObject
+addImpact : List Types.GameObject -> Types.GameObject -> Types.GameObject
 addImpact l gO =
     let
-        checkToRemoveBackgroundImpact : List Impact -> List Impact
+        checkToRemoveBackgroundImpact : List Types.Impact -> List Types.Impact
         checkToRemoveBackgroundImpact list =
             let
-                filterBackgroundImpact : Impact -> Bool
+                filterBackgroundImpact : Types.Impact -> Bool
                 filterBackgroundImpact impact =
                     case impact of
-                        Impact i ->
+                        Types.Impact i ->
                             not (i.identifier == "background") && i.overrideBackgroundImpact
             in
-            if length list > 1 then
+            if List.length list > 1 then
                 List.filter filterBackgroundImpact list
 
             else
                 list
 
-        addImpactHelper : Physics -> Maybe Collider -> Physics
+        addImpactHelper : Types.Physics -> Maybe Types.Collider -> Types.Physics
         addImpactHelper physics collider =
             let
-                updateUnmodifiedGameobject : Impact -> Impact
+                updateUnmodifiedGameobject : Types.Impact -> Types.Impact
                 updateUnmodifiedGameobject impact =
                     case impact of
-                        Impact i ->
-                            Impact { i | unmodifiedObject = Just gO }
+                        Types.Impact i ->
+                            Types.Impact { i | unmodifiedObject = Just gO }
             in
             case collider of
                 Just c ->
                     case c of
-                        Rect r ->
+                        Types.Rect r ->
                             case r.impactFunction of
                                 Just impact ->
                                     { physics | impacts = checkToRemoveBackgroundImpact <| (updateUnmodifiedGameobject impact :: physics.impacts) }
@@ -136,7 +140,8 @@ addImpact l gO =
     case l of
         x :: xs ->
             case gO.physics of
-                Just p -> addImpact xs { gO | physics = Just (addImpactHelper p x.collider) }                    
+                Just p ->
+                    addImpact xs { gO | physics = Just (addImpactHelper p x.collider) }
 
                 Maybe.Nothing ->
                     gO
@@ -145,45 +150,45 @@ addImpact l gO =
             gO
 
 
-updateImpacts : Model -> GameObject -> GameObject
+updateImpacts : Types.Model -> Types.GameObject -> Types.GameObject
 updateImpacts model gO =
     let
-        reduceDuration : Impact -> Impact
+        reduceDuration : Types.Impact -> Types.Impact
         reduceDuration impact =
             case impact of
-                Impact i ->
+                Types.Impact i ->
                     if i.duration > 0 then
-                        Impact { i | duration = i.duration - model.frequence }
+                        Types.Impact { i | duration = i.duration - model.frequence }
 
                     else
                         impact
 
-        removeExpiredImpacts : Impact -> Bool
+        removeExpiredImpacts : Types.Impact -> Bool
         removeExpiredImpacts impact =
             case impact of
-                Impact i ->
+                Types.Impact i ->
                     i.duration > 0
     in
     case gO.physics of
         Just p ->
-            { gO | physics = Just { p | impacts = filter removeExpiredImpacts (map reduceDuration p.impacts) } }
+            { gO | physics = Just { p | impacts = List.filter removeExpiredImpacts (List.map reduceDuration p.impacts) } }
 
         Maybe.Nothing ->
             gO
 
 
-runImpact : GameObject -> GameObject
+runImpact : Types.GameObject -> Types.GameObject
 runImpact gO =
     let
-        iterateThroughImpact : List Impact -> GameObject -> GameObject
+        iterateThroughImpact : List Types.Impact -> Types.GameObject -> Types.GameObject
         iterateThroughImpact l gameObject =
             case l of
                 x :: xs ->
                     case x of
-                        Impact impact ->
+                        Types.Impact impact ->
                             case impact.function of
                                 Just f ->
-                                    iterateThroughImpact xs (f (Impact impact) gameObject)
+                                    iterateThroughImpact xs (f (Types.Impact impact) gameObject)
 
                                 Maybe.Nothing ->
                                     gameObject
@@ -199,10 +204,11 @@ runImpact gO =
             gO
 
 
+
 -- Speed functions
 
 
-acceleration : Float -> GameObject -> GameObject
+acceleration : Float -> Types.GameObject -> Types.GameObject
 acceleration acc gO =
     case gO.motion of
         Just motion ->
@@ -212,7 +218,7 @@ acceleration acc gO =
             gO
 
 
-autoBrake : Float -> GameObject -> GameObject
+autoBrake : Float -> Types.GameObject -> Types.GameObject
 autoBrake force gO =
     if force == 0 then
         case gO.motion of
@@ -226,7 +232,7 @@ autoBrake force gO =
         gO
 
 
-brakeTo : Float -> GameObject -> GameObject
+brakeTo : Float -> Types.GameObject -> Types.GameObject
 brakeTo limit gO =
     case gO.motion of
         Just motion ->
@@ -247,7 +253,7 @@ brakeTo limit gO =
             gO
 
 
-overwriteBrake : Float -> GameObject -> GameObject
+overwriteBrake : Float -> Types.GameObject -> Types.GameObject
 overwriteBrake bra gO =
     case gO.motion of
         Just motion ->
@@ -264,7 +270,7 @@ overwriteBrake bra gO =
             gO
 
 
-counterforce : Float -> GameObject -> GameObject
+counterforce : Float -> Types.GameObject -> Types.GameObject
 counterforce force gO =
     case gO.motion of
         Just motion ->
@@ -284,10 +290,10 @@ counterforce force gO =
 
 
 
--- Impact Function
+-- Types.Impact Function
 
 
-getDirectionFromGameObject : GameObject -> Float
+getDirectionFromGameObject : Types.GameObject -> Float
 getDirectionFromGameObject gO =
     case gO.motion of
         Just motion ->
@@ -304,10 +310,10 @@ getDirectionFromGameObject gO =
             0
 
 
-getDirectionFromImpact : Impact -> Float
+getDirectionFromImpact : Types.Impact -> Float
 getDirectionFromImpact impact =
     case impact of
-        Impact i ->
+        Types.Impact i ->
             case i.unmodifiedObject of
                 Just gameObject ->
                     getDirectionFromGameObject gameObject
@@ -316,7 +322,7 @@ getDirectionFromImpact impact =
                     0
 
 
-setSpeed : Float -> GameObject -> GameObject
+setSpeed : Float -> Types.GameObject -> Types.GameObject
 setSpeed speed gO =
     case gO.motion of
         Just motion ->
@@ -326,7 +332,7 @@ setSpeed speed gO =
             gO
 
 
-overwriteSpeedLimits : Float -> Float -> GameObject -> GameObject
+overwriteSpeedLimits : Float -> Float -> Types.GameObject -> Types.GameObject
 overwriteSpeedLimits maxForwardSpeed maxBackwardSpeed gO =
     case gO.motion of
         Just motion ->
@@ -343,7 +349,7 @@ overwriteSpeedLimits maxForwardSpeed maxBackwardSpeed gO =
             gO
 
 
-restrictSpeed : GameObject -> GameObject
+restrictSpeed : Types.GameObject -> Types.GameObject
 restrictSpeed gO =
     case gO.motion of
         Just motion ->
@@ -353,7 +359,7 @@ restrictSpeed gO =
             gO
 
 
-bump : Impact -> GameObject -> GameObject
+bump : Types.Impact -> Types.GameObject -> Types.GameObject
 bump impact gO =
     if getDirectionFromImpact impact > 0 then
         overwriteSpeedLimits 40 20 <| setSpeed -80 gO
@@ -365,7 +371,7 @@ bump impact gO =
         gO
 
 
-slowDown : Impact -> GameObject -> GameObject
+slowDown : Types.Impact -> Types.GameObject -> Types.GameObject
 slowDown impact gO =
     -- overwriteSpeedLimits 20 20 gO
     brakeTo 20 gO

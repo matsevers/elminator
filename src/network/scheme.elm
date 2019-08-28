@@ -65,21 +65,36 @@ type alias Message =
 messageDecoder : Decoder Message
 messageDecoder =
     succeed Message
-        |> Json.Decode.Extra.andMap (Json.Decode.field "identifier" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "label" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "labelCol" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "labelSize" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "labelVisible" Json.Decode.bool)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "currentLab" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "catchedCheckpoints" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOIdentifier" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOPositionX" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOPositionY" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSprite" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSpriteMinimap" Json.Decode.string)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gORotate" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSizeHeight" Json.Decode.int)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "gOSizeWidth" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "identifier" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "label" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "labelCol" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "labelSize" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "labelVisible" Json.Decode.bool)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "currentLab" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "catchedCheckpoints" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOIdentifier" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOPositionX" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOPositionY" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOSprite" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOSpriteMinimap" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gORotate" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOSizeHeight" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "gOSizeWidth" Json.Decode.int)
 
 
 argsDecoder : Decoder Args

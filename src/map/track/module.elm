@@ -3,7 +3,7 @@ module Map.Track.Module exposing (defaultTrack, tracks, update)
 import Map.Track.DustRace
 import Map.Track.SummerBreeze
 import Map.Track.Update
-import Types exposing (..)
+import Types
 
 
 tracks : List Types.Map
