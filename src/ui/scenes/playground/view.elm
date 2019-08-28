@@ -93,7 +93,16 @@ playground model =
                         ++ String.fromInt (round (heightSvg / model.map.dimension.viewScale))
                     )
                 ]
-                (Objects.Manager.render (Map.Generator.map model.map ++ model.myPlayer.catchedCheckpoints ++ [ model.myPlayer.controlledObject ]) model.myPlayer minimapMode model.debug showLabel
+                (Objects.Manager.render
+                    (Map.Generator.map model.map
+                        ++ model.myPlayer.catchedCheckpoints
+                        ++ List.map (\x -> x.controlledObject) model.onlinePlayers
+                        ++ [ model.myPlayer.controlledObject ]
+                    )
+                    model.myPlayer
+                    minimapMode
+                    model.debug
+                    showLabel
                     ++ Ui.Scenes.Playground.TrafficLight.element model (widthSvg // 2 - 100) 0
                 )
 

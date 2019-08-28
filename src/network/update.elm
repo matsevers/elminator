@@ -3,6 +3,7 @@ module Network.Update exposing (update)
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
 import Network.Ports exposing (..)
+import Network.Scheme exposing (..)
 import Types exposing (..)
 
 
@@ -13,7 +14,7 @@ update wsMessage model =
             -- log sent messages
             let
                 message =
-                    Debug.log "send" (Json.Encode.encode 0 v)
+                    Json.Encode.encode 0 v
             in
             ( model, cmdPort v )
 
@@ -21,12 +22,17 @@ update wsMessage model =
             -- log received messages
             let
                 message =
-                    Debug.log "Receive" (Json.Encode.encode 0 v)
-
-                decodedMessage =
-                    Json.Decode.decode 0 v
+                    Network.Scheme.decode (Json.Encode.encode 0 v)
             in
-            ( model, Cmd.none )
+            case message of
+                Just player ->
+                    ( { model | onlinePlayers = [ player ] }, Cmd.none )
+
+                Maybe.Nothing ->
+                    ( model, Cmd.none )
 
         Send m ->
-            ( model, parse m )
+            let
+                neu = m
+            in
+            ( model, parse (Debug.log "Send " neu) )
