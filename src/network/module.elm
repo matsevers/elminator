@@ -1,45 +1,33 @@
-port module Network.Module exposing (close, closeJson, cmdPort, open, openJson, parse, parseReturn, run, send, sendJson, subPort, update, wsSendUpdate)
+module Network.Module exposing (close, cmdPort, open, parse, parseReturn, run, send, subPort, update, wsSendUpdate)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (Value)
+import Network.Ports exposing (..)
+import Network.PredefinedMessages exposing (..)
 import Network.Scheme exposing (..)
+import Network.Update exposing (..)
 import Task exposing (..)
 import Types exposing (..)
 
 
-port cmdPort : Value -> Cmd msg
+cmdPort =
+    Network.Ports.cmdPort
 
 
-port subPort : (Value -> msg) -> Sub msg
+subPort =
+    Network.Ports.subPort
 
 
-port parse : String -> Cmd msg
+parse =
+    Network.Ports.parse
 
 
-port parseReturn : (Value -> msg) -> Sub msg
+parseReturn =
+    Network.Ports.parseReturn
 
 
-update : Websocketmsg -> Model -> ( Model, Cmd Msg )
-update wsMessage model =
-    case wsMessage of
-        Process v ->
-            -- zeige gesendete Nachricht
-            let
-                message =
-                    Debug.log "send" (Json.Encode.encode 0 v)
-            in
-            ( model, cmdPort v )
-
-        Receive v ->
-            -- receiveFromWebsocket
-            let
-                message =
-                    Debug.log "Receive" (Json.Encode.encode 0 v)
-            in
-            ( model, Cmd.none )
-
-        Send m ->
-            ( model, parse m) 
+update =
+    Network.Update.update
 
 
 wsSendUpdate : Model -> Model
@@ -49,10 +37,10 @@ wsSendUpdate model =
             model.myPlayer
 
         jsonObject =
-            (Json.Encode.object (Network.Scheme.encode myPlayer))
+            Json.Encode.object (Network.Scheme.encode myPlayer)
 
         json =
-            (Json.Encode.encode 0 jsonObject)
+            Json.Encode.encode 0 jsonObject
     in
     { model | wsSend = json }
 
@@ -75,34 +63,3 @@ send message =
 close : Cmd Msg
 close =
     run (Websocket (Send closeJson))
-
-
-openJson : String
-openJson =
-    String.trim
-        """
-         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}
-        """
-
-
-sendJson : String -> String
-sendJson message =
-    let  
-        json =
-            String.trim
-                """
-             {"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message": ##placeholder## }}
-           """
-
-        replacedJson =
-            String.replace "##placeholder##" message json
-    in
-    replacedJson
-
-
-closeJson : String
-closeJson =
-    String.trim
-        """
-         {"module": "WebSocket", "tag": "close", "args": {"key": "elminator", "reason": "Just because."}}
-        """

@@ -5195,7 +5195,7 @@ var author$project$Map$Track$DustRace$init = {
 	meta: {description: 'The dirty one!', name: 'Dust Race'},
 	options: {
 		labs: 1,
-		prepareRaceTime: 1000,
+		prepareRaceTime: 3000,
 		startPositions: _List_fromArray(
 			[
 				{x: 448, y: 128}
@@ -5529,8 +5529,7 @@ var author$project$InitialModel$initialModel = {
 		controlledObject: author$project$Objects$Vehicle$Module$defaultVehicle,
 		currentLab: 1,
 		identifier: 'blue',
-		label: elm$core$Maybe$Just(
-			{color: '#F3B1CF', size: 50, text: 'Mats', visible: true}),
+		label: {color: '#F3B1CF', size: 50, text: 'Unnamed Driver', visible: true},
 		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing}
 	},
 	onlinePlayers: _List_Nil,
@@ -5938,8 +5937,10 @@ var author$project$Control$Global$keyDecoder = A2(
 	author$project$Control$Global$toKey,
 	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string));
 var elm$json$Json$Decode$value = _Json_decodeValue;
-var author$project$Network$Module$parseReturn = _Platform_incomingPort('parseReturn', elm$json$Json$Decode$value);
-var author$project$Network$Module$subPort = _Platform_incomingPort('subPort', elm$json$Json$Decode$value);
+var author$project$Network$Ports$parseReturn = _Platform_incomingPort('parseReturn', elm$json$Json$Decode$value);
+var author$project$Network$Module$parseReturn = author$project$Network$Ports$parseReturn;
+var author$project$Network$Ports$subPort = _Platform_incomingPort('subPort', elm$json$Json$Decode$value);
+var author$project$Network$Module$subPort = author$project$Network$Ports$subPort;
 var author$project$Types$Control = F3(
 	function (a, b, c) {
 		return {$: 'Control', a: a, b: b, c: c};
@@ -7259,18 +7260,8 @@ var author$project$Network$Module$run = function (m) {
 		elm$core$Basics$always(m),
 		elm$core$Task$succeed(_Utils_Tuple0));
 };
-var elm$core$String$replace = F3(
-	function (before, after, string) {
-		return A2(
-			elm$core$String$join,
-			after,
-			A2(elm$core$String$split, before, string));
-	});
-var elm$core$String$trim = _String_trim;
-var author$project$Network$Module$sendJson = function (message) {
-	var json = elm$core$String$trim('\r\n             {"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message": "##placeholder##" }}\r\n           ');
-	var replacedJson = A3(elm$core$String$replace, '##placeholder##', message, json);
-	return replacedJson;
+var author$project$Network$PredefinedMessages$sendJson = function (message) {
+	return '{"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message":' + (message + '}}');
 };
 var author$project$Types$Send = function (a) {
 	return {$: 'Send', a: a};
@@ -7279,12 +7270,12 @@ var author$project$Network$Module$send = function (message) {
 	return author$project$Network$Module$run(
 		author$project$Types$Websocket(
 			author$project$Types$Send(
-				author$project$Network$Module$sendJson(message))));
+				author$project$Network$PredefinedMessages$sendJson(message))));
 };
-var author$project$Network$Module$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
+var author$project$Network$Ports$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
 var elm$json$Json$Encode$string = _Json_wrap;
-var author$project$Network$Module$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
-var author$project$Network$Module$update = F2(
+var author$project$Network$Ports$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
+var author$project$Network$Update$update = F2(
 	function (wsMessage, model) {
 		switch (wsMessage.$) {
 			case 'Process':
@@ -7295,7 +7286,7 @@ var author$project$Network$Module$update = F2(
 					A2(elm$json$Json$Encode$encode, 0, v));
 				return _Utils_Tuple2(
 					model,
-					author$project$Network$Module$cmdPort(v));
+					author$project$Network$Ports$cmdPort(v));
 			case 'Receive':
 				var v = wsMessage.a;
 				var message = A2(
@@ -7307,19 +7298,63 @@ var author$project$Network$Module$update = F2(
 				var m = wsMessage.a;
 				return _Utils_Tuple2(
 					model,
-					author$project$Network$Module$parse(m));
+					author$project$Network$Ports$parse(m));
+		}
+	});
+var author$project$Network$Module$update = author$project$Network$Update$update;
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
 		}
 	});
 var elm$json$Json$Encode$int = _Json_wrap;
 var author$project$Network$Scheme$encode = function (player) {
+	var gO = player.controlledObject;
+	var gOPosition = A2(
+		elm$core$Maybe$withDefault,
+		{x: 0, y: 0},
+		gO.position);
+	var spriteMinimap = A2(elm$core$Maybe$withDefault, '', gO.spriteMinimap);
 	return _List_fromArray(
 		[
 			_Utils_Tuple2(
 			'identifier',
 			elm$json$Json$Encode$string(player.identifier)),
 			_Utils_Tuple2(
-			'lab',
-			elm$json$Json$Encode$int(player.currentLab))
+			'label',
+			elm$json$Json$Encode$string(player.label.text)),
+			_Utils_Tuple2(
+			'currentLab',
+			elm$json$Json$Encode$int(player.currentLab)),
+			_Utils_Tuple2(
+			'catchedCheckpoints',
+			elm$json$Json$Encode$int(
+				elm$core$List$length(player.catchedCheckpoints))),
+			_Utils_Tuple2(
+			'gOPositionX',
+			elm$json$Json$Encode$int(gOPosition.x)),
+			_Utils_Tuple2(
+			'gOPositionY',
+			elm$json$Json$Encode$int(gOPosition.y)),
+			_Utils_Tuple2(
+			'gOSprite',
+			elm$json$Json$Encode$string(gO.sprite)),
+			_Utils_Tuple2(
+			'gOSpriteMinimap',
+			elm$json$Json$Encode$string(spriteMinimap)),
+			_Utils_Tuple2(
+			'gORotate',
+			elm$json$Json$Encode$int(gO.rotate)),
+			_Utils_Tuple2(
+			'gOSizeHeight',
+			elm$json$Json$Encode$int(gO.size.height)),
+			_Utils_Tuple2(
+			'gOSizeWidth',
+			elm$json$Json$Encode$int(gO.size.width))
 		]);
 };
 var elm$json$Json$Encode$object = function (pairs) {
@@ -7650,14 +7685,36 @@ var author$project$Ui$Scenes$MainMenu$Update$changeMap = F2(
 				{map: m}),
 			elm$core$Platform$Cmd$none);
 	});
+var author$project$Ui$Scenes$MainMenu$Update$changeName = F2(
+	function (model, name) {
+		var myPlayer = model.myPlayer;
+		var label = model.myPlayer.label;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{
+					myPlayer: _Utils_update(
+						myPlayer,
+						{
+							label: _Utils_update(
+								label,
+								{text: name})
+						})
+				}),
+			elm$core$Platform$Cmd$none);
+	});
 var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'ChangeCar') {
-			var gO = msg.b;
-			return A2(author$project$Ui$Scenes$MainMenu$Update$changeCar, model, gO);
-		} else {
-			var m = msg.b;
-			return A2(author$project$Ui$Scenes$MainMenu$Update$changeMap, model, m);
+		switch (msg.$) {
+			case 'ChangeCar':
+				var gO = msg.b;
+				return A2(author$project$Ui$Scenes$MainMenu$Update$changeCar, model, gO);
+			case 'ChangeMap':
+				var m = msg.b;
+				return A2(author$project$Ui$Scenes$MainMenu$Update$changeMap, model, m);
+			default:
+				var name = msg.b;
+				return A2(author$project$Ui$Scenes$MainMenu$Update$changeName, model, name);
 		}
 	});
 var author$project$Ui$Scenes$MainMenu$Module$update = author$project$Ui$Scenes$MainMenu$Update$update;
@@ -7764,7 +7821,7 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 		elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2(elm$html$Html$Attributes$style, 'height', '98vh'),
+				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
 				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
 				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')'),
 				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
@@ -7871,13 +7928,17 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 			]));
 };
 var author$project$Ui$Scenes$FinishMenu$Module$view = author$project$Ui$Scenes$FinishMenu$View$view;
-var author$project$Types$ChangeCar = F2(
+var author$project$Types$ChangeName = F2(
 	function (a, b) {
-		return {$: 'ChangeCar', a: a, b: b};
+		return {$: 'ChangeName', a: a, b: b};
 	});
 var author$project$Types$MainMenu = function (a) {
 	return {$: 'MainMenu', a: a};
 };
+var author$project$Types$ChangeCar = F2(
+	function (a, b) {
+		return {$: 'ChangeCar', a: a, b: b};
+	});
 var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 	function (l, model) {
 		var renderCar = function (car) {
@@ -8014,12 +8075,46 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 var author$project$Ui$Scenes$MainMenu$MapPicker$view = function (model) {
 	return A2(author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps, model.availableMaps, model);
 };
+var elm$html$Html$input = _VirtualDom_node('input');
+var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
+var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
+var elm$html$Html$Events$alwaysStop = function (x) {
+	return _Utils_Tuple2(x, true);
+};
+var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
+	return {$: 'MayStopPropagation', a: a};
+};
+var elm$html$Html$Events$stopPropagationOn = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$MayStopPropagation(decoder));
+	});
+var elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3(elm$core$List$foldr, elm$json$Json$Decode$field, decoder, fields);
+	});
+var elm$html$Html$Events$targetValue = A2(
+	elm$json$Json$Decode$at,
+	_List_fromArray(
+		['target', 'value']),
+	elm$json$Json$Decode$string);
+var elm$html$Html$Events$onInput = function (tagger) {
+	return A2(
+		elm$html$Html$Events$stopPropagationOn,
+		'input',
+		A2(
+			elm$json$Json$Decode$map,
+			elm$html$Html$Events$alwaysStop,
+			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
+};
 var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2(elm$html$Html$Attributes$style, 'height', '98vh'),
+				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
 				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
 				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')'),
 				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
@@ -8056,7 +8151,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
 								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
 								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+								A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
 								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
 								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
 								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
@@ -8068,14 +8163,41 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								elm$html$Html$text('CHOOSE A RACE TRACK'),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('CHOOSE A TRACK')
+									])),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'margin-top', '20px'),
+										A2(elm$html$Html$Attributes$style, 'margin-bottom', '20px')
+									]),
+								author$project$Ui$Scenes$MainMenu$MapPicker$view(model)),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('CHOOSE A VEHICLE')
+									])),
 								A2(
 								elm$html$Html$div,
 								_List_fromArray(
 									[
 										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
 									]),
-								author$project$Ui$Scenes$MainMenu$MapPicker$view(model))
+								author$project$Ui$Scenes$MainMenu$CarPicker$view(model))
 							])),
 						A2(
 						elm$html$Html$div,
@@ -8084,7 +8206,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
 								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
 								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+								A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
 								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
 								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
 								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
@@ -8096,14 +8218,59 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								elm$html$Html$text('CHOOSE A VEHICLE'),
 								A2(
 								elm$html$Html$div,
 								_List_fromArray(
 									[
+										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('DRIVERS NAME')
+									])),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'display', 'flex'),
 										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
 									]),
-								author$project$Ui$Scenes$MainMenu$CarPicker$view(model))
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$div,
+										_List_fromArray(
+											[
+												A2(elm$html$Html$Attributes$style, 'flex', '1')
+											]),
+										_List_Nil),
+										A2(
+										elm$html$Html$input,
+										_List_fromArray(
+											[
+												A2(elm$html$Html$Attributes$style, 'flex', '1'),
+												A2(elm$html$Html$Attributes$style, 'font-size', '22px'),
+												A2(elm$html$Html$Attributes$style, 'color', '#fff'),
+												A2(elm$html$Html$Attributes$style, 'background-color', 'transparent'),
+												A2(elm$html$Html$Attributes$style, 'border', '0px solid #fff'),
+												A2(elm$html$Html$Attributes$style, 'border-bottom', '1px solid rgba(255,255,255,0.5)'),
+												elm$html$Html$Attributes$placeholder('Text to reverse'),
+												elm$html$Html$Attributes$value(model.myPlayer.label.text),
+												elm$html$Html$Events$onInput(
+												function (x) {
+													return author$project$Types$MainMenu(
+														A2(author$project$Types$ChangeName, model, x));
+												})
+											]),
+										_List_Nil),
+										A2(
+										elm$html$Html$div,
+										_List_fromArray(
+											[
+												A2(elm$html$Html$Attributes$style, 'flex', '1')
+											]),
+										_List_Nil)
+									]))
 							]))
 					])),
 				A2(
@@ -8201,38 +8368,32 @@ var author$project$Objects$Manager$renderPlayer = F2(
 			if (!labelsEnabled) {
 				return _List_Nil;
 			} else {
-				var _n0 = player.label;
-				if (_n0.$ === 'Just') {
-					var l = _n0.a;
-					if (l.visible) {
-						var _n1 = player.controlledObject.position;
-						if (_n1.$ === 'Just') {
-							var pos = _n1.a;
-							return _List_fromArray(
-								[
-									A2(
-									elm$svg$Svg$text_,
-									_List_fromArray(
-										[
-											elm$svg$Svg$Attributes$x(
-											elm$core$String$fromInt(pos.x + ((player.controlledObject.size.width / 2) | 0))),
-											elm$svg$Svg$Attributes$y(
-											elm$core$String$fromInt(pos.y - 10)),
-											elm$svg$Svg$Attributes$fontFamily('Arial'),
-											elm$svg$Svg$Attributes$fill(l.color),
-											elm$svg$Svg$Attributes$stroke('#000'),
-											elm$svg$Svg$Attributes$fontSize(
-											elm$core$String$fromInt(l.size)),
-											elm$svg$Svg$Attributes$textAnchor('middle')
-										]),
-									_List_fromArray(
-										[
-											elm$svg$Svg$text(l.text)
-										]))
-								]);
-						} else {
-							return _List_Nil;
-						}
+				if (player.label.visible) {
+					var _n0 = player.controlledObject.position;
+					if (_n0.$ === 'Just') {
+						var pos = _n0.a;
+						return _List_fromArray(
+							[
+								A2(
+								elm$svg$Svg$text_,
+								_List_fromArray(
+									[
+										elm$svg$Svg$Attributes$x(
+										elm$core$String$fromInt(pos.x + ((player.controlledObject.size.width / 2) | 0))),
+										elm$svg$Svg$Attributes$y(
+										elm$core$String$fromInt(pos.y - 10)),
+										elm$svg$Svg$Attributes$fontFamily('Arial'),
+										elm$svg$Svg$Attributes$fill(player.label.color),
+										elm$svg$Svg$Attributes$stroke('#000'),
+										elm$svg$Svg$Attributes$fontSize(
+										elm$core$String$fromInt(player.label.size)),
+										elm$svg$Svg$Attributes$textAnchor('middle')
+									]),
+								_List_fromArray(
+									[
+										elm$svg$Svg$text(player.label.text)
+									]))
+							]);
 					} else {
 						return _List_Nil;
 					}
@@ -8554,15 +8715,6 @@ var author$project$Ui$Scenes$Playground$Speedometer$element = F3(
 						-100,
 						100))));
 	});
-var elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 	var motion = A2(
@@ -8664,15 +8816,6 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 							]))
 					]));
 		});
-	var getPlayername = function () {
-		var _n0 = model.myPlayer.label;
-		if (_n0.$ === 'Just') {
-			var l = _n0.a;
-			return l.text;
-		} else {
-			return 'unknown';
-		}
-	}();
 	return A2(
 		elm$html$Html$div,
 		_List_fromArray(
@@ -8726,7 +8869,7 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 								A2(elm$html$Html$Attributes$style, 'align-self', 'center')
 							]),
 						_List_Nil),
-						A2(placement, '1', getPlayername),
+						A2(placement, '1', model.myPlayer.label.text),
 						lapInfo
 					])),
 				A2(
@@ -8758,6 +8901,81 @@ var author$project$Map$Generator$map = function (m) {
 			m.gameObjects.roads,
 			_Utils_ap(m.gameObjects.decor, m.gameObjects.trigger)));
 };
+var author$project$Ui$Scenes$Playground$TrafficLight$height = 40;
+var author$project$Ui$Scenes$Playground$TrafficLight$circle = F2(
+	function (activated, iCx) {
+		var color = activated ? '#db1f15' : '#3b3e44';
+		return A2(
+			elm$svg$Svg$circle,
+			_List_fromArray(
+				[
+					elm$svg$Svg$Attributes$cy(
+					elm$core$String$fromInt((author$project$Ui$Scenes$Playground$TrafficLight$height / 2) | 0)),
+					elm$svg$Svg$Attributes$cx(iCx),
+					elm$svg$Svg$Attributes$r(
+					elm$core$String$fromInt((author$project$Ui$Scenes$Playground$TrafficLight$height / 3) | 0)),
+					elm$svg$Svg$Attributes$fill(color)
+				]),
+			_List_Nil);
+	});
+var author$project$Ui$Scenes$Playground$TrafficLight$width = 150;
+var elm$svg$Svg$Attributes$rx = _VirtualDom_attribute('rx');
+var elm$svg$Svg$Attributes$ry = _VirtualDom_attribute('ry');
+var author$project$Ui$Scenes$Playground$TrafficLight$element = F3(
+	function (model, px, py) {
+		var initialPrepareRaceTime = author$project$InitialModel$initialModel.map.options.prepareRaceTime;
+		var currentPrepareRactime = model.map.options.prepareRaceTime;
+		return _Utils_eq(model.state, author$project$Types$PrepareRace) ? _List_fromArray(
+			[
+				A2(
+				elm$svg$Svg$svg,
+				_List_fromArray(
+					[
+						elm$svg$Svg$Attributes$width(
+						elm$core$String$fromInt(author$project$Ui$Scenes$Playground$TrafficLight$width)),
+						elm$svg$Svg$Attributes$height(
+						elm$core$String$fromInt(author$project$Ui$Scenes$Playground$TrafficLight$height)),
+						elm$svg$Svg$Attributes$x(
+						elm$core$String$fromInt(px)),
+						elm$svg$Svg$Attributes$y(
+						elm$core$String$fromInt(py))
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$svg$Svg$rect,
+						_List_fromArray(
+							[
+								elm$svg$Svg$Attributes$x('0'),
+								elm$svg$Svg$Attributes$y('0'),
+								elm$svg$Svg$Attributes$width(
+								elm$core$String$fromInt(author$project$Ui$Scenes$Playground$TrafficLight$width)),
+								elm$svg$Svg$Attributes$height(
+								elm$core$String$fromInt(author$project$Ui$Scenes$Playground$TrafficLight$height)),
+								elm$svg$Svg$Attributes$fill('#23262b'),
+								elm$svg$Svg$Attributes$rx('15'),
+								elm$svg$Svg$Attributes$ry('15')
+							]),
+						_List_Nil),
+						A2(
+						author$project$Ui$Scenes$Playground$TrafficLight$circle,
+						((100 / initialPrepareRaceTime) * currentPrepareRactime) > 0,
+						elm$core$String$fromInt(30)),
+						A2(
+						author$project$Ui$Scenes$Playground$TrafficLight$circle,
+						((100 / initialPrepareRaceTime) * currentPrepareRactime) > 25,
+						elm$core$String$fromInt(60)),
+						A2(
+						author$project$Ui$Scenes$Playground$TrafficLight$circle,
+						((100 / initialPrepareRaceTime) * currentPrepareRactime) > 50,
+						elm$core$String$fromInt(90)),
+						A2(
+						author$project$Ui$Scenes$Playground$TrafficLight$circle,
+						((100 / initialPrepareRaceTime) * currentPrepareRactime) > 75,
+						elm$core$String$fromInt(120))
+					]))
+			]) : _List_Nil;
+	});
 var author$project$Ui$Scenes$Playground$View$heightSvg = 500;
 var author$project$Ui$Scenes$Playground$View$minimapMode = false;
 var author$project$Ui$Scenes$Playground$View$showLabel = false;
@@ -8783,18 +9001,20 @@ var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$widthSvg / model.map.dimension.viewScale)) + (' ' + elm$core$String$fromInt(
 						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$heightSvg / model.map.dimension.viewScale))))))))
 				]),
-			A5(
-				author$project$Objects$Manager$render,
-				_Utils_ap(
-					author$project$Map$Generator$map(model.map),
+			_Utils_ap(
+				A5(
+					author$project$Objects$Manager$render,
 					_Utils_ap(
-						model.myPlayer.catchedCheckpoints,
-						_List_fromArray(
-							[model.myPlayer.controlledObject]))),
-				model.myPlayer,
-				author$project$Ui$Scenes$Playground$View$minimapMode,
-				model.debug,
-				author$project$Ui$Scenes$Playground$View$showLabel));
+						author$project$Map$Generator$map(model.map),
+						_Utils_ap(
+							model.myPlayer.catchedCheckpoints,
+							_List_fromArray(
+								[model.myPlayer.controlledObject]))),
+					model.myPlayer,
+					author$project$Ui$Scenes$Playground$View$minimapMode,
+					model.debug,
+					author$project$Ui$Scenes$Playground$View$showLabel),
+				A3(author$project$Ui$Scenes$Playground$TrafficLight$element, model, ((author$project$Ui$Scenes$Playground$View$widthSvg / 2) | 0) - 100, 0)));
 	} else {
 		return A2(elm$html$Html$div, _List_Nil, _List_Nil);
 	}
@@ -8804,7 +9024,7 @@ var author$project$Ui$Scenes$Playground$View$view = function (model) {
 		elm$html$Html$div,
 		_List_fromArray(
 			[
-				A2(elm$html$Html$Attributes$style, 'height', '98vh'),
+				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
 				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
 				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')')
 			]),
@@ -8856,10 +9076,11 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$Module$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
+var elm$core$String$trim = _String_trim;
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
 var author$project$Network$Module$open = author$project$Network$Module$run(
 	author$project$Types$Websocket(
-		author$project$Types$Send(author$project$Network$Module$openJson)));
+		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
 	{

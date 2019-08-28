@@ -84,8 +84,8 @@ subscriptions model =
         [ onKeyDown (Json.Decode.map (Control model Pressed) keyDecoder)
         , onKeyUp (Json.Decode.map (Control model Released) keyDecoder)
         , Time.every model.frequence (\_ -> Tick)
-        , subPort (\v -> Websocket (Receive v))
-        , parseReturn (\v -> Websocket (Process v))
+        , Network.Module.subPort (\v -> Websocket (Receive v))
+        , Network.Module.parseReturn (\v -> Websocket (Process v))
         ]
 
 
