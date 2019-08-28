@@ -3,7 +3,7 @@ module Objects.Vehicle.Police exposing (model)
 import Types exposing (..)
 
 
-model : GameObject
+model : Types.GameObject
 model =
     { identifier = "Police"
     , kind = Types.Car
@@ -13,7 +13,7 @@ model =
     , spriteMinimap = Just "assets/cars/police.png"
     , collider =
         Just
-            (Rect
+            (Types.Rect
                 { width = 8
                 , height = 8
                 , position = { x = 12, y = 12 }

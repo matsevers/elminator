@@ -1,15 +1,13 @@
 module Objects.Render exposing (collider, player, playground)
 
-import Html exposing (Html, div)
-import Html.Attributes exposing (..)
-import Objects.Physics exposing (..)
-import String exposing (..)
-import Svg exposing (..)
+import Objects.Physics
+import String
+import Svg
 import Svg.Attributes exposing (..)
 import Types exposing (..)
 
 
-playground : List GameObject -> Player -> Bool -> Bool -> Bool -> List (Svg msg)
+playground : List GameObject -> Player -> Bool -> Bool -> Bool -> List (Svg.Svg msg)
 playground l p minimapMode debug labelsEnabled =
     let
         getSprite : GameObject -> String
@@ -66,7 +64,7 @@ playground l p minimapMode debug labelsEnabled =
                         ++ player p labelsEnabled
 
 
-collider : Maybe GameObject -> GameObject -> List (Svg msg)
+collider : Maybe GameObject -> GameObject -> List (Svg.Svg msg)
 collider g p =
     let
         collisionDetected : Types.GameObject -> Types.GameObject -> String
@@ -109,10 +107,10 @@ collider g p =
             []
 
 
-player : Player -> Bool -> List (Svg msg)
+player : Player -> Bool -> List (Svg.Svg msg)
 player p labelsEnabled =
     let
-        renderLabel : List (Svg msg)
+        renderLabel : List (Svg.Svg msg)
         renderLabel =
             if not labelsEnabled then
                 []
@@ -129,7 +127,7 @@ player p labelsEnabled =
                             , fontSize (String.fromInt p.label.size)
                             , textAnchor "middle"
                             ]
-                            [ text p.label.text ]
+                            [ Svg.text p.label.text ]
                         ]
 
                     Maybe.Nothing ->

@@ -1,9 +1,9 @@
 module Objects.Vehicle.Module exposing (defaultVehicle, vehicles)
 
-import Types exposing (..)
 import Objects.Vehicle.Ambulance
 import Objects.Vehicle.Police
 import Objects.Vehicle.Taxi
+import Types
 
 
 vehicles : List Types.GameObject

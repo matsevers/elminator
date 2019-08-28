@@ -1,9 +1,9 @@
 module Objects.Vehicle.Taxi exposing (model)
 
-import Types exposing (..)
+import Types
 
 
-model : GameObject
+model : Types.GameObject
 model =
     { identifier = "Taxi"
     , kind = Types.Car
@@ -13,7 +13,7 @@ model =
     , spriteMinimap = Just "assets/cars/taxi.png"
     , collider =
         Just
-            (Rect
+            (Types.Rect
                 { width = 8
                 , height = 8
                 , position = { x = 12, y = 12 }

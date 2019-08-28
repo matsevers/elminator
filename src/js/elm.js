@@ -7668,7 +7668,7 @@ var author$project$Objects$Physics$checkCollision = F2(
 	function (gO, l) {
 		checkCollision:
 		while (true) {
-			var helper = F2(
+			var compareBorders = F2(
 				function (gO1, gO2) {
 					if (!_Utils_eq(gO1.identifier, gO2.identifier)) {
 						var _n2 = _Utils_Tuple2(gO1.collider, gO2.collider);
@@ -7700,7 +7700,7 @@ var author$project$Objects$Physics$checkCollision = F2(
 			if (l.b) {
 				var x = l.a;
 				var xs = l.b;
-				var _n1 = A2(helper, gO, x);
+				var _n1 = A2(compareBorders, gO, x);
 				if (_n1.$ === 'Just') {
 					var gameObject = _n1.a;
 					return A2(
@@ -7788,9 +7788,9 @@ var author$project$Objects$Physics$updateImpacts = F2(
 			return gO;
 		}
 	});
-var author$project$Objects$Trigger$runTrigger = F3(
+var author$project$Objects$Trigger$run = F3(
 	function (gO, l, m) {
-		runTrigger:
+		run:
 		while (true) {
 			if (l.b) {
 				var x = l.a;
@@ -7811,7 +7811,7 @@ var author$project$Objects$Trigger$runTrigger = F3(
 							gO = $temp$gO;
 							l = $temp$l;
 							m = $temp$m;
-							continue runTrigger;
+							continue run;
 						}
 					} else {
 						var $temp$gO = gO,
@@ -7820,7 +7820,7 @@ var author$project$Objects$Trigger$runTrigger = F3(
 						gO = $temp$gO;
 						l = $temp$l;
 						m = $temp$m;
-						continue runTrigger;
+						continue run;
 					}
 				} else {
 					var $temp$gO = gO,
@@ -7829,7 +7829,7 @@ var author$project$Objects$Trigger$runTrigger = F3(
 					gO = $temp$gO;
 					l = $temp$l;
 					m = $temp$m;
-					continue runTrigger;
+					continue run;
 				}
 			} else {
 				return m;
@@ -7849,7 +7849,7 @@ var author$project$Objects$Physics$update = function (model) {
 		trigger: A2(author$project$Objects$Physics$checkCollision, controlledObject, model.map.gameObjects.trigger)
 	};
 	return A3(
-		author$project$Objects$Trigger$runTrigger,
+		author$project$Objects$Trigger$run,
 		controlledObject,
 		approvedCollision.trigger,
 		_Utils_update(
