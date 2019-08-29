@@ -1,4 +1,4 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..), Websocketmsg(..))
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..), Websocketmsg(..))
 
 import Json.Encode exposing (Value)
 
@@ -112,6 +112,19 @@ type alias GameObject =
     , rotate : Int
     , motion : Maybe Motion
     , physics : Maybe Physics
+    }
+
+
+
+-- Lobby Types
+
+
+type alias Lobby =
+    { identifier : String
+    , name : String
+    , maxPlayer : Int
+    , currentPlayer : Int
+    , map : String
     }
 
 

@@ -2,15 +2,15 @@ module Network.Update exposing (update)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
+import Network.Decode exposing (..)
 import Network.Ports exposing (..)
-import Network.Scheme exposing (..)
-import Types exposing (..)
+import Types
 
 
-update : Websocketmsg -> Model -> ( Model, Cmd Msg )
+update : Types.Websocketmsg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update wsMessage model =
     case wsMessage of
-        Process v ->
+        Types.Process v ->
             -- log sent messages
             let
                 message =
@@ -18,20 +18,28 @@ update wsMessage model =
             in
             ( model, cmdPort v )
 
-        Receive v ->
+        Types.Receive v ->
             -- log received messages
             let
                 message =
-                    Network.Scheme.decode (Json.Encode.encode 0 v)
+                    Network.Decode.decode (Json.Encode.encode 0 v)
             in
             case message of
-                Just player ->
-                    ( { model | onlinePlayers = [ player ] }, Cmd.none )
+                Just m ->
+                    case ( m.player, m.lobby ) of
+                        ( Just player, _ ) ->
+                            ( { model | onlinePlayers = [] }, Cmd.none )
+
+                        ( _, Just lobby ) ->
+                            ( model, Cmd.none )
+
+                        _ ->
+                            ( model, Cmd.none )
 
                 Maybe.Nothing ->
                     ( model, Cmd.none )
 
-        Send m ->
+        Types.Send m ->
             let
                 neu =
                     -- Debug.log "Send " m

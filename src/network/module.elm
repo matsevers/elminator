@@ -1,10 +1,11 @@
-module Network.Module exposing (close, cmdPort, open, parse, parseReturn, run, send, subPort, update, wsSendUpdate)
+module Network.Module exposing (close, cmdPort, encodeLobby, encodePlayer, open, parse, parseReturn, run, send, subPort, update, wsSendUpdate)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (Value)
+import Network.Encode
 import Network.Ports exposing (..)
 import Network.PredefinedMessages exposing (..)
-import Network.Scheme exposing (..)
+import Network.Scheme
 import Network.Update exposing (..)
 import Task exposing (..)
 import Types exposing (..)
@@ -30,6 +31,17 @@ update =
     Network.Update.update
 
 
+encodeLobby : Lobby -> String
+encodeLobby lobby =
+    Json.Encode.encode 0
+        (Json.Encode.object (Network.Encode.encodeLobby lobby))
+
+
+encodePlayer : Player -> String
+encodePlayer player =
+    Json.Encode.encode 0 (Json.Encode.object (Network.Encode.encodePlayer player))
+
+
 wsSendUpdate : Model -> Model
 wsSendUpdate model =
     let
@@ -39,7 +51,7 @@ wsSendUpdate model =
         jsonObject : Value
         jsonObject =
             -- Json.Encode.object (Debug.log "jsonObjectList " (Network.Scheme.encode myPlayer))
-            Json.Encode.object (Network.Scheme.encode myPlayer)
+            Json.Encode.object (Network.Encode.encodePlayer myPlayer)
 
         json : String
         json =
@@ -59,9 +71,9 @@ open =
     run (Websocket (Send openJson))
 
 
-send : String -> Cmd Msg
-send message =
-    run (Websocket (Send (sendJson message)))
+send : String -> String -> Cmd Msg
+send field message =
+    run (Websocket (Send (sendJson2 field message)))
 
 
 close : Cmd Msg

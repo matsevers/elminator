@@ -52,10 +52,19 @@ update msg model =
                         Control.Player.update <|
                             Map.Track.Module.update model
                 )
-                    |> withCmd (Network.Module.send model.wsSend)
+                    |> withCmd (Network.Module.send "player" (Network.Module.encodePlayer model.myPlayer))
 
             else if model.state == Menu then
-                model |> withNoCmd
+                let
+                    lobbyDummy =
+                        { identifier = "1"
+                        , name = "Race Time"
+                        , maxPlayer = 2
+                        , currentPlayer = 1
+                        , map = "Dust Race"
+                        }
+                in
+                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby lobbyDummy))
 
             else
                 model |> withNoCmd

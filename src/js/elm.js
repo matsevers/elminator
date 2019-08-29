@@ -7305,200 +7305,48 @@ var author$project$Map$Track$Update$update = function (model) {
 	}
 };
 var author$project$Map$Track$Module$update = author$project$Map$Track$Update$update;
-var elm$core$Basics$always = F2(
-	function (a, _n0) {
-		return a;
-	});
-var author$project$Network$Module$run = function (m) {
-	return A2(
-		elm$core$Task$perform,
-		elm$core$Basics$always(m),
-		elm$core$Task$succeed(_Utils_Tuple0));
-};
-var elm$core$String$trim = _String_trim;
-var author$project$Network$PredefinedMessages$sendJson = function (message) {
-	return elm$core$String$trim('{"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message":') + (message + '}}');
-};
-var author$project$Types$Send = function (a) {
-	return {$: 'Send', a: a};
-};
-var author$project$Network$Module$send = function (message) {
-	return author$project$Network$Module$run(
-		author$project$Types$Websocket(
-			author$project$Types$Send(
-				author$project$Network$PredefinedMessages$sendJson(message))));
-};
-var author$project$Network$Ports$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
+var elm$json$Json$Encode$int = _Json_wrap;
 var elm$json$Json$Encode$string = _Json_wrap;
-var author$project$Network$Ports$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
-var author$project$Network$Scheme$Args = F2(
-	function (message, key) {
-		return {key: key, message: message};
-	});
-var author$project$Network$Scheme$Message = function (identifier) {
-	return function (label) {
-		return function (labelCol) {
-			return function (labelSize) {
-				return function (labelVisible) {
-					return function (currentLab) {
-						return function (time) {
-							return function (catchedCheckpoints) {
-								return function (gOIdentifier) {
-									return function (gOPositionX) {
-										return function (gOPositionY) {
-											return function (gOSprite) {
-												return function (gOSpriteMinimap) {
-													return function (gORotate) {
-														return function (gOSizeHeight) {
-															return function (gOSizeWidth) {
-																return {catchedCheckpoints: catchedCheckpoints, currentLab: currentLab, gOIdentifier: gOIdentifier, gOPositionX: gOPositionX, gOPositionY: gOPositionY, gORotate: gORotate, gOSizeHeight: gOSizeHeight, gOSizeWidth: gOSizeWidth, gOSprite: gOSprite, gOSpriteMinimap: gOSpriteMinimap, identifier: identifier, label: label, labelCol: labelCol, labelSize: labelSize, labelVisible: labelVisible, time: time};
-															};
-														};
-													};
-												};
-											};
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
+var author$project$Network$Encode$encodeLobby = function (lobby) {
+	return _List_fromArray(
+		[
+			_Utils_Tuple2(
+			'identifier',
+			elm$json$Json$Encode$string(lobby.identifier)),
+			_Utils_Tuple2(
+			'name',
+			elm$json$Json$Encode$string(lobby.name)),
+			_Utils_Tuple2(
+			'maxPlayer',
+			elm$json$Json$Encode$int(lobby.maxPlayer)),
+			_Utils_Tuple2(
+			'currentPlayer',
+			elm$json$Json$Encode$int(lobby.currentPlayer)),
+			_Utils_Tuple2(
+			'map',
+			elm$json$Json$Encode$string(lobby.map))
+		]);
 };
-var elm$json$Json$Decode$bool = _Json_decodeBool;
-var elm$json$Json$Decode$int = _Json_decodeInt;
-var elm_community$json_extra$Json$Decode$Extra$andMap = elm$json$Json$Decode$map2(elm$core$Basics$apR);
-var author$project$Network$Scheme$messageDecoder = A2(
-	elm_community$json_extra$Json$Decode$Extra$andMap,
-	A2(elm$json$Json$Decode$field, 'gOSizeWidth', elm$json$Json$Decode$int),
-	A2(
-		elm_community$json_extra$Json$Decode$Extra$andMap,
-		A2(elm$json$Json$Decode$field, 'gOSizeHeight', elm$json$Json$Decode$int),
-		A2(
-			elm_community$json_extra$Json$Decode$Extra$andMap,
-			A2(elm$json$Json$Decode$field, 'gORotate', elm$json$Json$Decode$int),
-			A2(
-				elm_community$json_extra$Json$Decode$Extra$andMap,
-				A2(elm$json$Json$Decode$field, 'gOSpriteMinimap', elm$json$Json$Decode$string),
-				A2(
-					elm_community$json_extra$Json$Decode$Extra$andMap,
-					A2(elm$json$Json$Decode$field, 'gOSprite', elm$json$Json$Decode$string),
-					A2(
-						elm_community$json_extra$Json$Decode$Extra$andMap,
-						A2(elm$json$Json$Decode$field, 'gOPositionY', elm$json$Json$Decode$int),
-						A2(
-							elm_community$json_extra$Json$Decode$Extra$andMap,
-							A2(elm$json$Json$Decode$field, 'gOPositionX', elm$json$Json$Decode$int),
-							A2(
-								elm_community$json_extra$Json$Decode$Extra$andMap,
-								A2(elm$json$Json$Decode$field, 'gOIdentifier', elm$json$Json$Decode$string),
-								A2(
-									elm_community$json_extra$Json$Decode$Extra$andMap,
-									A2(elm$json$Json$Decode$field, 'catchedCheckpoints', elm$json$Json$Decode$int),
-									A2(
-										elm_community$json_extra$Json$Decode$Extra$andMap,
-										A2(elm$json$Json$Decode$field, 'time', elm$json$Json$Decode$int),
-										A2(
-											elm_community$json_extra$Json$Decode$Extra$andMap,
-											A2(elm$json$Json$Decode$field, 'currentLab', elm$json$Json$Decode$int),
-											A2(
-												elm_community$json_extra$Json$Decode$Extra$andMap,
-												A2(elm$json$Json$Decode$field, 'labelVisible', elm$json$Json$Decode$bool),
-												A2(
-													elm_community$json_extra$Json$Decode$Extra$andMap,
-													A2(elm$json$Json$Decode$field, 'labelSize', elm$json$Json$Decode$int),
-													A2(
-														elm_community$json_extra$Json$Decode$Extra$andMap,
-														A2(elm$json$Json$Decode$field, 'labelCol', elm$json$Json$Decode$string),
-														A2(
-															elm_community$json_extra$Json$Decode$Extra$andMap,
-															A2(elm$json$Json$Decode$field, 'label', elm$json$Json$Decode$string),
-															A2(
-																elm_community$json_extra$Json$Decode$Extra$andMap,
-																A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
-																elm$json$Json$Decode$succeed(author$project$Network$Scheme$Message)))))))))))))))));
-var author$project$Network$Scheme$argsDecoder = A2(
-	elm_community$json_extra$Json$Decode$Extra$andMap,
-	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string),
-	A2(
-		elm_community$json_extra$Json$Decode$Extra$andMap,
-		A2(elm$json$Json$Decode$field, 'message', author$project$Network$Scheme$messageDecoder),
-		elm$json$Json$Decode$succeed(author$project$Network$Scheme$Args)));
-var author$project$Types$Other = {$: 'Other'};
-var elm$json$Json$Decode$decodeString = _Json_runOnString;
-var author$project$Network$Scheme$decode = function (json) {
-	var message = A2(
-		elm$json$Json$Decode$decodeString,
-		A2(elm$json$Json$Decode$field, 'args', author$project$Network$Scheme$argsDecoder),
-		json);
-	if (message.$ === 'Ok') {
-		var m = message.a;
-		var gameObject = {
-			collider: elm$core$Maybe$Nothing,
-			identifier: m.message.gOIdentifier,
-			kind: author$project$Types$Car,
-			motion: elm$core$Maybe$Nothing,
-			physics: elm$core$Maybe$Nothing,
-			position: elm$core$Maybe$Just(
-				{x: m.message.gOPositionX, y: m.message.gOPositionY}),
-			rotate: m.message.gORotate,
-			size: {height: m.message.gOSizeHeight, width: m.message.gOSizeWidth},
-			sprite: m.message.gOSprite,
-			spriteMinimap: elm$core$Maybe$Just(m.message.gOSprite)
-		};
-		var player = {
-			assignedKeys: {action: author$project$Types$Other, backward: author$project$Types$Other, forward: author$project$Types$Other, left: author$project$Types$Other, right: author$project$Types$Other},
-			catchedCheckpoints: _List_Nil,
-			controlledObject: gameObject,
-			currentLab: m.message.currentLab,
-			identifier: m.message.identifier,
-			label: {color: m.message.labelCol, size: m.message.labelSize, text: m.message.label, visible: m.message.labelVisible},
-			storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
-			time: m.message.time
-		};
-		return elm$core$Maybe$Just(player);
-	} else {
-		return elm$core$Maybe$Nothing;
-	}
+var elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			elm$core$List$foldl,
+			F2(
+				function (_n0, obj) {
+					var k = _n0.a;
+					var v = _n0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(_Utils_Tuple0),
+			pairs));
 };
-var author$project$Network$Update$update = F2(
-	function (wsMessage, model) {
-		switch (wsMessage.$) {
-			case 'Process':
-				var v = wsMessage.a;
-				var message = A2(elm$json$Json$Encode$encode, 0, v);
-				return _Utils_Tuple2(
-					model,
-					author$project$Network$Ports$cmdPort(v));
-			case 'Receive':
-				var v = wsMessage.a;
-				var message = author$project$Network$Scheme$decode(
-					A2(elm$json$Json$Encode$encode, 0, v));
-				if (message.$ === 'Just') {
-					var player = message.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								onlinePlayers: _List_fromArray(
-									[player])
-							}),
-						elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
-				}
-			default:
-				var m = wsMessage.a;
-				var neu = m;
-				return _Utils_Tuple2(
-					model,
-					author$project$Network$Ports$parse(neu));
-		}
-	});
-var author$project$Network$Module$update = author$project$Network$Update$update;
+var author$project$Network$Module$encodeLobby = function (lobby) {
+	return A2(
+		elm$json$Json$Encode$encode,
+		0,
+		elm$json$Json$Encode$object(
+			author$project$Network$Encode$encodeLobby(lobby)));
+};
 var elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (maybe.$ === 'Just') {
@@ -7509,8 +7357,7 @@ var elm$core$Maybe$withDefault = F2(
 		}
 	});
 var elm$json$Json$Encode$bool = _Json_wrap;
-var elm$json$Json$Encode$int = _Json_wrap;
-var author$project$Network$Scheme$encode = function (player) {
+var author$project$Network$Encode$encodePlayer = function (player) {
 	var gO = player.controlledObject;
 	var gOPosition = A2(
 		elm$core$Maybe$withDefault,
@@ -7570,23 +7417,238 @@ var author$project$Network$Scheme$encode = function (player) {
 			elm$json$Json$Encode$int(gO.size.width))
 		]);
 };
-var elm$json$Json$Encode$object = function (pairs) {
-	return _Json_wrap(
-		A3(
-			elm$core$List$foldl,
-			F2(
-				function (_n0, obj) {
-					var k = _n0.a;
-					var v = _n0.b;
-					return A3(_Json_addField, k, v, obj);
-				}),
-			_Json_emptyObject(_Utils_Tuple0),
-			pairs));
+var author$project$Network$Module$encodePlayer = function (player) {
+	return A2(
+		elm$json$Json$Encode$encode,
+		0,
+		elm$json$Json$Encode$object(
+			author$project$Network$Encode$encodePlayer(player)));
 };
+var elm$core$Basics$always = F2(
+	function (a, _n0) {
+		return a;
+	});
+var author$project$Network$Module$run = function (m) {
+	return A2(
+		elm$core$Task$perform,
+		elm$core$Basics$always(m),
+		elm$core$Task$succeed(_Utils_Tuple0));
+};
+var elm$core$String$trim = _String_trim;
+var author$project$Network$PredefinedMessages$sendJson2 = F2(
+	function (field, message) {
+		return elm$core$String$trim('{\"module\": \"WebSocket\", \"tag\": \"send\", \"args\": {\"key\": \"elminator\", \"message\":{ \"') + (field + ('\":' + (message + '}}}')));
+	});
+var author$project$Types$Send = function (a) {
+	return {$: 'Send', a: a};
+};
+var author$project$Network$Module$send = F2(
+	function (field, message) {
+		return author$project$Network$Module$run(
+			author$project$Types$Websocket(
+				author$project$Types$Send(
+					A2(author$project$Network$PredefinedMessages$sendJson2, field, message))));
+	});
+var author$project$Network$Decode$Args = F2(
+	function (message, key) {
+		return {key: key, message: message};
+	});
+var author$project$Network$Decode$Message = F2(
+	function (lobby, player) {
+		return {lobby: lobby, player: player};
+	});
+var author$project$Types$Lobby = F5(
+	function (identifier, name, maxPlayer, currentPlayer, map) {
+		return {currentPlayer: currentPlayer, identifier: identifier, map: map, maxPlayer: maxPlayer, name: name};
+	});
+var elm$json$Json$Decode$int = _Json_decodeInt;
+var elm_community$json_extra$Json$Decode$Extra$andMap = elm$json$Json$Decode$map2(elm$core$Basics$apR);
+var author$project$Network$Decode$lobbyDecoder = A2(
+	elm_community$json_extra$Json$Decode$Extra$andMap,
+	A2(elm$json$Json$Decode$field, 'map', elm$json$Json$Decode$string),
+	A2(
+		elm_community$json_extra$Json$Decode$Extra$andMap,
+		A2(elm$json$Json$Decode$field, 'currentPlayer', elm$json$Json$Decode$int),
+		A2(
+			elm_community$json_extra$Json$Decode$Extra$andMap,
+			A2(elm$json$Json$Decode$field, 'maxPlayer', elm$json$Json$Decode$int),
+			A2(
+				elm_community$json_extra$Json$Decode$Extra$andMap,
+				A2(elm$json$Json$Decode$field, 'name', elm$json$Json$Decode$string),
+				A2(
+					elm_community$json_extra$Json$Decode$Extra$andMap,
+					A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
+					elm$json$Json$Decode$succeed(author$project$Types$Lobby))))));
+var author$project$Network$Decode$Player = function (identifier) {
+	return function (label) {
+		return function (labelCol) {
+			return function (labelSize) {
+				return function (labelVisible) {
+					return function (currentLab) {
+						return function (time) {
+							return function (catchedCheckpoints) {
+								return function (gOIdentifier) {
+									return function (gOPositionX) {
+										return function (gOPositionY) {
+											return function (gOSprite) {
+												return function (gOSpriteMinimap) {
+													return function (gORotate) {
+														return function (gOSizeHeight) {
+															return function (gOSizeWidth) {
+																return {catchedCheckpoints: catchedCheckpoints, currentLab: currentLab, gOIdentifier: gOIdentifier, gOPositionX: gOPositionX, gOPositionY: gOPositionY, gORotate: gORotate, gOSizeHeight: gOSizeHeight, gOSizeWidth: gOSizeWidth, gOSprite: gOSprite, gOSpriteMinimap: gOSpriteMinimap, identifier: identifier, label: label, labelCol: labelCol, labelSize: labelSize, labelVisible: labelVisible, time: time};
+															};
+														};
+													};
+												};
+											};
+										};
+									};
+								};
+							};
+						};
+					};
+				};
+			};
+		};
+	};
+};
+var elm$json$Json$Decode$bool = _Json_decodeBool;
+var author$project$Network$Decode$playerDecoder = A2(
+	elm_community$json_extra$Json$Decode$Extra$andMap,
+	A2(elm$json$Json$Decode$field, 'gOSizeWidth', elm$json$Json$Decode$int),
+	A2(
+		elm_community$json_extra$Json$Decode$Extra$andMap,
+		A2(elm$json$Json$Decode$field, 'gOSizeHeight', elm$json$Json$Decode$int),
+		A2(
+			elm_community$json_extra$Json$Decode$Extra$andMap,
+			A2(elm$json$Json$Decode$field, 'gORotate', elm$json$Json$Decode$int),
+			A2(
+				elm_community$json_extra$Json$Decode$Extra$andMap,
+				A2(elm$json$Json$Decode$field, 'gOSpriteMinimap', elm$json$Json$Decode$string),
+				A2(
+					elm_community$json_extra$Json$Decode$Extra$andMap,
+					A2(elm$json$Json$Decode$field, 'gOSprite', elm$json$Json$Decode$string),
+					A2(
+						elm_community$json_extra$Json$Decode$Extra$andMap,
+						A2(elm$json$Json$Decode$field, 'gOPositionY', elm$json$Json$Decode$int),
+						A2(
+							elm_community$json_extra$Json$Decode$Extra$andMap,
+							A2(elm$json$Json$Decode$field, 'gOPositionX', elm$json$Json$Decode$int),
+							A2(
+								elm_community$json_extra$Json$Decode$Extra$andMap,
+								A2(elm$json$Json$Decode$field, 'gOIdentifier', elm$json$Json$Decode$string),
+								A2(
+									elm_community$json_extra$Json$Decode$Extra$andMap,
+									A2(elm$json$Json$Decode$field, 'catchedCheckpoints', elm$json$Json$Decode$int),
+									A2(
+										elm_community$json_extra$Json$Decode$Extra$andMap,
+										A2(elm$json$Json$Decode$field, 'time', elm$json$Json$Decode$int),
+										A2(
+											elm_community$json_extra$Json$Decode$Extra$andMap,
+											A2(elm$json$Json$Decode$field, 'currentLab', elm$json$Json$Decode$int),
+											A2(
+												elm_community$json_extra$Json$Decode$Extra$andMap,
+												A2(elm$json$Json$Decode$field, 'labelVisible', elm$json$Json$Decode$bool),
+												A2(
+													elm_community$json_extra$Json$Decode$Extra$andMap,
+													A2(elm$json$Json$Decode$field, 'labelSize', elm$json$Json$Decode$int),
+													A2(
+														elm_community$json_extra$Json$Decode$Extra$andMap,
+														A2(elm$json$Json$Decode$field, 'labelCol', elm$json$Json$Decode$string),
+														A2(
+															elm_community$json_extra$Json$Decode$Extra$andMap,
+															A2(elm$json$Json$Decode$field, 'label', elm$json$Json$Decode$string),
+															A2(
+																elm_community$json_extra$Json$Decode$Extra$andMap,
+																A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
+																elm$json$Json$Decode$succeed(author$project$Network$Decode$Player)))))))))))))))));
+var elm$json$Json$Decode$oneOf = _Json_oneOf;
+var elm$json$Json$Decode$maybe = function (decoder) {
+	return elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				A2(elm$json$Json$Decode$map, elm$core$Maybe$Just, decoder),
+				elm$json$Json$Decode$succeed(elm$core$Maybe$Nothing)
+			]));
+};
+var author$project$Network$Decode$messageDecoder = A2(
+	elm_community$json_extra$Json$Decode$Extra$andMap,
+	elm$json$Json$Decode$maybe(
+		A2(elm$json$Json$Decode$field, 'player', author$project$Network$Decode$playerDecoder)),
+	A2(
+		elm_community$json_extra$Json$Decode$Extra$andMap,
+		elm$json$Json$Decode$maybe(
+			A2(elm$json$Json$Decode$field, 'lobby', author$project$Network$Decode$lobbyDecoder)),
+		elm$json$Json$Decode$succeed(author$project$Network$Decode$Message)));
+var author$project$Network$Decode$argsDecoder = A2(
+	elm_community$json_extra$Json$Decode$Extra$andMap,
+	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string),
+	A2(
+		elm_community$json_extra$Json$Decode$Extra$andMap,
+		A2(elm$json$Json$Decode$field, 'message', author$project$Network$Decode$messageDecoder),
+		elm$json$Json$Decode$succeed(author$project$Network$Decode$Args)));
+var elm$json$Json$Decode$decodeString = _Json_runOnString;
+var author$project$Network$Decode$decode = function (json) {
+	var message = A2(
+		elm$json$Json$Decode$decodeString,
+		A2(elm$json$Json$Decode$field, 'args', author$project$Network$Decode$argsDecoder),
+		json);
+	if (message.$ === 'Ok') {
+		var m = message.a;
+		return elm$core$Maybe$Just(m.message);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var author$project$Network$Ports$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
+var author$project$Network$Ports$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
+var author$project$Network$Update$update = F2(
+	function (wsMessage, model) {
+		switch (wsMessage.$) {
+			case 'Process':
+				var v = wsMessage.a;
+				var message = A2(elm$json$Json$Encode$encode, 0, v);
+				return _Utils_Tuple2(
+					model,
+					author$project$Network$Ports$cmdPort(v));
+			case 'Receive':
+				var v = wsMessage.a;
+				var message = author$project$Network$Decode$decode(
+					A2(elm$json$Json$Encode$encode, 0, v));
+				if (message.$ === 'Just') {
+					var m = message.a;
+					var _n2 = _Utils_Tuple2(m.player, m.lobby);
+					if (_n2.a.$ === 'Just') {
+						var player = _n2.a.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{onlinePlayers: _List_Nil}),
+							elm$core$Platform$Cmd$none);
+					} else {
+						if (_n2.b.$ === 'Just') {
+							var lobby = _n2.b.a;
+							return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+						} else {
+							return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+						}
+					}
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+			default:
+				var m = wsMessage.a;
+				var neu = m;
+				return _Utils_Tuple2(
+					model,
+					author$project$Network$Ports$parse(neu));
+		}
+	});
+var author$project$Network$Module$update = author$project$Network$Update$update;
 var author$project$Network$Module$wsSendUpdate = function (model) {
 	var myPlayer = model.myPlayer;
 	var jsonObject = elm$json$Json$Encode$object(
-		author$project$Network$Scheme$encode(myPlayer));
+		author$project$Network$Encode$encodePlayer(myPlayer));
 	var json = A2(elm$json$Json$Encode$encode, 0, jsonObject);
 	return _Utils_update(
 		model,
@@ -7957,13 +8019,31 @@ var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'Tick':
-				return (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
-					Janiczek$cmd_extra$Cmd$Extra$withCmd,
-					author$project$Network$Module$send(model.wsSend),
-					author$project$Network$Module$wsSendUpdate(
-						author$project$Objects$Physics$update(
-							author$project$Control$Player$update(
-								author$project$Map$Track$Module$update(model))))) : (_Utils_eq(model.state, author$project$Types$Menu) ? Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model));
+				if (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) {
+					return A2(
+						Janiczek$cmd_extra$Cmd$Extra$withCmd,
+						A2(
+							author$project$Network$Module$send,
+							'player',
+							author$project$Network$Module$encodePlayer(model.myPlayer)),
+						author$project$Network$Module$wsSendUpdate(
+							author$project$Objects$Physics$update(
+								author$project$Control$Player$update(
+									author$project$Map$Track$Module$update(model)))));
+				} else {
+					if (_Utils_eq(model.state, author$project$Types$Menu)) {
+						var lobbyDummy = {currentPlayer: 1, identifier: '1', map: 'Dust Race', maxPlayer: 2, name: 'Race Time'};
+						return A2(
+							Janiczek$cmd_extra$Cmd$Extra$withCmd,
+							A2(
+								author$project$Network$Module$send,
+								'lobby',
+								author$project$Network$Module$encodeLobby(lobbyDummy)),
+							model);
+					} else {
+						return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
+					}
+				}
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -7994,6 +8074,14 @@ var author$project$Types$SceneManager = function (a) {
 var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
 var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Ui$Scenes$Style$button = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'padding', '30px'),
+		A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
+		A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
+		A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '20px')
+	]);
 var author$project$Ui$Scenes$Style$centeredText = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'text-align', 'center')
@@ -8023,6 +8111,20 @@ var author$project$Ui$Scenes$Style$menuItem = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
 		A2(elm$html$Html$Attributes$style, 'padding', '20px'),
 		A2(elm$html$Html$Attributes$style, 'margin', '20px')
+	]);
+var author$project$Ui$Scenes$Style$menuItemLeft = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd'),
+		A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)')
+	]);
+var author$project$Ui$Scenes$Style$menuItemRight = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
+		A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)')
+	]);
+var author$project$Ui$Scenes$Style$spaceTop = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
 	]);
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
@@ -8098,21 +8200,14 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 						A2(
 						elm$html$Html$div,
 						_Utils_ap(
-							_List_fromArray(
-								[
-									A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)'),
-									A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd')
-								]),
+							author$project$Ui$Scenes$Style$menuItemLeft,
 							_Utils_ap(author$project$Ui$Scenes$Style$menuItem, author$project$Ui$Scenes$Style$centeredText)),
 						_List_fromArray(
 							[
 								elm$html$Html$text('YOUR TIME'),
 								A2(
 								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
-									]),
+								author$project$Ui$Scenes$Style$spaceTop,
 								_List_fromArray(
 									[
 										elm$html$Html$text(
@@ -8126,38 +8221,23 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 						elm$html$Html$div,
 						_Utils_ap(
 							author$project$Ui$Scenes$Style$menuItem,
-							_Utils_ap(
-								author$project$Ui$Scenes$Style$centeredText,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
-										A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)')
-									]))),
+							_Utils_ap(author$project$Ui$Scenes$Style$centeredText, author$project$Ui$Scenes$Style$menuItemRight)),
 						_List_fromArray(
 							[
 								elm$html$Html$text('COMPETITIVE POSITION'),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
-									]),
-								_List_Nil)
+								A2(elm$html$Html$div, author$project$Ui$Scenes$Style$spaceTop, _List_Nil)
 							]))
 					])),
 				A2(
 				elm$html$Html$button,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'padding', '30px'),
-						A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
-						A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
-						A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
-						A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
-						elm$html$Html$Events$onClick(
-						author$project$Types$SceneManager(
-							A2(author$project$Types$ChangeTo, author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel, author$project$Types$Menu)))
-					]),
+				_Utils_ap(
+					author$project$Ui$Scenes$Style$button,
+					_List_fromArray(
+						[
+							elm$html$Html$Events$onClick(
+							author$project$Types$SceneManager(
+								A2(author$project$Types$ChangeTo, author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel, author$project$Types$Menu)))
+						])),
 				_List_fromArray(
 					[
 						elm$html$Html$text('Back to Menu')
@@ -8333,21 +8413,9 @@ var author$project$Ui$Scenes$MainMenu$Style$menuItemContainer = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'width', '100%'),
 		A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
 	]);
-var author$project$Ui$Scenes$MainMenu$Style$spaceBottom = _List_fromArray(
+var author$project$Ui$Scenes$Style$spaceBottom = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'margin-bottom', '20px')
-	]);
-var author$project$Ui$Scenes$MainMenu$Style$spaceTop = _List_fromArray(
-	[
-		A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
-	]);
-var author$project$Ui$Scenes$Style$button = _List_fromArray(
-	[
-		A2(elm$html$Html$Attributes$style, 'padding', '30px'),
-		A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
-		A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
-		A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
-		A2(elm$html$Html$Attributes$style, 'font-size', '20px')
 	]);
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
@@ -8386,13 +8454,7 @@ var elm$html$Html$Events$onInput = function (tagger) {
 var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 	var menuItemPlayerOptions = A2(
 		elm$html$Html$div,
-		_Utils_ap(
-			_List_fromArray(
-				[
-					A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
-					A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)')
-				]),
-			author$project$Ui$Scenes$Style$menuItem),
+		_Utils_ap(author$project$Ui$Scenes$Style$menuItemRight, author$project$Ui$Scenes$Style$menuItem),
 		_List_fromArray(
 			[
 				A2(
@@ -8409,7 +8471,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 						[
 							A2(elm$html$Html$Attributes$style, 'display', 'flex')
 						]),
-					author$project$Ui$Scenes$MainMenu$Style$spaceTop),
+					author$project$Ui$Scenes$Style$spaceTop),
 				_List_fromArray(
 					[
 						A2(
@@ -8445,13 +8507,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 			]));
 	var menuItemGameOptions = A2(
 		elm$html$Html$div,
-		_Utils_ap(
-			_List_fromArray(
-				[
-					A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd'),
-					A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)')
-				]),
-			author$project$Ui$Scenes$Style$menuItem),
+		_Utils_ap(author$project$Ui$Scenes$Style$menuItemLeft, author$project$Ui$Scenes$Style$menuItem),
 		_List_fromArray(
 			[
 				A2(
@@ -8463,7 +8519,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 					])),
 				A2(
 				elm$html$Html$div,
-				_Utils_ap(author$project$Ui$Scenes$MainMenu$Style$spaceTop, author$project$Ui$Scenes$MainMenu$Style$spaceBottom),
+				_Utils_ap(author$project$Ui$Scenes$Style$spaceTop, author$project$Ui$Scenes$Style$spaceBottom),
 				author$project$Ui$Scenes$MainMenu$MapPicker$view(model)),
 				A2(
 				elm$html$Html$div,
@@ -8474,7 +8530,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 					])),
 				A2(
 				elm$html$Html$div,
-				author$project$Ui$Scenes$MainMenu$Style$spaceTop,
+				author$project$Ui$Scenes$Style$spaceTop,
 				author$project$Ui$Scenes$MainMenu$CarPicker$view(model))
 			]));
 	return A2(
@@ -9338,7 +9394,7 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\n        ');
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
 var author$project$Network$Module$open = author$project$Network$Module$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
