@@ -1,22 +1,22 @@
 module Ui.Scenes.MainMenu.Update exposing (changeCar, changeMap, update)
 
-import Types exposing (..)
+import Types
 
 
-update : Types.MainMenuMessage -> Model -> ( Model, Cmd Types.Msg )
+update : Types.MainMenuMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
-        ChangeCar _ gO ->
+        Types.ChangeCar _ gO ->
             changeCar model gO
 
-        ChangeMap _ m ->
+        Types.ChangeMap _ m ->
             changeMap model m
 
-        ChangeName _ name ->
+        Types.ChangeName _ name ->
             changeName model name
 
 
-changeCar : Model -> GameObject -> ( Model, Cmd Types.Msg )
+changeCar : Types.Model -> Types.GameObject -> ( Types.Model, Cmd Types.Msg )
 changeCar model gO =
     let
         myPlayer =
@@ -25,12 +25,12 @@ changeCar model gO =
     ( { model | myPlayer = { myPlayer | controlledObject = gO } }, Cmd.none )
 
 
-changeMap : Model -> Map -> ( Model, Cmd Types.Msg )
+changeMap : Types.Model -> Types.Map -> ( Types.Model, Cmd Types.Msg )
 changeMap model m =
     ( { model | map = m }, Cmd.none )
 
 
-changeName : Model -> String -> ( Model, Cmd Types.Msg )
+changeName : Types.Model -> String -> ( Types.Model, Cmd Types.Msg )
 changeName model name =
     let
         myPlayer =

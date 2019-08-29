@@ -1,14 +1,14 @@
 module Ui.Scenes.MainMenu.Module exposing (update, view)
 
-import Types exposing (..)
+import Types
 import Ui.Scenes.MainMenu.Update
-import Ui.Scenes.MainMenu.View exposing (..)
+import Ui.Scenes.MainMenu.View
 
 
 view =
     Ui.Scenes.MainMenu.View.view
 
 
-update : MainMenuMessage -> Model -> ( Model, Cmd Msg )
+update : Types.MainMenuMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update =
     Ui.Scenes.MainMenu.Update.update

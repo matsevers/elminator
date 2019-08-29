@@ -1,73 +1,82 @@
 module Ui.Scenes.FinishMenu.View exposing (view)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
-import Types exposing (..)
-import Ui.Scenes.FinishMenu.Update exposing (..)
+import Html
+import Html.Attributes
+import Html.Events
+import Types
+import Ui.Scenes.FinishMenu.Update
 import Ui.Scenes.Style
 
 
-view : Model -> Html Msg
+view : Types.Model -> Html.Html Types.Msg
 view model =
-    div
+    Html.div
         (Ui.Scenes.Style.globalContainer ++ Ui.Scenes.Style.menuContainer)
-        [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "70vh", Html.Attributes.style "height" "auto" ] []
-        , div
-            [ style "display" "flex"
-            , style "flex-direction" "row"
-            , style "width" "100%"
-            , style "justify-content" "center"
+        [ Html.img
+            [ Html.Attributes.src "assets/logo.png"
+            , Html.Attributes.style "width" "70vh"
+            , Html.Attributes.style "height" "auto"
             ]
-            [ div
-                [ style "display" "flex"
-                , style "flex-basis" "20%"
-                , style "flex-grow" "0"
-                , style "align-items" "center"
-                , style "flex-direction" "column"
-                , style "color" "#fff"
-                , style "font-size" "25px"
-                , style "font-family" "Arial"
-                , style "padding" "20px"
-                , style "background-color" "#763fdd"
-                , Html.Attributes.style "transform" "perspective(400px) rotateY(15deg) rotateX(5deg)"
-                , style "margin" "20px"
+            []
+        , Html.div
+            [ Html.Attributes.style "display" "flex"
+            , Html.Attributes.style "flex-direction" "row"
+            , Html.Attributes.style "width" "100%"
+            , Html.Attributes.style "justify-content" "center"
+            ]
+            [ Html.div
+                [ Html.Attributes.style "display" "flex"
+                , Html.Attributes.style "flex-basis" "20%"
+                , Html.Attributes.style "flex-grow" "0"
+                , Html.Attributes.style "align-items" "center"
+                , Html.Attributes.style "flex-direction" "column"
+                , Html.Attributes.style "color" "#fff"
+                , Html.Attributes.style "font-size" "25px"
+                , Html.Attributes.style "font-family" "Arial"
+                , Html.Attributes.style "padding" "20px"
+                , Html.Attributes.style "background-color" "#763fdd"
+                , Html.Attributes.style
+                    "transform"
+                    "perspective(400px) rotateY(15deg) rotateX(5deg)"
+                , Html.Attributes.style "margin" "20px"
                 ]
-                [ text "YOUR TIME"
-                , div [ style "margin-top" "20px" ] []
+                [ Html.text "YOUR TIME"
+                , Html.div [ Html.Attributes.style "margin-top" "20px" ] []
                 ]
-            , div
-                [ style "flex-basis" "20%"
-                , style "flex-grow" "0"
-                , style "display" "flex"
-                , style "align-items" "center"
-                , style "flex-direction" "column"
-                , style "color" "#fff"
-                , style "font-size" "25px"
-                , style "font-family" "Arial"
-                , style "padding" "20px"
-                , style "background-color" "#E664DD"
-                , Html.Attributes.style "transform" "perspective(400px) rotateY(-15deg) rotateX(5deg)"
-                , style "margin" "20px"
+            , Html.div
+                [ Html.Attributes.style "flex-basis" "20%"
+                , Html.Attributes.style "flex-grow" "0"
+                , Html.Attributes.style "display" "flex"
+                , Html.Attributes.style "align-items" "center"
+                , Html.Attributes.style "flex-direction" "column"
+                , Html.Attributes.style "color" "#fff"
+                , Html.Attributes.style "font-size" "25px"
+                , Html.Attributes.style "font-family" "Arial"
+                , Html.Attributes.style "padding" "20px"
+                , Html.Attributes.style "background-color" "#E664DD"
+                , Html.Attributes.style
+                    "transform"
+                    "perspective(400px) rotateY(-15deg) rotateX(5deg)"
+                , Html.Attributes.style "margin" "20px"
                 ]
-                [ text "COMPETITIVE POSITION"
-                , div [ style "margin-top" "20px" ]
+                [ Html.text "COMPETITIVE POSITION"
+                , Html.div [ Html.Attributes.style "margin-top" "20px" ]
                     []
                 ]
             ]
-        , button
+        , Html.button
             [ Html.Attributes.style "padding" "30px"
             , Html.Attributes.style "background-color" "#f21d9c"
             , Html.Attributes.style "color" "#ffffff"
             , Html.Attributes.style "border-width" "0px"
             , Html.Attributes.style "font-size" "20px"
-            , onClick
-                (SceneManager
-                    (ChangeTo
+            , Html.Events.onClick
+                (Types.SceneManager
+                    (Types.ChangeTo
                         Ui.Scenes.FinishMenu.Update.restoreInitialModel
-                        Menu
+                        Types.Menu
                     )
                 )
             ]
-            [ text "Back to Menu" ]
+            [ Html.text "Back to Menu" ]
         ]

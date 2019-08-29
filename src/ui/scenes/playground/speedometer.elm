@@ -63,19 +63,39 @@ valueStrokes min max =
                         , Svg.Attributes.strokeWidth (String.fromInt sWidth)
                         , Svg.Attributes.x1
                             (String.fromInt
-                                (round (centerX + sin (degrees (toFloat px)) * (radius - toFloat sLength)))
+                                (round
+                                    (centerX
+                                        + sin (degrees (toFloat px))
+                                        * (radius - toFloat sLength)
+                                    )
+                                )
                             )
                         , Svg.Attributes.y1
                             (String.fromInt
-                                (round (centerY - cos (degrees (toFloat px)) * (radius - toFloat sLength)))
+                                (round
+                                    (centerY
+                                        - cos (degrees (toFloat px))
+                                        * (radius - toFloat sLength)
+                                    )
+                                )
                             )
                         , Svg.Attributes.x2
                             (String.fromInt
-                                (round (centerX + sin (degrees (toFloat px)) * (radius - toFloat outerBorderWidth)))
+                                (round
+                                    (centerX
+                                        + sin (degrees (toFloat px))
+                                        * (radius - toFloat outerBorderWidth)
+                                    )
+                                )
                             )
                         , Svg.Attributes.y2
                             (String.fromInt
-                                (round (centerY - cos (degrees (toFloat px)) * (radius - toFloat outerBorderWidth)))
+                                (round
+                                    (centerY
+                                        - cos (degrees (toFloat px))
+                                        * (radius - toFloat outerBorderWidth)
+                                    )
+                                )
                             )
                         ]
                         []
@@ -107,8 +127,18 @@ pin speed minSpeed maxSpeed startAngle endAngle =
         , Svg.Attributes.strokeWidth (String.fromInt (width // 25))
         , Svg.Attributes.x1 (String.fromFloat centerX)
         , Svg.Attributes.y1 (String.fromFloat centerY)
-        , Svg.Attributes.x2 (String.fromInt (round (centerX + sin (degrees calcSpeedDegree) * radius * 0.75)))
-        , Svg.Attributes.y2 (String.fromInt (round (centerY - cos (degrees calcSpeedDegree) * radius * 0.75)))
+        , Svg.Attributes.x2
+            (String.fromInt
+                (round
+                    (centerX + sin (degrees calcSpeedDegree) * radius * 0.75)
+                )
+            )
+        , Svg.Attributes.y2
+            (String.fromInt
+                (round
+                    (centerY - cos (degrees calcSpeedDegree) * radius * 0.75)
+                )
+            )
         ]
         []
     , Svg.circle
