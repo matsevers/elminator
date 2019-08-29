@@ -50,21 +50,14 @@ view model =
             , Html.Attributes.style "justify-content" "center"
             ]
             [ Html.div
-                [ Html.Attributes.style "display" "flex"
-                , Html.Attributes.style "flex-basis" "20%"
-                , Html.Attributes.style "flex-grow" "0"
-                , Html.Attributes.style "align-items" "center"
-                , Html.Attributes.style "flex-direction" "column"
-                , Html.Attributes.style "color" "#fff"
-                , Html.Attributes.style "font-size" "25px"
-                , Html.Attributes.style "font-family" "Arial"
-                , Html.Attributes.style "padding" "20px"
-                , Html.Attributes.style "background-color" "#763fdd"
-                , Html.Attributes.style
+                ([ Html.Attributes.style
                     "transform"
                     "perspective(400px) rotateY(15deg) rotateX(5deg)"
-                , Html.Attributes.style "margin" "20px"
-                ]
+                 , Html.Attributes.style "background-color" "#763fdd"
+                 ]
+                    ++ Ui.Scenes.Style.menuItem
+                    ++ Ui.Scenes.Style.centeredText
+                )
                 [ Html.text "YOUR TIME"
                 , Html.div [ Html.Attributes.style "margin-top" "20px" ]
                     [ Html.text (String.fromInt getDriveTimeSeconds)
@@ -74,21 +67,14 @@ view model =
                     ]
                 ]
             , Html.div
-                [ Html.Attributes.style "flex-basis" "20%"
-                , Html.Attributes.style "flex-grow" "0"
-                , Html.Attributes.style "display" "flex"
-                , Html.Attributes.style "align-items" "center"
-                , Html.Attributes.style "flex-direction" "column"
-                , Html.Attributes.style "color" "#fff"
-                , Html.Attributes.style "font-size" "25px"
-                , Html.Attributes.style "font-family" "Arial"
-                , Html.Attributes.style "padding" "20px"
-                , Html.Attributes.style "background-color" "#E664DD"
-                , Html.Attributes.style
-                    "transform"
-                    "perspective(400px) rotateY(-15deg) rotateX(5deg)"
-                , Html.Attributes.style "margin" "20px"
-                ]
+                (Ui.Scenes.Style.menuItem
+                    ++ Ui.Scenes.Style.centeredText
+                    ++ [ Html.Attributes.style "background-color" "#E664DD"
+                       , Html.Attributes.style
+                            "transform"
+                            "perspective(400px) rotateY(-15deg) rotateX(5deg)"
+                       ]
+                )
                 [ Html.text "COMPETITIVE POSITION"
                 , Html.div [ Html.Attributes.style "margin-top" "20px" ]
                     []

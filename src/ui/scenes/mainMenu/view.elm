@@ -22,16 +22,16 @@ view model =
                  , Html.Attributes.style "transform"
                     "perspective(400px) rotateY(15deg) rotateX(5deg)"
                  ]
-                    ++ Ui.Scenes.MainMenu.Style.menuItem
+                    ++ Ui.Scenes.Style.menuItem
                 )
-                [ Html.div Ui.Scenes.MainMenu.Style.centeredText
+                [ Html.div Ui.Scenes.Style.centeredText
                     [ Html.text "CHOOSE A TRACK" ]
                 , Html.div
                     (Ui.Scenes.MainMenu.Style.spaceTop
                         ++ Ui.Scenes.MainMenu.Style.spaceBottom
                     )
                     (Ui.Scenes.MainMenu.MapPicker.view model)
-                , Html.div Ui.Scenes.MainMenu.Style.centeredText
+                , Html.div Ui.Scenes.Style.centeredText
                     [ Html.text "CHOOSE A VEHICLE" ]
                 , Html.div Ui.Scenes.MainMenu.Style.spaceTop
                     (Ui.Scenes.MainMenu.CarPicker.view model)
@@ -47,10 +47,10 @@ view model =
                     "transform"
                     "perspective(400px) rotateY(-15deg) rotateX(5deg)"
                  ]
-                    ++ Ui.Scenes.MainMenu.Style.menuItem
+                    ++ Ui.Scenes.Style.menuItem
                 )
                 [ Html.div
-                    Ui.Scenes.MainMenu.Style.centeredText
+                    Ui.Scenes.Style.centeredText
                     [ Html.text "DRIVERS NAME" ]
                 , Html.div
                     ([ Html.Attributes.style "display" "flex" ]

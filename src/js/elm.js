@@ -7963,7 +7963,7 @@ var author$project$Main$update = F2(
 					author$project$Network$Module$wsSendUpdate(
 						author$project$Objects$Physics$update(
 							author$project$Control$Player$update(
-								author$project$Map$Track$Module$update(model))))) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
+								author$project$Map$Track$Module$update(model))))) : (_Utils_eq(model.state, author$project$Types$Menu) ? Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model));
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -7994,6 +7994,10 @@ var author$project$Types$SceneManager = function (a) {
 var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
 var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Ui$Scenes$Style$centeredText = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'text-align', 'center')
+	]);
 var author$project$Ui$Scenes$Style$globalContainer = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'height', '100vh'),
@@ -8006,6 +8010,19 @@ var author$project$Ui$Scenes$Style$menuContainer = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
 		A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
 		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column')
+	]);
+var author$project$Ui$Scenes$Style$menuItem = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
+		A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+		A2(elm$html$Html$Attributes$style, 'color', '#fff'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
+		A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
+		A2(elm$html$Html$Attributes$style, 'padding', '20px'),
+		A2(elm$html$Html$Attributes$style, 'margin', '20px')
 	]);
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
@@ -8043,6 +8060,16 @@ var elm$html$Html$Events$onClick = function (msg) {
 		elm$json$Json$Decode$succeed(msg));
 };
 var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
+	var getDriveTimeSeconds = (!model.myPlayer.time) ? 0 : ((model.myPlayer.time / 1000) | 0);
+	var getDriveTimeMilliSeconds = function () {
+		if (!model.myPlayer.time) {
+			return '0';
+		} else {
+			var ms = elm$core$String$fromInt(
+				elm$core$Basics$round((model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10));
+			return (elm$core$String$length(ms) === 1) ? ('0' + ms) : ms;
+		}
+	}();
 	return A2(
 		elm$html$Html$div,
 		_Utils_ap(author$project$Ui$Scenes$Style$globalContainer, author$project$Ui$Scenes$Style$menuContainer),
@@ -8070,21 +8097,13 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 					[
 						A2(
 						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
-								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
-								A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
-								A2(elm$html$Html$Attributes$style, 'padding', '20px'),
-								A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd'),
-								A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)'),
-								A2(elm$html$Html$Attributes$style, 'margin', '20px')
-							]),
+						_Utils_ap(
+							_List_fromArray(
+								[
+									A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)'),
+									A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd')
+								]),
+							_Utils_ap(author$project$Ui$Scenes$Style$menuItem, author$project$Ui$Scenes$Style$centeredText)),
 						_List_fromArray(
 							[
 								elm$html$Html$text('YOUR TIME'),
@@ -8094,25 +8113,26 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 									[
 										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
 									]),
-								_List_Nil)
+								_List_fromArray(
+									[
+										elm$html$Html$text(
+										elm$core$String$fromInt(getDriveTimeSeconds)),
+										elm$html$Html$text(':'),
+										elm$html$Html$text(getDriveTimeMilliSeconds),
+										elm$html$Html$text(' seconds')
+									]))
 							])),
 						A2(
 						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
-								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
-								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
-								A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
-								A2(elm$html$Html$Attributes$style, 'padding', '20px'),
-								A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
-								A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)'),
-								A2(elm$html$Html$Attributes$style, 'margin', '20px')
-							]),
+						_Utils_ap(
+							author$project$Ui$Scenes$Style$menuItem,
+							_Utils_ap(
+								author$project$Ui$Scenes$Style$centeredText,
+								_List_fromArray(
+									[
+										A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
+										A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)')
+									]))),
 						_List_fromArray(
 							[
 								elm$html$Html$text('COMPETITIVE POSITION'),
@@ -8156,6 +8176,25 @@ var author$project$Types$ChangeCar = F2(
 	function (a, b) {
 		return {$: 'ChangeCar', a: a, b: b};
 	});
+var author$project$Ui$Scenes$MainMenu$Style$carSelectionInnerContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
+		A2(elm$html$Html$Attributes$style, 'width', '100%')
+	]);
+var author$project$Ui$Scenes$MainMenu$Style$selectionContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'align-self', 'stretch'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '14px'),
+		A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.2)'),
+		A2(elm$html$Html$Attributes$style, 'padding', '10px'),
+		A2(elm$html$Html$Attributes$style, 'margin', '10px'),
+		A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
+	]);
 var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 	function (l, model) {
 		var renderCar = function (car) {
@@ -8166,33 +8205,20 @@ var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 			return A2(
 				elm$html$Html$div,
 				_Utils_ap(
-					_List_fromArray(
-						[
-							A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-							A2(elm$html$Html$Attributes$style, 'align-self', 'stretch'),
-							A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-							A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-							A2(elm$html$Html$Attributes$style, 'font-size', '14px'),
-							A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.2)'),
-							A2(elm$html$Html$Attributes$style, 'padding', '10px'),
-							A2(elm$html$Html$Attributes$style, 'margin', '10px'),
-							A2(elm$html$Html$Attributes$style, 'cursor', 'pointer'),
-							elm$html$Html$Events$onClick(
-							author$project$Types$MainMenu(
-								A2(author$project$Types$ChangeCar, model, car)))
-						]),
-					checkSelection),
+					author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								elm$html$Html$Events$onClick(
+								author$project$Types$MainMenu(
+									A2(author$project$Types$ChangeCar, model, car)))
+							]),
+						checkSelection)),
 				_List_fromArray(
 					[
 						A2(
 						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
-								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
-								A2(elm$html$Html$Attributes$style, 'width', '100%')
-							]),
+						author$project$Ui$Scenes$MainMenu$Style$carSelectionInnerContainer,
 						_List_fromArray(
 							[
 								A2(
@@ -8241,22 +8267,15 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 			return A2(
 				elm$html$Html$div,
 				_Utils_ap(
-					_List_fromArray(
-						[
-							A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-							A2(elm$html$Html$Attributes$style, 'align-self', 'stretch'),
-							A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-							A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-							A2(elm$html$Html$Attributes$style, 'font-size', '14px'),
-							A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.2)'),
-							A2(elm$html$Html$Attributes$style, 'padding', '10px'),
-							A2(elm$html$Html$Attributes$style, 'margin', '10px'),
-							A2(elm$html$Html$Attributes$style, 'cursor', 'pointer'),
-							elm$html$Html$Events$onClick(
-							author$project$Types$MainMenu(
-								A2(author$project$Types$ChangeMap, model, map)))
-						]),
-					checkSelection),
+					author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+					_Utils_ap(
+						_List_fromArray(
+							[
+								elm$html$Html$Events$onClick(
+								author$project$Types$MainMenu(
+									A2(author$project$Types$ChangeMap, model, map)))
+							]),
+						checkSelection)),
 				_List_fromArray(
 					[
 						A2(
@@ -8292,6 +8311,44 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 var author$project$Ui$Scenes$MainMenu$MapPicker$view = function (model) {
 	return A2(author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps, model.availableMaps, model);
 };
+var author$project$Ui$Scenes$MainMenu$Style$input = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'flex', '1'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '22px'),
+		A2(elm$html$Html$Attributes$style, 'color', '#fff'),
+		A2(elm$html$Html$Attributes$style, 'background-color', 'transparent'),
+		A2(elm$html$Html$Attributes$style, 'border', '0px solid #fff'),
+		A2(elm$html$Html$Attributes$style, 'border-bottom', '1px solid rgba(255,255,255,0.5)')
+	]);
+var author$project$Ui$Scenes$MainMenu$Style$logo = _List_fromArray(
+	[
+		elm$html$Html$Attributes$src('assets/logo.png'),
+		A2(elm$html$Html$Attributes$style, 'width', '70vh'),
+		A2(elm$html$Html$Attributes$style, 'height', 'auto')
+	]);
+var author$project$Ui$Scenes$MainMenu$Style$menuItemContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+		A2(elm$html$Html$Attributes$style, 'width', '100%'),
+		A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
+	]);
+var author$project$Ui$Scenes$MainMenu$Style$spaceBottom = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'margin-bottom', '20px')
+	]);
+var author$project$Ui$Scenes$MainMenu$Style$spaceTop = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
+	]);
+var author$project$Ui$Scenes$Style$button = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'padding', '30px'),
+		A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
+		A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
+		A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '20px')
+	]);
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
 var elm$html$Html$Attributes$value = elm$html$Html$Attributes$stringProperty('value');
@@ -8327,173 +8384,120 @@ var elm$html$Html$Events$onInput = function (tagger) {
 			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
 };
 var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
+	var menuItemPlayerOptions = A2(
+		elm$html$Html$div,
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
+					A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)')
+				]),
+			author$project$Ui$Scenes$Style$menuItem),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				author$project$Ui$Scenes$Style$centeredText,
+				_List_fromArray(
+					[
+						elm$html$Html$text('DRIVERS NAME')
+					])),
+				A2(
+				elm$html$Html$div,
+				_Utils_ap(
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'display', 'flex')
+						]),
+					author$project$Ui$Scenes$MainMenu$Style$spaceTop),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2(elm$html$Html$Attributes$style, 'flex', '1')
+							]),
+						_List_Nil),
+						A2(
+						elm$html$Html$input,
+						_Utils_ap(
+							author$project$Ui$Scenes$MainMenu$Style$input,
+							_List_fromArray(
+								[
+									elm$html$Html$Attributes$placeholder('Text to reverse'),
+									elm$html$Html$Attributes$value(model.myPlayer.label.text),
+									elm$html$Html$Events$onInput(
+									function (x) {
+										return author$project$Types$MainMenu(
+											A2(author$project$Types$ChangeName, model, x));
+									})
+								])),
+						_List_Nil),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								A2(elm$html$Html$Attributes$style, 'flex', '1')
+							]),
+						_List_Nil)
+					]))
+			]));
+	var menuItemGameOptions = A2(
+		elm$html$Html$div,
+		_Utils_ap(
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd'),
+					A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)')
+				]),
+			author$project$Ui$Scenes$Style$menuItem),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				author$project$Ui$Scenes$Style$centeredText,
+				_List_fromArray(
+					[
+						elm$html$Html$text('CHOOSE A TRACK')
+					])),
+				A2(
+				elm$html$Html$div,
+				_Utils_ap(author$project$Ui$Scenes$MainMenu$Style$spaceTop, author$project$Ui$Scenes$MainMenu$Style$spaceBottom),
+				author$project$Ui$Scenes$MainMenu$MapPicker$view(model)),
+				A2(
+				elm$html$Html$div,
+				author$project$Ui$Scenes$Style$centeredText,
+				_List_fromArray(
+					[
+						elm$html$Html$text('CHOOSE A VEHICLE')
+					])),
+				A2(
+				elm$html$Html$div,
+				author$project$Ui$Scenes$MainMenu$Style$spaceTop,
+				author$project$Ui$Scenes$MainMenu$CarPicker$view(model))
+			]));
 	return A2(
 		elm$html$Html$div,
 		_Utils_ap(author$project$Ui$Scenes$Style$globalContainer, author$project$Ui$Scenes$Style$menuContainer),
 		_List_fromArray(
 			[
-				A2(
-				elm$html$Html$img,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$src('assets/logo.png'),
-						A2(elm$html$Html$Attributes$style, 'width', '70vh'),
-						A2(elm$html$Html$Attributes$style, 'height', 'auto')
-					]),
-				_List_Nil),
+				A2(elm$html$Html$img, author$project$Ui$Scenes$MainMenu$Style$logo, _List_Nil),
 				A2(
 				elm$html$Html$div,
+				author$project$Ui$Scenes$MainMenu$Style$menuItemContainer,
 				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-						A2(elm$html$Html$Attributes$style, 'width', '100%'),
-						A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
-								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
-								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
-								A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
-								A2(elm$html$Html$Attributes$style, 'padding', '20px'),
-								A2(elm$html$Html$Attributes$style, 'background-color', '#763fdd'),
-								A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(15deg) rotateX(5deg)'),
-								A2(elm$html$Html$Attributes$style, 'margin', '20px')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
-									]),
-								_List_fromArray(
-									[
-										elm$html$Html$text('CHOOSE A TRACK')
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'margin-top', '20px'),
-										A2(elm$html$Html$Attributes$style, 'margin-bottom', '20px')
-									]),
-								author$project$Ui$Scenes$MainMenu$MapPicker$view(model)),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
-									]),
-								_List_fromArray(
-									[
-										elm$html$Html$text('CHOOSE A VEHICLE')
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
-									]),
-								author$project$Ui$Scenes$MainMenu$CarPicker$view(model))
-							])),
-						A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'flex-basis', '20%'),
-								A2(elm$html$Html$Attributes$style, 'flex-grow', '0'),
-								A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-								A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
-								A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-								A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-								A2(elm$html$Html$Attributes$style, 'font-size', '25px'),
-								A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
-								A2(elm$html$Html$Attributes$style, 'padding', '20px'),
-								A2(elm$html$Html$Attributes$style, 'background-color', '#E664DD'),
-								A2(elm$html$Html$Attributes$style, 'transform', 'perspective(400px) rotateY(-15deg) rotateX(5deg)'),
-								A2(elm$html$Html$Attributes$style, 'margin', '20px')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'text-align', 'center')
-									]),
-								_List_fromArray(
-									[
-										elm$html$Html$text('DRIVERS NAME')
-									])),
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-										A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										elm$html$Html$div,
-										_List_fromArray(
-											[
-												A2(elm$html$Html$Attributes$style, 'flex', '1')
-											]),
-										_List_Nil),
-										A2(
-										elm$html$Html$input,
-										_List_fromArray(
-											[
-												A2(elm$html$Html$Attributes$style, 'flex', '1'),
-												A2(elm$html$Html$Attributes$style, 'font-size', '22px'),
-												A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-												A2(elm$html$Html$Attributes$style, 'background-color', 'transparent'),
-												A2(elm$html$Html$Attributes$style, 'border', '0px solid #fff'),
-												A2(elm$html$Html$Attributes$style, 'border-bottom', '1px solid rgba(255,255,255,0.5)'),
-												elm$html$Html$Attributes$placeholder('Text to reverse'),
-												elm$html$Html$Attributes$value(model.myPlayer.label.text),
-												elm$html$Html$Events$onInput(
-												function (x) {
-													return author$project$Types$MainMenu(
-														A2(author$project$Types$ChangeName, model, x));
-												})
-											]),
-										_List_Nil),
-										A2(
-										elm$html$Html$div,
-										_List_fromArray(
-											[
-												A2(elm$html$Html$Attributes$style, 'flex', '1')
-											]),
-										_List_Nil)
-									]))
-							]))
-					])),
+					[menuItemGameOptions, menuItemPlayerOptions])),
 				A2(
 				elm$html$Html$button,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'padding', '30px'),
-						A2(elm$html$Html$Attributes$style, 'background-color', '#f21d9c'),
-						A2(elm$html$Html$Attributes$style, 'color', '#ffffff'),
-						A2(elm$html$Html$Attributes$style, 'border-width', '0px'),
-						A2(elm$html$Html$Attributes$style, 'font-size', '20px'),
-						elm$html$Html$Events$onClick(
-						author$project$Types$SceneManager(
-							A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
-					]),
+				_Utils_ap(
+					author$project$Ui$Scenes$Style$button,
+					_List_fromArray(
+						[
+							elm$html$Html$Events$onClick(
+							author$project$Types$SceneManager(
+								A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
+						])),
 				_List_fromArray(
 					[
 						elm$html$Html$text('Start the engines')
@@ -9076,6 +9080,47 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 						elm$core$String$fromInt(model.myPlayer.currentLab) + (' | ' + elm$core$String$fromInt(model.map.options.labs)))
 					]))
 			]));
+	var getDriveTimeSeconds = (!model.myPlayer.time) ? 0 : ((model.myPlayer.time / 1000) | 0);
+	var getDriveTimeMilliSeconds = function () {
+		if (!model.myPlayer.time) {
+			return '0';
+		} else {
+			var ms = elm$core$String$fromInt(
+				elm$core$Basics$round((model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10));
+			return (elm$core$String$length(ms) === 1) ? ('0' + ms) : ms;
+		}
+	}();
+	var timeInfo = A2(
+		elm$html$Html$div,
+		author$project$Ui$Scenes$Playground$Style$infoRow,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				author$project$Ui$Scenes$Playground$Style$infoRowSkew,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$div,
+						author$project$Ui$Scenes$Playground$Style$infoRowAntiSkewText,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Time')
+							]))
+					])),
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'align-self', 'center'),
+						A2(elm$html$Html$Attributes$style, 'padding-right', '10px')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text(
+						elm$core$String$fromInt(getDriveTimeSeconds) + (':' + getDriveTimeMilliSeconds))
+					]))
+			]));
 	var gameInfo = A2(
 		elm$html$Html$div,
 		_Utils_ap(
@@ -9100,7 +9145,8 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 					]),
 				_List_Nil),
 				A2(placement, '1', model.myPlayer.label.text),
-				lapInfo
+				lapInfo,
+				timeInfo
 			]));
 	return A2(
 		elm$html$Html$div,
@@ -9292,7 +9338,7 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\n        ');
 var author$project$Network$Module$open = author$project$Network$Module$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));

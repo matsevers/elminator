@@ -1,9 +1,7 @@
 module Ui.Scenes.MainMenu.Style exposing
     ( carSelectionInnerContainer
-    , centeredText
     , input
     , logo
-    , menuItem
     , menuItemContainer
     , selectionContainer
     , spaceBottom
@@ -52,26 +50,6 @@ menuItemContainer =
     , Html.Attributes.style "width" "100%"
     , Html.Attributes.style "justify-content" "center"
     ]
-
-
-menuItem : List (Html.Attribute msg)
-menuItem =
-    [ Html.Attributes.style "flex-basis" "20%"
-    , Html.Attributes.style "flex-grow" "0"
-    , Html.Attributes.style "display" "flex"
-    , Html.Attributes.style "align-items" "stretch"
-    , Html.Attributes.style "flex-direction" "column"
-    , Html.Attributes.style "color" "#fff"
-    , Html.Attributes.style "font-size" "25px"
-    , Html.Attributes.style "font-family" "Arial"
-    , Html.Attributes.style "padding" "20px"
-    , Html.Attributes.style "margin" "20px"
-    ]
-
-
-centeredText : List (Html.Attribute msg)
-centeredText =
-    [ Html.Attributes.style "text-align" "center" ]
 
 
 spaceTop : List (Html.Attribute msg)
