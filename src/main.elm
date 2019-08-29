@@ -54,6 +54,9 @@ update msg model =
                 )
                     |> withCmd (Network.Module.send model.wsSend)
 
+            else if model.state == Menu then
+                model |> withNoCmd
+
             else
                 model |> withNoCmd
 
