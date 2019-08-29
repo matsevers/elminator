@@ -44,7 +44,7 @@ initialModel =
     , debug = False
     , network =
         { lobbyPool = []
-        , session = Maybe.Nothing
+        , session = ""
         , multiplayer = False
         }
     , ownLobby =

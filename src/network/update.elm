@@ -2,6 +2,7 @@ module Network.Update exposing (update)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
+import List
 import Network.Decode exposing (..)
 import Network.Ports exposing (..)
 import Network.Scheme
@@ -27,16 +28,67 @@ update wsMessage model =
             in
             case message of
                 Just m ->
-                    case ( m.player, m.lobby ) of
-                        ( Just player, _ ) ->
+                    case ( m.player, m.lobby, m.lobbyControl ) of
+                        ( Just player, _, _ ) ->
                             let
                                 p =
                                     Network.Scheme.player player
                             in
-                            ( { model | onlinePlayers = [ p ] }, Cmd.none )
+                            ( { model
+                                | onlinePlayers =
+                                    p
+                                        :: List.filter (\x -> not (x.identifier == p.identifier))
+                                            model.onlinePlayers
+                              }
+                            , Cmd.none
+                            )
 
-                        ( _, Just lobby ) ->
-                            ( model, Cmd.none )
+                        ( _, Just lobby, _ ) ->
+                            let
+                                network =
+                                    model.network
+                            in
+                            ( { model
+                                | network =
+                                    { network
+                                        | lobbyPool =
+                                            lobby
+                                                :: List.filter (\x -> not (x.identifier == lobby.identifier))
+                                                    network.lobbyPool
+                                    }
+                              }
+                            , Cmd.none
+                            )
+
+                        ( _, _, Just lobbyControl ) ->
+                            let
+                                lobbyId =
+                                    lobbyControl.identifier
+
+                                senderId =
+                                    lobbyControl.playerId
+
+                                ownLobby =
+                                    model.ownLobby
+
+                                ownLobbyId =
+                                    ownLobby.identifier
+                            in
+                            if lobbyId == ownLobbyId && lobbyControl.join then
+                                ( { model
+                                    | ownLobby =
+                                        { ownLobby
+                                            | onlinePlayers =
+                                                senderId
+                                                    :: List.filter (\x -> not (x == senderId))
+                                                        model.ownLobby.onlinePlayers
+                                        }
+                                  }
+                                , Cmd.none
+                                )
+
+                            else
+                                ( model, Cmd.none )
 
                         _ ->
                             ( model, Cmd.none )

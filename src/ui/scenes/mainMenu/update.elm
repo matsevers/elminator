@@ -1,5 +1,6 @@
 module Ui.Scenes.MainMenu.Update exposing (changeCar, changeMap, update)
 
+import Network.Module
 import String
 import Types
 
@@ -22,6 +23,26 @@ update msg model =
         Types.ChangeGameType _ ->
             changeGameType model
 
+        Types.JoinLobby _ lobby ->
+            let
+                n =
+                    model.network
+
+                lobbyControl =
+                    { identifier = lobby.identifier
+                    , playerId = model.myPlayer.identifier
+                    , join = True
+                    , finish = False
+                    }
+            in
+            ( { model
+                | network = { n | session = lobby.identifier }
+              }
+            , Network.Module.send
+                "lobbyControl"
+                (Network.Module.encodeLobbyControl lobbyControl)
+            )
+
 
 changeCar : Types.Model -> Types.GameObject -> ( Types.Model, Cmd Types.Msg )
 changeCar model gO =
@@ -34,7 +55,11 @@ changeCar model gO =
 
 changeMap : Types.Model -> Types.Map -> ( Types.Model, Cmd Types.Msg )
 changeMap model m =
-    ( { model | map = m }, Cmd.none )
+    let
+        l =
+            model.ownLobby
+    in
+    ( { model | map = m, ownLobby = { l | map = m.meta.name } }, Cmd.none )
 
 
 changePlayerCount : Types.Model -> String -> ( Types.Model, Cmd Types.Msg )

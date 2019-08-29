@@ -1,4 +1,4 @@
-module Network.Encode exposing (encodeLobby, encodePlayer)
+module Network.Encode exposing (encodeLobby, encodeLobbyControl, encodePlayer)
 
 import Json.Encode
 import List
@@ -11,6 +11,15 @@ encodeLobby lobby =
     , ( "maxPlayer", Json.Encode.int lobby.maxPlayer )
     , ( "map", Json.Encode.string lobby.map )
     , ( "onlinePlayers", Json.Encode.list Json.Encode.string lobby.onlinePlayers )
+    ]
+
+
+encodeLobbyControl : Types.LobbyControl -> List ( String, Json.Encode.Value )
+encodeLobbyControl lobbyControl =
+    [ ( "identifier", Json.Encode.string lobbyControl.identifier )
+    , ( "playerId", Json.Encode.string lobbyControl.playerId )
+    , ( "join", Json.Encode.bool lobbyControl.join )
+    , ( "finish", Json.Encode.bool lobbyControl.finish )
     ]
 
 

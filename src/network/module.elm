@@ -1,4 +1,4 @@
-module Network.Module exposing (close, cmdPort, encodeLobby, encodePlayer, open, parse, parseReturn, run, send, subPort, update)
+module Network.Module exposing (close, cmdPort, encodeLobby, encodeLobbyControl, encodePlayer, open, parse, parseReturn, run, send, subPort, update)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (Value)
@@ -35,6 +35,12 @@ encodeLobby : Lobby -> String
 encodeLobby lobby =
     Json.Encode.encode 0
         (Json.Encode.object (Network.Encode.encodeLobby lobby))
+
+
+encodeLobbyControl : LobbyControl -> String
+encodeLobbyControl lobbyControl =
+    Json.Encode.encode 0
+        (Json.Encode.object (Network.Encode.encodeLobbyControl lobbyControl))
 
 
 encodePlayer : Player -> String

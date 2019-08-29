@@ -48,15 +48,15 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         Tick ->
-            if model.state == Running || model.state == PrepareRace then
+            if model.state == Menu && model.network.multiplayer then
+                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby model.ownLobby))
+
+            else if model.state == Running || model.state == PrepareRace then
                 (Objects.Physics.update <|
                     Control.Player.update <|
                         Map.Track.Module.update model
                 )
                     |> withCmd (Network.Module.send "player" (Network.Module.encodePlayer model.myPlayer))
-
-            else if model.state == Menu then
-                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby model.ownLobby))
 
             else
                 model |> withNoCmd
@@ -115,7 +115,7 @@ main =
                 , Cmd.batch
                     [ Network.Module.open
                     , Random.generate (SetUUID Types.LobbyUUID) UUID.generator
-                    , Random.generate (SetUUID Types.LobbyUUID) UUID.generator
+                    , Random.generate (SetUUID Types.PlayerUUID) UUID.generator
                     ]
                 )
         , subscriptions = subscriptions

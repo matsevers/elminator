@@ -15,6 +15,7 @@ type alias Args =
 type alias Message =
     { lobby : Maybe Lobby
     , player : Maybe SchemePlayer
+    , lobbyControl : Maybe LobbyControl
     }
 
 
@@ -82,6 +83,19 @@ lobbyDecoder =
             (Json.Decode.field "onlinePlayers" (Json.Decode.list string))
 
 
+lobbyControlDecoder : Decoder LobbyControl
+lobbyControlDecoder =
+    succeed LobbyControl
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "identifier" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "playerId" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "join" Json.Decode.bool)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "finish" Json.Decode.bool)
+
+
 messageDecoder : Decoder Message
 messageDecoder =
     succeed Message
@@ -89,6 +103,8 @@ messageDecoder =
             (Json.Decode.maybe (Json.Decode.field "lobby" lobbyDecoder))
         |> Json.Decode.Extra.andMap
             (Json.Decode.maybe (Json.Decode.field "player" playerDecoder))
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.maybe (Json.Decode.field "lobbyControl" lobbyControlDecoder))
 
 
 argsDecoder : Decoder Args

@@ -7,6 +7,7 @@ import Network.Module
 import Types
 import Ui.Scenes.MainMenu.CarPicker
 import Ui.Scenes.MainMenu.GameOptions
+import Ui.Scenes.MainMenu.LobbyPicker
 import Ui.Scenes.MainMenu.MapPicker
 import Ui.Scenes.MainMenu.Style
 import Ui.Scenes.Style
@@ -60,6 +61,7 @@ view model =
                     , Html.div [ Html.Attributes.style "flex" "1" ] []
                     ]
                 , Ui.Scenes.MainMenu.GameOptions.view model
+                , Ui.Scenes.MainMenu.LobbyPicker.view model
                 ]
     in
     Html.div

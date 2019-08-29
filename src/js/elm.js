@@ -5976,7 +5976,7 @@ var author$project$InitialModel$initialModel = {
 		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
 		time: 0
 	},
-	network: {lobbyPool: _List_Nil, multiplayer: false, session: elm$core$Maybe$Nothing},
+	network: {lobbyPool: _List_Nil, multiplayer: false, session: ''},
 	onlinePlayers: _List_Nil,
 	ownLobby: {identifier: 'ownLobby', map: 'Dust Race', maxPlayer: 2, onlinePlayers: _List_Nil},
 	state: author$project$Types$Menu
@@ -7984,17 +7984,35 @@ var author$project$Network$Decode$Args = F2(
 	function (message, key) {
 		return {key: key, message: message};
 	});
-var author$project$Network$Decode$Message = F2(
-	function (lobby, player) {
-		return {lobby: lobby, player: player};
+var author$project$Network$Decode$Message = F3(
+	function (lobby, player, lobbyControl) {
+		return {lobby: lobby, lobbyControl: lobbyControl, player: player};
 	});
+var author$project$Types$LobbyControl = F4(
+	function (identifier, playerId, join, finish) {
+		return {finish: finish, identifier: identifier, join: join, playerId: playerId};
+	});
+var elm$json$Json$Decode$bool = _Json_decodeBool;
+var elm_community$json_extra$Json$Decode$Extra$andMap = elm$json$Json$Decode$map2(elm$core$Basics$apR);
+var author$project$Network$Decode$lobbyControlDecoder = A2(
+	elm_community$json_extra$Json$Decode$Extra$andMap,
+	A2(elm$json$Json$Decode$field, 'finish', elm$json$Json$Decode$bool),
+	A2(
+		elm_community$json_extra$Json$Decode$Extra$andMap,
+		A2(elm$json$Json$Decode$field, 'join', elm$json$Json$Decode$bool),
+		A2(
+			elm_community$json_extra$Json$Decode$Extra$andMap,
+			A2(elm$json$Json$Decode$field, 'playerId', elm$json$Json$Decode$string),
+			A2(
+				elm_community$json_extra$Json$Decode$Extra$andMap,
+				A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
+				elm$json$Json$Decode$succeed(author$project$Types$LobbyControl)))));
 var author$project$Types$Lobby = F4(
 	function (identifier, maxPlayer, map, onlinePlayers) {
 		return {identifier: identifier, map: map, maxPlayer: maxPlayer, onlinePlayers: onlinePlayers};
 	});
 var elm$json$Json$Decode$int = _Json_decodeInt;
 var elm$json$Json$Decode$list = _Json_decodeList;
-var elm_community$json_extra$Json$Decode$Extra$andMap = elm$json$Json$Decode$map2(elm$core$Basics$apR);
 var author$project$Network$Decode$lobbyDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	A2(
@@ -8044,7 +8062,6 @@ var author$project$Types$SchemePlayer = function (identifier) {
 		};
 	};
 };
-var elm$json$Json$Decode$bool = _Json_decodeBool;
 var author$project$Network$Decode$playerDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	A2(elm$json$Json$Decode$field, 'gOSizeWidth', elm$json$Json$Decode$int),
@@ -8106,12 +8123,16 @@ var elm$json$Json$Decode$maybe = function (decoder) {
 var author$project$Network$Decode$messageDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	elm$json$Json$Decode$maybe(
-		A2(elm$json$Json$Decode$field, 'player', author$project$Network$Decode$playerDecoder)),
+		A2(elm$json$Json$Decode$field, 'lobbyControl', author$project$Network$Decode$lobbyControlDecoder)),
 	A2(
 		elm_community$json_extra$Json$Decode$Extra$andMap,
 		elm$json$Json$Decode$maybe(
-			A2(elm$json$Json$Decode$field, 'lobby', author$project$Network$Decode$lobbyDecoder)),
-		elm$json$Json$Decode$succeed(author$project$Network$Decode$Message)));
+			A2(elm$json$Json$Decode$field, 'player', author$project$Network$Decode$playerDecoder)),
+		A2(
+			elm_community$json_extra$Json$Decode$Extra$andMap,
+			elm$json$Json$Decode$maybe(
+				A2(elm$json$Json$Decode$field, 'lobby', author$project$Network$Decode$lobbyDecoder)),
+			elm$json$Json$Decode$succeed(author$project$Network$Decode$Message))));
 var author$project$Network$Decode$argsDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string),
@@ -8161,6 +8182,17 @@ var author$project$Network$Scheme$player = function (p) {
 	};
 	return playerRecord;
 };
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
 var author$project$Network$Update$update = F2(
 	function (wsMessage, model) {
 		switch (wsMessage.$) {
@@ -8176,7 +8208,7 @@ var author$project$Network$Update$update = F2(
 					A2(elm$json$Json$Encode$encode, 0, v));
 				if (message.$ === 'Just') {
 					var m = message.a;
-					var _n2 = _Utils_Tuple2(m.player, m.lobby);
+					var _n2 = _Utils_Tuple3(m.player, m.lobby, m.lobbyControl);
 					if (_n2.a.$ === 'Just') {
 						var player = _n2.a.a;
 						var p = author$project$Network$Scheme$player(player);
@@ -8184,16 +8216,69 @@ var author$project$Network$Update$update = F2(
 							_Utils_update(
 								model,
 								{
-									onlinePlayers: _List_fromArray(
-										[p])
+									onlinePlayers: A2(
+										elm$core$List$cons,
+										p,
+										A2(
+											elm$core$List$filter,
+											function (x) {
+												return !_Utils_eq(x.identifier, p.identifier);
+											},
+											model.onlinePlayers))
 								}),
 							elm$core$Platform$Cmd$none);
 					} else {
 						if (_n2.b.$ === 'Just') {
 							var lobby = _n2.b.a;
-							return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+							var network = model.network;
+							return _Utils_Tuple2(
+								_Utils_update(
+									model,
+									{
+										network: _Utils_update(
+											network,
+											{
+												lobbyPool: A2(
+													elm$core$List$cons,
+													lobby,
+													A2(
+														elm$core$List$filter,
+														function (x) {
+															return !_Utils_eq(x.identifier, lobby.identifier);
+														},
+														network.lobbyPool))
+											})
+									}),
+								elm$core$Platform$Cmd$none);
 						} else {
-							return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+							if (_n2.c.$ === 'Just') {
+								var lobbyControl = _n2.c.a;
+								var senderId = lobbyControl.playerId;
+								var ownLobby = model.ownLobby;
+								var ownLobbyId = ownLobby.identifier;
+								var lobbyId = lobbyControl.identifier;
+								return (_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.join) ? _Utils_Tuple2(
+									_Utils_update(
+										model,
+										{
+											ownLobby: _Utils_update(
+												ownLobby,
+												{
+													onlinePlayers: A2(
+														elm$core$List$cons,
+														senderId,
+														A2(
+															elm$core$List$filter,
+															function (x) {
+																return !_Utils_eq(x, senderId);
+															},
+															model.ownLobby.onlinePlayers))
+												})
+										}),
+									elm$core$Platform$Cmd$none) : _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+							} else {
+								return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+							}
 						}
 					}
 				} else {
@@ -8208,17 +8293,6 @@ var author$project$Network$Update$update = F2(
 		}
 	});
 var author$project$Network$Module$update = author$project$Network$Update$update;
-var elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
 var author$project$Objects$Physics$addImpact = F2(
 	function (l, gO) {
 		addImpact:
@@ -8493,6 +8567,30 @@ var author$project$Objects$Physics$update = function (model) {
 					})
 			}));
 };
+var author$project$Network$Encode$encodeLobbyControl = function (lobbyControl) {
+	return _List_fromArray(
+		[
+			_Utils_Tuple2(
+			'identifier',
+			elm$json$Json$Encode$string(lobbyControl.identifier)),
+			_Utils_Tuple2(
+			'playerId',
+			elm$json$Json$Encode$string(lobbyControl.playerId)),
+			_Utils_Tuple2(
+			'join',
+			elm$json$Json$Encode$bool(lobbyControl.join)),
+			_Utils_Tuple2(
+			'finish',
+			elm$json$Json$Encode$bool(lobbyControl.finish))
+		]);
+};
+var author$project$Network$Module$encodeLobbyControl = function (lobbyControl) {
+	return A2(
+		elm$json$Json$Encode$encode,
+		0,
+		elm$json$Json$Encode$object(
+			author$project$Network$Encode$encodeLobbyControl(lobbyControl)));
+};
 var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 	function (model, gO) {
 		var myPlayer = model.myPlayer;
@@ -8520,10 +8618,16 @@ var author$project$Ui$Scenes$MainMenu$Update$changeGameType = function (model) {
 };
 var author$project$Ui$Scenes$MainMenu$Update$changeMap = F2(
 	function (model, m) {
+		var l = model.ownLobby;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
-				{map: m}),
+				{
+					map: m,
+					ownLobby: _Utils_update(
+						l,
+						{map: m.meta.name})
+				}),
 			elm$core$Platform$Cmd$none);
 	});
 var author$project$Ui$Scenes$MainMenu$Update$changeName = F2(
@@ -8586,8 +8690,24 @@ var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 			case 'ChangePlayerCount':
 				var c = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$changePlayerCount, model, c);
-			default:
+			case 'ChangeGameType':
 				return author$project$Ui$Scenes$MainMenu$Update$changeGameType(model);
+			default:
+				var lobby = msg.b;
+				var n = model.network;
+				var lobbyControl = {finish: false, identifier: lobby.identifier, join: true, playerId: model.myPlayer.identifier};
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							network: _Utils_update(
+								n,
+								{session: lobby.identifier})
+						}),
+					A2(
+						author$project$Network$Module$send,
+						'lobbyControl',
+						author$project$Network$Module$encodeLobbyControl(lobbyControl)));
 		}
 	});
 var author$project$Ui$Scenes$MainMenu$Module$update = author$project$Ui$Scenes$MainMenu$Update$update;
@@ -8617,7 +8737,13 @@ var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'Tick':
-				return (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
+				return (_Utils_eq(model.state, author$project$Types$Menu) && model.network.multiplayer) ? A2(
+					Janiczek$cmd_extra$Cmd$Extra$withCmd,
+					A2(
+						author$project$Network$Module$send,
+						'lobby',
+						author$project$Network$Module$encodeLobby(model.ownLobby)),
+					model) : ((_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
 					Janiczek$cmd_extra$Cmd$Extra$withCmd,
 					A2(
 						author$project$Network$Module$send,
@@ -8625,13 +8751,7 @@ var author$project$Main$update = F2(
 						author$project$Network$Module$encodePlayer(model.myPlayer)),
 					author$project$Objects$Physics$update(
 						author$project$Control$Player$update(
-							author$project$Map$Track$Module$update(model)))) : (_Utils_eq(model.state, author$project$Types$Menu) ? A2(
-					Janiczek$cmd_extra$Cmd$Extra$withCmd,
-					A2(
-						author$project$Network$Module$send,
-						'lobby',
-						author$project$Network$Module$encodeLobby(model.ownLobby)),
-					model) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model));
+							author$project$Map$Track$Module$update(model)))) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model));
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -9073,6 +9193,44 @@ var author$project$Ui$Scenes$MainMenu$GameOptions$view = function (model) {
 					]))
 			]));
 };
+var author$project$Types$JoinLobby = F2(
+	function (a, b) {
+		return {$: 'JoinLobby', a: a, b: b};
+	});
+var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
+	var renderLobby = function (lobby) {
+		return A2(
+			elm$html$Html$div,
+			_Utils_ap(
+				author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+				_List_fromArray(
+					[
+						elm$html$Html$Events$onClick(
+						author$project$Types$MainMenu(
+							A2(author$project$Types$JoinLobby, model, lobby)))
+					])),
+			_List_fromArray(
+				[
+					elm$html$Html$text(lobby.map)
+				]));
+	};
+	var renderLobbies = function (l) {
+		if (!l.b) {
+			return _List_Nil;
+		} else {
+			var x = l.a;
+			var xs = l.b;
+			return A2(
+				elm$core$List$cons,
+				renderLobby(x),
+				renderLobbies(xs));
+		}
+	};
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		renderLobbies(model.network.lobbyPool));
+};
 var author$project$Types$ChangeMap = F2(
 	function (a, b) {
 		return {$: 'ChangeMap', a: a, b: b};
@@ -9202,7 +9360,8 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 							]),
 						_List_Nil)
 					])),
-				author$project$Ui$Scenes$MainMenu$GameOptions$view(model)
+				author$project$Ui$Scenes$MainMenu$GameOptions$view(model),
+				author$project$Ui$Scenes$MainMenu$LobbyPicker$view(model)
 			]));
 	var menuItemGameOptions = A2(
 		elm$html$Html$div,
@@ -10098,6 +10257,7 @@ var author$project$Network$Module$open = author$project$Network$Module$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
 var author$project$Types$LobbyUUID = {$: 'LobbyUUID'};
+var author$project$Types$PlayerUUID = {$: 'PlayerUUID'};
 var author$project$Types$SetUUID = F2(
 	function (a, b) {
 		return {$: 'SetUUID', a: a, b: b};
@@ -10183,7 +10343,7 @@ var author$project$Main$main = elm$browser$Browser$element(
 							TSFoster$elm_uuid$UUID$generator),
 							A2(
 							elm$random$Random$generate,
-							author$project$Types$SetUUID(author$project$Types$LobbyUUID),
+							author$project$Types$SetUUID(author$project$Types$PlayerUUID),
 							TSFoster$elm_uuid$UUID$generator)
 						])));
 		},

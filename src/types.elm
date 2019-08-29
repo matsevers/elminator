@@ -1,4 +1,4 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, MainMenuMessage(..), Map, Model, Motion, Msg(..), Network, ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), SchemePlayer, Size, State(..), UUIDType(..), Websocketmsg(..))
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, LobbyControl, MainMenuMessage(..), Map, Model, Motion, Msg(..), Network, ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), SchemePlayer, Size, State(..), UUIDType(..), Websocketmsg(..))
 
 import Dict
 import Json.Encode exposing (Value)
@@ -56,7 +56,7 @@ type UUIDType
 
 type alias Network =
     { lobbyPool : List Lobby
-    , session : Maybe Lobby
+    , session : String
     , multiplayer : Bool
     }
 
@@ -145,6 +145,14 @@ type alias Lobby =
 
 
 -- Websocket Type
+
+
+type alias LobbyControl =
+    { identifier : String
+    , playerId : String
+    , join : Bool
+    , finish : Bool
+    }
 
 
 type alias SchemePlayer =
@@ -260,6 +268,7 @@ type MainMenuMessage
     | ChangeName Model String
     | ChangePlayerCount Model String
     | ChangeGameType Model
+    | JoinLobby Model Lobby
 
 
 type SceneMessage
