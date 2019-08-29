@@ -160,6 +160,7 @@ type alias Player =
     , controlledObject : GameObject
     , catchedCheckpoints : List GameObject
     , label : Label
+    , time : Int
     }
 
 

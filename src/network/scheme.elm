@@ -25,6 +25,7 @@ encode player =
     , ( "labelSize", Json.Encode.int player.label.size )
     , ( "labelVisible", Json.Encode.bool player.label.visible )
     , ( "currentLab", Json.Encode.int player.currentLab )
+    , ( "time", Json.Encode.int player.time )
     , ( "catchedCheckpoints", Json.Encode.int (length player.catchedCheckpoints) )
     , ( "gOIdentifier", Json.Encode.string gO.identifier )
     , ( "gOPositionX", Json.Encode.int gOPosition.x )
@@ -50,6 +51,7 @@ type alias Message =
     , labelSize : Int
     , labelVisible : Bool
     , currentLab : Int
+    , time : Int
     , catchedCheckpoints : Int
     , gOIdentifier : String
     , gOPositionX : Int
@@ -77,6 +79,8 @@ messageDecoder =
             (Json.Decode.field "labelVisible" Json.Decode.bool)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "currentLab" Json.Decode.int)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "time" Json.Decode.int)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "catchedCheckpoints" Json.Decode.int)
         |> Json.Decode.Extra.andMap
@@ -142,6 +146,7 @@ decode json =
                         , right = Types.Nothing
                         }
                     , currentLab = m.message.currentLab
+                    , time = m.message.time
                     , controlledObject = gameObject
                     , catchedCheckpoints = []
                     , label = { text = m.message.label, color = m.message.labelCol, size = m.message.labelSize, visible = m.message.labelVisible }

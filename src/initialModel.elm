@@ -34,6 +34,7 @@ initialModel =
             , right = Types.Nothing
             }
         , currentLab = 1
+        , time = 0
         , controlledObject = Objects.Vehicle.Module.defaultVehicle
         , catchedCheckpoints = []
         }

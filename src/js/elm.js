@@ -5583,7 +5583,8 @@ var author$project$InitialModel$initialModel = {
 		currentLab: 1,
 		identifier: 'blue',
 		label: {color: '#F3B1CF', size: 50, text: 'Unnamed Driver', visible: true},
-		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing}
+		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
+		time: 0
 	},
 	onlinePlayers: _List_Nil,
 	state: author$project$Types$Menu,
@@ -7264,7 +7265,8 @@ var author$project$Control$Player$update = function (model) {
 														elm$core$Basics$modBy,
 														360,
 														gO.rotate + author$project$Control$Player$convertInputToAngle(listKeys)),
-													gO)))))
+													gO))))),
+								time: myPlayer.time + elm$core$Basics$round(model.frequence)
 							})
 					});
 			} else {
@@ -7339,16 +7341,18 @@ var author$project$Network$Scheme$Message = function (identifier) {
 			return function (labelSize) {
 				return function (labelVisible) {
 					return function (currentLab) {
-						return function (catchedCheckpoints) {
-							return function (gOIdentifier) {
-								return function (gOPositionX) {
-									return function (gOPositionY) {
-										return function (gOSprite) {
-											return function (gOSpriteMinimap) {
-												return function (gORotate) {
-													return function (gOSizeHeight) {
-														return function (gOSizeWidth) {
-															return {catchedCheckpoints: catchedCheckpoints, currentLab: currentLab, gOIdentifier: gOIdentifier, gOPositionX: gOPositionX, gOPositionY: gOPositionY, gORotate: gORotate, gOSizeHeight: gOSizeHeight, gOSizeWidth: gOSizeWidth, gOSprite: gOSprite, gOSpriteMinimap: gOSpriteMinimap, identifier: identifier, label: label, labelCol: labelCol, labelSize: labelSize, labelVisible: labelVisible};
+						return function (time) {
+							return function (catchedCheckpoints) {
+								return function (gOIdentifier) {
+									return function (gOPositionX) {
+										return function (gOPositionY) {
+											return function (gOSprite) {
+												return function (gOSpriteMinimap) {
+													return function (gORotate) {
+														return function (gOSizeHeight) {
+															return function (gOSizeWidth) {
+																return {catchedCheckpoints: catchedCheckpoints, currentLab: currentLab, gOIdentifier: gOIdentifier, gOPositionX: gOPositionX, gOPositionY: gOPositionY, gORotate: gORotate, gOSizeHeight: gOSizeHeight, gOSizeWidth: gOSizeWidth, gOSprite: gOSprite, gOSpriteMinimap: gOSpriteMinimap, identifier: identifier, label: label, labelCol: labelCol, labelSize: labelSize, labelVisible: labelVisible, time: time};
+															};
 														};
 													};
 												};
@@ -7396,23 +7400,26 @@ var author$project$Network$Scheme$messageDecoder = A2(
 									A2(elm$json$Json$Decode$field, 'catchedCheckpoints', elm$json$Json$Decode$int),
 									A2(
 										elm_community$json_extra$Json$Decode$Extra$andMap,
-										A2(elm$json$Json$Decode$field, 'currentLab', elm$json$Json$Decode$int),
+										A2(elm$json$Json$Decode$field, 'time', elm$json$Json$Decode$int),
 										A2(
 											elm_community$json_extra$Json$Decode$Extra$andMap,
-											A2(elm$json$Json$Decode$field, 'labelVisible', elm$json$Json$Decode$bool),
+											A2(elm$json$Json$Decode$field, 'currentLab', elm$json$Json$Decode$int),
 											A2(
 												elm_community$json_extra$Json$Decode$Extra$andMap,
-												A2(elm$json$Json$Decode$field, 'labelSize', elm$json$Json$Decode$int),
+												A2(elm$json$Json$Decode$field, 'labelVisible', elm$json$Json$Decode$bool),
 												A2(
 													elm_community$json_extra$Json$Decode$Extra$andMap,
-													A2(elm$json$Json$Decode$field, 'labelCol', elm$json$Json$Decode$string),
+													A2(elm$json$Json$Decode$field, 'labelSize', elm$json$Json$Decode$int),
 													A2(
 														elm_community$json_extra$Json$Decode$Extra$andMap,
-														A2(elm$json$Json$Decode$field, 'label', elm$json$Json$Decode$string),
+														A2(elm$json$Json$Decode$field, 'labelCol', elm$json$Json$Decode$string),
 														A2(
 															elm_community$json_extra$Json$Decode$Extra$andMap,
-															A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
-															elm$json$Json$Decode$succeed(author$project$Network$Scheme$Message))))))))))))))));
+															A2(elm$json$Json$Decode$field, 'label', elm$json$Json$Decode$string),
+															A2(
+																elm_community$json_extra$Json$Decode$Extra$andMap,
+																A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
+																elm$json$Json$Decode$succeed(author$project$Network$Scheme$Message)))))))))))))))));
 var author$project$Network$Scheme$argsDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string),
@@ -7449,7 +7456,8 @@ var author$project$Network$Scheme$decode = function (json) {
 			currentLab: m.message.currentLab,
 			identifier: m.message.identifier,
 			label: {color: m.message.labelCol, size: m.message.labelSize, text: m.message.label, visible: m.message.labelVisible},
-			storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing}
+			storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
+			time: m.message.time
 		};
 		return elm$core$Maybe$Just(player);
 	} else {
@@ -7529,6 +7537,9 @@ var author$project$Network$Scheme$encode = function (player) {
 			_Utils_Tuple2(
 			'currentLab',
 			elm$json$Json$Encode$int(player.currentLab)),
+			_Utils_Tuple2(
+			'time',
+			elm$json$Json$Encode$int(player.time)),
 			_Utils_Tuple2(
 			'catchedCheckpoints',
 			elm$json$Json$Encode$int(
@@ -9281,7 +9292,7 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\n        ');
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\r\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\r\n        ');
 var author$project$Network$Module$open = author$project$Network$Module$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));

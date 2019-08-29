@@ -38,6 +38,7 @@ update model =
                                                 autoBrake (convertInputToForce listKeys) <|
                                                     acceleration (convertInputToForce listKeys) <|
                                                         Objects.Module.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                                    , time = myPlayer.time + round model.frequence
                                 }
                         }
 
