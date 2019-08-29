@@ -1,6 +1,8 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, MainMenuMessage(..), Map, Model, Motion, Msg(..), ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), Size, State(..), Websocketmsg(..))
+module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, MainMenuMessage(..), Map, Model, Motion, Msg(..), Network, ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), SchemePlayer, Size, State(..), UUIDType(..), Websocketmsg(..))
 
+import Dict
 import Json.Encode exposing (Value)
+import UUID
 
 
 type Msg
@@ -11,6 +13,7 @@ type Msg
     | Control Model KeyEvent Action
     | Tick
     | Websocket Websocketmsg
+    | SetUUID UUIDType UUID.UUID
     | None
 
 
@@ -37,12 +40,25 @@ type alias Model =
     , onlinePlayers : List Player
     , lab : Int
     , debug : Bool
-    , wsSend : String
+    , network : Network
+    , ownLobby : Lobby
     }
+
+
+type UUIDType
+    = PlayerUUID
+    | LobbyUUID
 
 
 
 -- Objects Types
+
+
+type alias Network =
+    { lobbyPool : List Lobby
+    , session : Maybe Lobby
+    , multiplayer : Bool
+    }
 
 
 type ObjectType
@@ -121,10 +137,33 @@ type alias GameObject =
 
 type alias Lobby =
     { identifier : String
-    , name : String
     , maxPlayer : Int
-    , currentPlayer : Int
     , map : String
+    , onlinePlayers : List String
+    }
+
+
+
+-- Websocket Type
+
+
+type alias SchemePlayer =
+    { identifier : String
+    , label : String
+    , labelCol : String
+    , labelSize : Int
+    , labelVisible : Bool
+    , currentLab : Int
+    , time : Int
+    , catchedCheckpoints : Int
+    , gOIdentifier : String
+    , gOPositionX : Int
+    , gOPositionY : Int
+    , gOSprite : String
+    , gOSpriteMinimap : String
+    , gORotate : Int
+    , gOSizeHeight : Int
+    , gOSizeWidth : Int
     }
 
 
@@ -219,6 +258,8 @@ type MainMenuMessage
     = ChangeCar Model GameObject
     | ChangeMap Model Map
     | ChangeName Model String
+    | ChangePlayerCount Model String
+    | ChangeGameType Model
 
 
 type SceneMessage

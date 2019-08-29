@@ -1,5 +1,6 @@
 module Ui.Scenes.MainMenu.Update exposing (changeCar, changeMap, update)
 
+import String
 import Types
 
 
@@ -15,6 +16,12 @@ update msg model =
         Types.ChangeName _ name ->
             changeName model name
 
+        Types.ChangePlayerCount _ c ->
+            changePlayerCount model c
+
+        Types.ChangeGameType _ ->
+            changeGameType model
+
 
 changeCar : Types.Model -> Types.GameObject -> ( Types.Model, Cmd Types.Msg )
 changeCar model gO =
@@ -28,6 +35,20 @@ changeCar model gO =
 changeMap : Types.Model -> Types.Map -> ( Types.Model, Cmd Types.Msg )
 changeMap model m =
     ( { model | map = m }, Cmd.none )
+
+
+changePlayerCount : Types.Model -> String -> ( Types.Model, Cmd Types.Msg )
+changePlayerCount model c =
+    let
+        l =
+            model.ownLobby
+    in
+    case String.toInt c of
+        Just count ->
+            ( { model | ownLobby = { l | maxPlayer = count } }, Cmd.none )
+
+        Maybe.Nothing ->
+            ( { model | ownLobby = { l | maxPlayer = 1 } }, Cmd.none )
 
 
 changeName : Types.Model -> String -> ( Types.Model, Cmd Types.Msg )
@@ -47,3 +68,12 @@ changeName model name =
       }
     , Cmd.none
     )
+
+
+changeGameType : Types.Model -> ( Types.Model, Cmd Types.Msg )
+changeGameType model =
+    let
+        n =
+            model.network
+    in
+    ( { model | network = { n | multiplayer = not n.multiplayer } }, Cmd.none )

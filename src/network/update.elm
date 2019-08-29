@@ -4,6 +4,7 @@ import Json.Decode exposing (..)
 import Json.Encode exposing (..)
 import Network.Decode exposing (..)
 import Network.Ports exposing (..)
+import Network.Scheme
 import Types
 
 
@@ -28,7 +29,11 @@ update wsMessage model =
                 Just m ->
                     case ( m.player, m.lobby ) of
                         ( Just player, _ ) ->
-                            ( { model | onlinePlayers = [] }, Cmd.none )
+                            let
+                                p =
+                                    Network.Scheme.player player
+                            in
+                            ( { model | onlinePlayers = [ p ] }, Cmd.none )
 
                         ( _, Just lobby ) ->
                             ( model, Cmd.none )

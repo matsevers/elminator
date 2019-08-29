@@ -1,5 +1,6 @@
 module InitialModel exposing (initialModel)
 
+import Dict
 import Map.Track.Module exposing (..)
 import Objects.Vehicle.Module
 import Types exposing (..)
@@ -41,5 +42,15 @@ initialModel =
     , onlinePlayers = []
     , lab = 0
     , debug = False
-    , wsSend = ""
+    , network =
+        { lobbyPool = []
+        , session = Maybe.Nothing
+        , multiplayer = False
+        }
+    , ownLobby =
+        { identifier = "ownLobby"
+        , maxPlayer = 2
+        , onlinePlayers = []
+        , map = "Dust Race"
+        }
     }

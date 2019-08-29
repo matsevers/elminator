@@ -1,4 +1,4 @@
-module Network.Module exposing (close, cmdPort, encodeLobby, encodePlayer, open, parse, parseReturn, run, send, subPort, update, wsSendUpdate)
+module Network.Module exposing (close, cmdPort, encodeLobby, encodePlayer, open, parse, parseReturn, run, send, subPort, update)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (Value)
@@ -40,25 +40,6 @@ encodeLobby lobby =
 encodePlayer : Player -> String
 encodePlayer player =
     Json.Encode.encode 0 (Json.Encode.object (Network.Encode.encodePlayer player))
-
-
-wsSendUpdate : Model -> Model
-wsSendUpdate model =
-    let
-        myPlayer =
-            model.myPlayer
-
-        jsonObject : Value
-        jsonObject =
-            -- Json.Encode.object (Debug.log "jsonObjectList " (Network.Scheme.encode myPlayer))
-            Json.Encode.object (Network.Encode.encodePlayer myPlayer)
-
-        json : String
-        json =
-            -- Debug.log "JsonString" (Json.Encode.encode 0 (Debug.log "JsonValue " jsonObject))
-            Json.Encode.encode 0 jsonObject
-    in
-    { model | wsSend = json }
 
 
 run : msg -> Cmd msg

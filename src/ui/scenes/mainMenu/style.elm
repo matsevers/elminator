@@ -53,7 +53,7 @@ menuItemContainer =
 input : List (Html.Attribute msg)
 input =
     [ Html.Attributes.style "flex" "1"
-    , Html.Attributes.style "font-size" "22px"
+    , Html.Attributes.style "font-size" "18px"
     , Html.Attributes.style "color" "#fff"
     , Html.Attributes.style "background-color" "transparent"
     , Html.Attributes.style "border" "0px solid #fff"

@@ -8,10 +8,9 @@ import Types
 encodeLobby : Types.Lobby -> List ( String, Json.Encode.Value )
 encodeLobby lobby =
     [ ( "identifier", Json.Encode.string lobby.identifier )
-    , ( "name", Json.Encode.string lobby.name )
     , ( "maxPlayer", Json.Encode.int lobby.maxPlayer )
-    , ( "currentPlayer", Json.Encode.int lobby.currentPlayer )
     , ( "map", Json.Encode.string lobby.map )
+    , ( "onlinePlayers", Json.Encode.list Json.Encode.string lobby.onlinePlayers )
     ]
 
 

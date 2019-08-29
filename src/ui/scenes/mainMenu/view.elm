@@ -6,6 +6,7 @@ import Html.Events
 import Network.Module
 import Types
 import Ui.Scenes.MainMenu.CarPicker
+import Ui.Scenes.MainMenu.GameOptions
 import Ui.Scenes.MainMenu.MapPicker
 import Ui.Scenes.MainMenu.Style
 import Ui.Scenes.Style
@@ -48,7 +49,7 @@ view model =
                     , Html.input
                         (Ui.Scenes.MainMenu.Style.input
                             ++ [ Html.Attributes.placeholder
-                                    "Text to reverse"
+                                    "Unnamed Driver"
                                , Html.Attributes.value
                                     model.myPlayer.label.text
                                , Html.Events.onInput
@@ -58,6 +59,7 @@ view model =
                         []
                     , Html.div [ Html.Attributes.style "flex" "1" ] []
                     ]
+                , Ui.Scenes.MainMenu.GameOptions.view model
                 ]
     in
     Html.div

@@ -16,8 +16,10 @@ import Map.Track.Module exposing (..)
 import Network.Module exposing (..)
 import Objects.Physics exposing (..)
 import Objects.Vehicle.Module
+import Random
 import Time exposing (..)
 import Types exposing (..)
+import UUID
 import Ui.Scenes.FinishMenu.Module exposing (..)
 import Ui.Scenes.FinishMenu.Update exposing (..)
 import Ui.Scenes.MainMenu.Module exposing (..)
@@ -47,24 +49,14 @@ update msg model =
     case msg of
         Tick ->
             if model.state == Running || model.state == PrepareRace then
-                (Network.Module.wsSendUpdate <|
-                    Objects.Physics.update <|
-                        Control.Player.update <|
-                            Map.Track.Module.update model
+                (Objects.Physics.update <|
+                    Control.Player.update <|
+                        Map.Track.Module.update model
                 )
                     |> withCmd (Network.Module.send "player" (Network.Module.encodePlayer model.myPlayer))
 
             else if model.state == Menu then
-                let
-                    lobbyDummy =
-                        { identifier = "1"
-                        , name = "Race Time"
-                        , maxPlayer = 2
-                        , currentPlayer = 1
-                        , map = "Dust Race"
-                        }
-                in
-                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby lobbyDummy))
+                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby model.ownLobby))
 
             else
                 model |> withNoCmd
@@ -84,6 +76,21 @@ update msg model =
         Websocket m ->
             Network.Module.update m model
 
+        SetUUID t uuid ->
+            let
+                p =
+                    model.myPlayer
+
+                l =
+                    model.ownLobby
+            in
+            case t of
+                PlayerUUID ->
+                    { model | myPlayer = { p | identifier = UUID.toString uuid } } |> withNoCmd
+
+                LobbyUUID ->
+                    { model | ownLobby = { l | identifier = UUID.toString uuid } } |> withNoCmd
+
         _ ->
             model |> withNoCmd
 
@@ -102,7 +109,15 @@ subscriptions model =
 main : Program () Model Msg
 main =
     Browser.element
-        { init = \_ -> ( InitialModel.initialModel, Network.Module.open )
+        { init =
+            \_ ->
+                ( InitialModel.initialModel
+                , Cmd.batch
+                    [ Network.Module.open
+                    , Random.generate (SetUUID Types.LobbyUUID) UUID.generator
+                    , Random.generate (SetUUID Types.LobbyUUID) UUID.generator
+                    ]
+                )
         , subscriptions = subscriptions
         , view = view
         , update = update

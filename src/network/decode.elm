@@ -1,7 +1,8 @@
-module Network.Decode exposing (Args, Message, Player, argsDecoder, decode, lobbyDecoder, messageDecoder, playerDecoder)
+module Network.Decode exposing (Args, Message, argsDecoder, decode, lobbyDecoder, messageDecoder, playerDecoder)
 
 import Json.Decode exposing (..)
 import Json.Decode.Extra exposing (..)
+import String
 import Types exposing (..)
 
 
@@ -13,27 +14,7 @@ type alias Args =
 
 type alias Message =
     { lobby : Maybe Lobby
-    , player : Maybe Player
-    }
-
-
-type alias Player =
-    { identifier : String
-    , label : String
-    , labelCol : String
-    , labelSize : Int
-    , labelVisible : Bool
-    , currentLab : Int
-    , time : Int
-    , catchedCheckpoints : Int
-    , gOIdentifier : String
-    , gOPositionX : Int
-    , gOPositionY : Int
-    , gOSprite : String
-    , gOSpriteMinimap : String
-    , gORotate : Int
-    , gOSizeHeight : Int
-    , gOSizeWidth : Int
+    , player : Maybe SchemePlayer
     }
 
 
@@ -51,9 +32,9 @@ decode json =
             Maybe.Nothing
 
 
-playerDecoder : Decoder Player
+playerDecoder : Decoder SchemePlayer
 playerDecoder =
-    succeed Player
+    succeed SchemePlayer
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "identifier" Json.Decode.string)
         |> Json.Decode.Extra.andMap
@@ -94,13 +75,11 @@ lobbyDecoder =
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "identifier" Json.Decode.string)
         |> Json.Decode.Extra.andMap
-            (Json.Decode.field "name" Json.Decode.string)
-        |> Json.Decode.Extra.andMap
             (Json.Decode.field "maxPlayer" Json.Decode.int)
         |> Json.Decode.Extra.andMap
-            (Json.Decode.field "currentPlayer" Json.Decode.int)
-        |> Json.Decode.Extra.andMap
             (Json.Decode.field "map" Json.Decode.string)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "onlinePlayers" (Json.Decode.list string))
 
 
 messageDecoder : Decoder Message
