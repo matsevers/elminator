@@ -10,6 +10,31 @@ import Ui.Scenes.Style
 
 view : Types.Model -> Html.Html Types.Msg
 view model =
+    let
+        getDriveTimeSeconds : Int
+        getDriveTimeSeconds =
+            if model.myPlayer.time == 0 then
+                0
+
+            else
+                model.myPlayer.time // 1000
+
+        getDriveTimeMilliSeconds : String
+        getDriveTimeMilliSeconds =
+            if model.myPlayer.time == 0 then
+                "0"
+
+            else
+                let
+                    ms =
+                        String.fromInt (round (toFloat (model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10))
+                in
+                if String.length ms == 1 then
+                    "0" ++ ms
+
+                else
+                    ms
+    in
     Html.div
         (Ui.Scenes.Style.globalContainer ++ Ui.Scenes.Style.menuContainer)
         [ Html.img
@@ -41,7 +66,12 @@ view model =
                 , Html.Attributes.style "margin" "20px"
                 ]
                 [ Html.text "YOUR TIME"
-                , Html.div [ Html.Attributes.style "margin-top" "20px" ] []
+                , Html.div [ Html.Attributes.style "margin-top" "20px" ]
+                    [ Html.text (String.fromInt getDriveTimeSeconds)
+                    , Html.text ":"
+                    , Html.text getDriveTimeMilliSeconds
+                    , Html.text " seconds"
+                    ]
                 ]
             , Html.div
                 [ Html.Attributes.style "flex-basis" "20%"
