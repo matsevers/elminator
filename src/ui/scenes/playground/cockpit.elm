@@ -3,6 +3,7 @@ module Ui.Scenes.Playground.Cockpit exposing (element)
 import Html
 import Html.Attributes
 import Objects.Module
+import String
 import Svg
 import Svg.Attributes
 import Types
@@ -35,6 +36,30 @@ element model =
                 }
                 model.myPlayer.controlledObject.motion
 
+        getDriveTimeSeconds : Int
+        getDriveTimeSeconds =
+            if model.myPlayer.time == 0 then
+                0
+
+            else
+                model.myPlayer.time // 1000
+
+        getDriveTimeMilliSeconds : String
+        getDriveTimeMilliSeconds =
+            if model.myPlayer.time == 0 then
+                "0"
+
+            else
+                let
+                    ms =
+                        String.fromInt (round (toFloat (model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10))
+                in
+                if String.length ms == 1 then
+                    "0" ++ ms
+
+                else
+                    ms
+
         lapInfo : Html.Html msg
         lapInfo =
             Html.div
@@ -54,6 +79,25 @@ element model =
                             ++ " | "
                             ++ String.fromInt model.map.options.labs
                         )
+                    ]
+                ]
+
+        timeInfo : Html.Html msg
+        timeInfo =
+            Html.div
+                Ui.Scenes.Playground.Style.infoRow
+                [ Html.div
+                    Ui.Scenes.Playground.Style.infoRowSkew
+                    [ Html.div
+                        Ui.Scenes.Playground.Style.infoRowAntiSkewText
+                        [ Html.text "Time" ]
+                    ]
+                , Html.div
+                    [ Html.Attributes.style "align-self" "center"
+                    , Html.Attributes.style "padding-right" "10px"
+                    ]
+                    [ Html.text
+                        (String.fromInt getDriveTimeSeconds ++ ":" ++ getDriveTimeMilliSeconds)
                     ]
                 ]
 
@@ -90,6 +134,7 @@ element model =
                     []
                 , placement "1" model.myPlayer.label.text
                 , lapInfo
+                , timeInfo
                 ]
 
         miniMap : Html.Html Types.Msg
