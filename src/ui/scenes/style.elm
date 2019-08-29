@@ -1,4 +1,4 @@
-module Ui.Scenes.Style exposing (globalContainer, menuContainer)
+module Ui.Scenes.Style exposing (button, globalContainer, menuContainer)
 
 import Html
 import Html.Attributes
@@ -18,4 +18,14 @@ menuContainer =
     , Html.Attributes.style "justify-content" "flex-start"
     , Html.Attributes.style "align-items" "center"
     , Html.Attributes.style "flex-direction" "column"
+    ]
+
+
+button : List (Html.Attribute msg)
+button =
+    [ Html.Attributes.style "padding" "30px"
+    , Html.Attributes.style "background-color" "#f21d9c"
+    , Html.Attributes.style "color" "#ffffff"
+    , Html.Attributes.style "border-width" "0px"
+    , Html.Attributes.style "font-size" "20px"
     ]

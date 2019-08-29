@@ -4,6 +4,7 @@ import Html
 import Html.Attributes
 import Html.Events
 import Types
+import Ui.Scenes.MainMenu.Style
 
 
 view : Types.Model -> List (Html.Html Types.Msg)
@@ -28,23 +29,15 @@ renderMaps l model =
                         []
             in
             Html.div
-                ([ Html.Attributes.style "display" "flex"
-                 , Html.Attributes.style "align-self" "stretch"
-                 , Html.Attributes.style "flex-direction" "column"
-                 , Html.Attributes.style "align-items" "center"
-                 , Html.Attributes.style "font-size" "14px"
-                 , Html.Attributes.style "background-color" "rgba(255,255,255, 0.2)"
-                 , Html.Attributes.style "padding" "10px"
-                 , Html.Attributes.style "margin" "10px"
-                 , Html.Attributes.style "cursor" "pointer"
-                 , Html.Events.onClick
-                    (Types.MainMenu
-                        (Types.ChangeMap
-                            model
-                            map
-                        )
-                    )
-                 ]
+                (Ui.Scenes.MainMenu.Style.selectionContainer
+                    ++ [ Html.Events.onClick
+                            (Types.MainMenu
+                                (Types.ChangeMap
+                                    model
+                                    map
+                                )
+                            )
+                       ]
                     ++ checkSelection
                 )
                 [ Html.div

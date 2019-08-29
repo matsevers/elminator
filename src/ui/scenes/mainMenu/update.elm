@@ -39,4 +39,11 @@ changeName model name =
         label =
             model.myPlayer.label
     in
-    ( { model | myPlayer = { myPlayer | label = { label | text = name } } }, Cmd.none )
+    ( { model
+        | myPlayer =
+            { myPlayer
+                | label = { label | text = name }
+            }
+      }
+    , Cmd.none
+    )
