@@ -54,12 +54,26 @@ update msg model =
             else if model.state == Running || model.state == PrepareRace then
                 (Objects.Physics.update <|
                     Control.Player.update <|
-                        Map.Track.Module.update model
+                        Network.Module.updateTtl <|
+                            Map.Track.Module.update model
                 )
                     |> withCmd (Network.Module.send "player" (Network.Module.encodePlayer model.myPlayer))
 
+            else if model.state == Types.Finished then
+                let
+                    lobbyControlMsg : LobbyControl
+                    lobbyControlMsg =
+                        { identifier = model.network.session
+                        , playerId = model.myPlayer.identifier
+                        , join = False
+                        , start = False
+                        , finish = True
+                        }
+                in
+                model |> withCmd (Network.Module.send "lobbyControl" (Network.Module.encodeLobbyControl lobbyControlMsg))
+
             else
-                model |> withNoCmd
+                model |> Network.Module.updateTtl |> withNoCmd
 
         Control _ event action ->
             Control.Module.update event action model
@@ -83,13 +97,16 @@ update msg model =
 
                 l =
                     model.ownLobby
+
+                n =
+                    model.network
             in
             case t of
                 PlayerUUID ->
                     { model | myPlayer = { p | identifier = UUID.toString uuid } } |> withNoCmd
 
                 LobbyUUID ->
-                    { model | ownLobby = { l | identifier = UUID.toString uuid } } |> withNoCmd
+                    { model | ownLobby = { l | identifier = UUID.toString uuid }, network = { n | session = UUID.toString uuid } } |> withNoCmd
 
         _ ->
             model |> withNoCmd

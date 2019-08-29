@@ -1,13 +1,11 @@
-module Network.Module exposing (close, cmdPort, encodeLobby, encodeLobbyControl, encodePlayer, open, parse, parseReturn, run, send, subPort, update)
+module Network.Module exposing (close, cmdPort, encodeLobby, encodeLobbyControl, encodePlayer, open, parse, parseReturn, run, send, subPort, update, updateTtl)
 
-import Json.Decode exposing (..)
-import Json.Encode exposing (Value)
-import Network.Encode
+import List
+import Network.Commands
 import Network.Ports exposing (..)
 import Network.PredefinedMessages exposing (..)
 import Network.Scheme
 import Network.Update exposing (..)
-import Task exposing (..)
 import Types exposing (..)
 
 
@@ -32,37 +30,52 @@ update =
 
 
 encodeLobby : Lobby -> String
-encodeLobby lobby =
-    Json.Encode.encode 0
-        (Json.Encode.object (Network.Encode.encodeLobby lobby))
+encodeLobby =
+    Network.Commands.encodeLobby
 
 
 encodeLobbyControl : LobbyControl -> String
-encodeLobbyControl lobbyControl =
-    Json.Encode.encode 0
-        (Json.Encode.object (Network.Encode.encodeLobbyControl lobbyControl))
+encodeLobbyControl =
+    Network.Commands.encodeLobbyControl
 
 
 encodePlayer : Player -> String
-encodePlayer player =
-    Json.Encode.encode 0 (Json.Encode.object (Network.Encode.encodePlayer player))
+encodePlayer =
+    Network.Commands.encodePlayer
+
+
+updateTtl : Model -> Model
+updateTtl model =
+    let
+        network =
+            model.network
+
+        lobbyPool =
+            network.lobbyPool
+
+        decreaseTll : List Lobby -> List Lobby
+        decreaseTll l =
+            List.filter (\x -> x.ttl > 0) <|
+                List.map (\x -> { x | ttl = x.ttl - model.frequence }) l
+    in
+    { model | network = { network | lobbyPool = decreaseTll lobbyPool } }
 
 
 run : msg -> Cmd msg
-run m =
-    Task.perform (always m) (Task.succeed ())
+run =
+    Network.Commands.run
 
 
 open : Cmd Msg
 open =
-    run (Websocket (Send openJson))
+    Network.Commands.open
 
 
 send : String -> String -> Cmd Msg
-send field message =
-    run (Websocket (Send (sendJson2 field message)))
+send =
+    Network.Commands.send
 
 
 close : Cmd Msg
 close =
-    run (Websocket (Send closeJson))
+    Network.Commands.close

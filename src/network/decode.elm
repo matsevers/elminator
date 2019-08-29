@@ -81,6 +81,8 @@ lobbyDecoder =
             (Json.Decode.field "map" Json.Decode.string)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "onlinePlayers" (Json.Decode.list string))
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "ttl" Json.Decode.float)
 
 
 lobbyControlDecoder : Decoder LobbyControl
@@ -92,6 +94,8 @@ lobbyControlDecoder =
             (Json.Decode.field "playerId" Json.Decode.string)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "join" Json.Decode.bool)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "start" Json.Decode.bool)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "finish" Json.Decode.bool)
 

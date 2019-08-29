@@ -6,10 +6,15 @@ import Objects.Vehicle.Module
 import Types exposing (..)
 
 
+frequence : Float
+frequence =
+    40
+
+
 initialModel : Model
 initialModel =
     { state = Menu
-    , frequence = 40
+    , frequence = frequence
     , availableCars = Objects.Vehicle.Module.vehicles
     , availableMaps = Map.Track.Module.tracks
     , map = Map.Track.Module.defaultTrack
@@ -52,5 +57,6 @@ initialModel =
         , maxPlayer = 2
         , onlinePlayers = []
         , map = "Dust Race"
+        , ttl = frequence * 50 + 1
         }
     }

@@ -11,6 +11,7 @@ encodeLobby lobby =
     , ( "maxPlayer", Json.Encode.int lobby.maxPlayer )
     , ( "map", Json.Encode.string lobby.map )
     , ( "onlinePlayers", Json.Encode.list Json.Encode.string lobby.onlinePlayers )
+    , ( "ttl", Json.Encode.float lobby.ttl )
     ]
 
 
@@ -19,6 +20,7 @@ encodeLobbyControl lobbyControl =
     [ ( "identifier", Json.Encode.string lobbyControl.identifier )
     , ( "playerId", Json.Encode.string lobbyControl.playerId )
     , ( "join", Json.Encode.bool lobbyControl.join )
+    , ( "start", Json.Encode.bool lobbyControl.start )
     , ( "finish", Json.Encode.bool lobbyControl.finish )
     ]
 

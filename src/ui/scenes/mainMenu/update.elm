@@ -32,6 +32,7 @@ update msg model =
                     { identifier = lobby.identifier
                     , playerId = model.myPlayer.identifier
                     , join = True
+                    , start = False
                     , finish = False
                     }
             in

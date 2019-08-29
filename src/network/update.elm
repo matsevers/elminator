@@ -1,8 +1,10 @@
 module Network.Update exposing (update)
 
+import Cmd.Extra exposing (withCmd, withNoCmd)
 import Json.Decode exposing (..)
 import Json.Encode exposing (..)
 import List
+import Network.Commands
 import Network.Decode exposing (..)
 import Network.Ports exposing (..)
 import Network.Scheme
@@ -34,21 +36,20 @@ update wsMessage model =
                                 p =
                                     Network.Scheme.player player
                             in
-                            ( { model
+                            { model
                                 | onlinePlayers =
                                     p
                                         :: List.filter (\x -> not (x.identifier == p.identifier))
                                             model.onlinePlayers
-                              }
-                            , Cmd.none
-                            )
+                            }
+                                |> withNoCmd
 
                         ( _, Just lobby, _ ) ->
                             let
                                 network =
                                     model.network
                             in
-                            ( { model
+                            { model
                                 | network =
                                     { network
                                         | lobbyPool =
@@ -56,9 +57,8 @@ update wsMessage model =
                                                 :: List.filter (\x -> not (x.identifier == lobby.identifier))
                                                     network.lobbyPool
                                     }
-                              }
-                            , Cmd.none
-                            )
+                            }
+                                |> withNoCmd
 
                         ( _, _, Just lobbyControl ) ->
                             let
@@ -74,27 +74,53 @@ update wsMessage model =
                                 ownLobbyId =
                                     ownLobby.identifier
                             in
-                            if lobbyId == ownLobbyId && lobbyControl.join then
-                                ( { model
-                                    | ownLobby =
-                                        { ownLobby
-                                            | onlinePlayers =
-                                                senderId
-                                                    :: List.filter (\x -> not (x == senderId))
-                                                        model.ownLobby.onlinePlayers
-                                        }
-                                  }
-                                , Cmd.none
-                                )
+                            if lobbyControl.finish && (lobbyControl.identifier == model.network.session || lobbyControl.identifier == ownLobbyId) then
+                                model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.Finished)))
+
+                            else if lobbyId == ownLobbyId && lobbyControl.join then
+                                if ownLobby.maxPlayer > List.length ownLobby.onlinePlayers - 1 then
+                                    let
+                                        startLobbyMessage =
+                                            { lobbyControl | start = True, join = False }
+                                    in
+                                    ( { model
+                                        | ownLobby =
+                                            { ownLobby
+                                                | onlinePlayers =
+                                                    senderId
+                                                        :: List.filter (\x -> not (x == senderId))
+                                                            model.ownLobby.onlinePlayers
+                                            }
+                                      }
+                                    , Cmd.batch
+                                        [ Network.Commands.send "lobbyControl" (Network.Commands.encodeLobbyControl startLobbyMessage)
+                                        , Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
+                                        ]
+                                    )
+
+                                else
+                                    { model
+                                        | ownLobby =
+                                            { ownLobby
+                                                | onlinePlayers =
+                                                    senderId
+                                                        :: List.filter (\x -> not (x == senderId))
+                                                            model.ownLobby.onlinePlayers
+                                            }
+                                    }
+                                        |> withNoCmd
+
+                            else if lobbyControl.start && lobbyControl.identifier == model.network.session then
+                                model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace)))
 
                             else
-                                ( model, Cmd.none )
+                                model |> withNoCmd
 
                         _ ->
-                            ( model, Cmd.none )
+                            model |> withNoCmd
 
                 Maybe.Nothing ->
-                    ( model, Cmd.none )
+                    model |> withNoCmd
 
         Types.Send m ->
             let

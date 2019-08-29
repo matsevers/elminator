@@ -140,6 +140,7 @@ type alias Lobby =
     , maxPlayer : Int
     , map : String
     , onlinePlayers : List String
+    , ttl : Float
     }
 
 
@@ -151,6 +152,7 @@ type alias LobbyControl =
     { identifier : String
     , playerId : String
     , join : Bool
+    , start : Bool
     , finish : Bool
     }
 
