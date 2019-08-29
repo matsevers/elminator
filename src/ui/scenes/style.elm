@@ -4,6 +4,10 @@ module Ui.Scenes.Style exposing
     , globalContainer
     , menuContainer
     , menuItem
+    , menuItemLeft
+    , menuItemRight
+    , spaceBottom
+    , spaceTop
     )
 
 import Html
@@ -52,6 +56,36 @@ menuItem =
     ]
 
 
+menuItemLeft : List (Html.Attribute msg)
+menuItemLeft =
+    [ Html.Attributes.style "background-color"
+        "#763fdd"
+    , Html.Attributes.style "transform"
+        "perspective(400px) rotateY(15deg) rotateX(5deg)"
+    ]
+
+
+menuItemRight : List (Html.Attribute msg)
+menuItemRight =
+    [ Html.Attributes.style
+        "background-color"
+        "#E664DD"
+    , Html.Attributes.style
+        "transform"
+        "perspective(400px) rotateY(-15deg) rotateX(5deg)"
+    ]
+
+
 centeredText : List (Html.Attribute msg)
 centeredText =
     [ Html.Attributes.style "text-align" "center" ]
+
+
+spaceTop : List (Html.Attribute msg)
+spaceTop =
+    [ Html.Attributes.style "margin-top" "20px" ]
+
+
+spaceBottom : List (Html.Attribute msg)
+spaceBottom =
+    [ Html.Attributes.style "margin-bottom" "20px" ]

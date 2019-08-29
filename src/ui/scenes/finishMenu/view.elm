@@ -27,7 +27,15 @@ view model =
             else
                 let
                     ms =
-                        String.fromInt (round (toFloat (model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10))
+                        String.fromInt
+                            (round
+                                (toFloat
+                                    (model.myPlayer.time
+                                        - (getDriveTimeSeconds * 1000)
+                                    )
+                                    / 10
+                                )
+                            )
                 in
                 if String.length ms == 1 then
                     "0" ++ ms
@@ -50,16 +58,12 @@ view model =
             , Html.Attributes.style "justify-content" "center"
             ]
             [ Html.div
-                ([ Html.Attributes.style
-                    "transform"
-                    "perspective(400px) rotateY(15deg) rotateX(5deg)"
-                 , Html.Attributes.style "background-color" "#763fdd"
-                 ]
+                (Ui.Scenes.Style.menuItemLeft
                     ++ Ui.Scenes.Style.menuItem
                     ++ Ui.Scenes.Style.centeredText
                 )
                 [ Html.text "YOUR TIME"
-                , Html.div [ Html.Attributes.style "margin-top" "20px" ]
+                , Html.div Ui.Scenes.Style.spaceTop
                     [ Html.text (String.fromInt getDriveTimeSeconds)
                     , Html.text ":"
                     , Html.text getDriveTimeMilliSeconds
@@ -69,30 +73,23 @@ view model =
             , Html.div
                 (Ui.Scenes.Style.menuItem
                     ++ Ui.Scenes.Style.centeredText
-                    ++ [ Html.Attributes.style "background-color" "#E664DD"
-                       , Html.Attributes.style
-                            "transform"
-                            "perspective(400px) rotateY(-15deg) rotateX(5deg)"
-                       ]
+                    ++ Ui.Scenes.Style.menuItemRight
                 )
                 [ Html.text "COMPETITIVE POSITION"
-                , Html.div [ Html.Attributes.style "margin-top" "20px" ]
+                , Html.div Ui.Scenes.Style.spaceTop
                     []
                 ]
             ]
         , Html.button
-            [ Html.Attributes.style "padding" "30px"
-            , Html.Attributes.style "background-color" "#f21d9c"
-            , Html.Attributes.style "color" "#ffffff"
-            , Html.Attributes.style "border-width" "0px"
-            , Html.Attributes.style "font-size" "20px"
-            , Html.Events.onClick
-                (Types.SceneManager
-                    (Types.ChangeTo
-                        Ui.Scenes.FinishMenu.Update.restoreInitialModel
-                        Types.Menu
-                    )
-                )
-            ]
+            (Ui.Scenes.Style.button
+                ++ [ Html.Events.onClick
+                        (Types.SceneManager
+                            (Types.ChangeTo
+                                Ui.Scenes.FinishMenu.Update.restoreInitialModel
+                                Types.Menu
+                            )
+                        )
+                   ]
+            )
             [ Html.text "Back to Menu" ]
         ]

@@ -17,36 +17,24 @@ view model =
         menuItemGameOptions : Html.Html Types.Msg
         menuItemGameOptions =
             Html.div
-                ([ Html.Attributes.style "background-color"
-                    "#763fdd"
-                 , Html.Attributes.style "transform"
-                    "perspective(400px) rotateY(15deg) rotateX(5deg)"
-                 ]
-                    ++ Ui.Scenes.Style.menuItem
-                )
+                (Ui.Scenes.Style.menuItemLeft ++ Ui.Scenes.Style.menuItem)
                 [ Html.div Ui.Scenes.Style.centeredText
                     [ Html.text "CHOOSE A TRACK" ]
                 , Html.div
-                    (Ui.Scenes.MainMenu.Style.spaceTop
-                        ++ Ui.Scenes.MainMenu.Style.spaceBottom
+                    (Ui.Scenes.Style.spaceTop
+                        ++ Ui.Scenes.Style.spaceBottom
                     )
                     (Ui.Scenes.MainMenu.MapPicker.view model)
                 , Html.div Ui.Scenes.Style.centeredText
                     [ Html.text "CHOOSE A VEHICLE" ]
-                , Html.div Ui.Scenes.MainMenu.Style.spaceTop
+                , Html.div Ui.Scenes.Style.spaceTop
                     (Ui.Scenes.MainMenu.CarPicker.view model)
                 ]
 
         menuItemPlayerOptions : Html.Html Types.Msg
         menuItemPlayerOptions =
             Html.div
-                ([ Html.Attributes.style
-                    "background-color"
-                    "#E664DD"
-                 , Html.Attributes.style
-                    "transform"
-                    "perspective(400px) rotateY(-15deg) rotateX(5deg)"
-                 ]
+                (Ui.Scenes.Style.menuItemRight
                     ++ Ui.Scenes.Style.menuItem
                 )
                 [ Html.div
@@ -54,7 +42,7 @@ view model =
                     [ Html.text "DRIVERS NAME" ]
                 , Html.div
                     ([ Html.Attributes.style "display" "flex" ]
-                        ++ Ui.Scenes.MainMenu.Style.spaceTop
+                        ++ Ui.Scenes.Style.spaceTop
                     )
                     [ Html.div [ Html.Attributes.style "flex" "1" ] []
                     , Html.input

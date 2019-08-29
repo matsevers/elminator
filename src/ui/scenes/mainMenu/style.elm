@@ -4,8 +4,6 @@ module Ui.Scenes.MainMenu.Style exposing
     , logo
     , menuItemContainer
     , selectionContainer
-    , spaceBottom
-    , spaceTop
     )
 
 import Html
@@ -50,16 +48,6 @@ menuItemContainer =
     , Html.Attributes.style "width" "100%"
     , Html.Attributes.style "justify-content" "center"
     ]
-
-
-spaceTop : List (Html.Attribute msg)
-spaceTop =
-    [ Html.Attributes.style "margin-top" "20px" ]
-
-
-spaceBottom : List (Html.Attribute msg)
-spaceBottom =
-    [ Html.Attributes.style "margin-bottom" "20px" ]
 
 
 input : List (Html.Attribute msg)
