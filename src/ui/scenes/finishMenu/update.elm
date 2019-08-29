@@ -1,14 +1,14 @@
 module Ui.Scenes.FinishMenu.Update exposing (restoreInitialModel, update)
 
-import InitialModel exposing (..)
-import Types exposing (..)
+import InitialModel
+import Types
 
 
-update : Model -> Model
+update : Types.Model -> Types.Model
 update m =
     m
 
 
-restoreInitialModel : Model
+restoreInitialModel : Types.Model
 restoreInitialModel =
     InitialModel.initialModel

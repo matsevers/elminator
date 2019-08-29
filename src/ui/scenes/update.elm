@@ -1,17 +1,16 @@
 module Ui.Scenes.Update exposing (update)
 
-import Cmd.Extra exposing (..)
-import Network.Module exposing (..)
-import Types exposing (..)
+import Cmd.Extra
+import Types
 
 
-update : Types.SceneMessage -> Model -> ( Model, Cmd Types.Msg )
+update : Types.SceneMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
-        ChangeTo m s ->
+        Types.ChangeTo m s ->
             changeTo m s
 
 
-changeTo : Model -> State -> ( Model, Cmd msg )
+changeTo : Types.Model -> Types.State -> ( Types.Model, Cmd msg )
 changeTo model state =
-    { model | state = state } |> withNoCmd
+    { model | state = state } |> Cmd.Extra.withNoCmd

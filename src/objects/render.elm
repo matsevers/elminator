@@ -119,7 +119,13 @@ player p labelsEnabled =
                 case p.controlledObject.position of
                     Just pos ->
                         [ Svg.text_
-                            [ x (String.fromInt (pos.x + p.controlledObject.size.width // 2))
+                            [ x
+                                (String.fromInt
+                                    (pos.x
+                                        + p.controlledObject.size.width
+                                        // 2
+                                    )
+                                )
                             , y (String.fromInt (pos.y - 10))
                             , fontFamily "Arial"
                             , fill p.label.color

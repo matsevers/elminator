@@ -1,11 +1,11 @@
 module Ui.Scenes.Playground.Module exposing (update, view)
 
-import Types exposing (..)
-import Ui.Scenes.Playground.Update exposing (..)
-import Ui.Scenes.Playground.View exposing (..)
+import Types
+import Ui.Scenes.Playground.Update
+import Ui.Scenes.Playground.View
 
 
-update : PlaygroundMessage -> Model -> ( Model, Cmd Msg )
+update : Types.PlaygroundMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update =
     Ui.Scenes.Playground.Update.update
 

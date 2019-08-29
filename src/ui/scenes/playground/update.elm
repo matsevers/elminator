@@ -1,9 +1,9 @@
 module Ui.Scenes.Playground.Update exposing (update)
 
-import Types exposing (..)
+import Types
 
 
-update : Types.PlaygroundMessage -> Model -> ( Model, Cmd Types.Msg )
+update : Types.PlaygroundMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
         _ ->

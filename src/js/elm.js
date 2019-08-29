@@ -7981,6 +7981,21 @@ var author$project$Types$SceneManager = function (a) {
 	return {$: 'SceneManager', a: a};
 };
 var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
+var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Ui$Scenes$Style$globalContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'height', '100vh'),
+		A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
+		A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')')
+	]);
+var author$project$Ui$Scenes$Style$menuContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column')
+	]);
 var elm$html$Html$button = _VirtualDom_node('button');
 var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$img = _VirtualDom_node('img');
@@ -7999,8 +8014,6 @@ var elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -8021,16 +8034,7 @@ var elm$html$Html$Events$onClick = function (msg) {
 var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_fromArray(
-			[
-				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
-				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
-				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')'),
-				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
-				A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-				A2(elm$html$Html$Attributes$style, 'flex-direction', 'column')
-			]),
+		_Utils_ap(author$project$Ui$Scenes$Style$globalContainer, author$project$Ui$Scenes$Style$menuContainer),
 		_List_fromArray(
 			[
 				A2(
@@ -8314,16 +8318,7 @@ var elm$html$Html$Events$onInput = function (tagger) {
 var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_fromArray(
-			[
-				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
-				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
-				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')'),
-				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
-				A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-				A2(elm$html$Html$Attributes$style, 'flex-direction', 'column')
-			]),
+		_Utils_ap(author$project$Ui$Scenes$Style$globalContainer, author$project$Ui$Scenes$Style$menuContainer),
 		_List_fromArray(
 			[
 				A2(
@@ -8918,89 +8913,61 @@ var author$project$Ui$Scenes$Playground$Speedometer$element = F3(
 						-100,
 						100))));
 	});
+var author$project$Ui$Scenes$Playground$Style$cockpitContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'background-color', '#0b0c0c'),
+		A2(elm$html$Html$Attributes$style, 'padding', '40px 0px 40px 0px'),
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'flex', '1'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'stretch')
+	]);
+var author$project$Ui$Scenes$Playground$Style$flex1 = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'flex', '1'),
+		A2(elm$html$Html$Attributes$style, 'display', 'flex')
+	]);
+var author$project$Ui$Scenes$Playground$Style$infoRow = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'color', '#fff'),
+		A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
+		A2(elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
+		A2(elm$html$Html$Attributes$style, 'background', '#28282b'),
+		A2(elm$html$Html$Attributes$style, 'margin-top', '20px'),
+		A2(elm$html$Html$Attributes$style, 'margin-left', '45px'),
+		A2(elm$html$Html$Attributes$style, 'margin-right', '45px'),
+		A2(elm$html$Html$Attributes$style, 'overflow', 'hidden')
+	]);
+var author$project$Ui$Scenes$Playground$Style$infoRowAntiSkewText = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'transform', 'skewX(-30deg)')
+	]);
+var author$project$Ui$Scenes$Playground$Style$infoRowSkew = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'background-color', '#530DD4'),
+		A2(elm$html$Html$Attributes$style, 'transform', 'skewX(30deg)'),
+		A2(elm$html$Html$Attributes$style, 'margin-left', '-30px'),
+		A2(elm$html$Html$Attributes$style, 'padding', '5px 20px 5px 50px')
+	]);
 var elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
-	var motion = A2(
-		elm$core$Maybe$withDefault,
-		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
-		model.myPlayer.controlledObject.motion);
-	var infoRowStyle = _List_fromArray(
-		[
-			A2(elm$html$Html$Attributes$style, 'color', '#fff'),
-			A2(elm$html$Html$Attributes$style, 'font-family', 'Arial'),
-			A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-			A2(elm$html$Html$Attributes$style, 'align-items', 'stretch'),
-			A2(elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
-			A2(elm$html$Html$Attributes$style, 'background', '#28282b'),
-			A2(elm$html$Html$Attributes$style, 'margin-top', '20px'),
-			A2(elm$html$Html$Attributes$style, 'margin-left', '45px'),
-			A2(elm$html$Html$Attributes$style, 'margin-right', '45px'),
-			A2(elm$html$Html$Attributes$style, 'overflow', 'hidden')
-		]);
-	var lapInfo = A2(
-		elm$html$Html$div,
-		infoRowStyle,
-		_List_fromArray(
-			[
-				A2(
-				elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'background-color', '#530DD4'),
-						A2(elm$html$Html$Attributes$style, 'transform', 'skewX(30deg)'),
-						A2(elm$html$Html$Attributes$style, 'margin-left', '-30px'),
-						A2(elm$html$Html$Attributes$style, 'padding', '5px 20px 5px 50px')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'transform', 'skewX(-30deg)')
-							]),
-						_List_fromArray(
-							[
-								elm$html$Html$text('Labs')
-							]))
-					])),
-				A2(
-				elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'align-self', 'center'),
-						A2(elm$html$Html$Attributes$style, 'padding-right', '10px')
-					]),
-				_List_fromArray(
-					[
-						elm$html$Html$text(
-						elm$core$String$fromInt(model.myPlayer.currentLab) + (' | ' + elm$core$String$fromInt(model.map.options.labs)))
-					]))
-			]));
 	var placement = F2(
 		function (place, playerName) {
 			return A2(
 				elm$html$Html$div,
-				infoRowStyle,
+				author$project$Ui$Scenes$Playground$Style$infoRow,
 				_List_fromArray(
 					[
 						A2(
 						elm$html$Html$div,
-						_List_fromArray(
-							[
-								A2(elm$html$Html$Attributes$style, 'background-color', '#530DD4'),
-								A2(elm$html$Html$Attributes$style, 'transform', 'skewX(30deg)'),
-								A2(elm$html$Html$Attributes$style, 'margin-left', '-30px'),
-								A2(elm$html$Html$Attributes$style, 'padding', '5px 20px 5px 50px')
-							]),
+						author$project$Ui$Scenes$Playground$Style$infoRowSkew,
 						_List_fromArray(
 							[
 								A2(
 								elm$html$Html$div,
-								_List_fromArray(
-									[
-										A2(elm$html$Html$Attributes$style, 'transform', 'skewX(-30deg)')
-									]),
+								author$project$Ui$Scenes$Playground$Style$infoRowAntiSkewText,
 								_List_fromArray(
 									[
 										elm$html$Html$text(place)
@@ -9019,90 +8986,116 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 							]))
 					]));
 		});
-	return A2(
+	var motion = A2(
+		elm$core$Maybe$withDefault,
+		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
+		model.myPlayer.controlledObject.motion);
+	var speedometer = A2(
 		elm$html$Html$div,
+		_Utils_ap(
+			author$project$Ui$Scenes$Playground$Style$flex1,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
+					A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d')
+				])),
 		_List_fromArray(
 			[
-				A2(elm$html$Html$Attributes$style, 'background-color', '#0b0c0c'),
-				A2(elm$html$Html$Attributes$style, 'padding', '40px 0px 40px 0px'),
-				A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-				A2(elm$html$Html$Attributes$style, 'flex', '1'),
-				A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-				A2(elm$html$Html$Attributes$style, 'align-items', 'stretch')
-			]),
+				A3(
+				author$project$Ui$Scenes$Playground$Speedometer$element,
+				elm$core$Basics$round(motion.speed),
+				0,
+				elm$core$Basics$round(motion.maxForwardSpeed))
+			]));
+	var miniMap = A2(
+		elm$svg$Svg$svg,
+		_Utils_ap(
+			author$project$Ui$Scenes$Playground$Style$flex1,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
+					elm$svg$Svg$Attributes$viewBox(
+					'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
+				])),
+		A5(
+			author$project$Objects$Module$render.playground,
+			_Utils_ap(
+				model.map.gameObjects.roads,
+				_Utils_ap(
+					_List_fromArray(
+						[model.myPlayer.controlledObject]),
+					A2(
+						elm$core$List$map,
+						function (x) {
+							return x.controlledObject;
+						},
+						model.onlinePlayers))),
+			model.myPlayer,
+			author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
+			author$project$Ui$Scenes$Playground$Cockpit$showCollider,
+			author$project$Ui$Scenes$Playground$Cockpit$showLabels));
+	var lapInfo = A2(
+		elm$html$Html$div,
+		author$project$Ui$Scenes$Playground$Style$infoRow,
 		_List_fromArray(
 			[
 				A2(
 				elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'flex', '1'),
-						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
-						A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d')
-					]),
-				_List_fromArray(
-					[
-						A3(
-						author$project$Ui$Scenes$Playground$Speedometer$element,
-						elm$core$Basics$round(motion.speed),
-						0,
-						elm$core$Basics$round(motion.maxForwardSpeed))
-					])),
-				A2(
-				elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'flex', '1'),
-						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-						A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d'),
-						A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
-						A2(elm$html$Html$Attributes$style, 'align-items', 'stretch')
-					]),
+				author$project$Ui$Scenes$Playground$Style$infoRowSkew,
 				_List_fromArray(
 					[
 						A2(
-						elm$html$Html$img,
+						elm$html$Html$div,
+						author$project$Ui$Scenes$Playground$Style$infoRowAntiSkewText,
 						_List_fromArray(
 							[
-								elm$html$Html$Attributes$src('assets/logo.png'),
-								A2(elm$html$Html$Attributes$style, 'width', '261px'),
-								A2(elm$html$Html$Attributes$style, 'height', '51px'),
-								A2(elm$html$Html$Attributes$style, 'align-self', 'center')
-							]),
-						_List_Nil),
-						A2(placement, '1', model.myPlayer.label.text),
-						lapInfo
+								elm$html$Html$text('Labs')
+							]))
 					])),
 				A2(
-				elm$svg$Svg$svg,
+				elm$html$Html$div,
 				_List_fromArray(
 					[
-						A2(elm$html$Html$Attributes$style, 'flex', '1'),
-						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
-						elm$svg$Svg$Attributes$viewBox(
-						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
+						A2(elm$html$Html$Attributes$style, 'align-self', 'center'),
+						A2(elm$html$Html$Attributes$style, 'padding-right', '10px')
 					]),
-				A5(
-					author$project$Objects$Module$render.playground,
-					_Utils_ap(
-						model.map.gameObjects.roads,
-						_Utils_ap(
-							_List_fromArray(
-								[model.myPlayer.controlledObject]),
-							A2(
-								elm$core$List$map,
-								function (x) {
-									return x.controlledObject;
-								},
-								model.onlinePlayers))),
-					model.myPlayer,
-					author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
-					author$project$Ui$Scenes$Playground$Cockpit$showCollider,
-					author$project$Ui$Scenes$Playground$Cockpit$showLabels))
+				_List_fromArray(
+					[
+						elm$html$Html$text(
+						elm$core$String$fromInt(model.myPlayer.currentLab) + (' | ' + elm$core$String$fromInt(model.map.options.labs)))
+					]))
 			]));
+	var gameInfo = A2(
+		elm$html$Html$div,
+		_Utils_ap(
+			author$project$Ui$Scenes$Playground$Style$flex1,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+					A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d'),
+					A2(elm$html$Html$Attributes$style, 'justify-content', 'flex-start'),
+					A2(elm$html$Html$Attributes$style, 'align-items', 'stretch')
+				])),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$img,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$src('assets/logo.png'),
+						A2(elm$html$Html$Attributes$style, 'width', '261px'),
+						A2(elm$html$Html$Attributes$style, 'height', '51px'),
+						A2(elm$html$Html$Attributes$style, 'align-self', 'center')
+					]),
+				_List_Nil),
+				A2(placement, '1', model.myPlayer.label.text),
+				lapInfo
+			]));
+	return A2(
+		elm$html$Html$div,
+		author$project$Ui$Scenes$Playground$Style$cockpitContainer,
+		_List_fromArray(
+			[speedometer, gameInfo, miniMap]));
 };
 var author$project$Map$Generator$map = function (m) {
 	return _Utils_ap(
@@ -9239,12 +9232,7 @@ var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 var author$project$Ui$Scenes$Playground$View$view = function (model) {
 	return A2(
 		elm$html$Html$div,
-		_List_fromArray(
-			[
-				A2(elm$html$Html$Attributes$style, 'height', '100vh'),
-				A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
-				A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')')
-			]),
+		author$project$Ui$Scenes$Style$globalContainer,
 		_List_fromArray(
 			[
 				A2(

@@ -1,9 +1,9 @@
 module Ui.Scenes.Module exposing (update)
 
-import Types exposing (..)
+import Types
 import Ui.Scenes.Update
 
 
-update : SceneMessage -> Model -> ( Model, Cmd Msg )
+update : Types.SceneMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     Ui.Scenes.Update.update msg model

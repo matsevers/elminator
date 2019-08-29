@@ -7,19 +7,13 @@ import Network.Module exposing (..)
 import Types exposing (..)
 import Ui.Scenes.MainMenu.CarPicker exposing (..)
 import Ui.Scenes.MainMenu.MapPicker exposing (..)
+import Ui.Scenes.Style
 
 
 view : Model -> Html Msg
 view model =
     div
-        [ Html.Attributes.style "height" "100vh"
-        , Html.Attributes.style "background-color" "#141617"
-        , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
-        , Html.Attributes.style "display" "flex"
-        , Html.Attributes.style "justify-content" "flex-start"
-        , Html.Attributes.style "align-items" "center"
-        , Html.Attributes.style "flex-direction" "column"
-        ]
+        (Ui.Scenes.Style.globalContainer ++ Ui.Scenes.Style.menuContainer)
         [ Html.img [ src "assets/logo.png", Html.Attributes.style "width" "70vh", Html.Attributes.style "height" "auto" ] []
         , div
             [ style "display" "flex"

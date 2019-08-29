@@ -9,6 +9,7 @@ import Svg.Attributes exposing (..)
 import Types exposing (..)
 import Ui.Scenes.Playground.Cockpit exposing (..)
 import Ui.Scenes.Playground.TrafficLight exposing (..)
+import Ui.Scenes.Style
 
 
 widthSvg =
@@ -30,10 +31,7 @@ showLabel =
 view : Model -> Html Msg
 view model =
     div
-        [ Html.Attributes.style "height" "100vh"
-        , Html.Attributes.style "background-color" "#141617"
-        , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
-        ]
+        Ui.Scenes.Style.globalContainer
         [ div
             [ Html.Attributes.style "display" "flex"
             , Html.Attributes.style "flex" "1"
