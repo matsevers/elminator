@@ -78,37 +78,7 @@ update wsMessage model =
                                 model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.Finished)))
 
                             else if lobbyId == ownLobbyId && lobbyControl.join then
-                                if ownLobby.maxPlayer > List.length ownLobby.onlinePlayers - 1 then
-                                    let
-                                        startLobbyMessage =
-                                            { lobbyControl | start = True, join = False }
-                                    in
-                                    ( { model
-                                        | ownLobby =
-                                            { ownLobby
-                                                | onlinePlayers =
-                                                    senderId
-                                                        :: List.filter (\x -> not (x == senderId))
-                                                            model.ownLobby.onlinePlayers
-                                            }
-                                      }
-                                    , Cmd.batch
-                                        [ Network.Commands.send "lobbyControl" (Network.Commands.encodeLobbyControl startLobbyMessage)
-                                        , Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
-                                        ]
-                                    )
-
-                                else
-                                    { model
-                                        | ownLobby =
-                                            { ownLobby
-                                                | onlinePlayers =
-                                                    senderId
-                                                        :: List.filter (\x -> not (x == senderId))
-                                                            model.ownLobby.onlinePlayers
-                                            }
-                                    }
-                                        |> withNoCmd
+                                addPlayerToOwnLobby model senderId |> checkLobbyState
 
                             else if lobbyControl.start && lobbyControl.identifier == model.network.session then
                                 model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace)))
@@ -129,3 +99,51 @@ update wsMessage model =
                     m
             in
             ( model, parse neu )
+
+
+addPlayerToOwnLobby : Types.Model -> String -> Types.Model
+addPlayerToOwnLobby model uuid =
+    let
+        ownLobby =
+            model.ownLobby
+    in
+    if (ownLobby.maxPlayer - 1) > List.length ownLobby.onlinePlayers then
+        { model
+            | ownLobby =
+                { ownLobby
+                    | onlinePlayers =
+                        uuid
+                            :: List.filter (\x -> not (x == uuid))
+                                model.ownLobby.onlinePlayers
+                }
+        }
+
+    else
+        model
+
+
+checkLobbyState : Types.Model -> ( Types.Model, Cmd Types.Msg )
+checkLobbyState model =
+    let
+        ownLobby =
+            model.ownLobby
+
+        lobbyControlMessageStart : Types.LobbyControl
+        lobbyControlMessageStart =
+            { identifier = ownLobby.identifier
+            , playerId = model.myPlayer.identifier
+            , start = True
+            , finish = False
+            , join = False
+            }
+    in
+    if ownLobby.maxPlayer - 1 <= List.length ownLobby.onlinePlayers then
+        ( model
+        , Cmd.batch
+            [ Network.Commands.send "lobbyControl" (Debug.log "Lobby" (Network.Commands.encodeLobbyControl lobbyControlMessageStart))
+            , Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
+            ]
+        )
+
+    else
+        ( model, Cmd.none )
