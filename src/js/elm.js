@@ -9307,6 +9307,26 @@ var author$project$Types$JoinLobby = F2(
 	function (a, b) {
 		return {$: 'JoinLobby', a: a, b: b};
 	});
+var elm$html$Html$Attributes$width = function (n) {
+	return A2(
+		_VirtualDom_attribute,
+		'width',
+		elm$core$String$fromInt(n));
+};
+var author$project$Ui$Scenes$MainMenu$LobbyPicker$renderLoadingAnimation = F2(
+	function (model, lobby) {
+		return _Utils_eq(model.network.session, lobby.identifier) ? _List_fromArray(
+			[
+				A2(
+				elm$html$Html$img,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$src('assets/wheel.gif'),
+						elm$html$Html$Attributes$width(60)
+					]),
+				_List_Nil)
+			]) : _List_Nil;
+	});
 var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 	var renderLobby = function (lobby) {
 		return A2(
@@ -9315,13 +9335,31 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 				author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
 				_List_fromArray(
 					[
+						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
 						elm$html$Html$Events$onClick(
 						author$project$Types$MainMenu(
 							A2(author$project$Types$JoinLobby, model, lobby)))
 					])),
 			_List_fromArray(
 				[
-					elm$html$Html$text(lobby.map)
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'flex', '20')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(lobby.map)
+						])),
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'flex', '1')
+						]),
+					A2(author$project$Ui$Scenes$MainMenu$LobbyPicker$renderLoadingAnimation, model, lobby))
 				]));
 	};
 	var renderLobbies = function (l) {
@@ -9339,7 +9377,13 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 	return A2(
 		elm$html$Html$div,
 		_List_Nil,
-		renderLobbies(model.network.lobbyPool));
+		renderLobbies(
+			A2(
+				elm$core$List$filter,
+				function (lobby) {
+					return _Utils_eq(lobby.map, model.map.meta.name);
+				},
+				model.network.lobbyPool)));
 };
 var author$project$Types$ChangeMap = F2(
 	function (a, b) {

@@ -1,7 +1,9 @@
 module Ui.Scenes.MainMenu.LobbyPicker exposing (view)
 
 import Html
+import Html.Attributes
 import Html.Events
+import List
 import Types
 import Ui.Scenes.MainMenu.Style
 
@@ -20,7 +22,22 @@ view model =
 
         renderLobby : Types.Lobby -> Html.Html Types.Msg
         renderLobby lobby =
-            Html.div (Ui.Scenes.MainMenu.Style.selectionContainer ++ [ Html.Events.onClick (Types.MainMenu (Types.JoinLobby model lobby)) ]) [ Html.text lobby.map ]
+            Html.div
+                (Ui.Scenes.MainMenu.Style.selectionContainer
+                    ++ [ Html.Attributes.style "display" "flex", Html.Attributes.style "flex-direction" "row", Html.Events.onClick (Types.MainMenu (Types.JoinLobby model lobby)) ]
+                )
+                [ Html.div [ Html.Attributes.style "flex" "20" ] [ Html.text lobby.map ]
+                , Html.div [ Html.Attributes.style "flex" "1" ] (renderLoadingAnimation model lobby)
+                ]
     in
     Html.div []
-        (renderLobbies model.network.lobbyPool)
+        (renderLobbies (List.filter (\lobby -> lobby.map == model.map.meta.name) model.network.lobbyPool))
+
+
+renderLoadingAnimation : Types.Model -> Types.Lobby -> List (Html.Html Types.Msg)
+renderLoadingAnimation model lobby =
+    if model.network.session == lobby.identifier then
+        [ Html.img [ Html.Attributes.src "assets/wheel.gif", Html.Attributes.width 60 ] [] ]
+
+    else
+        []
