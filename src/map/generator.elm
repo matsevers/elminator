@@ -1,14 +1,12 @@
 module Map.Generator exposing (fill, map, possibleTileCoords)
 
-import Html exposing (Html, div)
-import Html.Attributes exposing (..)
-import Objects.Tiles.Background exposing (..)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-import Types exposing (..)
+import Objects.Tiles.Background
+import Svg
+import Svg.Attributes
+import Types
 
 
-map : Types.Map -> List GameObject
+map : Types.Map -> List Types.GameObject
 map m =
     m.gameObjects.background
         ++ m.gameObjects.roads
@@ -16,7 +14,7 @@ map m =
         ++ m.gameObjects.trigger
 
 
-fill : GameObject -> List Position -> List GameObject
+fill : Types.GameObject -> List Types.Position -> List Types.GameObject
 fill f l =
     case l of
         x :: xs ->
@@ -26,10 +24,10 @@ fill f l =
             []
 
 
-possibleTileCoords : Types.Map -> List Position
+possibleTileCoords : Types.Map -> List Types.Position
 possibleTileCoords m =
     let
-        createRows : Int -> Int -> List Position
+        createRows : Int -> Int -> List Types.Position
         createRows yp xp =
             if xp < (m.dimension.width * m.dimension.tileSize) then
                 { x = xp, y = yp } :: createRows yp (xp + m.dimension.tileSize)

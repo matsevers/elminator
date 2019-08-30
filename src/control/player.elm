@@ -16,7 +16,11 @@ update model =
             myPlayer.controlledObject
 
         listKeys =
-            [ myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right ]
+            [ myPlayer.storedKeys.forward
+            , myPlayer.storedKeys.backward
+            , myPlayer.storedKeys.left
+            , myPlayer.storedKeys.right
+            ]
     in
     if model.state == Running then
         case gO.position of
@@ -67,16 +71,56 @@ applyInput model event action =
                 Pressed ->
                     case action of
                         Forward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = action } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | forward = action
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Backward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = action } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | backward = action
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Left ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = action } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | left = action
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Right ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = action } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | right = action
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         _ ->
                             ( model, Cmd.none )
@@ -84,16 +128,56 @@ applyInput model event action =
                 Released ->
                     case action of
                         Forward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | forward = Types.Nothing } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | forward = Types.Nothing
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Backward ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | backward = Types.Nothing } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | backward = Types.Nothing
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Left ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | left = Types.Nothing } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | left = Types.Nothing
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         Right ->
-                            ( { model | myPlayer = { myPlayer | storedKeys = { storedKeys | right = Types.Nothing } } }, Cmd.none )
+                            ( { model
+                                | myPlayer =
+                                    { myPlayer
+                                        | storedKeys =
+                                            { storedKeys
+                                                | right = Types.Nothing
+                                            }
+                                    }
+                              }
+                            , Cmd.none
+                            )
 
                         _ ->
                             ( model, Cmd.none )

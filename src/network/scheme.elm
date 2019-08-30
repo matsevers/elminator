@@ -1,19 +1,19 @@
 module Network.Scheme exposing (player)
 
-import Json.Decode exposing (..)
-import Json.Decode.Extra exposing (..)
-import Json.Encode exposing (..)
-import List exposing (..)
+import Json.Decode
+import Json.Decode.Extra
+import Json.Encode
+import List
 import Network.Decode
-import Types exposing (..)
+import Types
 
 
-player : SchemePlayer -> Player
+player : Types.SchemePlayer -> Types.Player
 player p =
     let
         gameObject =
             { identifier = p.gOIdentifier
-            , kind = Car
+            , kind = Types.Car
             , size = { height = p.gOSizeHeight, width = p.gOSizeWidth }
             , position = Just { x = p.gOPositionX, y = p.gOPositionY }
             , spriteMinimap = Just p.gOSprite

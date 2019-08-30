@@ -1,15 +1,15 @@
 port module Network.Ports exposing (cmdPort, parse, parseReturn, subPort)
 
-import Json.Encode exposing (..)
+import Json.Encode
 
 
-port cmdPort : Value -> Cmd msg
+port cmdPort : Json.Encode.Value -> Cmd msg
 
 
-port subPort : (Value -> msg) -> Sub msg
+port subPort : (Json.Encode.Value -> msg) -> Sub msg
 
 
 port parse : String -> Cmd msg
 
 
-port parseReturn : (Value -> msg) -> Sub msg
+port parseReturn : (Json.Encode.Value -> msg) -> Sub msg

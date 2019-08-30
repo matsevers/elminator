@@ -5,16 +5,29 @@ openJson : String
 openJson =
     String.trim
         """
-         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}
+         {
+         "module": "WebSocket",
+         "tag": "open",
+         "args":{
+            "key": "elminator",
+            "url": "ws://nas.janke.cloud:60000"
+            }
+          }
         """
 
 
 sendJson : String -> String
 sendJson message =
     String.trim
-        """{"module": "WebSocket", "tag": "send", "args": {"key": "elminator", "message":"""
+        """{
+        "module": "WebSocket",
+        "tag": "send",
+        "args": {
+        "key": "elminator",
+         "message":"""
         ++ message
-        ++ """}}"""
+        ++ """}
+        }"""
 
 
 sendJson2 : String -> String -> String
@@ -31,5 +44,12 @@ closeJson : String
 closeJson =
     String.trim
         """
-         {"module": "WebSocket", "tag": "close", "args": {"key": "elminator", "reason": "Just because."}}
+         {
+           "module": "WebSocket",
+           "tag": "close",
+           "args": {
+             "key": "elminator",
+             "reason": "Just because."
+           }
+         }
         """

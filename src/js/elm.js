@@ -8225,13 +8225,6 @@ var author$project$Network$Scheme$player = function (p) {
 	};
 	return playerRecord;
 };
-var author$project$Types$ChangeTo = F2(
-	function (a, b) {
-		return {$: 'ChangeTo', a: a, b: b};
-	});
-var author$project$Types$SceneManager = function (a) {
-	return {$: 'SceneManager', a: a};
-};
 var elm$core$List$filter = F2(
 	function (isGood, list) {
 		return A3(
@@ -8243,6 +8236,58 @@ var elm$core$List$filter = F2(
 			_List_Nil,
 			list);
 	});
+var author$project$Network$Update$addPlayerToOwnLobby = F2(
+	function (model, uuid) {
+		var ownLobby = model.ownLobby;
+		return (_Utils_cmp(
+			ownLobby.maxPlayer - 1,
+			elm$core$List$length(ownLobby.onlinePlayers)) > 0) ? _Utils_update(
+			model,
+			{
+				ownLobby: _Utils_update(
+					ownLobby,
+					{
+						onlinePlayers: A2(
+							elm$core$List$cons,
+							uuid,
+							A2(
+								elm$core$List$filter,
+								function (x) {
+									return !_Utils_eq(x, uuid);
+								},
+								model.ownLobby.onlinePlayers))
+					})
+			}) : model;
+	});
+var author$project$Types$ChangeTo = F2(
+	function (a, b) {
+		return {$: 'ChangeTo', a: a, b: b};
+	});
+var author$project$Types$SceneManager = function (a) {
+	return {$: 'SceneManager', a: a};
+};
+var author$project$Network$Update$checkLobbyState = function (model) {
+	var ownLobby = model.ownLobby;
+	var lobbyControlMessageStart = {finish: false, identifier: ownLobby.identifier, join: false, playerId: model.myPlayer.identifier, start: true};
+	return (_Utils_cmp(
+		ownLobby.maxPlayer - 1,
+		elm$core$List$length(ownLobby.onlinePlayers)) < 1) ? _Utils_Tuple2(
+		model,
+		elm$core$Platform$Cmd$batch(
+			_List_fromArray(
+				[
+					A2(
+					author$project$Network$Commands$send,
+					'lobbyControl',
+					A2(
+						elm$core$Debug$log,
+						'Lobby',
+						author$project$Network$Commands$encodeLobbyControl(lobbyControlMessageStart))),
+					author$project$Network$Commands$run(
+					author$project$Types$SceneManager(
+						A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
+				]))) : _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+};
 var author$project$Network$Update$update = F2(
 	function (wsMessage, model) {
 		switch (wsMessage.$) {
@@ -8305,83 +8350,18 @@ var author$project$Network$Update$update = F2(
 								var ownLobby = model.ownLobby;
 								var ownLobbyId = ownLobby.identifier;
 								var lobbyId = lobbyControl.identifier;
-								if (lobbyControl.finish && (_Utils_eq(lobbyControl.identifier, model.network.session) || _Utils_eq(lobbyControl.identifier, ownLobbyId))) {
-									return A2(
-										Janiczek$cmd_extra$Cmd$Extra$withCmd,
-										author$project$Network$Commands$run(
-											author$project$Types$SceneManager(
-												A2(author$project$Types$ChangeTo, model, author$project$Types$Finished))),
-										model);
-								} else {
-									if (_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.join) {
-										if (_Utils_cmp(
-											ownLobby.maxPlayer,
-											elm$core$List$length(ownLobby.onlinePlayers) - 1) > 0) {
-											var startLobbyMessage = _Utils_update(
-												lobbyControl,
-												{join: false, start: true});
-											return _Utils_Tuple2(
-												_Utils_update(
-													model,
-													{
-														ownLobby: _Utils_update(
-															ownLobby,
-															{
-																onlinePlayers: A2(
-																	elm$core$List$cons,
-																	senderId,
-																	A2(
-																		elm$core$List$filter,
-																		function (x) {
-																			return !_Utils_eq(x, senderId);
-																		},
-																		model.ownLobby.onlinePlayers))
-															})
-													}),
-												elm$core$Platform$Cmd$batch(
-													_List_fromArray(
-														[
-															A2(
-															author$project$Network$Commands$send,
-															'lobbyControl',
-															author$project$Network$Commands$encodeLobbyControl(startLobbyMessage)),
-															author$project$Network$Commands$run(
-															author$project$Types$SceneManager(
-																A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
-														])));
-										} else {
-											return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
-												_Utils_update(
-													model,
-													{
-														ownLobby: _Utils_update(
-															ownLobby,
-															{
-																onlinePlayers: A2(
-																	elm$core$List$cons,
-																	senderId,
-																	A2(
-																		elm$core$List$filter,
-																		function (x) {
-																			return !_Utils_eq(x, senderId);
-																		},
-																		model.ownLobby.onlinePlayers))
-															})
-													}));
-										}
-									} else {
-										if (lobbyControl.start && _Utils_eq(lobbyControl.identifier, model.network.session)) {
-											return A2(
-												Janiczek$cmd_extra$Cmd$Extra$withCmd,
-												author$project$Network$Commands$run(
-													author$project$Types$SceneManager(
-														A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace))),
-												model);
-										} else {
-											return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
-										}
-									}
-								}
+								return (lobbyControl.finish && (_Utils_eq(lobbyControl.identifier, model.network.session) || _Utils_eq(lobbyControl.identifier, ownLobbyId))) ? A2(
+									Janiczek$cmd_extra$Cmd$Extra$withCmd,
+									author$project$Network$Commands$run(
+										author$project$Types$SceneManager(
+											A2(author$project$Types$ChangeTo, model, author$project$Types$Finished))),
+									model) : ((_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.join) ? author$project$Network$Update$checkLobbyState(
+									A2(author$project$Network$Update$addPlayerToOwnLobby, model, senderId)) : ((lobbyControl.start && _Utils_eq(lobbyControl.identifier, model.network.session)) ? A2(
+									Janiczek$cmd_extra$Cmd$Extra$withCmd,
+									author$project$Network$Commands$run(
+										author$project$Types$SceneManager(
+											A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace))),
+									model) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model)));
 							} else {
 								return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
 							}
@@ -10382,7 +10362,7 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {"module": "WebSocket", "tag": "open", "args": {"key": "elminator", "url": "ws://nas.janke.cloud:60000"}}\n        ');
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {\n         "module": "WebSocket",\n         "tag": "open",\n         "args":{\n            "key": "elminator",\n            "url": "ws://nas.janke.cloud:60000"\n            }\n          }\n        ');
 var author$project$Network$Commands$open = author$project$Network$Commands$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
