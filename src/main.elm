@@ -68,6 +68,7 @@ update msg model =
                         , join = False
                         , start = False
                         , finish = True
+                        , leave = False
                         }
                 in
                 model |> withCmd (Network.Module.send "lobbyControl" (Network.Module.encodeLobbyControl lobbyControlMsg))

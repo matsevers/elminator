@@ -34,10 +34,33 @@ update msg model =
                     , join = True
                     , start = False
                     , finish = False
+                    , leave = False
                     }
             in
             ( { model
                 | network = { n | session = lobby.identifier }
+              }
+            , Network.Module.send
+                "lobbyControl"
+                (Network.Module.encodeLobbyControl lobbyControl)
+            )
+
+        Types.LeaveLobby _ lobby ->
+            let
+                n =
+                    model.network
+
+                lobbyControl =
+                    { identifier = lobby.identifier
+                    , playerId = model.myPlayer.identifier
+                    , join = False
+                    , start = False
+                    , finish = False
+                    , leave = True
+                    }
+            in
+            ( { model
+                | network = { n | session = "" }
               }
             , Network.Module.send
                 "lobbyControl"

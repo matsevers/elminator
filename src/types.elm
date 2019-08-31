@@ -154,6 +154,7 @@ type alias LobbyControl =
     , join : Bool
     , start : Bool
     , finish : Bool
+    , leave : Bool
     }
 
 
@@ -271,6 +272,7 @@ type MainMenuMessage
     | ChangePlayerCount Model String
     | ChangeGameType Model
     | JoinLobby Model Lobby
+    | LeaveLobby Model Lobby
 
 
 type SceneMessage

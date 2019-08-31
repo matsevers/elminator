@@ -98,6 +98,8 @@ lobbyControlDecoder =
             (Json.Decode.field "start" Json.Decode.bool)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "finish" Json.Decode.bool)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "leave" Json.Decode.bool)
 
 
 messageDecoder : Decoder Message

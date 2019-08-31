@@ -22,6 +22,7 @@ encodeLobbyControl lobbyControl =
     , ( "join", Json.Encode.bool lobbyControl.join )
     , ( "start", Json.Encode.bool lobbyControl.start )
     , ( "finish", Json.Encode.bool lobbyControl.finish )
+    , ( "leave", Json.Encode.bool lobbyControl.leave )
     ]
 
 

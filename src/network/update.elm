@@ -80,6 +80,9 @@ update wsMessage model =
                             else if lobbyId == ownLobbyId && lobbyControl.join then
                                 addPlayerToOwnLobby model senderId |> checkLobbyState
 
+                            else if lobbyId == ownLobbyId && lobbyControl.leave then
+                                ( removePlayerFromLobby model lobbyControl, Cmd.none )
+
                             else if lobbyControl.start && lobbyControl.identifier == model.network.session then
                                 model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace)))
 
@@ -99,6 +102,23 @@ update wsMessage model =
                     m
             in
             ( model, parse neu )
+
+
+removePlayerFromLobby : Types.Model -> Types.LobbyControl -> Types.Model
+removePlayerFromLobby model lobbyControl =
+    let
+        ownLobby =
+            model.ownLobby
+    in
+    { model
+        | ownLobby =
+            { ownLobby
+                | onlinePlayers =
+                    List.filter
+                        (\x -> not (x == lobbyControl.playerId))
+                        ownLobby.onlinePlayers
+            }
+    }
 
 
 addPlayerToOwnLobby : Types.Model -> String -> Types.Model
@@ -135,13 +155,17 @@ checkLobbyState model =
             , start = True
             , finish = False
             , join = False
+            , leave = False
             }
     in
     if ownLobby.maxPlayer - 1 <= List.length ownLobby.onlinePlayers then
         ( model
         , Cmd.batch
-            [ Network.Commands.send "lobbyControl" (Debug.log "Lobby" (Network.Commands.encodeLobbyControl lobbyControlMessageStart))
-            , Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
+            [ Network.Commands.send
+                "lobbyControl"
+                (Network.Commands.encodeLobbyControl lobbyControlMessageStart)
+            , Network.Commands.run
+                (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
             ]
         )
 
