@@ -87,6 +87,7 @@ type alias Network =
     { lobbyPool : List Lobby
     , session : String
     , multiplayer : Bool
+    , webSocketConnected : Bool
     }
 
 
@@ -323,3 +324,4 @@ type SceneMessage
 
 type PlaygroundMessage
     = NoPlaygroundMessage
+    | ChangeColliderVisibility Model

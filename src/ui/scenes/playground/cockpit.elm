@@ -2,6 +2,7 @@ module Ui.Scenes.Playground.Cockpit exposing (element)
 
 import Html
 import Html.Attributes
+import Html.Events
 import Objects.Module
 import String
 import Svg
@@ -103,6 +104,15 @@ element model =
 
         speedometer : Html.Html Types.Msg
         speedometer =
+            let
+                boolToString : Bool -> String
+                boolToString b =
+                    if b then
+                        "true"
+
+                    else
+                        "false"
+            in
             Html.div
                 (Ui.Scenes.Playground.Style.flex1
                     ++ [ Html.Attributes.style "justify-content" "center"
@@ -113,6 +123,13 @@ element model =
                     (round motion.speed)
                     0
                     (round motion.maxForwardSpeed)
+                , Html.input
+                    [ Html.Attributes.type_ "checkbox"
+                    , Html.Attributes.value (boolToString model.debug)
+                    , Html.Events.onInput
+                        (\x -> Types.Playground (Types.ChangeColliderVisibility model))
+                    ]
+                    []
                 ]
 
         gameInfo : Html.Html Types.Msg

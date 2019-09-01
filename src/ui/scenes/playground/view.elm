@@ -1,14 +1,15 @@
 module Ui.Scenes.Playground.View exposing (view)
 
 import Html
-import Html.Attributes exposing (..)
-import Map.Generator exposing (..)
-import Objects.Module exposing (..)
-import Svg exposing (..)
-import Svg.Attributes exposing (..)
-import Types exposing (..)
-import Ui.Scenes.Playground.Cockpit exposing (..)
-import Ui.Scenes.Playground.TrafficLight exposing (..)
+import Html.Attributes
+import Map.Generator
+import Objects.Module
+import Svg
+import Svg.Attributes
+import Types
+import Ui.Scenes.Playground.Cockpit
+import Ui.Scenes.Playground.Style
+import Ui.Scenes.Playground.TrafficLight
 import Ui.Scenes.Style
 
 
@@ -28,17 +29,16 @@ showLabel =
     False
 
 
-view : Model -> Html.Html Msg
+view : Types.Model -> Html.Html Types.Msg
 view model =
     Html.div
         Ui.Scenes.Style.globalContainer
         [ Html.div
-            [ Html.Attributes.style "display" "flex"
-            , Html.Attributes.style "flex" "1"
-            , Html.Attributes.style "flex-direction" "row"
-            , Html.Attributes.style "align-items" "center"
-            , Html.Attributes.style "justify-content" "center"
-            ]
+            (Ui.Scenes.Playground.Style.flex1
+                ++ [ Html.Attributes.style "align-items" "center"
+                   , Html.Attributes.style "justify-content" "center"
+                   ]
+            )
             [ Html.div []
                 []
             , Html.div
@@ -58,7 +58,7 @@ view model =
         ]
 
 
-playground : Model -> Html.Html Msg
+playground : Types.Model -> Html.Html Types.Msg
 playground model =
     case model.myPlayer.controlledObject.position of
         Just p ->

@@ -5977,7 +5977,7 @@ var author$project$InitialModel$initialModel = {
 		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
 		time: 0
 	},
-	network: {lobbyPool: _List_Nil, multiplayer: false, session: ''},
+	network: {lobbyPool: _List_Nil, multiplayer: false, session: '', webSocketConnected: false},
 	onlinePlayers: _List_Nil,
 	ownLobby: {identifier: 'ownLobby', map: 'Dust Race', maxPlayer: 2, onlinePlayers: _List_Nil, ttl: (author$project$InitialModel$frequence * 50) + 1},
 	state: author$project$Types$Menu
@@ -8862,7 +8862,16 @@ var author$project$Ui$Scenes$Module$update = F2(
 	});
 var author$project$Ui$Scenes$Playground$Update$update = F2(
 	function (msg, model) {
-		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		if (msg.$ === 'ChangeColliderVisibility') {
+			var m = msg.a;
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{debug: !m.debug}),
+				elm$core$Platform$Cmd$none);
+		} else {
+			return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		}
 	});
 var author$project$Ui$Scenes$Playground$Module$update = author$project$Ui$Scenes$Playground$Update$update;
 var author$project$Main$update = F2(
@@ -9822,6 +9831,12 @@ var author$project$Objects$Render$playground = F5(
 		}
 	});
 var author$project$Objects$Module$render = {collider: author$project$Objects$Render$collider, player: author$project$Objects$Render$player, playground: author$project$Objects$Render$playground};
+var author$project$Types$ChangeColliderVisibility = function (a) {
+	return {$: 'ChangeColliderVisibility', a: a};
+};
+var author$project$Types$Playground = function (a) {
+	return {$: 'Playground', a: a};
+};
 var author$project$Ui$Scenes$Playground$Cockpit$minimapMode = true;
 var author$project$Ui$Scenes$Playground$Cockpit$showCollider = false;
 var author$project$Ui$Scenes$Playground$Cockpit$showLabels = true;
@@ -10126,23 +10141,42 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 		elm$core$Maybe$withDefault,
 		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
 		model.myPlayer.controlledObject.motion);
-	var speedometer = A2(
-		elm$html$Html$div,
-		_Utils_ap(
-			author$project$Ui$Scenes$Playground$Style$flex1,
+	var speedometer = function () {
+		var boolToString = function (b) {
+			return b ? 'true' : 'false';
+		};
+		return A2(
+			elm$html$Html$div,
+			_Utils_ap(
+				author$project$Ui$Scenes$Playground$Style$flex1,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
+						A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d')
+					])),
 			_List_fromArray(
 				[
-					A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
-					A2(elm$html$Html$Attributes$style, 'border-right', '2px solid #3f3d3d')
-				])),
-		_List_fromArray(
-			[
-				A3(
-				author$project$Ui$Scenes$Playground$Speedometer$element,
-				elm$core$Basics$round(motion.speed),
-				0,
-				elm$core$Basics$round(motion.maxForwardSpeed))
-			]));
+					A3(
+					author$project$Ui$Scenes$Playground$Speedometer$element,
+					elm$core$Basics$round(motion.speed),
+					0,
+					elm$core$Basics$round(motion.maxForwardSpeed)),
+					A2(
+					elm$html$Html$input,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$type_('checkbox'),
+							elm$html$Html$Attributes$value(
+							boolToString(model.debug)),
+							elm$html$Html$Events$onInput(
+							function (x) {
+								return author$project$Types$Playground(
+									author$project$Types$ChangeColliderVisibility(model));
+							})
+						]),
+					_List_Nil)
+				]));
+	}();
 	var miniMap = A2(
 		elm$svg$Svg$svg,
 		_Utils_ap(
@@ -10415,14 +10449,13 @@ var author$project$Ui$Scenes$Playground$View$view = function (model) {
 			[
 				A2(
 				elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2(elm$html$Html$Attributes$style, 'flex', '1'),
-						A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
-						A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-						A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
-					]),
+				_Utils_ap(
+					author$project$Ui$Scenes$Playground$Style$flex1,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+							A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
+						])),
 				_List_fromArray(
 					[
 						A2(elm$html$Html$div, _List_Nil, _List_Nil),

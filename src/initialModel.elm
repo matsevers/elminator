@@ -51,6 +51,7 @@ initialModel =
         { lobbyPool = []
         , session = ""
         , multiplayer = False
+        , webSocketConnected = False
         }
     , ownLobby =
         { identifier = "ownLobby"

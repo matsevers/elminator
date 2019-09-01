@@ -1,67 +1,72 @@
 module Main exposing (main)
 
 import Browser
-import Browser.Events exposing (..)
-import Cmd.Extra exposing (..)
-import Control.Module exposing (..)
-import Control.Player exposing (..)
-import Html exposing (Html, button, div, text)
-import Html.Attributes exposing (..)
-import InitialModel exposing (..)
-import Json.Decode exposing (..)
-import Json.Encode exposing (Value)
-import List exposing (..)
-import Map.Generator exposing (..)
-import Map.Track.Module exposing (..)
-import Network.Module exposing (..)
-import Objects.Physics exposing (..)
-import Objects.Vehicle.Module
+import Browser.Events
+import Cmd.Extra
+import Control.Module
+import Control.Player
+import Html
+import Html.Attributes
+import InitialModel
+import Json.Decode
+import List
+import Map.Track.Module
+import Network.Module
+import Objects.Physics
 import Random
-import Time exposing (..)
-import Types exposing (..)
+import Time
+import Types
 import UUID
-import Ui.Scenes.FinishMenu.Module exposing (..)
-import Ui.Scenes.FinishMenu.Update exposing (..)
-import Ui.Scenes.MainMenu.Module exposing (..)
-import Ui.Scenes.MainMenu.View exposing (..)
-import Ui.Scenes.Module exposing (..)
-import Ui.Scenes.Playground.Module exposing (..)
+import Ui.Scenes.FinishMenu.Module
+import Ui.Scenes.MainMenu.Module
+import Ui.Scenes.MainMenu.View
+import Ui.Scenes.Module
+import Ui.Scenes.Playground.Module
 
 
-view : Model -> Html Msg
+view : Types.Model -> Html.Html Types.Msg
 view model =
     case model.state of
-        Running ->
+        Types.Running ->
             Ui.Scenes.Playground.Module.view model
 
-        PrepareRace ->
+        Types.PrepareRace ->
             Ui.Scenes.Playground.Module.view model
 
-        Menu ->
+        Types.Menu ->
             Ui.Scenes.MainMenu.View.view model
 
-        Finished ->
+        Types.Finished ->
             Ui.Scenes.FinishMenu.Module.view model
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
-        Tick ->
-            if model.state == Menu && model.network.multiplayer then
-                model |> withCmd (Network.Module.send "lobby" (Network.Module.encodeLobby model.ownLobby))
+        Types.Tick ->
+            if model.state == Types.Menu && model.network.multiplayer then
+                model
+                    |> Cmd.Extra.withCmd
+                        (Network.Module.send
+                            "lobby"
+                            (Network.Module.encodeLobby model.ownLobby)
+                        )
 
-            else if model.state == Running || model.state == PrepareRace then
+            else if model.state == Types.Running || model.state == Types.PrepareRace then
                 (Objects.Physics.update <|
                     Control.Player.update <|
                         Network.Module.updateTtl <|
                             Map.Track.Module.update model
                 )
-                    |> withCmd (Network.Module.send "player" (Network.Module.encodePlayer model.myPlayer))
+                    |> Cmd.Extra.withCmd
+                        (Network.Module.send
+                            "player"
+                            (Network.Module.encodePlayer model.myPlayer)
+                        )
 
             else if model.state == Types.Finished then
                 let
-                    lobbyControlMsg : LobbyControl
+                    lobbyControlMsg : Types.LobbyControl
                     lobbyControlMsg =
                         { identifier = model.network.session
                         , playerId = model.myPlayer.identifier
@@ -71,27 +76,32 @@ update msg model =
                         , leave = False
                         }
                 in
-                model |> withCmd (Network.Module.send "lobbyControl" (Network.Module.encodeLobbyControl lobbyControlMsg))
+                model
+                    |> Cmd.Extra.withCmd
+                        (Network.Module.send
+                            "lobbyControl"
+                            (Network.Module.encodeLobbyControl lobbyControlMsg)
+                        )
 
             else
-                model |> Network.Module.updateTtl |> withNoCmd
+                model |> Network.Module.updateTtl |> Cmd.Extra.withNoCmd
 
-        Control _ event action ->
+        Types.Control _ event action ->
             Control.Module.update event action model
 
-        Playground m ->
+        Types.Playground m ->
             Ui.Scenes.Playground.Module.update m model
 
-        MainMenu m ->
+        Types.MainMenu m ->
             Ui.Scenes.MainMenu.Module.update m model
 
-        SceneManager m ->
+        Types.SceneManager m ->
             Ui.Scenes.Module.update m model
 
-        Websocket m ->
+        Types.Websocket m ->
             Network.Module.update m model
 
-        SetUUID t uuid ->
+        Types.SetUUID t uuid ->
             let
                 p =
                     model.myPlayer
@@ -103,28 +113,28 @@ update msg model =
                     model.network
             in
             case t of
-                PlayerUUID ->
-                    { model | myPlayer = { p | identifier = UUID.toString uuid } } |> withNoCmd
+                Types.PlayerUUID ->
+                    { model | myPlayer = { p | identifier = UUID.toString uuid } } |> Cmd.Extra.withNoCmd
 
-                LobbyUUID ->
-                    { model | ownLobby = { l | identifier = UUID.toString uuid }, network = { n | session = UUID.toString uuid } } |> withNoCmd
+                Types.LobbyUUID ->
+                    { model | ownLobby = { l | identifier = UUID.toString uuid }, network = { n | session = UUID.toString uuid } } |> Cmd.Extra.withNoCmd
 
         _ ->
-            model |> withNoCmd
+            model |> Cmd.Extra.withNoCmd
 
 
-subscriptions : Model -> Sub Msg
+subscriptions : Types.Model -> Sub Types.Msg
 subscriptions model =
     Sub.batch
-        [ onKeyDown (Json.Decode.map (Control model Pressed) keyDecoder)
-        , onKeyUp (Json.Decode.map (Control model Released) keyDecoder)
-        , Time.every model.frequence (\_ -> Tick)
-        , Network.Module.subPort (\v -> Websocket (Receive v))
-        , Network.Module.parseReturn (\v -> Websocket (Process v))
+        [ Browser.Events.onKeyDown (Json.Decode.map (Types.Control model Types.Pressed) Control.Player.keyDecoder)
+        , Browser.Events.onKeyUp (Json.Decode.map (Types.Control model Types.Released) Control.Player.keyDecoder)
+        , Time.every model.frequence (\_ -> Types.Tick)
+        , Network.Module.subPort (\v -> Types.Websocket (Types.Receive v))
+        , Network.Module.parseReturn (\v -> Types.Websocket (Types.Process v))
         ]
 
 
-main : Program () Model Msg
+main : Program () Types.Model Types.Msg
 main =
     Browser.element
         { init =
@@ -132,8 +142,8 @@ main =
                 ( InitialModel.initialModel
                 , Cmd.batch
                     [ Network.Module.open
-                    , Random.generate (SetUUID Types.LobbyUUID) UUID.generator
-                    , Random.generate (SetUUID Types.PlayerUUID) UUID.generator
+                    , Random.generate (Types.SetUUID Types.LobbyUUID) UUID.generator
+                    , Random.generate (Types.SetUUID Types.PlayerUUID) UUID.generator
                     ]
                 )
         , subscriptions = subscriptions
