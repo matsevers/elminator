@@ -1,4 +1,8 @@
-module Objects.Render exposing (collider, player, playground)
+module Objects.Render exposing
+    ( collider
+    , player
+    , playground
+    )
 
 import Objects.Physics
 import String

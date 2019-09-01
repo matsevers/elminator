@@ -1,12 +1,12 @@
 module Network.Update exposing (update)
 
-import Cmd.Extra exposing (withCmd, withNoCmd)
-import Json.Decode exposing (..)
-import Json.Encode exposing (..)
+import Cmd.Extra
+import Json.Decode
+import Json.Encode
 import List
 import Network.Commands
-import Network.Decode exposing (..)
-import Network.Ports exposing (..)
+import Network.Decode
+import Network.Ports
 import Network.Scheme
 import Types
 
@@ -20,7 +20,7 @@ update wsMessage model =
                 message =
                     Json.Encode.encode 0 v
             in
-            ( model, cmdPort v )
+            ( model, Network.Ports.cmdPort v )
 
         Types.Receive v ->
             -- log received messages
@@ -42,23 +42,10 @@ update wsMessage model =
                                         :: List.filter (\x -> not (x.identifier == p.identifier))
                                             model.onlinePlayers
                             }
-                                |> withNoCmd
+                                |> Cmd.Extra.withNoCmd
 
                         ( _, Just lobby, _ ) ->
-                            let
-                                network =
-                                    model.network
-                            in
-                            { model
-                                | network =
-                                    { network
-                                        | lobbyPool =
-                                            lobby
-                                                :: List.filter (\x -> not (x.identifier == lobby.identifier))
-                                                    network.lobbyPool
-                                    }
-                            }
-                                |> withNoCmd
+                            updateLobby model lobby |> Cmd.Extra.withNoCmd
 
                         ( _, _, Just lobbyControl ) ->
                             let
@@ -75,7 +62,7 @@ update wsMessage model =
                                     ownLobby.identifier
                             in
                             if lobbyControl.finish && (lobbyControl.identifier == model.network.session || lobbyControl.identifier == ownLobbyId) then
-                                model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.Finished)))
+                                model |> Cmd.Extra.withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.Finished)))
 
                             else if lobbyId == ownLobbyId && lobbyControl.join then
                                 addPlayerToOwnLobby model senderId |> checkLobbyState
@@ -84,24 +71,36 @@ update wsMessage model =
                                 ( removePlayerFromLobby model lobbyControl, Cmd.none )
 
                             else if lobbyControl.start && lobbyControl.identifier == model.network.session then
-                                model |> withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace)))
+                                model |> Cmd.Extra.withCmd (Network.Commands.run (Types.SceneManager (Types.ChangeTo model Types.PrepareRace)))
 
                             else
-                                model |> withNoCmd
+                                model |> Cmd.Extra.withNoCmd
 
                         _ ->
-                            model |> withNoCmd
+                            model |> Cmd.Extra.withNoCmd
 
                 Maybe.Nothing ->
-                    model |> withNoCmd
+                    model |> Cmd.Extra.withNoCmd
 
         Types.Send m ->
-            let
-                neu =
-                    -- Debug.log "Send " m
-                    m
-            in
-            ( model, parse neu )
+            ( model, Network.Ports.parse m )
+
+
+updateLobby : Types.Model -> Types.Lobby -> Types.Model
+updateLobby model lobby =
+    let
+        network =
+            model.network
+    in
+    { model
+        | network =
+            { network
+                | lobbyPool =
+                    lobby
+                        :: List.filter (\x -> not (x.identifier == lobby.identifier))
+                            network.lobbyPool
+            }
+    }
 
 
 removePlayerFromLobby : Types.Model -> Types.LobbyControl -> Types.Model

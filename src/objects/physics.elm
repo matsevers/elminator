@@ -1,4 +1,21 @@
-module Objects.Physics exposing (acceleration, autoBrake, brakeTo, bump, checkCollision, counterforce, getDirectionFromGameObject, getDirectionFromImpact, overwriteBrake, overwriteSpeedLimits, restrictSpeed, runImpact, setSpeed, slowDown, update, updateImpacts)
+module Objects.Physics exposing
+    ( acceleration
+    , autoBrake
+    , brakeTo
+    , bump
+    , checkCollision
+    , counterforce
+    , getDirectionFromGameObject
+    , getDirectionFromImpact
+    , overwriteBrake
+    , overwriteSpeedLimits
+    , restrictSpeed
+    , runImpact
+    , setSpeed
+    , slowDown
+    , update
+    , updateImpacts
+    )
 
 import List
 import Objects.Trigger

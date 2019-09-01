@@ -1,4 +1,10 @@
-module Ui.Scenes.Playground.Style exposing (cockpitContainer, flex1, infoRow, infoRowAntiSkewText, infoRowSkew)
+module Ui.Scenes.Playground.Style exposing
+    ( cockpitContainer
+    , flex1
+    , infoRow
+    , infoRowAntiSkewText
+    , infoRowSkew
+    )
 
 import Html
 import Html.Attributes

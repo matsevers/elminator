@@ -1,4 +1,9 @@
-module Objects.Module exposing (motion, position, render, rotate)
+module Objects.Module exposing
+    ( motion
+    , position
+    , render
+    , rotate
+    )
 
 import Objects.Physics
 import Objects.Render

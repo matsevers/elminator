@@ -8019,14 +8019,6 @@ var author$project$Network$Commands$send = F2(
 					A2(author$project$Network$PredefinedMessages$sendJson2, field, message))));
 	});
 var author$project$Network$Module$send = author$project$Network$Commands$send;
-var author$project$Network$Decode$Args = F2(
-	function (message, key) {
-		return {key: key, message: message};
-	});
-var author$project$Network$Decode$Message = F3(
-	function (lobby, player, lobbyControl) {
-		return {lobby: lobby, lobbyControl: lobbyControl, player: player};
-	});
 var author$project$Types$LobbyControl = F6(
 	function (identifier, playerId, join, start, finish, leave) {
 		return {finish: finish, identifier: identifier, join: join, leave: leave, playerId: playerId, start: start};
@@ -8160,6 +8152,10 @@ var author$project$Network$Decode$playerDecoder = A2(
 																elm_community$json_extra$Json$Decode$Extra$andMap,
 																A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
 																elm$json$Json$Decode$succeed(author$project$Types$SchemePlayer)))))))))))))))));
+var author$project$Types$Message = F3(
+	function (lobby, player, lobbyControl) {
+		return {lobby: lobby, lobbyControl: lobbyControl, player: player};
+	});
 var elm$json$Json$Decode$oneOf = _Json_oneOf;
 var elm$json$Json$Decode$maybe = function (decoder) {
 	return elm$json$Json$Decode$oneOf(
@@ -8181,14 +8177,18 @@ var author$project$Network$Decode$messageDecoder = A2(
 			elm_community$json_extra$Json$Decode$Extra$andMap,
 			elm$json$Json$Decode$maybe(
 				A2(elm$json$Json$Decode$field, 'lobby', author$project$Network$Decode$lobbyDecoder)),
-			elm$json$Json$Decode$succeed(author$project$Network$Decode$Message))));
+			elm$json$Json$Decode$succeed(author$project$Types$Message))));
+var author$project$Types$Args = F2(
+	function (message, key) {
+		return {key: key, message: message};
+	});
 var author$project$Network$Decode$argsDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
 	A2(elm$json$Json$Decode$field, 'key', elm$json$Json$Decode$string),
 	A2(
 		elm_community$json_extra$Json$Decode$Extra$andMap,
 		A2(elm$json$Json$Decode$field, 'message', author$project$Network$Decode$messageDecoder),
-		elm$json$Json$Decode$succeed(author$project$Network$Decode$Args)));
+		elm$json$Json$Decode$succeed(author$project$Types$Args)));
 var elm$json$Json$Decode$decodeString = _Json_runOnString;
 var author$project$Network$Decode$decode = function (json) {
 	var message = A2(
@@ -8309,6 +8309,27 @@ var author$project$Network$Update$removePlayerFromLobby = F2(
 					})
 			});
 	});
+var author$project$Network$Update$updateLobby = F2(
+	function (model, lobby) {
+		var network = model.network;
+		return _Utils_update(
+			model,
+			{
+				network: _Utils_update(
+					network,
+					{
+						lobbyPool: A2(
+							elm$core$List$cons,
+							lobby,
+							A2(
+								elm$core$List$filter,
+								function (x) {
+									return !_Utils_eq(x.identifier, lobby.identifier);
+								},
+								network.lobbyPool))
+					})
+			});
+	});
 var author$project$Network$Update$update = F2(
 	function (wsMessage, model) {
 		switch (wsMessage.$) {
@@ -8345,25 +8366,8 @@ var author$project$Network$Update$update = F2(
 					} else {
 						if (_n2.b.$ === 'Just') {
 							var lobby = _n2.b.a;
-							var network = model.network;
 							return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
-								_Utils_update(
-									model,
-									{
-										network: _Utils_update(
-											network,
-											{
-												lobbyPool: A2(
-													elm$core$List$cons,
-													lobby,
-													A2(
-														elm$core$List$filter,
-														function (x) {
-															return !_Utils_eq(x.identifier, lobby.identifier);
-														},
-														network.lobbyPool))
-											})
-									}));
+								A2(author$project$Network$Update$updateLobby, model, lobby));
 						} else {
 							if (_n2.c.$ === 'Just') {
 								var lobbyControl = _n2.c.a;
@@ -8395,10 +8399,9 @@ var author$project$Network$Update$update = F2(
 				}
 			default:
 				var m = wsMessage.a;
-				var neu = m;
 				return _Utils_Tuple2(
 					model,
-					author$project$Network$Ports$parse(neu));
+					author$project$Network$Ports$parse(m));
 		}
 	});
 var author$project$Network$Module$update = author$project$Network$Update$update;

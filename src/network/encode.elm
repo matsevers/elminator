@@ -1,4 +1,8 @@
-module Network.Encode exposing (encodeLobby, encodeLobbyControl, encodePlayer)
+module Network.Encode exposing
+    ( encodeLobby
+    , encodeLobbyControl
+    , encodePlayer
+    )
 
 import Json.Encode
 import List

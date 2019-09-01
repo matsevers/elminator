@@ -1,4 +1,9 @@
-port module Network.Ports exposing (cmdPort, parse, parseReturn, subPort)
+port module Network.Ports exposing
+    ( cmdPort
+    , parse
+    , parseReturn
+    , subPort
+    )
 
 import Json.Encode
 

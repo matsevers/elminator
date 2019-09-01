@@ -1,4 +1,9 @@
-module Objects.Trigger exposing (catchCheckpoint, endCheckpoint, run, startCheckpoint)
+module Objects.Trigger exposing
+    ( catchCheckpoint
+    , endCheckpoint
+    , run
+    , startCheckpoint
+    )
 
 import Types
 

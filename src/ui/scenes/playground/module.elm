@@ -1,4 +1,7 @@
-module Ui.Scenes.Playground.Module exposing (update, view)
+module Ui.Scenes.Playground.Module exposing
+    ( update
+    , view
+    )
 
 import Types
 import Ui.Scenes.Playground.Update

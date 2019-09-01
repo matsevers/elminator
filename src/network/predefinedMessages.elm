@@ -1,4 +1,9 @@
-module Network.PredefinedMessages exposing (closeJson, openJson, sendJson, sendJson2)
+module Network.PredefinedMessages exposing
+    ( closeJson
+    , openJson
+    , sendJson
+    , sendJson2
+    )
 
 
 openJson : String

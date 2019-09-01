@@ -1,4 +1,11 @@
-module Network.Decode exposing (Args, Message, argsDecoder, decode, lobbyDecoder, messageDecoder, playerDecoder)
+module Network.Decode exposing
+    ( argsDecoder
+    , decode
+    , lobbyControlDecoder
+    , lobbyDecoder
+    , messageDecoder
+    , playerDecoder
+    )
 
 import Json.Decode exposing (..)
 import Json.Decode.Extra exposing (..)
@@ -6,20 +13,7 @@ import String
 import Types exposing (..)
 
 
-type alias Args =
-    { message : Message
-    , key : String
-    }
-
-
-type alias Message =
-    { lobby : Maybe Lobby
-    , player : Maybe SchemePlayer
-    , lobbyControl : Maybe LobbyControl
-    }
-
-
-decode : String -> Maybe Message
+decode : String -> Maybe Types.Message
 decode json =
     let
         message =
@@ -102,19 +96,27 @@ lobbyControlDecoder =
             (Json.Decode.field "leave" Json.Decode.bool)
 
 
-messageDecoder : Decoder Message
+messageDecoder : Decoder Types.Message
 messageDecoder =
-    succeed Message
+    succeed Types.Message
         |> Json.Decode.Extra.andMap
-            (Json.Decode.maybe (Json.Decode.field "lobby" lobbyDecoder))
+            (Json.Decode.maybe
+                (Json.Decode.field "lobby" lobbyDecoder)
+            )
         |> Json.Decode.Extra.andMap
-            (Json.Decode.maybe (Json.Decode.field "player" playerDecoder))
+            (Json.Decode.maybe
+                (Json.Decode.field "player" playerDecoder)
+            )
         |> Json.Decode.Extra.andMap
-            (Json.Decode.maybe (Json.Decode.field "lobbyControl" lobbyControlDecoder))
+            (Json.Decode.maybe
+                (Json.Decode.field "lobbyControl" lobbyControlDecoder)
+            )
 
 
-argsDecoder : Decoder Args
+argsDecoder : Decoder Types.Args
 argsDecoder =
-    succeed Args
-        |> Json.Decode.Extra.andMap (Json.Decode.field "message" messageDecoder)
-        |> Json.Decode.Extra.andMap (Json.Decode.field "key" Json.Decode.string)
+    succeed Types.Args
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "message" messageDecoder)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "key" Json.Decode.string)

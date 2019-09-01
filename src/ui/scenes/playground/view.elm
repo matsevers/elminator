@@ -1,6 +1,6 @@
 module Ui.Scenes.Playground.View exposing (view)
 
-import Html exposing (..)
+import Html
 import Html.Attributes exposing (..)
 import Map.Generator exposing (..)
 import Objects.Module exposing (..)
@@ -28,20 +28,20 @@ showLabel =
     False
 
 
-view : Model -> Html Msg
+view : Model -> Html.Html Msg
 view model =
-    div
+    Html.div
         Ui.Scenes.Style.globalContainer
-        [ div
+        [ Html.div
             [ Html.Attributes.style "display" "flex"
             , Html.Attributes.style "flex" "1"
             , Html.Attributes.style "flex-direction" "row"
             , Html.Attributes.style "align-items" "center"
             , Html.Attributes.style "justify-content" "center"
             ]
-            [ div []
+            [ Html.div []
                 []
-            , div
+            , Html.div
                 [ Html.Attributes.style "display" "flex"
                 , Html.Attributes.style "flex-direction" "column"
                 , Html.Attributes.style "border" "10px solid #0b0c0c"
@@ -51,14 +51,14 @@ view model =
                 [ playground model
                 , Ui.Scenes.Playground.Cockpit.element model
                 ]
-            , div
+            , Html.div
                 []
                 []
             ]
         ]
 
 
-playground : Model -> Html Msg
+playground : Model -> Html.Html Msg
 playground model =
     case model.myPlayer.controlledObject.position of
         Just p ->
@@ -112,4 +112,4 @@ playground model =
                 )
 
         Maybe.Nothing ->
-            div [] []
+            Html.div [] []

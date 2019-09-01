@@ -1,4 +1,8 @@
-module Objects.Utils exposing (motion, position, rotate)
+module Objects.Utils exposing
+    ( motion
+    , position
+    , rotate
+    )
 
 import Objects.Physics
 import Types

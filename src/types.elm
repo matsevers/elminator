@@ -1,4 +1,33 @@
-module Types exposing (Action(..), Collider(..), GameObject, Impact(..), KeyEvent(..), Keys(..), Label, Lobby, LobbyControl, MainMenuMessage(..), Map, Model, Motion, Msg(..), Network, ObjectType(..), Physics, Player, PlaygroundMessage(..), Position, SceneMessage(..), SchemePlayer, Size, State(..), UUIDType(..), Websocketmsg(..))
+module Types exposing
+    ( Action(..)
+    , Args
+    , Collider(..)
+    , GameObject
+    , Impact(..)
+    , KeyEvent(..)
+    , Keys(..)
+    , Label
+    , Lobby
+    , LobbyControl
+    , MainMenuMessage(..)
+    , Map
+    , Message
+    , Model
+    , Motion
+    , Msg(..)
+    , Network
+    , ObjectType(..)
+    , Physics
+    , Player
+    , PlaygroundMessage(..)
+    , Position
+    , SceneMessage(..)
+    , SchemePlayer
+    , Size
+    , State(..)
+    , UUIDType(..)
+    , Websocketmsg(..)
+    )
 
 import Dict
 import Json.Encode exposing (Value)
@@ -146,6 +175,19 @@ type alias Lobby =
 
 
 -- Websocket Type
+
+
+type alias Args =
+    { message : Message
+    , key : String
+    }
+
+
+type alias Message =
+    { lobby : Maybe Lobby
+    , player : Maybe SchemePlayer
+    , lobbyControl : Maybe LobbyControl
+    }
 
 
 type alias LobbyControl =
