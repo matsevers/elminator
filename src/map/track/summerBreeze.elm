@@ -43,9 +43,9 @@ init =
         }
     , options =
         { starter = 1
-        , labs = 2
+        , labs = 4
         , startPositions = [ { x = 448, y = 128 } ]
-        , prepareRaceTime = 1000
+        , prepareRaceTime = 5000
         }
     , gameObjects =
         { background = []
@@ -84,9 +84,9 @@ checkBox =
             (Objects.Tiles.Checkpoint.checkBox "1")
         )
     , Objects.Module.rotate
-        270
+        180
         (Objects.Module.position
-            (Just { x = 896, y = 448 })
+            (Just { x = 704, y = 256 })
             (Objects.Tiles.Checkpoint.checkBox "2")
         )
     , Objects.Module.rotate
@@ -119,11 +119,12 @@ checkBox =
 decor : List Types.GameObject
 decor =
     [ Objects.Module.position
-        (Just { x = 448, y = 0 })
-        Objects.Tiles.Decor.platformBlue
+        (Just { x = 832, y = 384 })
+        Objects.Tiles.Decor.house1
     ]
         ++ Map.Generator.fill Objects.Tiles.Decor.bush1
             [ { x = 384, y = 0 }
+            , { x = 487, y = 0 }
             , { x = 590, y = 0 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.bush2
@@ -131,8 +132,7 @@ decor =
             , { x = 576, y = 384 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.rock1
-            [ { x = 858, y = 416 }
-            , { x = 138, y = 138 }
+            [ { x = 138, y = 138 }
             ]
         ++ Map.Generator.fill Objects.Tiles.Decor.rock2
             [ { x = 138, y = 224 }
@@ -145,6 +145,63 @@ decor =
             , { x = 0, y = 310 }
             , { x = 192, y = 320 }
             ]
+        ++ Map.Generator.fill
+            -- Invisible Border
+            Objects.Tiles.Decor.invisible
+            [ { x = -64, y = 0 }
+            , { x = -64, y = 64 }
+            , { x = -64, y = 128 }
+            , { x = -64, y = 192 }
+            , { x = -64, y = 256 }
+            , { x = -64, y = 320 }
+            , { x = -64, y = 384 }
+            , { x = -64, y = 448 }
+            , { x = -64, y = 512 }
+            , { x = -64, y = -64 }
+            , { x = 0, y = -64 }
+            , { x = 64, y = -64 }
+            , { x = 128, y = -64 }
+            , { x = 192, y = -64 }
+            , { x = 256, y = -64 }
+            , { x = 320, y = -64 }
+            , { x = 384, y = -64 }
+            , { x = 448, y = -64 }
+            , { x = 512, y = -64 }
+            , { x = 576, y = -64 }
+            , { x = 640, y = -64 }
+            , { x = 704, y = -64 }
+            , { x = 768, y = -64 }
+            , { x = 832, y = -64 }
+            , { x = 896, y = -64 }
+            , { x = 960, y = -64 }
+            , { x = 1024, y = -64 }
+            , { x = 1024, y = 0 }
+            , { x = 1024, y = 64 }
+            , { x = 1024, y = 128 }
+            , { x = 1024, y = 192 }
+            , { x = 1024, y = 256 }
+            , { x = 1024, y = 320 }
+            , { x = 1024, y = 384 }
+            , { x = 1024, y = 448 }
+            , { x = 1024, y = 512 }
+            , { x = 0, y = 576 }
+            , { x = 64, y = 576 }
+            , { x = 128, y = 576 }
+            , { x = 192, y = 576 }
+            , { x = 256, y = 576 }
+            , { x = 320, y = 576 }
+            , { x = 384, y = 576 }
+            , { x = 448, y = 576 }
+            , { x = 512, y = 576 }
+            , { x = 576, y = 576 }
+            , { x = 640, y = 576 }
+            , { x = 704, y = 576 }
+            , { x = 768, y = 576 }
+            , { x = 832, y = 576 }
+            , { x = 896, y = 576 }
+            , { x = 960, y = 576 }
+            , { x = 1024, y = 576 }
+            ]
 
 
 roads : List Types.GameObject
@@ -156,11 +213,9 @@ roads =
         , { x = 64, y = 256 }
         , { x = 512, y = 320 }
         , { x = 512, y = 384 }
-        , { x = 896, y = 128 }
-        , { x = 896, y = 192 }
-        , { x = 896, y = 256 }
-        , { x = 896, y = 320 }
-        , { x = 896, y = 384 }
+        , { x = 640, y = 192 }
+        , { x = 704, y = 320 }
+        , { x = 704, y = 384 }
         ]
         ++ Map.Generator.fill
             --Left/Right--
@@ -177,6 +232,9 @@ roads =
             , { x = 704, y = 64 }
             , { x = 768, y = 64 }
             , { x = 832, y = 64 }
+            , { x = 832, y = 128 }
+            , { x = 768, y = 128 }
+            , { x = 704, y = 128 }
             , { x = 192, y = 256 }
             , { x = 256, y = 256 }
             , { x = 320, y = 256 }
@@ -184,29 +242,32 @@ roads =
             , { x = 448, y = 256 }
             , { x = 576, y = 448 }
             , { x = 640, y = 448 }
-            , { x = 704, y = 448 }
-            , { x = 768, y = 448 }
-            , { x = 832, y = 448 }
             ]
         ++ Map.Generator.fill
             --Down/Right--
             (Objects.Module.rotate 90 Objects.Tiles.Road.curveTopRight)
             [ { x = 64, y = 64 }
             , { x = 128, y = 256 }
+            , { x = 640, y = 128 }
             ]
         ++ Map.Generator.fill
             --Top/Right--
             (Objects.Module.rotate 0 Objects.Tiles.Road.curveTopRight)
-            [ { x = 64, y = 320 }, { x = 512, y = 448 } ]
+            [ { x = 64, y = 320 }
+            , { x = 512, y = 448 }
+            , { x = 640, y = 256 }
+            ]
         ++ Map.Generator.fill
             --Left/Top--
             (Objects.Module.rotate 270 Objects.Tiles.Road.curveTopRight)
             [ { x = 128, y = 320 }
-            , { x = 896, y = 448 }
+            , { x = 896, y = 128 }
+            , { x = 704, y = 448 }
             ]
         ++ Map.Generator.fill
-            --Left/Down-
+            --Left/Bottom-
             (Objects.Module.rotate 180 Objects.Tiles.Road.curveTopRight)
             [ { x = 512, y = 256 }
             , { x = 896, y = 64 }
+            , { x = 704, y = 256 }
             ]

@@ -2,11 +2,11 @@ module Control.Player exposing (applyInput, keyDecoder, update)
 
 import Json.Decode
 import Objects.Module
-import Objects.Physics exposing (..)
-import Types exposing (..)
+import Objects.Physics
+import Types
 
 
-update : Model -> Model
+update : Types.Model -> Types.Model
 update model =
     let
         myPlayer =
@@ -21,8 +21,28 @@ update model =
             , myPlayer.storedKeys.left
             , myPlayer.storedKeys.right
             ]
+
+        calcX : Types.Position -> Types.Motion -> Int
+        calcX p m =
+            p.x
+                + round
+                    (sin (degrees (toFloat gO.rotate))
+                        * m.speed
+                        / model.frequence
+                        * 4
+                    )
+
+        calcY : Types.Position -> Types.Motion -> Int
+        calcY p m =
+            p.y
+                - round
+                    (cos (degrees (toFloat gO.rotate))
+                        * m.speed
+                        / model.frequence
+                        * 4
+                    )
     in
-    if model.state == Running then
+    if model.state == Types.Running then
         case gO.position of
             Just p ->
                 case gO.motion of
@@ -33,14 +53,14 @@ update model =
                                     | controlledObject =
                                         Objects.Module.position
                                             (Just
-                                                { x = p.x + round (sin (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
-                                                , y = p.y - round (cos (degrees (toFloat gO.rotate)) * m.speed / model.frequence * 4)
+                                                { x = calcX p m
+                                                , y = calcY p m
                                                 }
                                             )
                                         <|
-                                            counterforce (convertInputToForce listKeys) <|
-                                                autoBrake (convertInputToForce listKeys) <|
-                                                    acceleration (convertInputToForce listKeys) <|
+                                            Objects.Physics.counterforce (convertInputToForce listKeys) <|
+                                                Objects.Physics.autoBrake (convertInputToForce listKeys) <|
+                                                    Objects.Physics.acceleration (convertInputToForce listKeys) <|
                                                         Objects.Module.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
                                     , time = myPlayer.time + round model.frequence
                                 }
@@ -56,7 +76,7 @@ update model =
         model
 
 
-applyInput : Model -> KeyEvent -> Action -> ( Model, Cmd Msg )
+applyInput : Types.Model -> Types.KeyEvent -> Types.Action -> ( Types.Model, Cmd Types.Msg )
 applyInput model event action =
     let
         myPlayer =
@@ -66,11 +86,11 @@ applyInput model event action =
             myPlayer.storedKeys
     in
     case model.state of
-        Running ->
+        Types.Running ->
             case event of
-                Pressed ->
+                Types.Pressed ->
                     case action of
-                        Forward ->
+                        Types.Forward ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -83,7 +103,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Backward ->
+                        Types.Backward ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -96,7 +116,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Left ->
+                        Types.Left ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -109,7 +129,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Right ->
+                        Types.Right ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -125,9 +145,9 @@ applyInput model event action =
                         _ ->
                             ( model, Cmd.none )
 
-                Released ->
+                Types.Released ->
                     case action of
-                        Forward ->
+                        Types.Forward ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -140,7 +160,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Backward ->
+                        Types.Backward ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -153,7 +173,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Left ->
+                        Types.Left ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -166,7 +186,7 @@ applyInput model event action =
                             , Cmd.none
                             )
 
-                        Right ->
+                        Types.Right ->
                             ( { model
                                 | myPlayer =
                                     { myPlayer
@@ -186,7 +206,7 @@ applyInput model event action =
             ( model, Cmd.none )
 
 
-convertInputToAngle : List Action -> Int
+convertInputToAngle : List Types.Action -> Int
 convertInputToAngle l =
     let
         angle =
@@ -195,10 +215,10 @@ convertInputToAngle l =
     case l of
         x :: xs ->
             case x of
-                Left ->
+                Types.Left ->
                     -angle + convertInputToAngle xs
 
-                Right ->
+                Types.Right ->
                     angle + convertInputToAngle xs
 
                 _ ->
@@ -208,7 +228,7 @@ convertInputToAngle l =
             0
 
 
-convertInputToForce : List Action -> Float
+convertInputToForce : List Types.Action -> Float
 convertInputToForce l =
     case l of
         [] ->
@@ -216,10 +236,10 @@ convertInputToForce l =
 
         x :: xs ->
             case x of
-                Forward ->
+                Types.Forward ->
                     2 + convertInputToForce xs
 
-                Backward ->
+                Types.Backward ->
                     -1 + convertInputToForce xs
 
                 _ ->
@@ -231,20 +251,20 @@ keyDecoder =
     Json.Decode.map toKey (Json.Decode.field "key" Json.Decode.string)
 
 
-toKey : String -> Action
+toKey : String -> Types.Action
 toKey val =
     case val of
         "w" ->
-            Forward
+            Types.Forward
 
         "a" ->
-            Left
+            Types.Left
 
         "s" ->
-            Backward
+            Types.Backward
 
         "d" ->
-            Right
+            Types.Right
 
         _ ->
             Types.Nothing

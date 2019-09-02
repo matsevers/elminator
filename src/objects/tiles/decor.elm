@@ -1,4 +1,4 @@
-module Objects.Tiles.Decor exposing (bush1, bush2, platformBlue, rock1, rock2, tree1, tree2)
+module Objects.Tiles.Decor exposing (bush1, bush2, house1, invisible, platformBlue, rock1, rock2, tree1, tree2)
 
 import Objects.Physics exposing (..)
 import Svg exposing (..)
@@ -186,6 +186,39 @@ tree1 =
     }
 
 
+house1 : GameObject
+house1 =
+    { identifier = "House1"
+    , kind = Types.Decor
+    , position = Maybe.Nothing
+    , collider =
+        Just
+            (Rect
+                { height = 96
+                , width = 64
+                , position = { x = 5, y = 5 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { identifier = "Tree1"
+                            , duration = 100
+                            , overrideBackgroundImpact = True
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
+                            }
+                        )
+                , triggerFunction = Maybe.Nothing
+                }
+            )
+    , sprite = "assets/decor/Decor_Building_01.png"
+    , spriteMinimap = Maybe.Nothing
+    , size = { height = 96, width = 64 }
+    , rotate = 0
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
+    }
+
+
 tree2 : GameObject
 tree2 =
     { identifier = "Tree2"
@@ -211,6 +244,39 @@ tree2 =
                 }
             )
     , sprite = "assets/decor/Tree_02.png"
+    , spriteMinimap = Maybe.Nothing
+    , size = { height = 64, width = 64 }
+    , rotate = 0
+    , motion = Maybe.Nothing
+    , physics = Maybe.Nothing
+    }
+
+
+invisible : GameObject
+invisible =
+    { identifier = "invisible"
+    , kind = Types.Decor
+    , position = Maybe.Nothing
+    , collider =
+        Just
+            (Rect
+                { height = 64
+                , width = 64
+                , position = { x = 0, y = 0 }
+                , impactFunction =
+                    Just
+                        (Impact
+                            { identifier = "invisible"
+                            , duration = 100
+                            , overrideBackgroundImpact = True
+                            , function = Just Objects.Physics.bump
+                            , unmodifiedObject = Maybe.Nothing
+                            }
+                        )
+                , triggerFunction = Maybe.Nothing
+                }
+            )
+    , sprite = ""
     , spriteMinimap = Maybe.Nothing
     , size = { height = 64, width = 64 }
     , rotate = 0

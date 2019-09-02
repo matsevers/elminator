@@ -24,48 +24,58 @@ update msg model =
             changeGameType model
 
         Types.JoinLobby _ lobby ->
-            let
-                n =
-                    model.network
-
-                lobbyControl =
-                    { identifier = lobby.identifier
-                    , playerId = model.myPlayer.identifier
-                    , join = True
-                    , start = False
-                    , finish = False
-                    , leave = False
-                    }
-            in
-            ( { model
-                | network = { n | session = lobby.identifier }
-              }
-            , Network.Module.send
-                "lobbyControl"
-                (Network.Module.encodeLobbyControl lobbyControl)
-            )
+            joinLobby model lobby
 
         Types.LeaveLobby _ lobby ->
-            let
-                n =
-                    model.network
+            leaveLobby model lobby
 
-                lobbyControl =
-                    { identifier = lobby.identifier
-                    , playerId = model.myPlayer.identifier
-                    , join = False
-                    , start = False
-                    , finish = False
-                    , leave = True
-                    }
-            in
-            ( { model
-                | network = { n | session = "" }
-              }
-            , Network.Module.send
-                "lobbyControl"
-                (Network.Module.encodeLobbyControl lobbyControl)
-            )
+
+joinLobby : Types.Model -> Types.Lobby -> ( Types.Model, Cmd Types.Msg )
+joinLobby model lobby =
+    let
+        n =
+            model.network
+
+        lobbyControl =
+            { identifier = lobby.identifier
+            , playerId = model.myPlayer.identifier
+            , join = True
+            , start = False
+            , finish = False
+            , leave = False
+            }
+    in
+    ( { model
+        | network = { n | session = lobby.identifier }
+      }
+    , Network.Module.send
+        "lobbyControl"
+        (Network.Module.encodeLobbyControl lobbyControl)
+    )
+
+
+leaveLobby : Types.Model -> Types.Lobby -> ( Types.Model, Cmd Types.Msg )
+leaveLobby model lobby =
+    let
+        n =
+            model.network
+
+        lobbyControl =
+            { identifier = lobby.identifier
+            , playerId = model.myPlayer.identifier
+            , join = False
+            , start = False
+            , finish = False
+            , leave = True
+            }
+    in
+    ( { model
+        | network = { n | session = "" }
+      }
+    , Network.Module.send
+        "lobbyControl"
+        (Network.Module.encodeLobbyControl lobbyControl)
+    )
 
 
 changeCar : Types.Model -> Types.GameObject -> ( Types.Model, Cmd Types.Msg )

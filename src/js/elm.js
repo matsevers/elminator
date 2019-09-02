@@ -5167,6 +5167,34 @@ var author$project$Objects$Tiles$Decor$bush2 = {
 	sprite: 'assets/decor/Bush_02.png',
 	spriteMinimap: elm$core$Maybe$Nothing
 };
+var author$project$Objects$Tiles$Decor$invisible = {
+	collider: elm$core$Maybe$Just(
+		author$project$Types$Rect(
+			{
+				height: 64,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Types$Impact(
+						{
+							duration: 100,
+							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+							identifier: 'invisible',
+							overrideBackgroundImpact: true,
+							unmodifiedObject: elm$core$Maybe$Nothing
+						})),
+				position: {x: 0, y: 0},
+				triggerFunction: elm$core$Maybe$Nothing,
+				width: 64
+			})),
+	identifier: 'invisible',
+	kind: author$project$Types$Decor,
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 64, width: 64},
+	sprite: '',
+	spriteMinimap: elm$core$Maybe$Nothing
+};
 var author$project$Objects$Tiles$Decor$platformBlue = {
 	collider: elm$core$Maybe$Nothing,
 	identifier: 'PlatformBlue',
@@ -5307,18 +5335,78 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 							[
 								{x: 138, y: 224}
 							])),
-					A2(
-						author$project$Map$Generator$fill,
-						author$project$Objects$Tiles$Decor$tree2,
-						_List_fromArray(
-							[
-								{x: 32, y: 365},
-								{x: 96, y: 390},
-								{x: 160, y: 370},
-								{x: 0, y: 250},
-								{x: 0, y: 310},
-								{x: 192, y: 320}
-							])))))));
+					_Utils_ap(
+						A2(
+							author$project$Map$Generator$fill,
+							author$project$Objects$Tiles$Decor$tree2,
+							_List_fromArray(
+								[
+									{x: 32, y: 365},
+									{x: 96, y: 390},
+									{x: 160, y: 370},
+									{x: 0, y: 250},
+									{x: 0, y: 310},
+									{x: 192, y: 320}
+								])),
+						A2(
+							author$project$Map$Generator$fill,
+							author$project$Objects$Tiles$Decor$invisible,
+							_List_fromArray(
+								[
+									{x: -64, y: 0},
+									{x: -64, y: 64},
+									{x: -64, y: 128},
+									{x: -64, y: 192},
+									{x: -64, y: 256},
+									{x: -64, y: 320},
+									{x: -64, y: 384},
+									{x: -64, y: 448},
+									{x: -64, y: 512},
+									{x: -64, y: -64},
+									{x: 0, y: -64},
+									{x: 64, y: -64},
+									{x: 128, y: -64},
+									{x: 192, y: -64},
+									{x: 256, y: -64},
+									{x: 320, y: -64},
+									{x: 384, y: -64},
+									{x: 448, y: -64},
+									{x: 512, y: -64},
+									{x: 576, y: -64},
+									{x: 640, y: -64},
+									{x: 704, y: -64},
+									{x: 768, y: -64},
+									{x: 832, y: -64},
+									{x: 896, y: -64},
+									{x: 960, y: -64},
+									{x: 1024, y: -64},
+									{x: 1024, y: 0},
+									{x: 1024, y: 64},
+									{x: 1024, y: 128},
+									{x: 1024, y: 192},
+									{x: 1024, y: 256},
+									{x: 1024, y: 320},
+									{x: 1024, y: 384},
+									{x: 1024, y: 448},
+									{x: 1024, y: 512},
+									{x: 0, y: 576},
+									{x: 64, y: 576},
+									{x: 128, y: 576},
+									{x: 192, y: 576},
+									{x: 256, y: 576},
+									{x: 320, y: 576},
+									{x: 384, y: 576},
+									{x: 448, y: 576},
+									{x: 512, y: 576},
+									{x: 576, y: 576},
+									{x: 640, y: 576},
+									{x: 704, y: 576},
+									{x: 768, y: 576},
+									{x: 832, y: 576},
+									{x: 896, y: 576},
+									{x: 960, y: 576},
+									{x: 1024, y: 576}
+								]))))))));
 var author$project$Types$Finished = {$: 'Finished'};
 var elm$core$Basics$and = _Basics_and;
 var elm$core$Debug$log = _Debug_log;
@@ -5654,11 +5742,11 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 			author$project$Objects$Tiles$Checkpoint$checkBox('1'))),
 		A2(
 		author$project$Objects$Module$rotate,
-		270,
+		180,
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 896, y: 448}),
+				{x: 704, y: 256}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('2'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5693,14 +5781,42 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 				{x: 64, y: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('6')))
 	]);
+var author$project$Objects$Tiles$Decor$house1 = {
+	collider: elm$core$Maybe$Just(
+		author$project$Types$Rect(
+			{
+				height: 96,
+				impactFunction: elm$core$Maybe$Just(
+					author$project$Types$Impact(
+						{
+							duration: 100,
+							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+							identifier: 'Tree1',
+							overrideBackgroundImpact: true,
+							unmodifiedObject: elm$core$Maybe$Nothing
+						})),
+				position: {x: 5, y: 5},
+				triggerFunction: elm$core$Maybe$Nothing,
+				width: 64
+			})),
+	identifier: 'House1',
+	kind: author$project$Types$Decor,
+	motion: elm$core$Maybe$Nothing,
+	physics: elm$core$Maybe$Nothing,
+	position: elm$core$Maybe$Nothing,
+	rotate: 0,
+	size: {height: 96, width: 64},
+	sprite: 'assets/decor/Decor_Building_01.png',
+	spriteMinimap: elm$core$Maybe$Nothing
+};
 var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 	_List_fromArray(
 		[
 			A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 448, y: 0}),
-			author$project$Objects$Tiles$Decor$platformBlue)
+				{x: 832, y: 384}),
+			author$project$Objects$Tiles$Decor$house1)
 		]),
 	_Utils_ap(
 		A2(
@@ -5709,6 +5825,7 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 			_List_fromArray(
 				[
 					{x: 384, y: 0},
+					{x: 487, y: 0},
 					{x: 590, y: 0}
 				])),
 		_Utils_ap(
@@ -5726,7 +5843,6 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 					author$project$Objects$Tiles$Decor$rock1,
 					_List_fromArray(
 						[
-							{x: 858, y: 416},
 							{x: 138, y: 138}
 						])),
 				_Utils_ap(
@@ -5737,18 +5853,78 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 							[
 								{x: 138, y: 224}
 							])),
-					A2(
-						author$project$Map$Generator$fill,
-						author$project$Objects$Tiles$Decor$tree2,
-						_List_fromArray(
-							[
-								{x: 32, y: 365},
-								{x: 96, y: 390},
-								{x: 160, y: 370},
-								{x: 0, y: 250},
-								{x: 0, y: 310},
-								{x: 192, y: 320}
-							])))))));
+					_Utils_ap(
+						A2(
+							author$project$Map$Generator$fill,
+							author$project$Objects$Tiles$Decor$tree2,
+							_List_fromArray(
+								[
+									{x: 32, y: 365},
+									{x: 96, y: 390},
+									{x: 160, y: 370},
+									{x: 0, y: 250},
+									{x: 0, y: 310},
+									{x: 192, y: 320}
+								])),
+						A2(
+							author$project$Map$Generator$fill,
+							author$project$Objects$Tiles$Decor$invisible,
+							_List_fromArray(
+								[
+									{x: -64, y: 0},
+									{x: -64, y: 64},
+									{x: -64, y: 128},
+									{x: -64, y: 192},
+									{x: -64, y: 256},
+									{x: -64, y: 320},
+									{x: -64, y: 384},
+									{x: -64, y: 448},
+									{x: -64, y: 512},
+									{x: -64, y: -64},
+									{x: 0, y: -64},
+									{x: 64, y: -64},
+									{x: 128, y: -64},
+									{x: 192, y: -64},
+									{x: 256, y: -64},
+									{x: 320, y: -64},
+									{x: 384, y: -64},
+									{x: 448, y: -64},
+									{x: 512, y: -64},
+									{x: 576, y: -64},
+									{x: 640, y: -64},
+									{x: 704, y: -64},
+									{x: 768, y: -64},
+									{x: 832, y: -64},
+									{x: 896, y: -64},
+									{x: 960, y: -64},
+									{x: 1024, y: -64},
+									{x: 1024, y: 0},
+									{x: 1024, y: 64},
+									{x: 1024, y: 128},
+									{x: 1024, y: 192},
+									{x: 1024, y: 256},
+									{x: 1024, y: 320},
+									{x: 1024, y: 384},
+									{x: 1024, y: 448},
+									{x: 1024, y: 512},
+									{x: 0, y: 576},
+									{x: 64, y: 576},
+									{x: 128, y: 576},
+									{x: 192, y: 576},
+									{x: 256, y: 576},
+									{x: 320, y: 576},
+									{x: 384, y: 576},
+									{x: 448, y: 576},
+									{x: 512, y: 576},
+									{x: 576, y: 576},
+									{x: 640, y: 576},
+									{x: 704, y: 576},
+									{x: 768, y: 576},
+									{x: 832, y: 576},
+									{x: 896, y: 576},
+									{x: 960, y: 576},
+									{x: 1024, y: 576}
+								]))))))));
 var author$project$Map$Track$SummerBreeze$finishLine = A2(
 	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
@@ -5765,11 +5941,9 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 				{x: 64, y: 256},
 				{x: 512, y: 320},
 				{x: 512, y: 384},
-				{x: 896, y: 128},
-				{x: 896, y: 192},
-				{x: 896, y: 256},
-				{x: 896, y: 320},
-				{x: 896, y: 384}
+				{x: 640, y: 192},
+				{x: 704, y: 320},
+				{x: 704, y: 384}
 			])),
 	_Utils_ap(
 		A2(
@@ -5789,16 +5963,16 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 					{x: 704, y: 64},
 					{x: 768, y: 64},
 					{x: 832, y: 64},
+					{x: 832, y: 128},
+					{x: 768, y: 128},
+					{x: 704, y: 128},
 					{x: 192, y: 256},
 					{x: 256, y: 256},
 					{x: 320, y: 256},
 					{x: 384, y: 256},
 					{x: 448, y: 256},
 					{x: 576, y: 448},
-					{x: 640, y: 448},
-					{x: 704, y: 448},
-					{x: 768, y: 448},
-					{x: 832, y: 448}
+					{x: 640, y: 448}
 				])),
 		_Utils_ap(
 			A2(
@@ -5807,7 +5981,8 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 				_List_fromArray(
 					[
 						{x: 64, y: 64},
-						{x: 128, y: 256}
+						{x: 128, y: 256},
+						{x: 640, y: 128}
 					])),
 			_Utils_ap(
 				A2(
@@ -5816,7 +5991,8 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 					_List_fromArray(
 						[
 							{x: 64, y: 320},
-							{x: 512, y: 448}
+							{x: 512, y: 448},
+							{x: 640, y: 256}
 						])),
 				_Utils_ap(
 					A2(
@@ -5825,7 +6001,8 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 						_List_fromArray(
 							[
 								{x: 128, y: 320},
-								{x: 896, y: 448}
+								{x: 896, y: 128},
+								{x: 704, y: 448}
 							])),
 					A2(
 						author$project$Map$Generator$fill,
@@ -5833,7 +6010,8 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 						_List_fromArray(
 							[
 								{x: 512, y: 256},
-								{x: 896, y: 64}
+								{x: 896, y: 64},
+								{x: 704, y: 256}
 							])))))));
 var author$project$Map$Track$SummerBreeze$startLine = A2(
 	author$project$Objects$Module$position,
@@ -5853,8 +6031,8 @@ var author$project$Map$Track$SummerBreeze$init = {
 	},
 	meta: {description: 'Loud engines and sunny weather', name: 'Summer Breeze'},
 	options: {
-		labs: 2,
-		prepareRaceTime: 1000,
+		labs: 4,
+		prepareRaceTime: 5000,
 		startPositions: _List_fromArray(
 			[
 				{x: 448, y: 128}
@@ -7752,6 +7930,18 @@ var author$project$Control$Player$update = function (model) {
 	var listKeys = _List_fromArray(
 		[myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right]);
 	var gO = myPlayer.controlledObject;
+	var calcY = F2(
+		function (p, m) {
+			return p.y - elm$core$Basics$round(
+				((elm$core$Basics$cos(
+					elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4);
+		});
+	var calcX = F2(
+		function (p, m) {
+			return p.x + elm$core$Basics$round(
+				((elm$core$Basics$sin(
+					elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4);
+		});
 	if (_Utils_eq(model.state, author$project$Types$Running)) {
 		var _n0 = gO.position;
 		if (_n0.$ === 'Just') {
@@ -7769,12 +7959,8 @@ var author$project$Control$Player$update = function (model) {
 									author$project$Objects$Module$position,
 									elm$core$Maybe$Just(
 										{
-											x: p.x + elm$core$Basics$round(
-												((elm$core$Basics$sin(
-													elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4),
-											y: p.y - elm$core$Basics$round(
-												((elm$core$Basics$cos(
-													elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4)
+											x: A2(calcX, p, m),
+											y: A2(calcY, p, m)
 										}),
 									A2(
 										author$project$Objects$Physics$counterforce,
@@ -8791,6 +8977,40 @@ var author$project$Ui$Scenes$MainMenu$Update$changePlayerCount = F2(
 				elm$core$Platform$Cmd$none);
 		}
 	});
+var author$project$Ui$Scenes$MainMenu$Update$joinLobby = F2(
+	function (model, lobby) {
+		var n = model.network;
+		var lobbyControl = {finish: false, identifier: lobby.identifier, join: true, leave: false, playerId: model.myPlayer.identifier, start: false};
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{
+					network: _Utils_update(
+						n,
+						{session: lobby.identifier})
+				}),
+			A2(
+				author$project$Network$Module$send,
+				'lobbyControl',
+				author$project$Network$Module$encodeLobbyControl(lobbyControl)));
+	});
+var author$project$Ui$Scenes$MainMenu$Update$leaveLobby = F2(
+	function (model, lobby) {
+		var n = model.network;
+		var lobbyControl = {finish: false, identifier: lobby.identifier, join: false, leave: true, playerId: model.myPlayer.identifier, start: false};
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{
+					network: _Utils_update(
+						n,
+						{session: ''})
+				}),
+			A2(
+				author$project$Network$Module$send,
+				'lobbyControl',
+				author$project$Network$Module$encodeLobbyControl(lobbyControl)));
+	});
 var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -8810,36 +9030,10 @@ var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 				return author$project$Ui$Scenes$MainMenu$Update$changeGameType(model);
 			case 'JoinLobby':
 				var lobby = msg.b;
-				var n = model.network;
-				var lobbyControl = {finish: false, identifier: lobby.identifier, join: true, leave: false, playerId: model.myPlayer.identifier, start: false};
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							network: _Utils_update(
-								n,
-								{session: lobby.identifier})
-						}),
-					A2(
-						author$project$Network$Module$send,
-						'lobbyControl',
-						author$project$Network$Module$encodeLobbyControl(lobbyControl)));
+				return A2(author$project$Ui$Scenes$MainMenu$Update$joinLobby, model, lobby);
 			default:
 				var lobby = msg.b;
-				var n = model.network;
-				var lobbyControl = {finish: false, identifier: lobby.identifier, join: false, leave: true, playerId: model.myPlayer.identifier, start: false};
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							network: _Utils_update(
-								n,
-								{session: ''})
-						}),
-					A2(
-						author$project$Network$Module$send,
-						'lobbyControl',
-						author$project$Network$Module$encodeLobbyControl(lobbyControl)));
+				return A2(author$project$Ui$Scenes$MainMenu$Update$leaveLobby, model, lobby);
 		}
 	});
 var author$project$Ui$Scenes$MainMenu$Module$update = author$project$Ui$Scenes$MainMenu$Update$update;
