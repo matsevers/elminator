@@ -2,6 +2,7 @@ module Types exposing
     ( Action(..)
     , Args
     , Collider(..)
+    , FinishMenuMessage(..)
     , GameObject
     , Impact(..)
     , KeyEvent(..)
@@ -37,6 +38,7 @@ import UUID
 type Msg
     = ChangeScene State
     | MainMenu MainMenuMessage
+    | FinishMenu FinishMenuMessage
     | SceneManager SceneMessage
     | Playground PlaygroundMessage
     | Control Model KeyEvent Action
@@ -116,6 +118,7 @@ type alias Motion =
     { speed : Float
     , maxForwardSpeed : Float
     , maxBackwardSpeed : Float
+    , steeringAngle : Float
     }
 
 
@@ -155,7 +158,7 @@ type alias GameObject =
     , spriteMinimap : Maybe String
     , sprite : String
     , collider : Maybe Collider
-    , rotate : Int
+    , rotate : Float
     , motion : Maybe Motion
     , physics : Maybe Physics
     }
@@ -215,7 +218,7 @@ type alias SchemePlayer =
     , gOPositionY : Int
     , gOSprite : String
     , gOSpriteMinimap : String
-    , gORotate : Int
+    , gORotate : Float
     , gOSizeHeight : Int
     , gOSizeWidth : Int
     }
@@ -316,6 +319,11 @@ type MainMenuMessage
     | ChangeGameType Model
     | JoinLobby Model Lobby
     | LeaveLobby Model Lobby
+
+
+type FinishMenuMessage
+    = Won
+    | Lost
 
 
 type SceneMessage

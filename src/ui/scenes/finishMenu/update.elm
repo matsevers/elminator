@@ -4,9 +4,9 @@ import InitialModel
 import Types
 
 
-update : Types.Model -> Types.Model
-update m =
-    m
+update : Types.FinishMenuMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
+update msg model =
+    ( model, Cmd.none )
 
 
 restoreInitialModel : Types.Model

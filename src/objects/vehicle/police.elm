@@ -27,6 +27,7 @@ model =
             { speed = 0
             , maxForwardSpeed = 80
             , maxBackwardSpeed = 20
+            , steeringAngle = 4.8
             }
     , physics =
         Just

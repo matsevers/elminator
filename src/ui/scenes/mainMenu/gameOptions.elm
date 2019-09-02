@@ -20,7 +20,7 @@ view model =
                 "false"
     in
     Html.div
-        (Ui.Scenes.MainMenu.Style.selectionContainer
+        (Ui.Scenes.Style.selectionContainer
             ++ Ui.Scenes.Style.spaceTop
             ++ [ Html.Attributes.style "cursor" "default"
                , Html.Attributes.style "display" "flex"

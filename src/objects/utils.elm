@@ -8,7 +8,7 @@ import Objects.Physics
 import Types
 
 
-rotate : Int -> Types.GameObject -> Types.GameObject
+rotate : Float -> Types.GameObject -> Types.GameObject
 rotate r gO =
     { gO | rotate = r }
 

@@ -64,25 +64,6 @@ update msg model =
                             (Network.Module.encodePlayer model.myPlayer)
                         )
 
-            else if model.state == Types.Finished then
-                let
-                    lobbyControlMsg : Types.LobbyControl
-                    lobbyControlMsg =
-                        { identifier = model.network.session
-                        , playerId = model.myPlayer.identifier
-                        , join = False
-                        , start = False
-                        , finish = True
-                        , leave = False
-                        }
-                in
-                model
-                    |> Cmd.Extra.withCmd
-                        (Network.Module.send
-                            "lobbyControl"
-                            (Network.Module.encodeLobbyControl lobbyControlMsg)
-                        )
-
             else
                 model |> Network.Module.updateTtl |> Cmd.Extra.withNoCmd
 
@@ -94,6 +75,9 @@ update msg model =
 
         Types.MainMenu m ->
             Ui.Scenes.MainMenu.Module.update m model
+
+        Types.FinishMenu m ->
+            Ui.Scenes.FinishMenu.Module.update m model
 
         Types.SceneManager m ->
             Ui.Scenes.Module.update m model

@@ -55,7 +55,7 @@ encodePlayer player =
     , ( "gOPositionY", Json.Encode.int gOPosition.y )
     , ( "gOSprite", Json.Encode.string gO.sprite )
     , ( "gOSpriteMinimap", Json.Encode.string spriteMinimap )
-    , ( "gORotate", Json.Encode.int gO.rotate )
+    , ( "gORotate", Json.Encode.float gO.rotate )
     , ( "gOSizeHeight", Json.Encode.int gO.size.height )
     , ( "gOSizeWidth", Json.Encode.int gO.size.width )
     ]

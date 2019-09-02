@@ -3,25 +3,10 @@ module Ui.Scenes.MainMenu.Style exposing
     , input
     , logo
     , menuItemContainer
-    , selectionContainer
     )
 
 import Html
 import Html.Attributes
-
-
-selectionContainer : List (Html.Attribute msg)
-selectionContainer =
-    [ Html.Attributes.style "display" "flex"
-    , Html.Attributes.style "align-self" "stretch"
-    , Html.Attributes.style "flex-direction" "column"
-    , Html.Attributes.style "align-items" "center"
-    , Html.Attributes.style "font-size" "14px"
-    , Html.Attributes.style "background-color" "rgba(255,255,255, 0.2)"
-    , Html.Attributes.style "padding" "10px"
-    , Html.Attributes.style "margin" "10px"
-    , Html.Attributes.style "cursor" "pointer"
-    ]
 
 
 carSelectionInnerContainer : List (Html.Attribute msg)

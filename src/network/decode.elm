@@ -57,7 +57,7 @@ playerDecoder =
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "gOSpriteMinimap" Json.Decode.string)
         |> Json.Decode.Extra.andMap
-            (Json.Decode.field "gORotate" Json.Decode.int)
+            (Json.Decode.field "gORotate" Json.Decode.float)
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "gOSizeHeight" Json.Decode.int)
         |> Json.Decode.Extra.andMap

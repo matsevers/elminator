@@ -34,6 +34,7 @@ element model =
                 { speed = 0
                 , maxForwardSpeed = 0
                 , maxBackwardSpeed = 0
+                , steeringAngle = 0
                 }
                 model.myPlayer.controlledObject.motion
 

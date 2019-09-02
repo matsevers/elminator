@@ -53,7 +53,7 @@ playground l p minimapMode debug labelsEnabled =
                         , Svg.Attributes.y (String.fromInt posX.y)
                         , Svg.Attributes.transform
                             (" rotate("
-                                ++ String.fromInt x.rotate
+                                ++ String.fromFloat x.rotate
                                 ++ " "
                                 ++ String.fromFloat (Basics.toFloat posX.x + Basics.toFloat x.size.width / 2)
                                 ++ " "

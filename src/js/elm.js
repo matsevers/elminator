@@ -6072,7 +6072,7 @@ var author$project$Objects$Vehicle$Ambulance$model = {
 	identifier: 'Ambulance',
 	kind: author$project$Types$Car,
 	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0}),
+		{maxBackwardSpeed: 20, maxForwardSpeed: 90, speed: 0, steeringAngle: 4.6}),
 	physics: elm$core$Maybe$Just(
 		{forceBackward: -1, forceForward: 2, impacts: _List_Nil}),
 	position: elm$core$Maybe$Just(
@@ -6096,7 +6096,7 @@ var author$project$Objects$Vehicle$Police$model = {
 	identifier: 'Police',
 	kind: author$project$Types$Car,
 	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0}),
+		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0, steeringAngle: 4.8}),
 	physics: elm$core$Maybe$Just(
 		{forceBackward: -1, forceForward: 3, impacts: _List_Nil}),
 	position: elm$core$Maybe$Just(
@@ -6119,7 +6119,7 @@ var author$project$Objects$Vehicle$Taxi$model = {
 	identifier: 'Taxi',
 	kind: author$project$Types$Car,
 	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0}),
+		{maxBackwardSpeed: 20, maxForwardSpeed: 75, speed: 0, steeringAngle: 5}),
 	physics: elm$core$Maybe$Just(
 		{forceBackward: -1, forceForward: 2, impacts: _List_Nil}),
 	position: elm$core$Maybe$Just(
@@ -7823,23 +7823,32 @@ var author$project$Control$Update$update = F3(
 		return A3(author$project$Control$Player$applyInput, model, event, action);
 	});
 var author$project$Control$Module$update = author$project$Control$Update$update;
-var author$project$Control$Player$convertInputToAngle = function (l) {
-	var angle = 5;
-	if (l.b) {
-		var x = l.a;
-		var xs = l.b;
-		switch (x.$) {
-			case 'Left':
-				return (-angle) + author$project$Control$Player$convertInputToAngle(xs);
-			case 'Right':
-				return angle + author$project$Control$Player$convertInputToAngle(xs);
-			default:
-				return 0 + author$project$Control$Player$convertInputToAngle(xs);
+var author$project$Control$Player$convertInputToAngle = F2(
+	function (l, p) {
+		var angle = function () {
+			var _n2 = p.controlledObject.motion;
+			if (_n2.$ === 'Just') {
+				var m = _n2.a;
+				return m.steeringAngle;
+			} else {
+				return 0;
+			}
+		}();
+		if (l.b) {
+			var x = l.a;
+			var xs = l.b;
+			switch (x.$) {
+				case 'Left':
+					return (-angle) + A2(author$project$Control$Player$convertInputToAngle, xs, p);
+				case 'Right':
+					return angle + A2(author$project$Control$Player$convertInputToAngle, xs, p);
+				default:
+					return 0 + A2(author$project$Control$Player$convertInputToAngle, xs, p);
+			}
+		} else {
+			return 0;
 		}
-	} else {
-		return 0;
-	}
-};
+	});
 var author$project$Control$Player$convertInputToForce = function (l) {
 	if (!l.b) {
 		return 0;
@@ -7976,7 +7985,8 @@ var author$project$Control$Player$update = function (model) {
 													A2(
 														elm$core$Basics$modBy,
 														360,
-														gO.rotate + author$project$Control$Player$convertInputToAngle(listKeys)),
+														elm$core$Basics$round(
+															gO.rotate + A2(author$project$Control$Player$convertInputToAngle, listKeys, model.myPlayer))),
 													gO))))),
 								time: myPlayer.time + elm$core$Basics$round(model.frequence)
 							})
@@ -8070,38 +8080,6 @@ var author$project$Network$Commands$encodeLobby = function (lobby) {
 			author$project$Network$Encode$encodeLobby(lobby)));
 };
 var author$project$Network$Module$encodeLobby = author$project$Network$Commands$encodeLobby;
-var elm$json$Json$Encode$bool = _Json_wrap;
-var author$project$Network$Encode$encodeLobbyControl = function (lobbyControl) {
-	return _List_fromArray(
-		[
-			_Utils_Tuple2(
-			'identifier',
-			elm$json$Json$Encode$string(lobbyControl.identifier)),
-			_Utils_Tuple2(
-			'playerId',
-			elm$json$Json$Encode$string(lobbyControl.playerId)),
-			_Utils_Tuple2(
-			'join',
-			elm$json$Json$Encode$bool(lobbyControl.join)),
-			_Utils_Tuple2(
-			'start',
-			elm$json$Json$Encode$bool(lobbyControl.start)),
-			_Utils_Tuple2(
-			'finish',
-			elm$json$Json$Encode$bool(lobbyControl.finish)),
-			_Utils_Tuple2(
-			'leave',
-			elm$json$Json$Encode$bool(lobbyControl.leave))
-		]);
-};
-var author$project$Network$Commands$encodeLobbyControl = function (lobbyControl) {
-	return A2(
-		elm$json$Json$Encode$encode,
-		0,
-		elm$json$Json$Encode$object(
-			author$project$Network$Encode$encodeLobbyControl(lobbyControl)));
-};
-var author$project$Network$Module$encodeLobbyControl = author$project$Network$Commands$encodeLobbyControl;
 var elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
 		if (maybe.$ === 'Just') {
@@ -8111,6 +8089,7 @@ var elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
+var elm$json$Json$Encode$bool = _Json_wrap;
 var author$project$Network$Encode$encodePlayer = function (player) {
 	var gO = player.controlledObject;
 	var gOPosition = A2(
@@ -8162,7 +8141,7 @@ var author$project$Network$Encode$encodePlayer = function (player) {
 			elm$json$Json$Encode$string(spriteMinimap)),
 			_Utils_Tuple2(
 			'gORotate',
-			elm$json$Json$Encode$int(gO.rotate)),
+			elm$json$Json$Encode$float(gO.rotate)),
 			_Utils_Tuple2(
 			'gOSizeHeight',
 			elm$json$Json$Encode$int(gO.size.height)),
@@ -8297,7 +8276,7 @@ var author$project$Network$Decode$playerDecoder = A2(
 		A2(elm$json$Json$Decode$field, 'gOSizeHeight', elm$json$Json$Decode$int),
 		A2(
 			elm_community$json_extra$Json$Decode$Extra$andMap,
-			A2(elm$json$Json$Decode$field, 'gORotate', elm$json$Json$Decode$int),
+			A2(elm$json$Json$Decode$field, 'gORotate', elm$json$Json$Decode$float),
 			A2(
 				elm_community$json_extra$Json$Decode$Extra$andMap,
 				A2(elm$json$Json$Decode$field, 'gOSpriteMinimap', elm$json$Json$Decode$string),
@@ -8451,6 +8430,36 @@ var author$project$Network$Update$addPlayerToOwnLobby = F2(
 					})
 			}) : model;
 	});
+var author$project$Network$Encode$encodeLobbyControl = function (lobbyControl) {
+	return _List_fromArray(
+		[
+			_Utils_Tuple2(
+			'identifier',
+			elm$json$Json$Encode$string(lobbyControl.identifier)),
+			_Utils_Tuple2(
+			'playerId',
+			elm$json$Json$Encode$string(lobbyControl.playerId)),
+			_Utils_Tuple2(
+			'join',
+			elm$json$Json$Encode$bool(lobbyControl.join)),
+			_Utils_Tuple2(
+			'start',
+			elm$json$Json$Encode$bool(lobbyControl.start)),
+			_Utils_Tuple2(
+			'finish',
+			elm$json$Json$Encode$bool(lobbyControl.finish)),
+			_Utils_Tuple2(
+			'leave',
+			elm$json$Json$Encode$bool(lobbyControl.leave))
+		]);
+};
+var author$project$Network$Commands$encodeLobbyControl = function (lobbyControl) {
+	return A2(
+		elm$json$Json$Encode$encode,
+		0,
+		elm$json$Json$Encode$object(
+			author$project$Network$Encode$encodeLobbyControl(lobbyControl)));
+};
 var author$project$Types$ChangeTo = F2(
 	function (a, b) {
 		return {$: 'ChangeTo', a: a, b: b};
@@ -8893,6 +8902,11 @@ var author$project$Objects$Physics$update = function (model) {
 					})
 			}));
 };
+var author$project$Ui$Scenes$FinishMenu$Update$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	});
+var author$project$Ui$Scenes$FinishMenu$Module$update = author$project$Ui$Scenes$FinishMenu$Update$update;
 var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 	function (model, gO) {
 		var myPlayer = model.myPlayer;
@@ -8977,6 +8991,7 @@ var author$project$Ui$Scenes$MainMenu$Update$changePlayerCount = F2(
 				elm$core$Platform$Cmd$none);
 		}
 	});
+var author$project$Network$Module$encodeLobbyControl = author$project$Network$Commands$encodeLobbyControl;
 var author$project$Ui$Scenes$MainMenu$Update$joinLobby = F2(
 	function (model, lobby) {
 		var n = model.network;
@@ -9072,42 +9087,23 @@ var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 'Tick':
-				if (_Utils_eq(model.state, author$project$Types$Menu) && model.network.multiplayer) {
-					return A2(
-						Janiczek$cmd_extra$Cmd$Extra$withCmd,
-						A2(
-							author$project$Network$Module$send,
-							'lobby',
-							author$project$Network$Module$encodeLobby(model.ownLobby)),
-						model);
-				} else {
-					if (_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) {
-						return A2(
-							Janiczek$cmd_extra$Cmd$Extra$withCmd,
-							A2(
-								author$project$Network$Module$send,
-								'player',
-								author$project$Network$Module$encodePlayer(model.myPlayer)),
-							author$project$Objects$Physics$update(
-								author$project$Control$Player$update(
-									author$project$Network$Module$updateTtl(
-										author$project$Map$Track$Module$update(model)))));
-					} else {
-						if (_Utils_eq(model.state, author$project$Types$Finished)) {
-							var lobbyControlMsg = {finish: true, identifier: model.network.session, join: false, leave: false, playerId: model.myPlayer.identifier, start: false};
-							return A2(
-								Janiczek$cmd_extra$Cmd$Extra$withCmd,
-								A2(
-									author$project$Network$Module$send,
-									'lobbyControl',
-									author$project$Network$Module$encodeLobbyControl(lobbyControlMsg)),
-								model);
-						} else {
-							return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
-								author$project$Network$Module$updateTtl(model));
-						}
-					}
-				}
+				return (_Utils_eq(model.state, author$project$Types$Menu) && model.network.multiplayer) ? A2(
+					Janiczek$cmd_extra$Cmd$Extra$withCmd,
+					A2(
+						author$project$Network$Module$send,
+						'lobby',
+						author$project$Network$Module$encodeLobby(model.ownLobby)),
+					model) : ((_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
+					Janiczek$cmd_extra$Cmd$Extra$withCmd,
+					A2(
+						author$project$Network$Module$send,
+						'player',
+						author$project$Network$Module$encodePlayer(model.myPlayer)),
+					author$project$Objects$Physics$update(
+						author$project$Control$Player$update(
+							author$project$Network$Module$updateTtl(
+								author$project$Map$Track$Module$update(model))))) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
+					author$project$Network$Module$updateTtl(model)));
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -9118,6 +9114,9 @@ var author$project$Main$update = F2(
 			case 'MainMenu':
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$MainMenu$Module$update, m, model);
+			case 'FinishMenu':
+				var m = msg.a;
+				return A2(author$project$Ui$Scenes$FinishMenu$Module$update, m, model);
 			case 'SceneManager':
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$Module$update, m, model);
@@ -9163,8 +9162,149 @@ var author$project$Main$update = F2(
 		}
 	});
 var author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel = author$project$InitialModel$initialModel;
+var author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds = function (time) {
+	return (!time) ? 0 : ((time / 1000) | 0);
+};
+var author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds = function (time) {
+	if (!time) {
+		return '0';
+	} else {
+		var ms = elm$core$String$fromInt(
+			elm$core$Basics$round(
+				(time - (author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(time) * 1000)) / 10));
+		return (elm$core$String$length(ms) === 1) ? ('0' + ms) : ms;
+	}
+};
 var elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var elm$html$Html$Attributes$style = elm$virtual_dom$VirtualDom$style;
+var author$project$Ui$Scenes$Style$selectionContainer = _List_fromArray(
+	[
+		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+		A2(elm$html$Html$Attributes$style, 'align-self', 'stretch'),
+		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+		A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
+		A2(elm$html$Html$Attributes$style, 'font-size', '14px'),
+		A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.2)'),
+		A2(elm$html$Html$Attributes$style, 'padding', '10px'),
+		A2(elm$html$Html$Attributes$style, 'margin', '10px'),
+		A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
+	]);
+var elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var elm$core$List$sortWith = _List_sortWith;
+var elm$html$Html$div = _VirtualDom_node('div');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
+	var sortFunction = F2(
+		function (a, b) {
+			var bRoundStr = elm$core$String$fromInt(b.currentLab);
+			var bCheckpointsStr = elm$core$String$fromInt(
+				elm$core$List$length(b.catchedCheckpoints));
+			var bValue = A2(
+				elm$core$Debug$log,
+				'B ',
+				_Utils_ap(bRoundStr, bCheckpointsStr));
+			var aRoundStr = elm$core$String$fromInt(a.currentLab);
+			var aCheckpointsStr = elm$core$String$fromInt(
+				elm$core$List$length(a.catchedCheckpoints));
+			var aValue = A2(
+				elm$core$Debug$log,
+				'A ',
+				_Utils_ap(aRoundStr, aCheckpointsStr));
+			var _n0 = A2(elm$core$Basics$compare, aValue, bValue);
+			switch (_n0.$) {
+				case 'LT':
+					return elm$core$Basics$GT;
+				case 'EQ':
+					return elm$core$Basics$EQ;
+				default:
+					return elm$core$Basics$LT;
+			}
+		});
+	var playerList = A2(elm$core$List$cons, model.myPlayer, model.onlinePlayers);
+	var sortedList = A2(
+		elm$core$List$sortWith,
+		sortFunction,
+		A2(
+			elm$core$List$filter,
+			function (x) {
+				return A2(
+					elm$core$List$member,
+					x.identifier,
+					A2(elm$core$List$cons, model.myPlayer.identifier, model.ownLobby.onlinePlayers));
+			},
+			playerList));
+	var highScoreItem = function (p) {
+		return A2(
+			elm$html$Html$div,
+			_Utils_ap(
+				author$project$Ui$Scenes$Style$selectionContainer,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2(elm$html$Html$Attributes$style, 'flex-direction', 'row'),
+						A2(elm$html$Html$Attributes$style, 'cursor', 'normal')
+					])),
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'flex', '1')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(p.label.text)
+						])),
+					A2(
+					elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$Attributes$style, 'flex', '1')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text(
+							elm$core$String$fromInt(
+								author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(p.time)) + (':' + (author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(p.time) + ' s')))
+						]))
+				]));
+	};
+	return A2(
+		elm$html$Html$div,
+		_List_Nil,
+		A2(elm$core$List$map, highScoreItem, sortedList));
+};
 var author$project$Ui$Scenes$Style$button = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'padding', '30px'),
@@ -9218,10 +9358,7 @@ var author$project$Ui$Scenes$Style$spaceTop = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'margin-top', '20px')
 	]);
 var elm$html$Html$button = _VirtualDom_node('button');
-var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$img = _VirtualDom_node('img');
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
 		return A2(
@@ -9253,16 +9390,6 @@ var elm$html$Html$Events$onClick = function (msg) {
 		elm$json$Json$Decode$succeed(msg));
 };
 var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
-	var getDriveTimeSeconds = (!model.myPlayer.time) ? 0 : ((model.myPlayer.time / 1000) | 0);
-	var getDriveTimeMilliSeconds = function () {
-		if (!model.myPlayer.time) {
-			return '0';
-		} else {
-			var ms = elm$core$String$fromInt(
-				elm$core$Basics$round((model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10));
-			return (elm$core$String$length(ms) === 1) ? ('0' + ms) : ms;
-		}
-	}();
 	return A2(
 		elm$html$Html$div,
 		_Utils_ap(author$project$Ui$Scenes$Style$globalContainer, author$project$Ui$Scenes$Style$menuContainer),
@@ -9302,9 +9429,11 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 								_List_fromArray(
 									[
 										elm$html$Html$text(
-										elm$core$String$fromInt(getDriveTimeSeconds)),
+										elm$core$String$fromInt(
+											author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(model.myPlayer.time))),
 										elm$html$Html$text(':'),
-										elm$html$Html$text(getDriveTimeMilliSeconds),
+										elm$html$Html$text(
+										author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(model.myPlayer.time)),
 										elm$html$Html$text(' seconds')
 									]))
 							])),
@@ -9316,7 +9445,13 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 						_List_fromArray(
 							[
 								elm$html$Html$text('COMPETITIVE POSITION'),
-								A2(elm$html$Html$div, author$project$Ui$Scenes$Style$spaceTop, _List_Nil)
+								A2(
+								elm$html$Html$div,
+								author$project$Ui$Scenes$Style$spaceTop,
+								_List_fromArray(
+									[
+										author$project$Ui$Scenes$FinishMenu$View$highScoreList(model)
+									]))
 							]))
 					])),
 				A2(
@@ -9354,18 +9489,6 @@ var author$project$Ui$Scenes$MainMenu$Style$carSelectionInnerContainer = _List_f
 		A2(elm$html$Html$Attributes$style, 'justify-content', 'space-between'),
 		A2(elm$html$Html$Attributes$style, 'width', '100%')
 	]);
-var author$project$Ui$Scenes$MainMenu$Style$selectionContainer = _List_fromArray(
-	[
-		A2(elm$html$Html$Attributes$style, 'display', 'flex'),
-		A2(elm$html$Html$Attributes$style, 'align-self', 'stretch'),
-		A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
-		A2(elm$html$Html$Attributes$style, 'align-items', 'center'),
-		A2(elm$html$Html$Attributes$style, 'font-size', '14px'),
-		A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.2)'),
-		A2(elm$html$Html$Attributes$style, 'padding', '10px'),
-		A2(elm$html$Html$Attributes$style, 'margin', '10px'),
-		A2(elm$html$Html$Attributes$style, 'cursor', 'pointer')
-	]);
 var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 	function (l, model) {
 		var renderCar = function (car) {
@@ -9376,7 +9499,7 @@ var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 			return A2(
 				elm$html$Html$div,
 				_Utils_ap(
-					author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+					author$project$Ui$Scenes$Style$selectionContainer,
 					_Utils_ap(
 						_List_fromArray(
 							[
@@ -9480,7 +9603,7 @@ var author$project$Ui$Scenes$MainMenu$GameOptions$view = function (model) {
 	return A2(
 		elm$html$Html$div,
 		_Utils_ap(
-			author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+			author$project$Ui$Scenes$Style$selectionContainer,
 			_Utils_ap(
 				author$project$Ui$Scenes$Style$spaceTop,
 				_List_fromArray(
@@ -9568,6 +9691,30 @@ var elm$html$Html$Attributes$width = function (n) {
 		'width',
 		elm$core$String$fromInt(n));
 };
+var author$project$Ui$Scenes$MainMenu$LobbyPicker$lobbyListEmpty = function (l) {
+	return (!elm$core$List$length(l)) ? A2(
+		elm$html$Html$div,
+		_Utils_ap(
+			author$project$Ui$Scenes$Style$selectionContainer,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$Attributes$style, 'display', 'flex'),
+					A2(elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+					A2(elm$html$Html$Attributes$style, 'cursor', 'normal')
+				])),
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$img,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$src('assets/wheel.gif'),
+						elm$html$Html$Attributes$width(80)
+					]),
+				_List_Nil),
+				elm$html$Html$text('Searching ...')
+			])) : A2(elm$html$Html$div, _List_Nil, _List_Nil);
+};
 var author$project$Ui$Scenes$MainMenu$LobbyPicker$renderLoadingAnimation = F2(
 	function (model, lobby) {
 		return _Utils_eq(model.network.session, lobby.identifier) ? _List_fromArray(
@@ -9587,7 +9734,7 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 		return A2(
 			elm$html$Html$div,
 			_Utils_ap(
-				author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+				author$project$Ui$Scenes$Style$selectionContainer,
 				_List_fromArray(
 					[
 						A2(elm$html$Html$Attributes$style, 'display', 'flex'),
@@ -9633,13 +9780,22 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 	return A2(
 		elm$html$Html$div,
 		_List_Nil,
-		renderLobbies(
-			A2(
-				elm$core$List$filter,
-				function (lobby) {
-					return _Utils_eq(lobby.map, model.map.meta.name);
-				},
-				model.network.lobbyPool)));
+		A2(
+			elm$core$List$cons,
+			author$project$Ui$Scenes$MainMenu$LobbyPicker$lobbyListEmpty(
+				A2(
+					elm$core$List$filter,
+					function (lobby) {
+						return _Utils_eq(lobby.map, model.map.meta.name);
+					},
+					model.network.lobbyPool)),
+			renderLobbies(
+				A2(
+					elm$core$List$filter,
+					function (lobby) {
+						return _Utils_eq(lobby.map, model.map.meta.name);
+					},
+					model.network.lobbyPool))));
 };
 var author$project$Types$ChangeMap = F2(
 	function (a, b) {
@@ -9655,7 +9811,7 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 			return A2(
 				elm$html$Html$div,
 				_Utils_ap(
-					author$project$Ui$Scenes$MainMenu$Style$selectionContainer,
+					author$project$Ui$Scenes$Style$selectionContainer,
 					_Utils_ap(
 						_List_fromArray(
 							[
@@ -10008,7 +10164,7 @@ var author$project$Objects$Render$playground = F5(
 										elm$svg$Svg$Attributes$y(
 										elm$core$String$fromInt(posX.y)),
 										elm$svg$Svg$Attributes$transform(
-										' rotate(' + (elm$core$String$fromInt(x.rotate) + (' ' + (elm$core$String$fromFloat(posX.x + (x.size.width / 2)) + (' ' + (elm$core$String$fromFloat(posX.y + (x.size.height / 2)) + ')'))))))
+										' rotate(' + (elm$core$String$fromFloat(x.rotate) + (' ' + (elm$core$String$fromFloat(posX.x + (x.size.width / 2)) + (' ' + (elm$core$String$fromFloat(posX.y + (x.size.height / 2)) + ')'))))))
 									]),
 								_List_Nil)
 							]),
@@ -10333,7 +10489,7 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 		});
 	var motion = A2(
 		elm$core$Maybe$withDefault,
-		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0},
+		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0, steeringAngle: 0},
 		model.myPlayer.controlledObject.motion);
 	var speedometer = function () {
 		var boolToString = function (b) {

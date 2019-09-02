@@ -5,6 +5,7 @@ import Html.Attributes
 import Html.Events
 import Types
 import Ui.Scenes.MainMenu.Style
+import Ui.Scenes.Style
 
 
 view : Types.Model -> List (Html.Html Types.Msg)
@@ -30,7 +31,7 @@ renderCars l model =
                         []
             in
             Html.div
-                (Ui.Scenes.MainMenu.Style.selectionContainer
+                (Ui.Scenes.Style.selectionContainer
                     ++ [ Html.Events.onClick
                             (Types.MainMenu
                                 (Types.ChangeCar

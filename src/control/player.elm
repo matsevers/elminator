@@ -26,7 +26,7 @@ update model =
         calcX p m =
             p.x
                 + round
-                    (sin (degrees (toFloat gO.rotate))
+                    (sin (degrees gO.rotate)
                         * m.speed
                         / model.frequence
                         * 4
@@ -36,7 +36,7 @@ update model =
         calcY p m =
             p.y
                 - round
-                    (cos (degrees (toFloat gO.rotate))
+                    (cos (degrees gO.rotate)
                         * m.speed
                         / model.frequence
                         * 4
@@ -61,7 +61,7 @@ update model =
                                             Objects.Physics.counterforce (convertInputToForce listKeys) <|
                                                 Objects.Physics.autoBrake (convertInputToForce listKeys) <|
                                                     Objects.Physics.acceleration (convertInputToForce listKeys) <|
-                                                        Objects.Module.rotate (modBy 360 (gO.rotate + convertInputToAngle listKeys)) gO
+                                                        Objects.Module.rotate (toFloat (modBy 360 (round (gO.rotate + convertInputToAngle listKeys model.myPlayer)))) gO
                                     , time = myPlayer.time + round model.frequence
                                 }
                         }
@@ -206,23 +206,28 @@ applyInput model event action =
             ( model, Cmd.none )
 
 
-convertInputToAngle : List Types.Action -> Int
-convertInputToAngle l =
+convertInputToAngle : List Types.Action -> Types.Player -> Float
+convertInputToAngle l p =
     let
         angle =
-            5
+            case p.controlledObject.motion of
+                Just m ->
+                    m.steeringAngle
+
+                _ ->
+                    0
     in
     case l of
         x :: xs ->
             case x of
                 Types.Left ->
-                    -angle + convertInputToAngle xs
+                    -angle + convertInputToAngle xs p
 
                 Types.Right ->
-                    angle + convertInputToAngle xs
+                    angle + convertInputToAngle xs p
 
                 _ ->
-                    0 + convertInputToAngle xs
+                    0 + convertInputToAngle xs p
 
         [] ->
             0
