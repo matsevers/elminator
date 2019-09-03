@@ -28,3 +28,6 @@ Das Programm sieht schon jetzt geometrischen Collider Formen vor, die von den ty
 
 ## Performance Anmerkungen
 Bei paralleler Ausführung mehrere Elminator Instanzen verringert sich die FPS Anzahl (geräte abhängig). Es wäre genauer zu Untersuchen, ob SVG performant in den Browser ausgeführt werden kann oder dieses Anwendungsszenario eine andere Technologie, wie z.B. WebGL benötigt wird.
+
+# Abgrenzungen
+Die Grafiken, welche in dieser Arbeit zu sehen sind, entstammen (mit Ausnahme des Logos) nicht unserer Arbeit, sondern wurden aus fremden Quellen verwendet.
