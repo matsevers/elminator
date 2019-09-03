@@ -134,5 +134,26 @@ changeGameType model =
     let
         n =
             model.network
+
+        l =
+            model.ownLobby
     in
-    ( { model | network = { n | multiplayer = not n.multiplayer } }, Cmd.none )
+    if n.multiplayer then
+        ( { model
+            | network =
+                { n | multiplayer = False, session = "" }
+          }
+        , Cmd.none
+        )
+
+    else
+        ( { model
+            | network =
+                { n
+                    | multiplayer = True
+                    , session = model.ownLobby.identifier
+                }
+            , ownLobby = { l | onlinePlayers = model.myPlayer.identifier :: l.onlinePlayers }
+          }
+        , Cmd.none
+        )

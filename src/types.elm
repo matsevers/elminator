@@ -45,6 +45,8 @@ type Msg
     | Tick
     | Websocket Websocketmsg
     | SetUUID UUIDType UUID.UUID
+    | SyncLobbies
+    | SyncPlayer
     | None
 
 

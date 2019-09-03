@@ -35,7 +35,7 @@ view model =
                         (lobby.map
                             ++ " ("
                             ++ String.fromInt
-                                (List.length lobby.onlinePlayers + 1)
+                                (List.length lobby.onlinePlayers)
                             ++ " / "
                             ++ String.fromInt lobby.maxPlayer
                             ++ ")"

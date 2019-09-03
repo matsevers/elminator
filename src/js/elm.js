@@ -6549,6 +6549,8 @@ var author$project$Types$Receive = function (a) {
 	return {$: 'Receive', a: a};
 };
 var author$project$Types$Released = {$: 'Released'};
+var author$project$Types$SyncLobbies = {$: 'SyncLobbies'};
+var author$project$Types$SyncPlayer = {$: 'SyncPlayer'};
 var author$project$Types$Tick = {$: 'Tick'};
 var author$project$Types$Websocket = function (a) {
 	return {$: 'Websocket', a: a};
@@ -7501,6 +7503,18 @@ var author$project$Main$subscriptions = function (model) {
 				function (_n0) {
 					return author$project$Types$Tick;
 				}),
+				A2(
+				elm$time$Time$every,
+				1000,
+				function (_n1) {
+					return author$project$Types$SyncLobbies;
+				}),
+				A2(
+				elm$time$Time$every,
+				70,
+				function (_n2) {
+					return author$project$Types$SyncPlayer;
+				}),
 				author$project$Network$Module$subPort(
 				function (v) {
 					return author$project$Types$Websocket(
@@ -8411,7 +8425,7 @@ var author$project$Network$Update$addPlayerToOwnLobby = F2(
 	function (model, uuid) {
 		var ownLobby = model.ownLobby;
 		return (_Utils_cmp(
-			ownLobby.maxPlayer - 1,
+			ownLobby.maxPlayer,
 			elm$core$List$length(ownLobby.onlinePlayers)) > 0) ? _Utils_update(
 			model,
 			{
@@ -8471,7 +8485,7 @@ var author$project$Network$Update$checkLobbyState = function (model) {
 	var ownLobby = model.ownLobby;
 	var lobbyControlMessageStart = {finish: false, identifier: ownLobby.identifier, join: false, leave: false, playerId: model.myPlayer.identifier, start: true};
 	return (_Utils_cmp(
-		ownLobby.maxPlayer - 1,
+		ownLobby.maxPlayer,
 		elm$core$List$length(ownLobby.onlinePlayers)) < 1) ? _Utils_Tuple2(
 		model,
 		elm$core$Platform$Cmd$batch(
@@ -8504,7 +8518,7 @@ var author$project$Network$Update$removePlayerFromLobby = F2(
 					})
 			});
 	});
-var author$project$Network$Update$updateLobby = F2(
+var author$project$Network$Update$updateLobbyPool = F2(
 	function (model, lobby) {
 		var network = model.network;
 		return _Utils_update(
@@ -8562,7 +8576,7 @@ var author$project$Network$Update$update = F2(
 						if (_n2.b.$ === 'Just') {
 							var lobby = _n2.b.a;
 							return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
-								A2(author$project$Network$Update$updateLobby, model, lobby));
+								A2(author$project$Network$Update$updateLobbyPool, model, lobby));
 						} else {
 							if (_n2.c.$ === 'Just') {
 								var lobbyControl = _n2.c.a;
@@ -8922,13 +8936,27 @@ var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 	});
 var author$project$Ui$Scenes$MainMenu$Update$changeGameType = function (model) {
 	var n = model.network;
-	return _Utils_Tuple2(
+	var l = model.ownLobby;
+	return n.multiplayer ? _Utils_Tuple2(
 		_Utils_update(
 			model,
 			{
 				network: _Utils_update(
 					n,
-					{multiplayer: !n.multiplayer})
+					{multiplayer: false, session: ''})
+			}),
+		elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+		_Utils_update(
+			model,
+			{
+				network: _Utils_update(
+					n,
+					{multiplayer: true, session: model.ownLobby.identifier}),
+				ownLobby: _Utils_update(
+					l,
+					{
+						onlinePlayers: A2(elm$core$List$cons, model.myPlayer.identifier, l.onlinePlayers)
+					})
 			}),
 		elm$core$Platform$Cmd$none);
 };
@@ -9086,24 +9114,28 @@ var author$project$Ui$Scenes$Playground$Module$update = author$project$Ui$Scenes
 var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'Tick':
-				return (_Utils_eq(model.state, author$project$Types$Menu) && model.network.multiplayer) ? A2(
+			case 'SyncLobbies':
+				return model.network.multiplayer ? A2(
 					Janiczek$cmd_extra$Cmd$Extra$withCmd,
 					A2(
 						author$project$Network$Module$send,
 						'lobby',
 						author$project$Network$Module$encodeLobby(model.ownLobby)),
-					model) : ((_Utils_eq(model.state, author$project$Types$Running) || _Utils_eq(model.state, author$project$Types$PrepareRace)) ? A2(
+					author$project$Network$Module$updateTtl(model)) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
+			case 'SyncPlayer':
+				return A2(
 					Janiczek$cmd_extra$Cmd$Extra$withCmd,
 					A2(
 						author$project$Network$Module$send,
 						'player',
 						author$project$Network$Module$encodePlayer(model.myPlayer)),
+					model);
+			case 'Tick':
+				return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 					author$project$Objects$Physics$update(
 						author$project$Control$Player$update(
 							author$project$Network$Module$updateTtl(
-								author$project$Map$Track$Module$update(model))))) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
-					author$project$Network$Module$updateTtl(model)));
+								author$project$Map$Track$Module$update(model)))));
 			case 'Control':
 				var event = msg.b;
 				var action = msg.c;
@@ -9229,17 +9261,11 @@ var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
 			var bRoundStr = elm$core$String$fromInt(b.currentLab);
 			var bCheckpointsStr = elm$core$String$fromInt(
 				elm$core$List$length(b.catchedCheckpoints));
-			var bValue = A2(
-				elm$core$Debug$log,
-				'B ',
-				_Utils_ap(bRoundStr, bCheckpointsStr));
+			var bValue = _Utils_ap(bRoundStr, bCheckpointsStr);
 			var aRoundStr = elm$core$String$fromInt(a.currentLab);
 			var aCheckpointsStr = elm$core$String$fromInt(
 				elm$core$List$length(a.catchedCheckpoints));
-			var aValue = A2(
-				elm$core$Debug$log,
-				'A ',
-				_Utils_ap(aRoundStr, aCheckpointsStr));
+			var aValue = _Utils_ap(aRoundStr, aCheckpointsStr);
 			var _n0 = A2(elm$core$Basics$compare, aValue, bValue);
 			switch (_n0.$) {
 				case 'LT':
@@ -9754,7 +9780,7 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 						[
 							elm$html$Html$text(
 							lobby.map + (' (' + (elm$core$String$fromInt(
-								elm$core$List$length(lobby.onlinePlayers) + 1) + (' / ' + (elm$core$String$fromInt(lobby.maxPlayer) + ')')))))
+								elm$core$List$length(lobby.onlinePlayers)) + (' / ' + (elm$core$String$fromInt(lobby.maxPlayer) + ')')))))
 						])),
 					A2(
 					elm$html$Html$div,
@@ -10452,6 +10478,15 @@ var author$project$Ui$Scenes$Playground$Style$infoRowSkew = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'margin-left', '-30px'),
 		A2(elm$html$Html$Attributes$style, 'padding', '5px 20px 5px 50px')
 	]);
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
 var elm$svg$Svg$Attributes$viewBox = _VirtualDom_attribute('viewBox');
 var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 	var placement = F2(
@@ -10527,33 +10562,50 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 					_List_Nil)
 				]));
 	}();
-	var miniMap = A2(
-		elm$svg$Svg$svg,
-		_Utils_ap(
-			author$project$Ui$Scenes$Playground$Style$flex1,
-			_List_fromArray(
-				[
-					A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
-					elm$svg$Svg$Attributes$viewBox(
-					'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
-				])),
-		A5(
-			author$project$Objects$Module$render.playground,
+	var miniMap = function () {
+		var currentLobby = A2(
+			elm$core$Maybe$withDefault,
+			{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, ttl: 0},
+			elm$core$List$head(
+				A2(
+					elm$core$List$filter,
+					function (x) {
+						return _Utils_eq(x.identifier, model.network.session);
+					},
+					A2(elm$core$List$cons, model.ownLobby, model.network.lobbyPool))));
+		return A2(
+			elm$svg$Svg$svg,
 			_Utils_ap(
-				model.map.gameObjects.roads,
+				author$project$Ui$Scenes$Playground$Style$flex1,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
+						elm$svg$Svg$Attributes$viewBox(
+						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
+					])),
+			A5(
+				author$project$Objects$Module$render.playground,
 				_Utils_ap(
-					_List_fromArray(
-						[model.myPlayer.controlledObject]),
-					A2(
-						elm$core$List$map,
-						function (x) {
-							return x.controlledObject;
-						},
-						model.onlinePlayers))),
-			model.myPlayer,
-			author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
-			author$project$Ui$Scenes$Playground$Cockpit$showCollider,
-			author$project$Ui$Scenes$Playground$Cockpit$showLabels));
+					model.map.gameObjects.roads,
+					_Utils_ap(
+						_List_fromArray(
+							[model.myPlayer.controlledObject]),
+						A2(
+							elm$core$List$map,
+							function (x) {
+								return x.controlledObject;
+							},
+							A2(
+								elm$core$List$filter,
+								function (player) {
+									return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+								},
+								model.onlinePlayers)))),
+				model.myPlayer,
+				author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
+				author$project$Ui$Scenes$Playground$Cockpit$showCollider,
+				author$project$Ui$Scenes$Playground$Cockpit$showLabels));
+	}();
 	var lapInfo = A2(
 		elm$html$Html$div,
 		author$project$Ui$Scenes$Playground$Style$infoRow,
@@ -10746,6 +10798,16 @@ var author$project$Ui$Scenes$Playground$View$minimapMode = false;
 var author$project$Ui$Scenes$Playground$View$showLabel = false;
 var author$project$Ui$Scenes$Playground$View$widthSvg = 1000;
 var author$project$Ui$Scenes$Playground$View$playground = function (model) {
+	var currentLobby = A2(
+		elm$core$Maybe$withDefault,
+		{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, ttl: 0},
+		elm$core$List$head(
+			A2(
+				elm$core$List$filter,
+				function (x) {
+					return _Utils_eq(x.identifier, model.network.session);
+				},
+				A2(elm$core$List$cons, model.ownLobby, model.network.lobbyPool))));
 	var _n0 = model.myPlayer.controlledObject.position;
 	if (_n0.$ === 'Just') {
 		var p = _n0.a;
@@ -10779,7 +10841,12 @@ var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 									function (x) {
 										return x.controlledObject;
 									},
-									model.onlinePlayers),
+									A2(
+										elm$core$List$filter,
+										function (player) {
+											return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+										},
+										model.onlinePlayers)),
 								_List_fromArray(
 									[model.myPlayer.controlledObject])))),
 					model.myPlayer,

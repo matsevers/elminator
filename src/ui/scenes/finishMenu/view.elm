@@ -121,10 +121,10 @@ highScoreList model =
                     String.fromInt (List.length b.catchedCheckpoints)
 
                 aValue =
-                    Debug.log "A " (aRoundStr ++ aCheckpointsStr)
+                    aRoundStr ++ aCheckpointsStr
 
                 bValue =
-                    Debug.log "B " (bRoundStr ++ bCheckpointsStr)
+                    bRoundStr ++ bCheckpointsStr
             in
             case compare aValue bValue of
                 LT ->

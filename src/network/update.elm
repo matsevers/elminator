@@ -45,7 +45,7 @@ update wsMessage model =
                                 |> Cmd.Extra.withNoCmd
 
                         ( _, Just lobby, _ ) ->
-                            updateLobby model lobby |> Cmd.Extra.withNoCmd
+                            updateLobbyPool model lobby |> Cmd.Extra.withNoCmd
 
                         ( _, _, Just lobbyControl ) ->
                             let
@@ -86,8 +86,8 @@ update wsMessage model =
             ( model, Network.Ports.parse m )
 
 
-updateLobby : Types.Model -> Types.Lobby -> Types.Model
-updateLobby model lobby =
+updateLobbyPool : Types.Model -> Types.Lobby -> Types.Model
+updateLobbyPool model lobby =
     let
         network =
             model.network
@@ -126,7 +126,7 @@ addPlayerToOwnLobby model uuid =
         ownLobby =
             model.ownLobby
     in
-    if (ownLobby.maxPlayer - 1) > List.length ownLobby.onlinePlayers then
+    if ownLobby.maxPlayer > List.length ownLobby.onlinePlayers then
         { model
             | ownLobby =
                 { ownLobby
@@ -157,7 +157,7 @@ checkLobbyState model =
             , leave = False
             }
     in
-    if ownLobby.maxPlayer - 1 <= List.length ownLobby.onlinePlayers then
+    if ownLobby.maxPlayer <= List.length ownLobby.onlinePlayers then
         ( model
         , Cmd.batch
             [ Network.Commands.send

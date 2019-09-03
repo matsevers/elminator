@@ -43,29 +43,34 @@ view model =
 update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
-        Types.Tick ->
-            if model.state == Types.Menu && model.network.multiplayer then
+        Types.SyncLobbies ->
+            if model.network.multiplayer then
                 model
+                    |> Network.Module.updateTtl
                     |> Cmd.Extra.withCmd
                         (Network.Module.send
                             "lobby"
                             (Network.Module.encodeLobby model.ownLobby)
                         )
 
-            else if model.state == Types.Running || model.state == Types.PrepareRace then
-                (Objects.Physics.update <|
-                    Control.Player.update <|
-                        Network.Module.updateTtl <|
-                            Map.Track.Module.update model
-                )
-                    |> Cmd.Extra.withCmd
-                        (Network.Module.send
-                            "player"
-                            (Network.Module.encodePlayer model.myPlayer)
-                        )
-
             else
-                model |> Network.Module.updateTtl |> Cmd.Extra.withNoCmd
+                model |> Cmd.Extra.withNoCmd
+
+        Types.SyncPlayer ->
+            model
+                |> Cmd.Extra.withCmd
+                    (Network.Module.send
+                        "player"
+                        (Network.Module.encodePlayer model.myPlayer)
+                    )
+
+        Types.Tick ->
+            (Objects.Physics.update <|
+                Control.Player.update <|
+                    Network.Module.updateTtl <|
+                        Map.Track.Module.update model
+            )
+                |> Cmd.Extra.withNoCmd
 
         Types.Control _ event action ->
             Control.Module.update event action model
@@ -113,6 +118,8 @@ subscriptions model =
         [ Browser.Events.onKeyDown (Json.Decode.map (Types.Control model Types.Pressed) Control.Player.keyDecoder)
         , Browser.Events.onKeyUp (Json.Decode.map (Types.Control model Types.Released) Control.Player.keyDecoder)
         , Time.every model.frequence (\_ -> Types.Tick)
+        , Time.every 1000 (\_ -> Types.SyncLobbies)
+        , Time.every 70 (\_ -> Types.SyncPlayer)
         , Network.Module.subPort (\v -> Types.Websocket (Types.Receive v))
         , Network.Module.parseReturn (\v -> Types.Websocket (Types.Process v))
         ]

@@ -60,6 +60,27 @@ view model =
 
 playground : Types.Model -> Html.Html Types.Msg
 playground model =
+    let
+        currentLobby : Types.Lobby
+        currentLobby =
+            Maybe.withDefault
+                { identifier = "none"
+                , map = "none"
+                , maxPlayer = 0
+                , onlinePlayers = []
+                , ttl = 0
+                }
+                (List.head <|
+                    List.filter
+                        (\x ->
+                            x.identifier == model.network.session
+                        )
+                        -- concat ownLobby with lobbyPool
+                        (model.ownLobby
+                            :: model.network.lobbyPool
+                        )
+                )
+    in
     case model.myPlayer.controlledObject.position of
         Just p ->
             Svg.svg
@@ -96,9 +117,16 @@ playground model =
                 (Objects.Module.render.playground
                     (Map.Generator.map model.map
                         ++ model.myPlayer.catchedCheckpoints
-                        ++ List.map
-                            (\x -> x.controlledObject)
-                            model.onlinePlayers
+                        ++ (List.map (\x -> x.controlledObject) <|
+                                -- filter lobby member
+                                List.filter
+                                    (\player ->
+                                        List.member
+                                            player.identifier
+                                            currentLobby.onlinePlayers
+                                    )
+                                    model.onlinePlayers
+                           )
                         ++ [ model.myPlayer.controlledObject ]
                     )
                     model.myPlayer

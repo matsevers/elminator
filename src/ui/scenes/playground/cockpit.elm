@@ -54,7 +54,15 @@ element model =
             else
                 let
                     ms =
-                        String.fromInt (round (toFloat (model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10))
+                        String.fromInt
+                            (round
+                                (toFloat
+                                    (model.myPlayer.time
+                                        - (getDriveTimeSeconds * 1000)
+                                    )
+                                    / 10
+                                )
+                            )
                 in
                 if String.length ms == 1 then
                     "0" ++ ms
@@ -99,7 +107,11 @@ element model =
                     , Html.Attributes.style "padding-right" "10px"
                     ]
                     [ Html.text
-                        (String.fromInt getDriveTimeSeconds ++ ":" ++ getDriveTimeMilliSeconds)
+                        (String.fromInt
+                            getDriveTimeSeconds
+                            ++ ":"
+                            ++ getDriveTimeMilliSeconds
+                        )
                     ]
                 ]
 
@@ -128,7 +140,10 @@ element model =
                     [ Html.Attributes.type_ "checkbox"
                     , Html.Attributes.value (boolToString model.debug)
                     , Html.Events.onInput
-                        (\x -> Types.Playground (Types.ChangeColliderVisibility model))
+                        (\x ->
+                            Types.Playground
+                                (Types.ChangeColliderVisibility model)
+                        )
                     ]
                     []
                 ]
@@ -157,6 +172,27 @@ element model =
 
         miniMap : Html.Html Types.Msg
         miniMap =
+            let
+                currentLobby : Types.Lobby
+                currentLobby =
+                    Maybe.withDefault
+                        { identifier = "none"
+                        , map = "none"
+                        , maxPlayer = 0
+                        , onlinePlayers = []
+                        , ttl = 0
+                        }
+                        (List.head <|
+                            List.filter
+                                (\x ->
+                                    x.identifier == model.network.session
+                                )
+                                -- concat ownLobby with lobbyPool
+                                (model.ownLobby
+                                    :: model.network.lobbyPool
+                                )
+                        )
+            in
             Svg.svg
                 (Ui.Scenes.Playground.Style.flex1
                     ++ [ Html.Attributes.style "justify-content" "center"
@@ -175,10 +211,21 @@ element model =
                        ]
                 )
                 (Objects.Module.render.playground
+                    -- render roads
                     (model.map.gameObjects.roads
+                        -- render own players gameObject
                         ++ [ model.myPlayer.controlledObject ]
-                        ++ List.map (\x -> x.controlledObject)
-                            model.onlinePlayers
+                        -- render multiplayer gameObject
+                        ++ (List.map (\x -> x.controlledObject) <|
+                                -- filter lobby member
+                                List.filter
+                                    (\player ->
+                                        List.member
+                                            player.identifier
+                                            currentLobby.onlinePlayers
+                                    )
+                                    model.onlinePlayers
+                           )
                     )
                     model.myPlayer
                     minimapMode
