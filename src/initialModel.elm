@@ -23,7 +23,7 @@ initialModel =
         , label =
             { text = "Unnamed Driver"
             , color = "#F3B1CF"
-            , size = 50
+            , size = 40
             , visible = True
             }
         , assignedKeys =

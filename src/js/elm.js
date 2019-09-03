@@ -6147,7 +6147,7 @@ var author$project$InitialModel$initialModel = {
 		controlledObject: author$project$Objects$Vehicle$Module$defaultVehicle,
 		currentLab: 1,
 		identifier: 'blue',
-		label: {color: '#F3B1CF', size: 50, text: 'Unnamed Driver', visible: true},
+		label: {color: '#F3B1CF', size: 40, text: 'Unnamed Driver', visible: true},
 		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
 		time: 0
 	},
@@ -10562,6 +10562,22 @@ var author$project$Ui$Scenes$Playground$Style$infoRowSkew = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'margin-left', '-30px'),
 		A2(elm$html$Html$Attributes$style, 'padding', '5px 20px 5px 50px')
 	]);
+var elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3(elm$core$List$foldr, elm$core$List$cons, ys, xs);
+		}
+	});
+var elm$core$List$concat = function (lists) {
+	return A3(elm$core$List$foldr, elm$core$List$append, _List_Nil, lists);
+};
+var elm$core$List$concatMap = F2(
+	function (f, list) {
+		return elm$core$List$concat(
+			A2(elm$core$List$map, f, list));
+	});
 var elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -10657,6 +10673,12 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 						return _Utils_eq(x.identifier, model.network.session);
 					},
 					A2(elm$core$List$cons, model.ownLobby, model.network.lobbyPool))));
+		var currentPlayer = A2(
+			elm$core$List$filter,
+			function (player) {
+				return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+			},
+			model.onlinePlayers);
 		return A2(
 			elm$svg$Svg$svg,
 			_Utils_ap(
@@ -10667,28 +10689,30 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 						elm$svg$Svg$Attributes$viewBox(
 						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
 					])),
-			A5(
-				author$project$Objects$Module$render.playground,
-				_Utils_ap(
-					model.map.gameObjects.roads,
+			_Utils_ap(
+				A5(
+					author$project$Objects$Module$render.playground,
 					_Utils_ap(
-						_List_fromArray(
-							[model.myPlayer.controlledObject]),
-						A2(
-							elm$core$List$map,
-							function (x) {
-								return x.controlledObject;
-							},
+						model.map.gameObjects.roads,
+						_Utils_ap(
+							_List_fromArray(
+								[model.myPlayer.controlledObject]),
 							A2(
-								elm$core$List$filter,
+								elm$core$List$map,
 								function (player) {
-									return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+									return player.controlledObject;
 								},
-								model.onlinePlayers)))),
-				model.myPlayer,
-				author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
-				author$project$Ui$Scenes$Playground$Cockpit$showCollider,
-				author$project$Ui$Scenes$Playground$Cockpit$showLabels));
+								currentPlayer))),
+					model.myPlayer,
+					author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
+					author$project$Ui$Scenes$Playground$Cockpit$showCollider,
+					author$project$Ui$Scenes$Playground$Cockpit$showLabels),
+				A2(
+					elm$core$List$concatMap,
+					function (x) {
+						return A2(author$project$Objects$Module$render.player, x, true);
+					},
+					currentPlayer)));
 	}();
 	var lapInfo = A2(
 		elm$html$Html$div,

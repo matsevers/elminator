@@ -193,6 +193,16 @@ element model =
                                     :: model.network.lobbyPool
                                 )
                         )
+
+                currentPlayer : List Types.Player
+                currentPlayer =
+                    List.filter
+                        (\player ->
+                            List.member
+                                player.identifier
+                                currentLobby.onlinePlayers
+                        )
+                        model.onlinePlayers
             in
             Svg.svg
                 (Ui.Scenes.Playground.Style.flex1
@@ -214,24 +224,15 @@ element model =
                 (Objects.Module.render.playground
                     -- render roads
                     (model.map.gameObjects.roads
-                        -- render own players gameObject
                         ++ [ model.myPlayer.controlledObject ]
-                        -- render multiplayer gameObject
-                        ++ (List.map (\x -> x.controlledObject) <|
-                                -- filter lobby member
-                                List.filter
-                                    (\player ->
-                                        List.member
-                                            player.identifier
-                                            currentLobby.onlinePlayers
-                                    )
-                                    model.onlinePlayers
-                           )
+                        ++ List.map (\player -> player.controlledObject) currentPlayer
                     )
                     model.myPlayer
                     minimapMode
                     showCollider
                     showLabels
+                    -- render multiplayer gameObject
+                    ++ (List.concatMap (\x -> Objects.Module.render.player x True) <| currentPlayer)
                 )
 
         placement : String -> String -> Html.Html msg
