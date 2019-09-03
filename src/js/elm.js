@@ -9978,6 +9978,31 @@ var author$project$Ui$Scenes$MainMenu$Style$menuItemContainer = _List_fromArray(
 		A2(elm$html$Html$Attributes$style, 'width', '100%'),
 		A2(elm$html$Html$Attributes$style, 'justify-content', 'center')
 	]);
+var elm$html$Html$Attributes$boolProperty = F2(
+	function (key, bool) {
+		return A2(
+			_VirtualDom_property,
+			key,
+			elm$json$Json$Encode$bool(bool));
+	});
+var elm$html$Html$Attributes$disabled = elm$html$Html$Attributes$boolProperty('disabled');
+var author$project$Ui$Scenes$MainMenu$View$showStartButton = function (model) {
+	return (!model.network.multiplayer) ? A2(
+		elm$html$Html$button,
+		_Utils_ap(
+			author$project$Ui$Scenes$Style$button,
+			_List_fromArray(
+				[
+					elm$html$Html$Events$onClick(
+					author$project$Types$SceneManager(
+						A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace))),
+					elm$html$Html$Attributes$disabled(model.network.multiplayer)
+				])),
+		_List_fromArray(
+			[
+				elm$html$Html$text('Start the engines')
+			])) : A2(elm$html$Html$div, _List_Nil, _List_Nil);
+};
 var author$project$Ui$Scenes$Style$spaceBottom = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'margin-bottom', '20px')
@@ -10078,20 +10103,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 				author$project$Ui$Scenes$MainMenu$Style$menuItemContainer,
 				_List_fromArray(
 					[menuItemGameOptions, menuItemPlayerOptions])),
-				A2(
-				elm$html$Html$button,
-				_Utils_ap(
-					author$project$Ui$Scenes$Style$button,
-					_List_fromArray(
-						[
-							elm$html$Html$Events$onClick(
-							author$project$Types$SceneManager(
-								A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
-						])),
-				_List_fromArray(
-					[
-						elm$html$Html$text('Start the engines')
-					]))
+				author$project$Ui$Scenes$MainMenu$View$showStartButton(model)
 			]));
 };
 var elm$svg$Svg$trustedNode = _VirtualDom_nodeNS('http://www.w3.org/2000/svg');

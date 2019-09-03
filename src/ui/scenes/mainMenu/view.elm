@@ -74,7 +74,14 @@ view model =
             [ menuItemGameOptions
             , menuItemPlayerOptions
             ]
-        , Html.button
+        , showStartButton model
+        ]
+
+
+showStartButton : Types.Model -> Html.Html Types.Msg
+showStartButton model =
+    if not model.network.multiplayer then
+        Html.button
             (Ui.Scenes.Style.button
                 ++ [ Html.Events.onClick
                         (Types.SceneManager
@@ -83,7 +90,11 @@ view model =
                                 Types.PrepareRace
                             )
                         )
+                   , Html.Attributes.disabled
+                        model.network.multiplayer
                    ]
             )
             [ Html.text "Start the engines" ]
-        ]
+
+    else
+        Html.div [] []
