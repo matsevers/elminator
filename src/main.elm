@@ -6,10 +6,8 @@ import Cmd.Extra
 import Control.Module
 import Control.Player
 import Html
-import Html.Attributes
 import InitialModel
 import Json.Decode
-import List
 import Map.Track.Module
 import Network.Module
 import Objects.Physics
@@ -103,10 +101,23 @@ update msg model =
             in
             case t of
                 Types.PlayerUUID ->
-                    { model | myPlayer = { p | identifier = UUID.toString uuid } } |> Cmd.Extra.withNoCmd
+                    { model
+                        | myPlayer =
+                            { p
+                                | identifier = UUID.toString uuid
+                            }
+                    }
+                        |> Cmd.Extra.withNoCmd
 
                 Types.LobbyUUID ->
-                    { model | ownLobby = { l | identifier = UUID.toString uuid }, network = { n | session = UUID.toString uuid } } |> Cmd.Extra.withNoCmd
+                    { model
+                        | ownLobby =
+                            { l
+                                | identifier = UUID.toString uuid
+                            }
+                        , network = { n | session = UUID.toString uuid }
+                    }
+                        |> Cmd.Extra.withNoCmd
 
         _ ->
             model |> Cmd.Extra.withNoCmd
@@ -115,8 +126,16 @@ update msg model =
 subscriptions : Types.Model -> Sub Types.Msg
 subscriptions model =
     Sub.batch
-        [ Browser.Events.onKeyDown (Json.Decode.map (Types.Control model Types.Pressed) Control.Player.keyDecoder)
-        , Browser.Events.onKeyUp (Json.Decode.map (Types.Control model Types.Released) Control.Player.keyDecoder)
+        [ Browser.Events.onKeyDown
+            (Json.Decode.map
+                (Types.Control model Types.Pressed)
+                Control.Player.keyDecoder
+            )
+        , Browser.Events.onKeyUp
+            (Json.Decode.map
+                (Types.Control model Types.Released)
+                Control.Player.keyDecoder
+            )
         , Time.every model.frequence (\_ -> Types.Tick)
         , Time.every 1000 (\_ -> Types.SyncLobbies)
         , Time.every 70 (\_ -> Types.SyncPlayer)
@@ -133,8 +152,12 @@ main =
                 ( InitialModel.initialModel
                 , Cmd.batch
                     [ Network.Module.open
-                    , Random.generate (Types.SetUUID Types.LobbyUUID) UUID.generator
-                    , Random.generate (Types.SetUUID Types.PlayerUUID) UUID.generator
+                    , Random.generate
+                        (Types.SetUUID Types.LobbyUUID)
+                        UUID.generator
+                    , Random.generate
+                        (Types.SetUUID Types.PlayerUUID)
+                        UUID.generator
                     ]
                 )
         , subscriptions = subscriptions

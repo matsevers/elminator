@@ -225,14 +225,24 @@ element model =
                     -- render roads
                     (model.map.gameObjects.roads
                         ++ [ model.myPlayer.controlledObject ]
-                        ++ List.map (\player -> player.controlledObject) currentPlayer
+                        ++ List.map
+                            (\player -> player.controlledObject)
+                            currentPlayer
                     )
                     model.myPlayer
                     minimapMode
                     showCollider
                     showLabels
                     -- render multiplayer gameObject
-                    ++ (List.concatMap (\x -> Objects.Module.render.player x True) <| currentPlayer)
+                    ++ (List.concatMap
+                            (\x ->
+                                Objects.Module.render.player
+                                    x
+                                    True
+                            )
+                        <|
+                            currentPlayer
+                       )
                 )
 
         placement : String -> String -> Html.Html msg

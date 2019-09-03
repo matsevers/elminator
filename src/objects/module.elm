@@ -8,7 +8,6 @@ module Objects.Module exposing
 import Objects.Physics
 import Objects.Render
 import Objects.Trigger
-import Objects.Update
 import Objects.Utils
 
 
@@ -22,10 +21,6 @@ position =
 
 motion =
     Objects.Utils.motion
-
-
-update =
-    Objects.Update.update
 
 
 render =
