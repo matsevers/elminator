@@ -77,7 +77,7 @@ function A9(fun, a, b, c, d, e, f, g, h, i) {
   return fun.a === 9 ? fun.f(a, b, c, d, e, f, g, h, i) : fun(a)(b)(c)(d)(e)(f)(g)(h)(i);
 }
 
-console.warn('Compiled in DEV mode. Follow the advice at https://elm-lang.org/0.19.0/optimize for better performance and smaller assets.');
+
 
 
 var _Bitwise_and = F2(function(a, b)
@@ -269,11 +269,11 @@ var _JsArray_appendN = F3(function(n, dest, source)
 
 
 
-var _List_Nil_UNUSED = { $: 0 };
-var _List_Nil = { $: '[]' };
+var _List_Nil = { $: 0 };
+var _List_Nil_UNUSED = { $: '[]' };
 
-function _List_Cons_UNUSED(hd, tl) { return { $: 1, a: hd, b: tl }; }
-function _List_Cons(hd, tl) { return { $: '::', a: hd, b: tl }; }
+function _List_Cons(hd, tl) { return { $: 1, a: hd, b: tl }; }
+function _List_Cons_UNUSED(hd, tl) { return { $: '::', a: hd, b: tl }; }
 
 
 var _List_cons = F2(_List_Cons);
@@ -352,12 +352,12 @@ var _List_sortWith = F2(function(f, xs)
 
 // LOG
 
-var _Debug_log_UNUSED = F2(function(tag, value)
+var _Debug_log = F2(function(tag, value)
 {
 	return value;
 });
 
-var _Debug_log = F2(function(tag, value)
+var _Debug_log_UNUSED = F2(function(tag, value)
 {
 	console.log(tag + ': ' + _Debug_toString(value));
 	return value;
@@ -383,12 +383,12 @@ function _Debug_todoCase(moduleName, region, value)
 
 // TO STRING
 
-function _Debug_toString_UNUSED(value)
+function _Debug_toString(value)
 {
 	return '<internals>';
 }
 
-function _Debug_toString(value)
+function _Debug_toString_UNUSED(value)
 {
 	return _Debug_toAnsiString(false, value);
 }
@@ -573,13 +573,13 @@ function _Debug_toHexDigit(n)
 // CRASH
 
 
-function _Debug_crash_UNUSED(identifier)
+function _Debug_crash(identifier)
 {
 	throw new Error('https://github.com/elm/core/blob/1.0.0/hints/' + identifier + '.md');
 }
 
 
-function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
+function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 {
 	switch(identifier)
 	{
@@ -637,11 +637,11 @@ function _Debug_crash(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.start.line === region.end.line)
+	if (region.cm.E === region.am.E)
 	{
-		return 'on line ' + region.start.line;
+		return 'on line ' + region.cm.E;
 	}
-	return 'on lines ' + region.start.line + ' through ' + region.end.line;
+	return 'on lines ' + region.cm.E + ' through ' + region.am.E;
 }
 
 
@@ -679,7 +679,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 		return false;
 	}
 
-	/**/
+	/**_UNUSED/
 	if (x.$ === 'Set_elm_builtin')
 	{
 		x = elm$core$Set$toList(x);
@@ -692,7 +692,7 @@ function _Utils_eqHelp(x, y, depth, stack)
 	}
 	//*/
 
-	/**_UNUSED/
+	/**/
 	if (x.$ < 0)
 	{
 		x = elm$core$Dict$toList(x);
@@ -727,7 +727,7 @@ function _Utils_cmp(x, y, ord)
 		return x === y ? /*EQ*/ 0 : x < y ? /*LT*/ -1 : /*GT*/ 1;
 	}
 
-	/**/
+	/**_UNUSED/
 	if (x instanceof String)
 	{
 		var a = x.valueOf();
@@ -736,10 +736,10 @@ function _Utils_cmp(x, y, ord)
 	}
 	//*/
 
-	/**_UNUSED/
+	/**/
 	if (typeof x.$ === 'undefined')
 	//*/
-	/**/
+	/**_UNUSED/
 	if (x.$[0] === '#')
 	//*/
 	{
@@ -769,17 +769,17 @@ var _Utils_compare = F2(function(x, y)
 
 // COMMON VALUES
 
-var _Utils_Tuple0_UNUSED = 0;
-var _Utils_Tuple0 = { $: '#0' };
+var _Utils_Tuple0 = 0;
+var _Utils_Tuple0_UNUSED = { $: '#0' };
 
-function _Utils_Tuple2_UNUSED(a, b) { return { a: a, b: b }; }
-function _Utils_Tuple2(a, b) { return { $: '#2', a: a, b: b }; }
+function _Utils_Tuple2(a, b) { return { a: a, b: b }; }
+function _Utils_Tuple2_UNUSED(a, b) { return { $: '#2', a: a, b: b }; }
 
-function _Utils_Tuple3_UNUSED(a, b, c) { return { a: a, b: b, c: c }; }
-function _Utils_Tuple3(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
+function _Utils_Tuple3(a, b, c) { return { a: a, b: b, c: c }; }
+function _Utils_Tuple3_UNUSED(a, b, c) { return { $: '#3', a: a, b: b, c: c }; }
 
-function _Utils_chr_UNUSED(c) { return c; }
-function _Utils_chr(c) { return new String(c); }
+function _Utils_chr(c) { return c; }
+function _Utils_chr_UNUSED(c) { return new String(c); }
 
 
 // RECORDS
@@ -1249,7 +1249,7 @@ function _String_fromList(chars)
 
 
 
-/**/
+/**_UNUSED/
 function _Json_errorToString(error)
 {
 	return elm$json$Json$Decode$errorToString(error);
@@ -1653,11 +1653,11 @@ var _Json_encode = F2(function(indentLevel, value)
 	return JSON.stringify(_Json_unwrap(value), null, indentLevel) + '';
 });
 
-function _Json_wrap(value) { return { $: 0, a: value }; }
-function _Json_unwrap(value) { return value.a; }
+function _Json_wrap_UNUSED(value) { return { $: 0, a: value }; }
+function _Json_unwrap_UNUSED(value) { return value.a; }
 
-function _Json_wrap_UNUSED(value) { return value; }
-function _Json_unwrap_UNUSED(value) { return value; }
+function _Json_wrap(value) { return value; }
+function _Json_unwrap(value) { return value; }
 
 function _Json_emptyArray() { return []; }
 function _Json_emptyObject() { return {}; }
@@ -1894,9 +1894,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.bH,
+		impl.cx,
+		impl.cs,
 		function() { return function() {} }
 	);
 });
@@ -1909,7 +1909,7 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 function _Platform_initialize(flagDecoder, args, init, update, subscriptions, stepperBuilder)
 {
 	var result = A2(_Json_run, flagDecoder, _Json_wrap(args ? args['flags'] : undefined));
-	elm$core$Result$isOk(result) || _Debug_crash(2 /**/, _Json_errorToString(result.a) /**/);
+	elm$core$Result$isOk(result) || _Debug_crash(2 /**_UNUSED/, _Json_errorToString(result.a) /**/);
 	var managers = {};
 	result = init(result.a);
 	var model = result.a;
@@ -2308,7 +2308,7 @@ function _Platform_setupIncomingPort(name, sendToApp)
 //
 
 
-function _Platform_export_UNUSED(exports)
+function _Platform_export(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsProd(scope['Elm'], exports)
@@ -2329,7 +2329,7 @@ function _Platform_mergeExportsProd(obj, exports)
 }
 
 
-function _Platform_export(exports)
+function _Platform_export_UNUSED(exports)
 {
 	scope['Elm']
 		? _Platform_mergeExportsDebug('Elm', scope['Elm'], exports)
@@ -2369,10 +2369,10 @@ var _VirtualDom_init = F4(function(virtualNode, flagDecoder, debugMetadata, args
 {
 	// NOTE: this function needs _Platform_export available to work
 
-	/**_UNUSED/
+	/**/
 	var node = args['node'];
 	//*/
-	/**/
+	/**_UNUSED/
 	var node = args && args['node'] ? args['node'] : _Debug_crash(0);
 	//*/
 
@@ -2627,24 +2627,24 @@ function _VirtualDom_noInnerHtmlOrFormAction(key)
 	return key == 'innerHTML' || key == 'formAction' ? 'data-' + key : key;
 }
 
-function _VirtualDom_noJavaScriptUri_UNUSED(value)
+function _VirtualDom_noJavaScriptUri(value)
 {
 	return /^javascript:/i.test(value.replace(/\s/g,'')) ? '' : value;
 }
 
-function _VirtualDom_noJavaScriptUri(value)
+function _VirtualDom_noJavaScriptUri_UNUSED(value)
 {
 	return /^javascript:/i.test(value.replace(/\s/g,''))
 		? 'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'
 		: value;
 }
 
-function _VirtualDom_noJavaScriptOrHtmlUri_UNUSED(value)
+function _VirtualDom_noJavaScriptOrHtmlUri(value)
 {
 	return /^\s*(javascript:|data:text\/html)/i.test(value) ? '' : value;
 }
 
-function _VirtualDom_noJavaScriptOrHtmlUri(value)
+function _VirtualDom_noJavaScriptOrHtmlUri_UNUSED(value)
 {
 	return /^\s*(javascript:|data:text\/html)/i.test(value)
 		? 'javascript:alert("This is an XSS vector. Please use ports or web components instead.")'
@@ -2696,9 +2696,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		message: func(record.message),
-		stopPropagation: record.stopPropagation,
-		preventDefault: record.preventDefault
+		bY: func(record.bY),
+		af: record.af,
+		ac: record.ac
 	}
 });
 
@@ -2966,11 +2966,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.message;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.stopPropagation;
+		var message = !tag ? value : tag < 3 ? value.a : value.bY;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.af;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.preventDefault) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.ac) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3920,15 +3920,15 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.bH,
+		impl.cx,
+		impl.cs,
 		function(sendToApp, initialModel) {
-			var view = impl.view;
-			/**_UNUSED/
+			var view = impl.cz;
+			/**/
 			var domNode = args['node'];
 			//*/
-			/**/
+			/**_UNUSED/
 			var domNode = args && args['node'] ? args['node'] : _Debug_crash(0);
 			//*/
 			var currNode = _VirtualDom_virtualize(domNode);
@@ -3956,12 +3956,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.init,
-		impl.update,
-		impl.subscriptions,
+		impl.bH,
+		impl.cx,
+		impl.cs,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.setup && impl.setup(sendToApp)
-			var view = impl.view;
+			var divertHrefToApp = impl.F && impl.F(sendToApp)
+			var view = impl.cz;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3969,12 +3969,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.body);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bb);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.title) && (_VirtualDom_doc.title = title = doc.title);
+				(title !== doc.cu) && (_VirtualDom_doc.title = title = doc.cu);
 			});
 		}
 	);
@@ -4030,12 +4030,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.onUrlChange;
-	var onUrlRequest = impl.onUrlRequest;
+	var onUrlChange = impl.b2;
+	var onUrlRequest = impl.b3;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		setup: function(sendToApp)
+		F: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4051,9 +4051,9 @@ function _Browser_application(impl)
 					var next = elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.protocol === next.protocol
-							&& curr.host === next.host
-							&& curr.port_.a === next.port_.a
+							&& curr.aM === next.aM
+							&& curr.at === next.at
+							&& curr.aI.a === next.aI.a
 						)
 							? elm$browser$Browser$Internal(next)
 							: elm$browser$Browser$External(href)
@@ -4061,13 +4061,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		init: function(flags)
+		bH: function(flags)
 		{
-			return A3(impl.init, flags, _Browser_getUrl(), key);
+			return A3(impl.bH, flags, _Browser_getUrl(), key);
 		},
-		view: impl.view,
-		update: impl.update,
-		subscriptions: impl.subscriptions
+		cz: impl.cz,
+		cx: impl.cx,
+		cs: impl.cs
 	});
 }
 
@@ -4133,17 +4133,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { hidden: 'hidden', change: 'visibilitychange' }
+		? { bD: 'hidden', be: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { hidden: 'mozHidden', change: 'mozvisibilitychange' }
+		? { bD: 'mozHidden', be: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { hidden: 'msHidden', change: 'msvisibilitychange' }
+		? { bD: 'msHidden', be: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { hidden: 'webkitHidden', change: 'webkitvisibilitychange' }
-		: { hidden: 'hidden', change: 'visibilitychange' };
+		? { bD: 'webkitHidden', be: 'webkitvisibilitychange' }
+		: { bD: 'hidden', be: 'visibilitychange' };
 }
 
 
@@ -4224,12 +4224,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		scene: _Browser_getScene(),
-		viewport: {
-			x: _Browser_window.pageXOffset,
-			y: _Browser_window.pageYOffset,
-			width: _Browser_doc.documentElement.clientWidth,
-			height: _Browser_doc.documentElement.clientHeight
+		aS: _Browser_getScene(),
+		a1: {
+			a2: _Browser_window.pageXOffset,
+			a3: _Browser_window.pageYOffset,
+			cD: _Browser_doc.documentElement.clientWidth,
+			bC: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4239,8 +4239,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		width: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		height: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		cD: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bC: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4263,15 +4263,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			scene: {
-				width: node.scrollWidth,
-				height: node.scrollHeight
+			aS: {
+				cD: node.scrollWidth,
+				bC: node.scrollHeight
 			},
-			viewport: {
-				x: node.scrollLeft,
-				y: node.scrollTop,
-				width: node.clientWidth,
-				height: node.clientHeight
+			a1: {
+				a2: node.scrollLeft,
+				a3: node.scrollTop,
+				cD: node.clientWidth,
+				bC: node.clientHeight
 			}
 		};
 	});
@@ -4301,18 +4301,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			scene: _Browser_getScene(),
-			viewport: {
-				x: x,
-				y: y,
-				width: _Browser_doc.documentElement.clientWidth,
-				height: _Browser_doc.documentElement.clientHeight
+			aS: _Browser_getScene(),
+			a1: {
+				a2: x,
+				a3: y,
+				cD: _Browser_doc.documentElement.clientWidth,
+				bC: _Browser_doc.documentElement.clientHeight
 			},
-			element: {
-				x: x + rect.left,
-				y: y + rect.top,
-				width: rect.width,
-				height: rect.height
+			bn: {
+				a2: x + rect.left,
+				a3: y + rect.top,
+				cD: rect.width,
+				bC: rect.height
 			}
 		};
 	});
@@ -4393,9 +4393,7 @@ function _Time_getZoneName()
 		callback(_Scheduler_succeed(name));
 	});
 }
-var TSFoster$elm_uuid$UUID$UUID = function (a) {
-	return {$: 'UUID', a: a};
-};
+var TSFoster$elm_uuid$UUID$UUID = elm$core$Basics$identity;
 var elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -4429,7 +4427,7 @@ var elm$core$Array$foldr = F3(
 		var tail = _n0.d;
 		var helper = F2(
 			function (node, acc) {
-				if (node.$ === 'SubTree') {
+				if (!node.$) {
 					var subTree = node.a;
 					return A3(elm$core$Elm$JsArray$foldr, helper, acc, subTree);
 				} else {
@@ -4443,18 +4441,18 @@ var elm$core$Array$foldr = F3(
 			A3(elm$core$Elm$JsArray$foldr, func, baseCase, tail),
 			tree);
 	});
-var elm$core$Basics$EQ = {$: 'EQ'};
-var elm$core$Basics$LT = {$: 'LT'};
+var elm$core$Basics$EQ = 1;
+var elm$core$Basics$LT = 0;
 var elm$core$List$cons = _List_cons;
 var elm$core$Array$toList = function (array) {
 	return A3(elm$core$Array$foldr, elm$core$List$cons, _List_Nil, array);
 };
-var elm$core$Basics$GT = {$: 'GT'};
+var elm$core$Basics$GT = 2;
 var elm$core$Dict$foldr = F3(
 	function (func, acc, t) {
 		foldr:
 		while (true) {
-			if (t.$ === 'RBEmpty_elm_builtin') {
+			if (t.$ === -2) {
 				return acc;
 			} else {
 				var key = t.b;
@@ -4499,7 +4497,7 @@ var elm$core$Dict$keys = function (dict) {
 		dict);
 };
 var elm$core$Set$toList = function (_n0) {
-	var dict = _n0.a;
+	var dict = _n0;
 	return elm$core$Dict$keys(dict);
 };
 var elm$core$Basics$append = _Utils_append;
@@ -4700,13 +4698,12 @@ var elm_community$list_extra$List$Extra$updateAt = F3(
 	});
 var TSFoster$elm_uuid$UUID$toVariant = F2(
 	function (v, _n0) {
-		var bytes = _n0.a;
-		return TSFoster$elm_uuid$UUID$UUID(
-			A3(
-				elm_community$list_extra$List$Extra$updateAt,
-				8,
-				TSFoster$elm_uuid$UUID$setVariantBits(v),
-				bytes));
+		var bytes = _n0;
+		return A3(
+			elm_community$list_extra$List$Extra$updateAt,
+			8,
+			TSFoster$elm_uuid$UUID$setVariantBits(v),
+			bytes);
 	});
 var elm$core$Basics$apR = F2(
 	function (x, f) {
@@ -4715,7 +4712,7 @@ var elm$core$Basics$apR = F2(
 var elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
 var TSFoster$elm_uuid$UUID$toVersion = F2(
 	function (v, _n0) {
-		var bytes = _n0.a;
+		var bytes = _n0;
 		var updateFn = A2(
 			elm_community$list_extra$List$Extra$updateAt,
 			6,
@@ -4723,8 +4720,7 @@ var TSFoster$elm_uuid$UUID$toVersion = F2(
 				elm$core$Basics$composeR,
 				elm$core$Bitwise$and(15),
 				elm$core$Bitwise$or((15 & v) << 4)));
-		return TSFoster$elm_uuid$UUID$UUID(
-			updateFn(bytes));
+		return updateFn(bytes);
 	});
 var elm$core$Basics$eq = _Utils_equal;
 var elm$core$Basics$negate = function (n) {
@@ -4732,13 +4728,11 @@ var elm$core$Basics$negate = function (n) {
 };
 var elm$core$Basics$remainderBy = _Basics_remainderBy;
 var elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
-var elm$random$Random$Generator = function (a) {
-	return {$: 'Generator', a: a};
-};
+var elm$random$Random$Generator = elm$core$Basics$identity;
 var elm$core$Basics$mul = _Basics_mul;
 var elm$random$Random$Seed = F2(
 	function (a, b) {
-		return {$: 'Seed', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var elm$random$Random$next = function (_n0) {
 	var state0 = _n0.a;
@@ -4753,35 +4747,34 @@ var elm$random$Random$peel = function (_n0) {
 };
 var elm$random$Random$int = F2(
 	function (a, b) {
-		return elm$random$Random$Generator(
-			function (seed0) {
-				var _n0 = (_Utils_cmp(a, b) < 0) ? _Utils_Tuple2(a, b) : _Utils_Tuple2(b, a);
-				var lo = _n0.a;
-				var hi = _n0.b;
-				var range = (hi - lo) + 1;
-				if (!((range - 1) & range)) {
-					return _Utils_Tuple2(
-						(((range - 1) & elm$random$Random$peel(seed0)) >>> 0) + lo,
-						elm$random$Random$next(seed0));
-				} else {
-					var threshhold = (((-range) >>> 0) % range) >>> 0;
-					var accountForBias = function (seed) {
-						accountForBias:
-						while (true) {
-							var x = elm$random$Random$peel(seed);
-							var seedN = elm$random$Random$next(seed);
-							if (_Utils_cmp(x, threshhold) < 0) {
-								var $temp$seed = seedN;
-								seed = $temp$seed;
-								continue accountForBias;
-							} else {
-								return _Utils_Tuple2((x % range) + lo, seedN);
-							}
+		return function (seed0) {
+			var _n0 = (_Utils_cmp(a, b) < 0) ? _Utils_Tuple2(a, b) : _Utils_Tuple2(b, a);
+			var lo = _n0.a;
+			var hi = _n0.b;
+			var range = (hi - lo) + 1;
+			if (!((range - 1) & range)) {
+				return _Utils_Tuple2(
+					(((range - 1) & elm$random$Random$peel(seed0)) >>> 0) + lo,
+					elm$random$Random$next(seed0));
+			} else {
+				var threshhold = (((-range) >>> 0) % range) >>> 0;
+				var accountForBias = function (seed) {
+					accountForBias:
+					while (true) {
+						var x = elm$random$Random$peel(seed);
+						var seedN = elm$random$Random$next(seed);
+						if (_Utils_cmp(x, threshhold) < 0) {
+							var $temp$seed = seedN;
+							seed = $temp$seed;
+							continue accountForBias;
+						} else {
+							return _Utils_Tuple2((x % range) + lo, seedN);
 						}
-					};
-					return accountForBias(seed0);
-				}
-			});
+					}
+				};
+				return accountForBias(seed0);
+			}
+		};
 	});
 var elm$random$Random$listHelp = F4(
 	function (revList, n, gen, seed) {
@@ -4807,24 +4800,22 @@ var elm$random$Random$listHelp = F4(
 	});
 var elm$random$Random$list = F2(
 	function (n, _n0) {
-		var gen = _n0.a;
-		return elm$random$Random$Generator(
-			function (seed) {
-				return A4(elm$random$Random$listHelp, _List_Nil, n, gen, seed);
-			});
+		var gen = _n0;
+		return function (seed) {
+			return A4(elm$random$Random$listHelp, _List_Nil, n, gen, seed);
+		};
 	});
 var elm$random$Random$map = F2(
 	function (func, _n0) {
-		var genA = _n0.a;
-		return elm$random$Random$Generator(
-			function (seed0) {
-				var _n1 = genA(seed0);
-				var a = _n1.a;
-				var seed1 = _n1.b;
-				return _Utils_Tuple2(
-					func(a),
-					seed1);
-			});
+		var genA = _n0;
+		return function (seed0) {
+			var _n1 = genA(seed0);
+			var a = _n1.a;
+			var seed1 = _n1.b;
+			return _Utils_Tuple2(
+				func(a),
+				seed1);
+		};
 	});
 var TSFoster$elm_uuid$UUID$generator = A2(
 	elm$random$Random$map,
@@ -4834,14 +4825,14 @@ var TSFoster$elm_uuid$UUID$generator = A2(
 		TSFoster$elm_uuid$UUID$toVersion(4),
 		A2(
 			elm$random$Random$map,
-			TSFoster$elm_uuid$UUID$UUID,
+			elm$core$Basics$identity,
 			A2(
 				elm$random$Random$list,
 				16,
 				A2(elm$random$Random$int, 0, 255)))));
 var author$project$InitialModel$frequence = 40;
 var elm$core$Maybe$Just = function (a) {
-	return {$: 'Just', a: a};
+	return {$: 0, a: a};
 };
 var author$project$Map$Generator$fill = F2(
 	function (f, l) {
@@ -4853,7 +4844,7 @@ var author$project$Map$Generator$fill = F2(
 				_Utils_update(
 					f,
 					{
-						position: elm$core$Maybe$Just(x)
+						cc: elm$core$Maybe$Just(x)
 					}),
 				A2(author$project$Map$Generator$fill, f, xs));
 		} else {
@@ -4863,28 +4854,28 @@ var author$project$Map$Generator$fill = F2(
 var author$project$Map$Generator$possibleTileCoords = function (m) {
 	var createRows = F2(
 		function (yp, xp) {
-			return (_Utils_cmp(xp, m.dimension.width * m.dimension.tileSize) < 0) ? A2(
+			return (_Utils_cmp(xp, m.p.cD * m.p.B) < 0) ? A2(
 				elm$core$List$cons,
-				{x: xp, y: yp},
-				A2(createRows, yp, xp + m.dimension.tileSize)) : ((_Utils_cmp(yp, m.dimension.height * m.dimension.tileSize) < 0) ? A2(
+				{a2: xp, a3: yp},
+				A2(createRows, yp, xp + m.p.B)) : ((_Utils_cmp(yp, m.p.bC * m.p.B) < 0) ? A2(
 				elm$core$List$cons,
-				{x: 0, y: yp + m.dimension.tileSize},
-				A2(createRows, yp + m.dimension.tileSize, 0 + m.dimension.tileSize)) : _List_Nil);
+				{a2: 0, a3: yp + m.p.B},
+				A2(createRows, yp + m.p.B, 0 + m.p.B)) : _List_Nil);
 		});
 	return A2(createRows, 0, 0);
 };
 var author$project$Objects$Physics$setSpeed = F2(
 	function (speed, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
 			return _Utils_update(
 				gO,
 				{
-					motion: elm$core$Maybe$Just(
+					aC: elm$core$Maybe$Just(
 						_Utils_update(
 							motion,
-							{speed: speed}))
+							{aV: speed}))
 				});
 		} else {
 			return gO;
@@ -4894,11 +4885,11 @@ var elm$core$Basics$fdiv = _Basics_fdiv;
 var elm$core$Basics$ge = _Utils_ge;
 var author$project$Objects$Physics$brakeTo = F2(
 	function (limit, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
-			var brakeFactor = motion.speed / 7.5;
-			return (_Utils_cmp(motion.speed, limit + brakeFactor) > -1) ? A2(author$project$Objects$Physics$setSpeed, motion.speed - brakeFactor, gO) : ((_Utils_cmp(motion.speed, limit) > -1) ? A2(author$project$Objects$Physics$setSpeed, limit, gO) : gO);
+			var brakeFactor = motion.aV / 7.5;
+			return (_Utils_cmp(motion.aV, limit + brakeFactor) > -1) ? A2(author$project$Objects$Physics$setSpeed, motion.aV - brakeFactor, gO) : ((_Utils_cmp(motion.aV, limit) > -1) ? A2(author$project$Objects$Physics$setSpeed, limit, gO) : gO);
 		} else {
 			return gO;
 		}
@@ -4907,56 +4898,53 @@ var author$project$Objects$Physics$slowDown = F2(
 	function (impact, gO) {
 		return A2(author$project$Objects$Physics$brakeTo, 20, gO);
 	});
-var author$project$Types$Background = {$: 'Background'};
-var author$project$Types$Impact = function (a) {
-	return {$: 'Impact', a: a};
-};
+var author$project$Types$Background = 3;
+var author$project$Types$Impact = elm$core$Basics$identity;
 var author$project$Types$Rect = function (a) {
-	return {$: 'Rect', a: a};
+	return {$: 0, a: a};
 };
-var elm$core$Basics$False = {$: 'False'};
-var elm$core$Maybe$Nothing = {$: 'Nothing'};
+var elm$core$Basics$False = 1;
+var elm$core$Maybe$Nothing = {$: 1};
 var author$project$Objects$Tiles$Background$dust = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 0,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$slowDown),
-							identifier: 'background',
-							overrideBackgroundImpact: false,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 0,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$slowDown),
+						au: 'background',
+						b6: false,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'BackgroundDust',
-	kind: author$project$Types$Background,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/background.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'BackgroundDust',
+	bL: 3,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/background.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$background = author$project$Objects$Tiles$Background$dust;
 var author$project$Objects$Utils$position = F2(
 	function (p, gO) {
 		return _Utils_update(
 			gO,
-			{position: p});
+			{cc: p});
 	});
 var author$project$Objects$Module$position = author$project$Objects$Utils$position;
 var author$project$Objects$Utils$rotate = F2(
 	function (r, gO) {
 		return _Utils_update(
 			gO,
-			{rotate: r});
+			{ae: r});
 	});
 var author$project$Objects$Module$rotate = author$project$Objects$Utils$rotate;
 var elm$core$Basics$not = _Basics_not;
@@ -4967,51 +4955,50 @@ var author$project$Objects$Trigger$catchCheckpoint = F2(
 			if (l.b) {
 				var x = l.a;
 				var xs = l.b;
-				return _Utils_eq(gO.identifier, x.identifier) || snatch(xs);
+				return _Utils_eq(gO.au, x.au) || snatch(xs);
 			} else {
 				return false;
 			}
 		};
-		var myPlayer = m.myPlayer;
-		var controlledObject = myPlayer.controlledObject;
-		var catchedCheckpoints = myPlayer.catchedCheckpoints;
+		var myPlayer = m.k;
+		var controlledObject = myPlayer.S;
+		var catchedCheckpoints = myPlayer.bd;
 		var activateCheckpoint = _Utils_update(
 			gO,
-			{collider: elm$core$Maybe$Nothing, sprite: 'assets/decor/checkboxActiveRoadCurve.png'});
+			{bg: elm$core$Maybe$Nothing, ck: 'assets/decor/checkboxActiveRoadCurve.png'});
 		return (!snatch(catchedCheckpoints)) ? _Utils_update(
 			m,
 			{
-				myPlayer: _Utils_update(
+				k: _Utils_update(
 					myPlayer,
 					{
-						catchedCheckpoints: A2(elm$core$List$cons, activateCheckpoint, catchedCheckpoints)
+						bd: A2(elm$core$List$cons, activateCheckpoint, catchedCheckpoints)
 					})
 			}) : m;
 	});
-var author$project$Types$Checkpoint = {$: 'Checkpoint'};
-var elm$core$Basics$True = {$: 'True'};
+var author$project$Types$Checkpoint = 1;
+var elm$core$Basics$True = 0;
 var author$project$Objects$Tiles$Checkpoint$checkBox = function (identifier) {
 	return {
-		collider: elm$core$Maybe$Just(
+		bg: elm$core$Maybe$Just(
 			author$project$Types$Rect(
 				{
-					height: 64,
-					impactFunction: elm$core$Maybe$Just(
-						author$project$Types$Impact(
-							{duration: 100, _function: elm$core$Maybe$Nothing, identifier: 'checkbox-' + identifier, overrideBackgroundImpact: true, unmodifiedObject: elm$core$Maybe$Nothing})),
-					position: {x: 0, y: 0},
-					triggerFunction: elm$core$Maybe$Just(author$project$Objects$Trigger$catchCheckpoint),
-					width: 64
+					bC: 64,
+					bE: elm$core$Maybe$Just(
+						{O: 100, bu: elm$core$Maybe$Nothing, au: 'checkbox-' + identifier, b6: true, a0: elm$core$Maybe$Nothing}),
+					cc: {a2: 0, a3: 0},
+					a$: elm$core$Maybe$Just(author$project$Objects$Trigger$catchCheckpoint),
+					cD: 64
 				})),
-		identifier: 'checkbox-' + identifier,
-		kind: author$project$Types$Checkpoint,
-		motion: elm$core$Maybe$Nothing,
-		physics: elm$core$Maybe$Nothing,
-		position: elm$core$Maybe$Nothing,
-		rotate: 0,
-		size: {height: 64, width: 64},
-		sprite: 'assets/decor/checkboxRoadCurve.png',
-		spriteMinimap: elm$core$Maybe$Nothing
+		au: 'checkbox-' + identifier,
+		bL: 1,
+		aC: elm$core$Maybe$Nothing,
+		b8: elm$core$Maybe$Nothing,
+		cc: elm$core$Maybe$Nothing,
+		ae: 0,
+		cj: {bC: 64, cD: 64},
+		ck: 'assets/decor/checkboxRoadCurve.png',
+		cl: elm$core$Maybe$Nothing
 	};
 };
 var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
@@ -5022,7 +5009,7 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 896, y: 64}),
+				{a2: 896, a3: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('1'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5030,7 +5017,7 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 896, y: 448}),
+				{a2: 896, a3: 448}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('2'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5038,7 +5025,7 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 512, y: 448}),
+				{a2: 512, a3: 448}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('3'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5046,7 +5033,7 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 512, y: 256}),
+				{a2: 512, a3: 256}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('4'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5054,7 +5041,7 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 64, y: 320}),
+				{a2: 64, a3: 320}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('5'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5062,22 +5049,22 @@ var author$project$Map$Track$DustRace$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 64, y: 64}),
+				{a2: 64, a3: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('6')))
 	]);
 var author$project$Objects$Physics$getDirectionFromGameObject = function (gO) {
-	var _n0 = gO.motion;
-	if (_n0.$ === 'Just') {
+	var _n0 = gO.aC;
+	if (!_n0.$) {
 		var motion = _n0.a;
-		return (motion.speed > 0) ? 1 : ((motion.speed < 0) ? (-1) : 0);
+		return (motion.aV > 0) ? 1 : ((motion.aV < 0) ? (-1) : 0);
 	} else {
 		return 0;
 	}
 };
 var author$project$Objects$Physics$getDirectionFromImpact = function (impact) {
-	var i = impact.a;
-	var _n1 = i.unmodifiedObject;
-	if (_n1.$ === 'Just') {
+	var i = impact;
+	var _n1 = i.a0;
+	if (!_n1.$) {
 		var gameObject = _n1.a;
 		return author$project$Objects$Physics$getDirectionFromGameObject(gameObject);
 	} else {
@@ -5086,10 +5073,10 @@ var author$project$Objects$Physics$getDirectionFromImpact = function (impact) {
 };
 var author$project$Objects$Physics$overwriteSpeedLimits = F3(
 	function (maxForwardSpeed, maxBackwardSpeed, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
-			return (_Utils_cmp(motion.speed, maxForwardSpeed) > 0) ? A2(author$project$Objects$Physics$setSpeed, maxForwardSpeed, gO) : ((_Utils_cmp(motion.speed, -maxBackwardSpeed) < 0) ? A2(author$project$Objects$Physics$setSpeed, -maxBackwardSpeed, gO) : A2(author$project$Objects$Physics$setSpeed, motion.speed, gO));
+			return (_Utils_cmp(motion.aV, maxForwardSpeed) > 0) ? A2(author$project$Objects$Physics$setSpeed, maxForwardSpeed, gO) : ((_Utils_cmp(motion.aV, -maxBackwardSpeed) < 0) ? A2(author$project$Objects$Physics$setSpeed, -maxBackwardSpeed, gO) : A2(author$project$Objects$Physics$setSpeed, motion.aV, gO));
 		} else {
 			return gO;
 		}
@@ -5110,186 +5097,180 @@ var author$project$Objects$Physics$bump = F2(
 			20,
 			A2(author$project$Objects$Physics$setSpeed, 80, gO)) : gO);
 	});
-var author$project$Types$Decor = {$: 'Decor'};
+var author$project$Types$Decor = 5;
 var author$project$Objects$Tiles$Decor$bush1 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 32,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Bush1',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 16, y: 16},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 32
+				bC: 32,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Bush1',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 16, a3: 16},
+				a$: elm$core$Maybe$Nothing,
+				cD: 32
 			})),
-	identifier: 'Bush1',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Bush_01.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'Bush1',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/decor/Bush_01.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$bush2 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 32,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Bush2',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 16, y: 16},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 32
+				bC: 32,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Bush2',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 16, a3: 16},
+				a$: elm$core$Maybe$Nothing,
+				cD: 32
 			})),
-	identifier: 'Bush2',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Bush_02.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'Bush2',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/decor/Bush_02.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$invisible = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'invisible',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'invisible',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'invisible',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: '',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'invisible',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: '',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$platformBlue = {
-	collider: elm$core$Maybe$Nothing,
-	identifier: 'PlatformBlue',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 128},
-	sprite: 'assets/decor/Pavilion_01.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	bg: elm$core$Maybe$Nothing,
+	au: 'PlatformBlue',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 128},
+	ck: 'assets/decor/Pavilion_01.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$rock1 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 20,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Rock1',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 0, y: 5},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 32
+				bC: 20,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Rock1',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 0, a3: 5},
+				a$: elm$core$Maybe$Nothing,
+				cD: 32
 			})),
-	identifier: 'Rock1',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 32, width: 32},
-	sprite: 'assets/decor/Rock_01.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'Rock1',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 32, cD: 32},
+	ck: 'assets/decor/Rock_01.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$rock2 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 20,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Rock2',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 0, y: 5},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 32
+				bC: 20,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Rock2',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 0, a3: 5},
+				a$: elm$core$Maybe$Nothing,
+				cD: 32
 			})),
-	identifier: 'Rock2',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 32, width: 32},
-	sprite: 'assets/decor/Rock_02.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'Rock2',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 32, cD: 32},
+	ck: 'assets/decor/Rock_02.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Objects$Tiles$Decor$tree2 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 54,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Tree2',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 5, y: 5},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 54
+				bC: 54,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Tree2',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 5, a3: 5},
+				a$: elm$core$Maybe$Nothing,
+				cD: 54
 			})),
-	identifier: 'Tree2',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/decor/Tree_02.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'Tree2',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/decor/Tree_02.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$decor = _Utils_ap(
 	_List_fromArray(
@@ -5297,7 +5278,7 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 			A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 448, y: 0}),
+				{a2: 448, a3: 0}),
 			author$project$Objects$Tiles$Decor$platformBlue)
 		]),
 	_Utils_ap(
@@ -5306,8 +5287,8 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 			author$project$Objects$Tiles$Decor$bush1,
 			_List_fromArray(
 				[
-					{x: 384, y: 0},
-					{x: 590, y: 0}
+					{a2: 384, a3: 0},
+					{a2: 590, a3: 0}
 				])),
 		_Utils_ap(
 			A2(
@@ -5315,8 +5296,8 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 				author$project$Objects$Tiles$Decor$bush2,
 				_List_fromArray(
 					[
-						{x: 448, y: 320},
-						{x: 576, y: 384}
+						{a2: 448, a3: 320},
+						{a2: 576, a3: 384}
 					])),
 			_Utils_ap(
 				A2(
@@ -5324,8 +5305,8 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 					author$project$Objects$Tiles$Decor$rock1,
 					_List_fromArray(
 						[
-							{x: 858, y: 416},
-							{x: 138, y: 138}
+							{a2: 858, a3: 416},
+							{a2: 138, a3: 138}
 						])),
 				_Utils_ap(
 					A2(
@@ -5333,7 +5314,7 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 						author$project$Objects$Tiles$Decor$rock2,
 						_List_fromArray(
 							[
-								{x: 138, y: 224}
+								{a2: 138, a3: 224}
 							])),
 					_Utils_ap(
 						A2(
@@ -5341,84 +5322,84 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 							author$project$Objects$Tiles$Decor$tree2,
 							_List_fromArray(
 								[
-									{x: 32, y: 365},
-									{x: 96, y: 390},
-									{x: 160, y: 370},
-									{x: 0, y: 250},
-									{x: 0, y: 310},
-									{x: 192, y: 320}
+									{a2: 32, a3: 365},
+									{a2: 96, a3: 390},
+									{a2: 160, a3: 370},
+									{a2: 0, a3: 250},
+									{a2: 0, a3: 310},
+									{a2: 192, a3: 320}
 								])),
 						A2(
 							author$project$Map$Generator$fill,
 							author$project$Objects$Tiles$Decor$invisible,
 							_List_fromArray(
 								[
-									{x: -64, y: 0},
-									{x: -64, y: 64},
-									{x: -64, y: 128},
-									{x: -64, y: 192},
-									{x: -64, y: 256},
-									{x: -64, y: 320},
-									{x: -64, y: 384},
-									{x: -64, y: 448},
-									{x: -64, y: 512},
-									{x: -64, y: -64},
-									{x: 0, y: -64},
-									{x: 64, y: -64},
-									{x: 128, y: -64},
-									{x: 192, y: -64},
-									{x: 256, y: -64},
-									{x: 320, y: -64},
-									{x: 384, y: -64},
-									{x: 448, y: -64},
-									{x: 512, y: -64},
-									{x: 576, y: -64},
-									{x: 640, y: -64},
-									{x: 704, y: -64},
-									{x: 768, y: -64},
-									{x: 832, y: -64},
-									{x: 896, y: -64},
-									{x: 960, y: -64},
-									{x: 1024, y: -64},
-									{x: 1024, y: 0},
-									{x: 1024, y: 64},
-									{x: 1024, y: 128},
-									{x: 1024, y: 192},
-									{x: 1024, y: 256},
-									{x: 1024, y: 320},
-									{x: 1024, y: 384},
-									{x: 1024, y: 448},
-									{x: 1024, y: 512},
-									{x: 0, y: 576},
-									{x: 64, y: 576},
-									{x: 128, y: 576},
-									{x: 192, y: 576},
-									{x: 256, y: 576},
-									{x: 320, y: 576},
-									{x: 384, y: 576},
-									{x: 448, y: 576},
-									{x: 512, y: 576},
-									{x: 576, y: 576},
-									{x: 640, y: 576},
-									{x: 704, y: 576},
-									{x: 768, y: 576},
-									{x: 832, y: 576},
-									{x: 896, y: 576},
-									{x: 960, y: 576},
-									{x: 1024, y: 576}
+									{a2: -64, a3: 0},
+									{a2: -64, a3: 64},
+									{a2: -64, a3: 128},
+									{a2: -64, a3: 192},
+									{a2: -64, a3: 256},
+									{a2: -64, a3: 320},
+									{a2: -64, a3: 384},
+									{a2: -64, a3: 448},
+									{a2: -64, a3: 512},
+									{a2: -64, a3: -64},
+									{a2: 0, a3: -64},
+									{a2: 64, a3: -64},
+									{a2: 128, a3: -64},
+									{a2: 192, a3: -64},
+									{a2: 256, a3: -64},
+									{a2: 320, a3: -64},
+									{a2: 384, a3: -64},
+									{a2: 448, a3: -64},
+									{a2: 512, a3: -64},
+									{a2: 576, a3: -64},
+									{a2: 640, a3: -64},
+									{a2: 704, a3: -64},
+									{a2: 768, a3: -64},
+									{a2: 832, a3: -64},
+									{a2: 896, a3: -64},
+									{a2: 960, a3: -64},
+									{a2: 1024, a3: -64},
+									{a2: 1024, a3: 0},
+									{a2: 1024, a3: 64},
+									{a2: 1024, a3: 128},
+									{a2: 1024, a3: 192},
+									{a2: 1024, a3: 256},
+									{a2: 1024, a3: 320},
+									{a2: 1024, a3: 384},
+									{a2: 1024, a3: 448},
+									{a2: 1024, a3: 512},
+									{a2: 0, a3: 576},
+									{a2: 64, a3: 576},
+									{a2: 128, a3: 576},
+									{a2: 192, a3: 576},
+									{a2: 256, a3: 576},
+									{a2: 320, a3: 576},
+									{a2: 384, a3: 576},
+									{a2: 448, a3: 576},
+									{a2: 512, a3: 576},
+									{a2: 576, a3: 576},
+									{a2: 640, a3: 576},
+									{a2: 704, a3: 576},
+									{a2: 768, a3: 576},
+									{a2: 832, a3: 576},
+									{a2: 896, a3: 576},
+									{a2: 960, a3: 576},
+									{a2: 1024, a3: 576}
 								]))))))));
-var author$project$Types$Finished = {$: 'Finished'};
+var author$project$Types$Finished = 1;
 var elm$core$Basics$and = _Basics_and;
 var author$project$Objects$Trigger$endCheckpoint = F2(
 	function (gO, m) {
-		var myPlayer = m.myPlayer;
+		var myPlayer = m.k;
 		var getCheckpoints = function (l) {
 			getCheckpoints:
 			while (true) {
 				if (l.b) {
 					var x = l.a;
 					var xs = l.b;
-					if (_Utils_eq(x.kind, author$project$Types$Checkpoint)) {
+					if (x.bL === 1) {
 						return A2(
 							elm$core$List$cons,
 							x,
@@ -5433,14 +5414,14 @@ var author$project$Objects$Trigger$endCheckpoint = F2(
 				}
 			}
 		};
-		var neededCheckpoints = getCheckpoints(m.map.gameObjects.trigger);
-		var catchedCheckpoints = A2(elm$core$List$cons, gO, myPlayer.catchedCheckpoints);
+		var neededCheckpoints = getCheckpoints(m.ay.Q.cv);
+		var catchedCheckpoints = A2(elm$core$List$cons, gO, myPlayer.bd);
 		var approvedHelper = F2(
 			function (g, l) {
 				if (l.b) {
 					var x = l.a;
 					var xs = l.b;
-					return _Utils_eq(g.identifier, x.identifier) || A2(approvedHelper, g, xs);
+					return _Utils_eq(g.au, x.au) || A2(approvedHelper, g, xs);
 				} else {
 					return false;
 				}
@@ -5454,87 +5435,84 @@ var author$project$Objects$Trigger$endCheckpoint = F2(
 				return true;
 			}
 		};
-		return approved(neededCheckpoints) ? ((_Utils_cmp(m.myPlayer.currentLab, m.map.options.labs) < 0) ? _Utils_update(
+		return approved(neededCheckpoints) ? ((_Utils_cmp(m.k.bj, m.ay.b5.bR) < 0) ? _Utils_update(
 			m,
 			{
-				myPlayer: _Utils_update(
+				k: _Utils_update(
 					myPlayer,
-					{catchedCheckpoints: _List_Nil, currentLab: myPlayer.currentLab + 1})
+					{bd: _List_Nil, bj: myPlayer.bj + 1})
 			}) : _Utils_update(
 			m,
-			{state: author$project$Types$Finished})) : m;
+			{aW: 1})) : m;
 	});
 var author$project$Objects$Tiles$Checkpoint$finishLine = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{duration: 100, _function: elm$core$Maybe$Nothing, identifier: 'FinishLine', overrideBackgroundImpact: true, unmodifiedObject: elm$core$Maybe$Nothing})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Just(author$project$Objects$Trigger$endCheckpoint),
-				width: 20
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{O: 100, bu: elm$core$Maybe$Nothing, au: 'FinishLine', b6: true, a0: elm$core$Maybe$Nothing}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Just(author$project$Objects$Trigger$endCheckpoint),
+				cD: 20
 			})),
-	identifier: 'FinishLine',
-	kind: author$project$Types$Checkpoint,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 20},
-	sprite: 'assets/decor/Finish.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'FinishLine',
+	bL: 1,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 20},
+	ck: 'assets/decor/Finish.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$finishLine = A2(
 	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 492, y: 65}),
+		{a2: 492, a3: 65}),
 	A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
-var author$project$Types$Road = {$: 'Road'};
+var author$project$Types$Road = 4;
 var author$project$Objects$Tiles$Road$curveTopRight = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{duration: 0, _function: elm$core$Maybe$Nothing, identifier: 'road', overrideBackgroundImpact: true, unmodifiedObject: elm$core$Maybe$Nothing})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{O: 0, bu: elm$core$Maybe$Nothing, au: 'road', b6: true, a0: elm$core$Maybe$Nothing}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'RoadStraight',
-	kind: author$project$Types$Road,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/roadCurve.png',
-	spriteMinimap: elm$core$Maybe$Just('assets/minimapRoadCurve.png')
+	au: 'RoadStraight',
+	bL: 4,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/roadCurve.png',
+	cl: elm$core$Maybe$Just('assets/minimapRoadCurve.png')
 };
 var author$project$Objects$Tiles$Road$straight = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{duration: 0, _function: elm$core$Maybe$Nothing, identifier: 'road', overrideBackgroundImpact: true, unmodifiedObject: elm$core$Maybe$Nothing})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{O: 0, bu: elm$core$Maybe$Nothing, au: 'road', b6: true, a0: elm$core$Maybe$Nothing}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'RoadStraight',
-	kind: author$project$Types$Road,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/roadStraight.png',
-	spriteMinimap: elm$core$Maybe$Just('assets/minimapRoadStraight.png')
+	au: 'RoadStraight',
+	bL: 4,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/roadStraight.png',
+	cl: elm$core$Maybe$Just('assets/minimapRoadStraight.png')
 };
 var author$project$Map$Track$DustRace$roads = _Utils_ap(
 	A2(
@@ -5542,16 +5520,16 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 		author$project$Objects$Tiles$Road$straight,
 		_List_fromArray(
 			[
-				{x: 64, y: 128},
-				{x: 64, y: 192},
-				{x: 64, y: 256},
-				{x: 512, y: 320},
-				{x: 512, y: 384},
-				{x: 896, y: 128},
-				{x: 896, y: 192},
-				{x: 896, y: 256},
-				{x: 896, y: 320},
-				{x: 896, y: 384}
+				{a2: 64, a3: 128},
+				{a2: 64, a3: 192},
+				{a2: 64, a3: 256},
+				{a2: 512, a3: 320},
+				{a2: 512, a3: 384},
+				{a2: 896, a3: 128},
+				{a2: 896, a3: 192},
+				{a2: 896, a3: 256},
+				{a2: 896, a3: 320},
+				{a2: 896, a3: 384}
 			])),
 	_Utils_ap(
 		A2(
@@ -5559,28 +5537,28 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 			A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$straight),
 			_List_fromArray(
 				[
-					{x: 128, y: 64},
-					{x: 192, y: 64},
-					{x: 256, y: 64},
-					{x: 320, y: 64},
-					{x: 384, y: 64},
-					{x: 448, y: 64},
-					{x: 512, y: 64},
-					{x: 576, y: 64},
-					{x: 640, y: 64},
-					{x: 704, y: 64},
-					{x: 768, y: 64},
-					{x: 832, y: 64},
-					{x: 192, y: 256},
-					{x: 256, y: 256},
-					{x: 320, y: 256},
-					{x: 384, y: 256},
-					{x: 448, y: 256},
-					{x: 576, y: 448},
-					{x: 640, y: 448},
-					{x: 704, y: 448},
-					{x: 768, y: 448},
-					{x: 832, y: 448}
+					{a2: 128, a3: 64},
+					{a2: 192, a3: 64},
+					{a2: 256, a3: 64},
+					{a2: 320, a3: 64},
+					{a2: 384, a3: 64},
+					{a2: 448, a3: 64},
+					{a2: 512, a3: 64},
+					{a2: 576, a3: 64},
+					{a2: 640, a3: 64},
+					{a2: 704, a3: 64},
+					{a2: 768, a3: 64},
+					{a2: 832, a3: 64},
+					{a2: 192, a3: 256},
+					{a2: 256, a3: 256},
+					{a2: 320, a3: 256},
+					{a2: 384, a3: 256},
+					{a2: 448, a3: 256},
+					{a2: 576, a3: 448},
+					{a2: 640, a3: 448},
+					{a2: 704, a3: 448},
+					{a2: 768, a3: 448},
+					{a2: 832, a3: 448}
 				])),
 		_Utils_ap(
 			A2(
@@ -5588,8 +5566,8 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 				A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
 				_List_fromArray(
 					[
-						{x: 64, y: 64},
-						{x: 128, y: 256}
+						{a2: 64, a3: 64},
+						{a2: 128, a3: 256}
 					])),
 			_Utils_ap(
 				A2(
@@ -5597,8 +5575,8 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 					A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
 					_List_fromArray(
 						[
-							{x: 64, y: 320},
-							{x: 512, y: 448}
+							{a2: 64, a3: 320},
+							{a2: 512, a3: 448}
 						])),
 				_Utils_ap(
 					A2(
@@ -5606,90 +5584,89 @@ var author$project$Map$Track$DustRace$roads = _Utils_ap(
 						A2(author$project$Objects$Module$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
-								{x: 128, y: 320},
-								{x: 896, y: 448}
+								{a2: 128, a3: 320},
+								{a2: 896, a3: 448}
 							])),
 					A2(
 						author$project$Map$Generator$fill,
 						A2(author$project$Objects$Module$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
-								{x: 512, y: 256},
-								{x: 896, y: 64}
+								{a2: 512, a3: 256},
+								{a2: 896, a3: 64}
 							])))))));
 var author$project$Objects$Trigger$startCheckpoint = F2(
 	function (gO, m) {
-		var myPlayer = m.myPlayer;
+		var myPlayer = m.k;
 		return _Utils_update(
 			m,
 			{
-				myPlayer: _Utils_update(
+				k: _Utils_update(
 					myPlayer,
 					{
-						catchedCheckpoints: _List_fromArray(
+						bd: _List_fromArray(
 							[gO])
 					})
 			});
 	});
 var author$project$Objects$Tiles$Checkpoint$startLine = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{duration: 100, _function: elm$core$Maybe$Nothing, identifier: 'StartLine', overrideBackgroundImpact: true, unmodifiedObject: elm$core$Maybe$Nothing})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Just(author$project$Objects$Trigger$startCheckpoint),
-				width: 20
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{O: 100, bu: elm$core$Maybe$Nothing, au: 'StartLine', b6: true, a0: elm$core$Maybe$Nothing}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Just(author$project$Objects$Trigger$startCheckpoint),
+				cD: 20
 			})),
-	identifier: 'StartLine',
-	kind: author$project$Types$Checkpoint,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 20},
-	sprite: '',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'StartLine',
+	bL: 1,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 20},
+	ck: '',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$DustRace$startLine = A2(
 	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 512, y: 65}),
+		{a2: 512, a3: 65}),
 	A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
 var author$project$Map$Track$DustRace$init = {
-	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
-	gameObjects: {
-		background: _List_Nil,
-		decor: author$project$Map$Track$DustRace$decor,
-		roads: author$project$Map$Track$DustRace$roads,
-		trigger: A2(
+	p: {bC: 8, B: 64, cA: 2, cD: 16},
+	Q: {
+		ba: _List_Nil,
+		bl: author$project$Map$Track$DustRace$decor,
+		cf: author$project$Map$Track$DustRace$roads,
+		cv: A2(
 			elm$core$List$cons,
 			author$project$Map$Track$DustRace$startLine,
 			A2(elm$core$List$cons, author$project$Map$Track$DustRace$finishLine, author$project$Map$Track$DustRace$checkBox))
 	},
-	meta: {description: 'The dirty one!', name: 'Dust Race'},
-	options: {
-		labs: 2,
-		prepareRaceTime: 3000,
-		startPositions: _List_fromArray(
+	bZ: {bm: 'The dirty one!', b$: 'Dust Race'},
+	b5: {
+		bR: 2,
+		cd: 3000,
+		co: _List_fromArray(
 			[
-				{x: 448, y: 128}
+				{a2: 448, a3: 128}
 			]),
-		starter: 1
+		cp: 1
 	}
 };
 var author$project$Map$Track$DustRace$model = function () {
 	var map = author$project$Map$Track$DustRace$init;
-	var gameObjects = author$project$Map$Track$DustRace$init.gameObjects;
+	var gameObjects = author$project$Map$Track$DustRace$init.Q;
 	return _Utils_update(
 		map,
 		{
-			gameObjects: _Utils_update(
+			Q: _Utils_update(
 				gameObjects,
 				{
-					background: A2(
+					ba: A2(
 						author$project$Map$Generator$fill,
 						author$project$Map$Track$DustRace$background,
 						author$project$Map$Generator$possibleTileCoords(map))
@@ -5698,32 +5675,31 @@ var author$project$Map$Track$DustRace$model = function () {
 }();
 var author$project$Map$Track$Module$defaultTrack = author$project$Map$Track$DustRace$model;
 var author$project$Objects$Tiles$Background$grass = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 64,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 0,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$slowDown),
-							identifier: 'background',
-							overrideBackgroundImpact: false,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 0, y: 0},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 64,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 0,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$slowDown),
+						au: 'background',
+						b6: false,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 0, a3: 0},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'BackgroundGrass',
-	kind: author$project$Types$Background,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 64, width: 64},
-	sprite: 'assets/backgroundGrass.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'BackgroundGrass',
+	bL: 3,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 64, cD: 64},
+	ck: 'assets/backgroundGrass.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$SummerBreeze$background = author$project$Objects$Tiles$Background$grass;
 var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
@@ -5734,7 +5710,7 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 896, y: 64}),
+				{a2: 896, a3: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('1'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5742,7 +5718,7 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 704, y: 256}),
+				{a2: 704, a3: 256}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('2'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5750,7 +5726,7 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 512, y: 448}),
+				{a2: 512, a3: 448}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('3'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5758,7 +5734,7 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 512, y: 256}),
+				{a2: 512, a3: 256}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('4'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5766,7 +5742,7 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 64, y: 320}),
+				{a2: 64, a3: 320}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('5'))),
 		A2(
 		author$project$Objects$Module$rotate,
@@ -5774,36 +5750,35 @@ var author$project$Map$Track$SummerBreeze$checkBox = _List_fromArray(
 		A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 64, y: 64}),
+				{a2: 64, a3: 64}),
 			author$project$Objects$Tiles$Checkpoint$checkBox('6')))
 	]);
 var author$project$Objects$Tiles$Decor$house1 = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 96,
-				impactFunction: elm$core$Maybe$Just(
-					author$project$Types$Impact(
-						{
-							duration: 100,
-							_function: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
-							identifier: 'Tree1',
-							overrideBackgroundImpact: true,
-							unmodifiedObject: elm$core$Maybe$Nothing
-						})),
-				position: {x: 5, y: 5},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 64
+				bC: 96,
+				bE: elm$core$Maybe$Just(
+					{
+						O: 100,
+						bu: elm$core$Maybe$Just(author$project$Objects$Physics$bump),
+						au: 'Tree1',
+						b6: true,
+						a0: elm$core$Maybe$Nothing
+					}),
+				cc: {a2: 5, a3: 5},
+				a$: elm$core$Maybe$Nothing,
+				cD: 64
 			})),
-	identifier: 'House1',
-	kind: author$project$Types$Decor,
-	motion: elm$core$Maybe$Nothing,
-	physics: elm$core$Maybe$Nothing,
-	position: elm$core$Maybe$Nothing,
-	rotate: 0,
-	size: {height: 96, width: 64},
-	sprite: 'assets/decor/Decor_Building_01.png',
-	spriteMinimap: elm$core$Maybe$Nothing
+	au: 'House1',
+	bL: 5,
+	aC: elm$core$Maybe$Nothing,
+	b8: elm$core$Maybe$Nothing,
+	cc: elm$core$Maybe$Nothing,
+	ae: 0,
+	cj: {bC: 96, cD: 64},
+	ck: 'assets/decor/Decor_Building_01.png',
+	cl: elm$core$Maybe$Nothing
 };
 var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 	_List_fromArray(
@@ -5811,7 +5786,7 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 			A2(
 			author$project$Objects$Module$position,
 			elm$core$Maybe$Just(
-				{x: 832, y: 384}),
+				{a2: 832, a3: 384}),
 			author$project$Objects$Tiles$Decor$house1)
 		]),
 	_Utils_ap(
@@ -5820,9 +5795,9 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 			author$project$Objects$Tiles$Decor$bush1,
 			_List_fromArray(
 				[
-					{x: 384, y: 0},
-					{x: 487, y: 0},
-					{x: 590, y: 0}
+					{a2: 384, a3: 0},
+					{a2: 487, a3: 0},
+					{a2: 590, a3: 0}
 				])),
 		_Utils_ap(
 			A2(
@@ -5830,8 +5805,8 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 				author$project$Objects$Tiles$Decor$bush2,
 				_List_fromArray(
 					[
-						{x: 448, y: 320},
-						{x: 576, y: 384}
+						{a2: 448, a3: 320},
+						{a2: 576, a3: 384}
 					])),
 			_Utils_ap(
 				A2(
@@ -5839,7 +5814,7 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 					author$project$Objects$Tiles$Decor$rock1,
 					_List_fromArray(
 						[
-							{x: 138, y: 138}
+							{a2: 138, a3: 138}
 						])),
 				_Utils_ap(
 					A2(
@@ -5847,7 +5822,7 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 						author$project$Objects$Tiles$Decor$rock2,
 						_List_fromArray(
 							[
-								{x: 138, y: 224}
+								{a2: 138, a3: 224}
 							])),
 					_Utils_ap(
 						A2(
@@ -5855,76 +5830,76 @@ var author$project$Map$Track$SummerBreeze$decor = _Utils_ap(
 							author$project$Objects$Tiles$Decor$tree2,
 							_List_fromArray(
 								[
-									{x: 32, y: 365},
-									{x: 96, y: 390},
-									{x: 160, y: 370},
-									{x: 0, y: 250},
-									{x: 0, y: 310},
-									{x: 192, y: 320}
+									{a2: 32, a3: 365},
+									{a2: 96, a3: 390},
+									{a2: 160, a3: 370},
+									{a2: 0, a3: 250},
+									{a2: 0, a3: 310},
+									{a2: 192, a3: 320}
 								])),
 						A2(
 							author$project$Map$Generator$fill,
 							author$project$Objects$Tiles$Decor$invisible,
 							_List_fromArray(
 								[
-									{x: -64, y: 0},
-									{x: -64, y: 64},
-									{x: -64, y: 128},
-									{x: -64, y: 192},
-									{x: -64, y: 256},
-									{x: -64, y: 320},
-									{x: -64, y: 384},
-									{x: -64, y: 448},
-									{x: -64, y: 512},
-									{x: -64, y: -64},
-									{x: 0, y: -64},
-									{x: 64, y: -64},
-									{x: 128, y: -64},
-									{x: 192, y: -64},
-									{x: 256, y: -64},
-									{x: 320, y: -64},
-									{x: 384, y: -64},
-									{x: 448, y: -64},
-									{x: 512, y: -64},
-									{x: 576, y: -64},
-									{x: 640, y: -64},
-									{x: 704, y: -64},
-									{x: 768, y: -64},
-									{x: 832, y: -64},
-									{x: 896, y: -64},
-									{x: 960, y: -64},
-									{x: 1024, y: -64},
-									{x: 1024, y: 0},
-									{x: 1024, y: 64},
-									{x: 1024, y: 128},
-									{x: 1024, y: 192},
-									{x: 1024, y: 256},
-									{x: 1024, y: 320},
-									{x: 1024, y: 384},
-									{x: 1024, y: 448},
-									{x: 1024, y: 512},
-									{x: 0, y: 576},
-									{x: 64, y: 576},
-									{x: 128, y: 576},
-									{x: 192, y: 576},
-									{x: 256, y: 576},
-									{x: 320, y: 576},
-									{x: 384, y: 576},
-									{x: 448, y: 576},
-									{x: 512, y: 576},
-									{x: 576, y: 576},
-									{x: 640, y: 576},
-									{x: 704, y: 576},
-									{x: 768, y: 576},
-									{x: 832, y: 576},
-									{x: 896, y: 576},
-									{x: 960, y: 576},
-									{x: 1024, y: 576}
+									{a2: -64, a3: 0},
+									{a2: -64, a3: 64},
+									{a2: -64, a3: 128},
+									{a2: -64, a3: 192},
+									{a2: -64, a3: 256},
+									{a2: -64, a3: 320},
+									{a2: -64, a3: 384},
+									{a2: -64, a3: 448},
+									{a2: -64, a3: 512},
+									{a2: -64, a3: -64},
+									{a2: 0, a3: -64},
+									{a2: 64, a3: -64},
+									{a2: 128, a3: -64},
+									{a2: 192, a3: -64},
+									{a2: 256, a3: -64},
+									{a2: 320, a3: -64},
+									{a2: 384, a3: -64},
+									{a2: 448, a3: -64},
+									{a2: 512, a3: -64},
+									{a2: 576, a3: -64},
+									{a2: 640, a3: -64},
+									{a2: 704, a3: -64},
+									{a2: 768, a3: -64},
+									{a2: 832, a3: -64},
+									{a2: 896, a3: -64},
+									{a2: 960, a3: -64},
+									{a2: 1024, a3: -64},
+									{a2: 1024, a3: 0},
+									{a2: 1024, a3: 64},
+									{a2: 1024, a3: 128},
+									{a2: 1024, a3: 192},
+									{a2: 1024, a3: 256},
+									{a2: 1024, a3: 320},
+									{a2: 1024, a3: 384},
+									{a2: 1024, a3: 448},
+									{a2: 1024, a3: 512},
+									{a2: 0, a3: 576},
+									{a2: 64, a3: 576},
+									{a2: 128, a3: 576},
+									{a2: 192, a3: 576},
+									{a2: 256, a3: 576},
+									{a2: 320, a3: 576},
+									{a2: 384, a3: 576},
+									{a2: 448, a3: 576},
+									{a2: 512, a3: 576},
+									{a2: 576, a3: 576},
+									{a2: 640, a3: 576},
+									{a2: 704, a3: 576},
+									{a2: 768, a3: 576},
+									{a2: 832, a3: 576},
+									{a2: 896, a3: 576},
+									{a2: 960, a3: 576},
+									{a2: 1024, a3: 576}
 								]))))))));
 var author$project$Map$Track$SummerBreeze$finishLine = A2(
 	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 492, y: 65}),
+		{a2: 492, a3: 65}),
 	A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Checkpoint$finishLine));
 var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 	A2(
@@ -5932,14 +5907,14 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 		author$project$Objects$Tiles$Road$straight,
 		_List_fromArray(
 			[
-				{x: 64, y: 128},
-				{x: 64, y: 192},
-				{x: 64, y: 256},
-				{x: 512, y: 320},
-				{x: 512, y: 384},
-				{x: 640, y: 192},
-				{x: 704, y: 320},
-				{x: 704, y: 384}
+				{a2: 64, a3: 128},
+				{a2: 64, a3: 192},
+				{a2: 64, a3: 256},
+				{a2: 512, a3: 320},
+				{a2: 512, a3: 384},
+				{a2: 640, a3: 192},
+				{a2: 704, a3: 320},
+				{a2: 704, a3: 384}
 			])),
 	_Utils_ap(
 		A2(
@@ -5947,28 +5922,28 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 			A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$straight),
 			_List_fromArray(
 				[
-					{x: 128, y: 64},
-					{x: 192, y: 64},
-					{x: 256, y: 64},
-					{x: 320, y: 64},
-					{x: 384, y: 64},
-					{x: 448, y: 64},
-					{x: 512, y: 64},
-					{x: 576, y: 64},
-					{x: 640, y: 64},
-					{x: 704, y: 64},
-					{x: 768, y: 64},
-					{x: 832, y: 64},
-					{x: 832, y: 128},
-					{x: 768, y: 128},
-					{x: 704, y: 128},
-					{x: 192, y: 256},
-					{x: 256, y: 256},
-					{x: 320, y: 256},
-					{x: 384, y: 256},
-					{x: 448, y: 256},
-					{x: 576, y: 448},
-					{x: 640, y: 448}
+					{a2: 128, a3: 64},
+					{a2: 192, a3: 64},
+					{a2: 256, a3: 64},
+					{a2: 320, a3: 64},
+					{a2: 384, a3: 64},
+					{a2: 448, a3: 64},
+					{a2: 512, a3: 64},
+					{a2: 576, a3: 64},
+					{a2: 640, a3: 64},
+					{a2: 704, a3: 64},
+					{a2: 768, a3: 64},
+					{a2: 832, a3: 64},
+					{a2: 832, a3: 128},
+					{a2: 768, a3: 128},
+					{a2: 704, a3: 128},
+					{a2: 192, a3: 256},
+					{a2: 256, a3: 256},
+					{a2: 320, a3: 256},
+					{a2: 384, a3: 256},
+					{a2: 448, a3: 256},
+					{a2: 576, a3: 448},
+					{a2: 640, a3: 448}
 				])),
 		_Utils_ap(
 			A2(
@@ -5976,9 +5951,9 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 				A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Road$curveTopRight),
 				_List_fromArray(
 					[
-						{x: 64, y: 64},
-						{x: 128, y: 256},
-						{x: 640, y: 128}
+						{a2: 64, a3: 64},
+						{a2: 128, a3: 256},
+						{a2: 640, a3: 128}
 					])),
 			_Utils_ap(
 				A2(
@@ -5986,9 +5961,9 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 					A2(author$project$Objects$Module$rotate, 0, author$project$Objects$Tiles$Road$curveTopRight),
 					_List_fromArray(
 						[
-							{x: 64, y: 320},
-							{x: 512, y: 448},
-							{x: 640, y: 256}
+							{a2: 64, a3: 320},
+							{a2: 512, a3: 448},
+							{a2: 640, a3: 256}
 						])),
 				_Utils_ap(
 					A2(
@@ -5996,56 +5971,56 @@ var author$project$Map$Track$SummerBreeze$roads = _Utils_ap(
 						A2(author$project$Objects$Module$rotate, 270, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
-								{x: 128, y: 320},
-								{x: 896, y: 128},
-								{x: 704, y: 448}
+								{a2: 128, a3: 320},
+								{a2: 896, a3: 128},
+								{a2: 704, a3: 448}
 							])),
 					A2(
 						author$project$Map$Generator$fill,
 						A2(author$project$Objects$Module$rotate, 180, author$project$Objects$Tiles$Road$curveTopRight),
 						_List_fromArray(
 							[
-								{x: 512, y: 256},
-								{x: 896, y: 64},
-								{x: 704, y: 256}
+								{a2: 512, a3: 256},
+								{a2: 896, a3: 64},
+								{a2: 704, a3: 256}
 							])))))));
 var author$project$Map$Track$SummerBreeze$startLine = A2(
 	author$project$Objects$Module$position,
 	elm$core$Maybe$Just(
-		{x: 512, y: 65}),
+		{a2: 512, a3: 65}),
 	A2(author$project$Objects$Module$rotate, 90, author$project$Objects$Tiles$Checkpoint$startLine));
 var author$project$Map$Track$SummerBreeze$init = {
-	dimension: {height: 8, tileSize: 64, viewScale: 2, width: 16},
-	gameObjects: {
-		background: _List_Nil,
-		decor: author$project$Map$Track$SummerBreeze$decor,
-		roads: author$project$Map$Track$SummerBreeze$roads,
-		trigger: A2(
+	p: {bC: 8, B: 64, cA: 2, cD: 16},
+	Q: {
+		ba: _List_Nil,
+		bl: author$project$Map$Track$SummerBreeze$decor,
+		cf: author$project$Map$Track$SummerBreeze$roads,
+		cv: A2(
 			elm$core$List$cons,
 			author$project$Map$Track$SummerBreeze$startLine,
 			A2(elm$core$List$cons, author$project$Map$Track$SummerBreeze$finishLine, author$project$Map$Track$SummerBreeze$checkBox))
 	},
-	meta: {description: 'Loud engines and sunny weather', name: 'Summer Breeze'},
-	options: {
-		labs: 4,
-		prepareRaceTime: 5000,
-		startPositions: _List_fromArray(
+	bZ: {bm: 'Loud engines and sunny weather', b$: 'Summer Breeze'},
+	b5: {
+		bR: 4,
+		cd: 5000,
+		co: _List_fromArray(
 			[
-				{x: 448, y: 128}
+				{a2: 448, a3: 128}
 			]),
-		starter: 1
+		cp: 1
 	}
 };
 var author$project$Map$Track$SummerBreeze$model = function () {
 	var map = author$project$Map$Track$SummerBreeze$init;
-	var gameObjects = author$project$Map$Track$SummerBreeze$init.gameObjects;
+	var gameObjects = author$project$Map$Track$SummerBreeze$init.Q;
 	return _Utils_update(
 		map,
 		{
-			gameObjects: _Utils_update(
+			Q: _Utils_update(
 				gameObjects,
 				{
-					background: A2(
+					ba: A2(
 						author$project$Map$Generator$fill,
 						author$project$Map$Track$SummerBreeze$background,
 						author$project$Map$Generator$possibleTileCoords(map))
@@ -6054,130 +6029,130 @@ var author$project$Map$Track$SummerBreeze$model = function () {
 }();
 var author$project$Map$Track$Module$tracks = _List_fromArray(
 	[author$project$Map$Track$DustRace$model, author$project$Map$Track$SummerBreeze$model]);
-var author$project$Types$Car = {$: 'Car'};
+var author$project$Types$Car = 2;
 var author$project$Objects$Vehicle$Ambulance$model = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 8,
-				impactFunction: elm$core$Maybe$Nothing,
-				position: {x: 12, y: 12},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 8
+				bC: 8,
+				bE: elm$core$Maybe$Nothing,
+				cc: {a2: 12, a3: 12},
+				a$: elm$core$Maybe$Nothing,
+				cD: 8
 			})),
-	identifier: 'Ambulance',
-	kind: author$project$Types$Car,
-	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 90, speed: 0, steeringAngle: 4.6}),
-	physics: elm$core$Maybe$Just(
-		{forceBackward: -1, forceForward: 2, impacts: _List_Nil}),
-	position: elm$core$Maybe$Just(
-		{x: 450, y: 100}),
-	rotate: 90,
-	size: {height: 32, width: 32},
-	sprite: 'assets/cars/ambulance.png',
-	spriteMinimap: elm$core$Maybe$Just('assets/cars/ambulance.png')
+	au: 'Ambulance',
+	bL: 2,
+	aC: elm$core$Maybe$Just(
+		{az: 20, aA: 90, aV: 0, cq: 4.6}),
+	b8: elm$core$Maybe$Just(
+		{bs: -1, bt: 2, t: _List_Nil}),
+	cc: elm$core$Maybe$Just(
+		{a2: 450, a3: 100}),
+	ae: 90,
+	cj: {bC: 32, cD: 32},
+	ck: 'assets/cars/ambulance.png',
+	cl: elm$core$Maybe$Just('assets/cars/ambulance.png')
 };
 var author$project$Objects$Vehicle$Module$defaultVehicle = author$project$Objects$Vehicle$Ambulance$model;
 var author$project$Objects$Vehicle$Police$model = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 8,
-				impactFunction: elm$core$Maybe$Nothing,
-				position: {x: 12, y: 12},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 8
+				bC: 8,
+				bE: elm$core$Maybe$Nothing,
+				cc: {a2: 12, a3: 12},
+				a$: elm$core$Maybe$Nothing,
+				cD: 8
 			})),
-	identifier: 'Police',
-	kind: author$project$Types$Car,
-	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 80, speed: 0, steeringAngle: 4.8}),
-	physics: elm$core$Maybe$Just(
-		{forceBackward: -1, forceForward: 3, impacts: _List_Nil}),
-	position: elm$core$Maybe$Just(
-		{x: 450, y: 100}),
-	rotate: 90,
-	size: {height: 32, width: 32},
-	sprite: 'assets/cars/police.png',
-	spriteMinimap: elm$core$Maybe$Just('assets/cars/police.png')
+	au: 'Police',
+	bL: 2,
+	aC: elm$core$Maybe$Just(
+		{az: 20, aA: 80, aV: 0, cq: 4.8}),
+	b8: elm$core$Maybe$Just(
+		{bs: -1, bt: 3, t: _List_Nil}),
+	cc: elm$core$Maybe$Just(
+		{a2: 450, a3: 100}),
+	ae: 90,
+	cj: {bC: 32, cD: 32},
+	ck: 'assets/cars/police.png',
+	cl: elm$core$Maybe$Just('assets/cars/police.png')
 };
 var author$project$Objects$Vehicle$Taxi$model = {
-	collider: elm$core$Maybe$Just(
+	bg: elm$core$Maybe$Just(
 		author$project$Types$Rect(
 			{
-				height: 8,
-				impactFunction: elm$core$Maybe$Nothing,
-				position: {x: 12, y: 12},
-				triggerFunction: elm$core$Maybe$Nothing,
-				width: 8
+				bC: 8,
+				bE: elm$core$Maybe$Nothing,
+				cc: {a2: 12, a3: 12},
+				a$: elm$core$Maybe$Nothing,
+				cD: 8
 			})),
-	identifier: 'Taxi',
-	kind: author$project$Types$Car,
-	motion: elm$core$Maybe$Just(
-		{maxBackwardSpeed: 20, maxForwardSpeed: 75, speed: 0, steeringAngle: 5}),
-	physics: elm$core$Maybe$Just(
-		{forceBackward: -1, forceForward: 2, impacts: _List_Nil}),
-	position: elm$core$Maybe$Just(
-		{x: 450, y: 100}),
-	rotate: 90,
-	size: {height: 32, width: 32},
-	sprite: 'assets/cars/taxi.png',
-	spriteMinimap: elm$core$Maybe$Just('assets/cars/taxi.png')
+	au: 'Taxi',
+	bL: 2,
+	aC: elm$core$Maybe$Just(
+		{az: 20, aA: 75, aV: 0, cq: 5}),
+	b8: elm$core$Maybe$Just(
+		{bs: -1, bt: 2, t: _List_Nil}),
+	cc: elm$core$Maybe$Just(
+		{a2: 450, a3: 100}),
+	ae: 90,
+	cj: {bC: 32, cD: 32},
+	ck: 'assets/cars/taxi.png',
+	cl: elm$core$Maybe$Just('assets/cars/taxi.png')
 };
 var author$project$Objects$Vehicle$Module$vehicles = _List_fromArray(
 	[author$project$Objects$Vehicle$Ambulance$model, author$project$Objects$Vehicle$Police$model, author$project$Objects$Vehicle$Taxi$model]);
-var author$project$Types$A = {$: 'A'};
-var author$project$Types$D = {$: 'D'};
-var author$project$Types$Menu = {$: 'Menu'};
-var author$project$Types$Nothing = {$: 'Nothing'};
-var author$project$Types$S = {$: 'S'};
-var author$project$Types$Space = {$: 'Space'};
-var author$project$Types$W = {$: 'W'};
+var author$project$Types$A = 1;
+var author$project$Types$D = 3;
+var author$project$Types$Menu = 0;
+var author$project$Types$Nothing = 4;
+var author$project$Types$S = 2;
+var author$project$Types$Space = 4;
+var author$project$Types$W = 0;
 var author$project$InitialModel$initialModel = {
-	availableCars: author$project$Objects$Vehicle$Module$vehicles,
-	availableMaps: author$project$Map$Track$Module$tracks,
-	debug: false,
-	frequence: author$project$InitialModel$frequence,
-	lab: 0,
-	map: author$project$Map$Track$Module$defaultTrack,
-	myPlayer: {
-		assignedKeys: {action: author$project$Types$Space, backward: author$project$Types$S, forward: author$project$Types$W, left: author$project$Types$A, right: author$project$Types$D},
-		catchedCheckpoints: _List_Nil,
-		controlledObject: author$project$Objects$Vehicle$Module$defaultVehicle,
-		currentLab: 1,
-		identifier: 'blue',
-		label: {color: '#F3B1CF', size: 40, text: 'Unnamed Driver', visible: true},
-		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
-		time: 0
+	a8: author$project$Objects$Vehicle$Module$vehicles,
+	a9: author$project$Map$Track$Module$tracks,
+	bk: false,
+	U: author$project$InitialModel$frequence,
+	bM: 0,
+	ay: author$project$Map$Track$Module$defaultTrack,
+	k: {
+		a7: {a5: 4, R: 2, T: 0, _: 1, ad: 3},
+		bd: _List_Nil,
+		S: author$project$Objects$Vehicle$Module$defaultVehicle,
+		bj: 1,
+		au: 'blue',
+		bN: {bh: '#F3B1CF', cj: 40, ct: 'Unnamed Driver', cB: true},
+		i: {R: 4, T: 4, _: 4, ad: 4},
+		aZ: 0
 	},
-	network: {lobbyPool: _List_Nil, multiplayer: false, session: '', webSocketConnected: false},
-	onlinePlayers: _List_Nil,
-	ownLobby: {identifier: 'ownLobby', map: 'Dust Race', maxPlayer: 2, onlinePlayers: _List_Nil, running: false, ttl: (author$project$InitialModel$frequence * 50) + 1},
-	state: author$project$Types$Menu
+	b0: {bV: _List_Nil, b_: false, ci: '', cC: false},
+	aF: _List_Nil,
+	b7: {au: 'ownLobby', ay: 'Dust Race', bX: 2, aF: _List_Nil, ch: false, cw: (author$project$InitialModel$frequence * 50) + 1},
+	aW: 0
 };
-var author$project$Types$Backward = {$: 'Backward'};
-var author$project$Types$Forward = {$: 'Forward'};
-var author$project$Types$Left = {$: 'Left'};
-var author$project$Types$Right = {$: 'Right'};
+var author$project$Types$Backward = 1;
+var author$project$Types$Forward = 0;
+var author$project$Types$Left = 2;
+var author$project$Types$Right = 3;
 var author$project$Control$Player$toKey = function (val) {
 	switch (val) {
 		case 'w':
-			return author$project$Types$Forward;
+			return 0;
 		case 'a':
-			return author$project$Types$Left;
+			return 2;
 		case 's':
-			return author$project$Types$Backward;
+			return 1;
 		case 'd':
-			return author$project$Types$Right;
+			return 3;
 		default:
-			return author$project$Types$Nothing;
+			return 4;
 	}
 };
 var elm$core$Array$branchFactor = 32;
 var elm$core$Array$Array_elm_builtin = F4(
 	function (a, b, c, d) {
-		return {$: 'Array_elm_builtin', a: a, b: b, c: c, d: d};
+		return {$: 0, a: a, b: b, c: c, d: d};
 	});
 var elm$core$Basics$ceiling = _Basics_ceiling;
 var elm$core$Basics$logBase = F2(
@@ -6190,10 +6165,10 @@ var elm$core$Array$shiftStep = elm$core$Basics$ceiling(
 var elm$core$Elm$JsArray$empty = _JsArray_empty;
 var elm$core$Array$empty = A4(elm$core$Array$Array_elm_builtin, 0, elm$core$Array$shiftStep, elm$core$Elm$JsArray$empty, elm$core$Elm$JsArray$empty);
 var elm$core$Array$Leaf = function (a) {
-	return {$: 'Leaf', a: a};
+	return {$: 1, a: a};
 };
 var elm$core$Array$SubTree = function (a) {
-	return {$: 'SubTree', a: a};
+	return {$: 0, a: a};
 };
 var elm$core$Elm$JsArray$initializeFromList = _JsArray_initializeFromList;
 var elm$core$Array$compressNodes = F2(
@@ -6246,25 +6221,25 @@ var elm$core$Basics$max = F2(
 var elm$core$Elm$JsArray$length = _JsArray_length;
 var elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.nodeListSize) {
+		if (!builder.e) {
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.tail),
+				elm$core$Elm$JsArray$length(builder.f),
 				elm$core$Array$shiftStep,
 				elm$core$Elm$JsArray$empty,
-				builder.tail);
+				builder.f);
 		} else {
-			var treeLen = builder.nodeListSize * elm$core$Array$branchFactor;
+			var treeLen = builder.e * elm$core$Array$branchFactor;
 			var depth = elm$core$Basics$floor(
 				A2(elm$core$Basics$logBase, elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.nodeList) : builder.nodeList;
-			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.nodeListSize);
+			var correctNodeList = reverseNodeList ? elm$core$List$reverse(builder.g) : builder.g;
+			var tree = A2(elm$core$Array$treeFromBuilder, correctNodeList, builder.e);
 			return A4(
 				elm$core$Array$Array_elm_builtin,
-				elm$core$Elm$JsArray$length(builder.tail) + treeLen,
+				elm$core$Elm$JsArray$length(builder.f) + treeLen,
 				A2(elm$core$Basics$max, 5, depth * elm$core$Array$shiftStep),
 				tree,
-				builder.tail);
+				builder.f);
 		}
 	});
 var elm$core$Basics$idiv = _Basics_idiv;
@@ -6277,7 +6252,7 @@ var elm$core$Array$initializeHelp = F5(
 				return A2(
 					elm$core$Array$builderToArray,
 					false,
-					{nodeList: nodeList, nodeListSize: (len / elm$core$Array$branchFactor) | 0, tail: tail});
+					{g: nodeList, e: (len / elm$core$Array$branchFactor) | 0, f: tail});
 			} else {
 				var leaf = elm$core$Array$Leaf(
 					A3(elm$core$Elm$JsArray$initialize, elm$core$Array$branchFactor, fromIndex, fn));
@@ -6307,13 +6282,13 @@ var elm$core$Array$initialize = F2(
 		}
 	});
 var elm$core$Result$Err = function (a) {
-	return {$: 'Err', a: a};
+	return {$: 1, a: a};
 };
 var elm$core$Result$Ok = function (a) {
-	return {$: 'Ok', a: a};
+	return {$: 0, a: a};
 };
 var elm$core$Result$isOk = function (result) {
-	if (result.$ === 'Ok') {
+	if (!result.$) {
 		return true;
 	} else {
 		return false;
@@ -6321,18 +6296,18 @@ var elm$core$Result$isOk = function (result) {
 };
 var elm$json$Json$Decode$Failure = F2(
 	function (a, b) {
-		return {$: 'Failure', a: a, b: b};
+		return {$: 3, a: a, b: b};
 	});
 var elm$json$Json$Decode$Field = F2(
 	function (a, b) {
-		return {$: 'Field', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var elm$json$Json$Decode$Index = F2(
 	function (a, b) {
-		return {$: 'Index', a: a, b: b};
+		return {$: 1, a: a, b: b};
 	});
 var elm$json$Json$Decode$OneOf = function (a) {
-	return {$: 'OneOf', a: a};
+	return {$: 2, a: a};
 };
 var elm$core$Char$toCode = _Char_toCode;
 var elm$core$Char$isLower = function (_char) {
@@ -6431,12 +6406,12 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 		errorToStringHelp:
 		while (true) {
 			switch (error.$) {
-				case 'Field':
+				case 0:
 					var f = error.a;
 					var err = error.b;
 					var isSimple = function () {
 						var _n1 = elm$core$String$uncons(f);
-						if (_n1.$ === 'Nothing') {
+						if (_n1.$ === 1) {
 							return false;
 						} else {
 							var _n2 = _n1.a;
@@ -6451,7 +6426,7 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 'Index':
+				case 1:
 					var i = error.a;
 					var err = error.b;
 					var indexName = '[' + (elm$core$String$fromInt(i) + ']');
@@ -6460,7 +6435,7 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 					error = $temp$error;
 					context = $temp$context;
 					continue errorToStringHelp;
-				case 'OneOf':
+				case 2:
 					var errors = error.a;
 					if (!errors.b) {
 						return 'Ran into a Json.Decode.oneOf with no possibilities' + function () {
@@ -6535,38 +6510,38 @@ var author$project$Network$Ports$subPort = _Platform_incomingPort('subPort', elm
 var author$project$Network$Module$subPort = author$project$Network$Ports$subPort;
 var author$project$Types$Control = F3(
 	function (a, b, c) {
-		return {$: 'Control', a: a, b: b, c: c};
+		return {$: 5, a: a, b: b, c: c};
 	});
-var author$project$Types$Pressed = {$: 'Pressed'};
+var author$project$Types$Pressed = 0;
 var author$project$Types$Process = function (a) {
-	return {$: 'Process', a: a};
+	return {$: 1, a: a};
 };
 var author$project$Types$Receive = function (a) {
-	return {$: 'Receive', a: a};
+	return {$: 2, a: a};
 };
-var author$project$Types$Released = {$: 'Released'};
-var author$project$Types$SyncLobbies = {$: 'SyncLobbies'};
-var author$project$Types$SyncPlayer = {$: 'SyncPlayer'};
-var author$project$Types$Tick = {$: 'Tick'};
+var author$project$Types$Released = 1;
+var author$project$Types$SyncLobbies = {$: 9};
+var author$project$Types$SyncPlayer = {$: 10};
+var author$project$Types$Tick = {$: 6};
 var author$project$Types$Websocket = function (a) {
-	return {$: 'Websocket', a: a};
+	return {$: 7, a: a};
 };
-var elm$browser$Browser$Events$Document = {$: 'Document'};
+var elm$browser$Browser$Events$Document = 0;
 var elm$browser$Browser$Events$MySub = F3(
 	function (a, b, c) {
-		return {$: 'MySub', a: a, b: b, c: c};
+		return {$: 0, a: a, b: b, c: c};
 	});
 var elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {pids: pids, subs: subs};
+		return {aH: pids, aX: subs};
 	});
-var elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
+var elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var elm$core$Dict$empty = elm$core$Dict$RBEmpty_elm_builtin;
 var elm$core$Task$succeed = _Scheduler_succeed;
 var elm$browser$Browser$Events$init = elm$core$Task$succeed(
 	A2(elm$browser$Browser$Events$State, _List_Nil, elm$core$Dict$empty));
 var elm$browser$Browser$Events$nodeToKey = function (node) {
-	if (node.$ === 'Document') {
+	if (!node) {
 		return 'd_';
 	} else {
 		return 'w_';
@@ -6583,7 +6558,7 @@ var elm$browser$Browser$Events$addKey = function (sub) {
 };
 var elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {event: event, key: key};
+		return {an: event, bK: key};
 	});
 var elm$core$Platform$sendToSelf = _Platform_sendToSelf;
 var elm$core$Task$andThen = _Scheduler_andThen;
@@ -6598,27 +6573,23 @@ var elm$core$Task$map = F2(
 			taskA);
 	});
 var elm$browser$Browser$External = function (a) {
-	return {$: 'External', a: a};
+	return {$: 1, a: a};
 };
 var elm$browser$Browser$Internal = function (a) {
-	return {$: 'Internal', a: a};
+	return {$: 0, a: a};
 };
-var elm$browser$Browser$Dom$NotFound = function (a) {
-	return {$: 'NotFound', a: a};
-};
+var elm$browser$Browser$Dom$NotFound = elm$core$Basics$identity;
 var elm$core$Basics$never = function (_n0) {
 	never:
 	while (true) {
-		var nvr = _n0.a;
+		var nvr = _n0;
 		var $temp$_n0 = nvr;
 		_n0 = $temp$_n0;
 		continue never;
 	}
 };
-var elm$core$Task$Perform = function (a) {
-	return {$: 'Perform', a: a};
-};
-var elm$core$Task$init = elm$core$Task$succeed(_Utils_Tuple0);
+var elm$core$Task$Perform = elm$core$Basics$identity;
+var elm$core$Task$init = elm$core$Task$succeed(0);
 var elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -6713,7 +6684,7 @@ var elm$core$Task$sequence = function (tasks) {
 var elm$core$Platform$sendToApp = _Platform_sendToApp;
 var elm$core$Task$spawnCmd = F2(
 	function (router, _n0) {
-		var task = _n0.a;
+		var task = _n0;
 		return _Scheduler_spawn(
 			A2(
 				elm$core$Task$andThen,
@@ -6725,7 +6696,7 @@ var elm$core$Task$onEffects = F3(
 		return A2(
 			elm$core$Task$map,
 			function (_n0) {
-				return _Utils_Tuple0;
+				return 0;
 			},
 			elm$core$Task$sequence(
 				A2(
@@ -6735,31 +6706,29 @@ var elm$core$Task$onEffects = F3(
 	});
 var elm$core$Task$onSelfMsg = F3(
 	function (_n0, _n1, _n2) {
-		return elm$core$Task$succeed(_Utils_Tuple0);
+		return elm$core$Task$succeed(0);
 	});
 var elm$core$Task$cmdMap = F2(
 	function (tagger, _n0) {
-		var task = _n0.a;
-		return elm$core$Task$Perform(
-			A2(elm$core$Task$map, tagger, task));
+		var task = _n0;
+		return A2(elm$core$Task$map, tagger, task);
 	});
 _Platform_effectManagers['Task'] = _Platform_createManager(elm$core$Task$init, elm$core$Task$onEffects, elm$core$Task$onSelfMsg, elm$core$Task$cmdMap);
 var elm$core$Task$command = _Platform_leaf('Task');
 var elm$core$Task$perform = F2(
 	function (toMessage, task) {
 		return elm$core$Task$command(
-			elm$core$Task$Perform(
-				A2(elm$core$Task$map, toMessage, task)));
+			A2(elm$core$Task$map, toMessage, task));
 	});
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
 var elm$virtual_dom$VirtualDom$toHandlerInt = function (handler) {
 	switch (handler.$) {
-		case 'Normal':
+		case 0:
 			return 0;
-		case 'MayStopPropagation':
+		case 1:
 			return 1;
-		case 'MayPreventDefault':
+		case 2:
 			return 2;
 		default:
 			return 3;
@@ -6776,8 +6745,8 @@ var elm$core$String$dropLeft = F2(
 			string);
 	});
 var elm$core$String$startsWith = _String_startsWith;
-var elm$url$Url$Http = {$: 'Http'};
-var elm$url$Url$Https = {$: 'Https'};
+var elm$url$Url$Http = 0;
+var elm$url$Url$Https = 1;
 var elm$core$String$indexes = _String_indexes;
 var elm$core$String$isEmpty = function (string) {
 	return string === '';
@@ -6790,7 +6759,7 @@ var elm$core$String$contains = _String_contains;
 var elm$core$String$toInt = _String_toInt;
 var elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {fragment: fragment, host: host, path: path, port_: port_, protocol: protocol, query: query};
+		return {aq: fragment, at: host, aG: path, aI: port_, aM: protocol, aN: query};
 	});
 var elm$url$Url$chompBeforePath = F5(
 	function (protocol, path, params, frag, str) {
@@ -6806,7 +6775,7 @@ var elm$url$Url$chompBeforePath = F5(
 					var i = _n0.a;
 					var _n1 = elm$core$String$toInt(
 						A2(elm$core$String$dropLeft, i + 1, str));
-					if (_n1.$ === 'Nothing') {
+					if (_n1.$ === 1) {
 						return elm$core$Maybe$Nothing;
 					} else {
 						var port_ = _n1;
@@ -6888,10 +6857,10 @@ var elm$url$Url$chompAfterProtocol = F2(
 var elm$url$Url$fromString = function (str) {
 	return A2(elm$core$String$startsWith, 'http://', str) ? A2(
 		elm$url$Url$chompAfterProtocol,
-		elm$url$Url$Http,
+		0,
 		A2(elm$core$String$dropLeft, 7, str)) : (A2(elm$core$String$startsWith, 'https://', str) ? A2(
 		elm$url$Url$chompAfterProtocol,
-		elm$url$Url$Https,
+		1,
 		A2(elm$core$String$dropLeft, 8, str)) : elm$core$Maybe$Nothing);
 };
 var elm$browser$Browser$Events$spawn = F3(
@@ -6899,7 +6868,7 @@ var elm$browser$Browser$Events$spawn = F3(
 		var node = _n0.a;
 		var name = _n0.b;
 		var actualNode = function () {
-			if (node.$ === 'Document') {
+			if (!node) {
 				return _Browser_doc;
 			} else {
 				return _Browser_window;
@@ -6921,22 +6890,22 @@ var elm$browser$Browser$Events$spawn = F3(
 						A2(elm$browser$Browser$Events$Event, key, event));
 				}));
 	});
-var elm$core$Dict$Black = {$: 'Black'};
+var elm$core$Dict$Black = 1;
 var elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
-		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
 	});
 var elm$core$Basics$compare = _Utils_compare;
-var elm$core$Dict$Red = {$: 'Red'};
+var elm$core$Dict$Red = 0;
 var elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
-		if ((right.$ === 'RBNode_elm_builtin') && (right.a.$ === 'Red')) {
+		if ((right.$ === -1) && (!right.a)) {
 			var _n1 = right.a;
 			var rK = right.b;
 			var rV = right.c;
 			var rLeft = right.d;
 			var rRight = right.e;
-			if ((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) {
+			if ((left.$ === -1) && (!left.a)) {
 				var _n3 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -6944,22 +6913,22 @@ var elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					elm$core$Dict$RBNode_elm_builtin,
-					elm$core$Dict$Red,
+					0,
 					key,
 					value,
-					A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Black, lK, lV, lLeft, lRight),
-					A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Black, rK, rV, rLeft, rRight));
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
 			} else {
 				return A5(
 					elm$core$Dict$RBNode_elm_builtin,
 					color,
 					rK,
 					rV,
-					A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Red, key, value, left, rLeft),
+					A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
 					rRight);
 			}
 		} else {
-			if ((((left.$ === 'RBNode_elm_builtin') && (left.a.$ === 'Red')) && (left.d.$ === 'RBNode_elm_builtin')) && (left.d.a.$ === 'Red')) {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
 				var _n5 = left.a;
 				var lK = left.b;
 				var lV = left.c;
@@ -6972,11 +6941,11 @@ var elm$core$Dict$balance = F5(
 				var lRight = left.e;
 				return A5(
 					elm$core$Dict$RBNode_elm_builtin,
-					elm$core$Dict$Red,
+					0,
 					lK,
 					lV,
-					A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Black, llK, llV, llLeft, llRight),
-					A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Black, key, value, lRight, right));
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5(elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
 			} else {
 				return A5(elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
 			}
@@ -6984,8 +6953,8 @@ var elm$core$Dict$balance = F5(
 	});
 var elm$core$Dict$insertHelp = F3(
 	function (key, value, dict) {
-		if (dict.$ === 'RBEmpty_elm_builtin') {
-			return A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Red, key, value, elm$core$Dict$RBEmpty_elm_builtin, elm$core$Dict$RBEmpty_elm_builtin);
+		if (dict.$ === -2) {
+			return A5(elm$core$Dict$RBNode_elm_builtin, 0, key, value, elm$core$Dict$RBEmpty_elm_builtin, elm$core$Dict$RBEmpty_elm_builtin);
 		} else {
 			var nColor = dict.a;
 			var nKey = dict.b;
@@ -6993,8 +6962,8 @@ var elm$core$Dict$insertHelp = F3(
 			var nLeft = dict.d;
 			var nRight = dict.e;
 			var _n1 = A2(elm$core$Basics$compare, key, nKey);
-			switch (_n1.$) {
-				case 'LT':
+			switch (_n1) {
+				case 0:
 					return A5(
 						elm$core$Dict$balance,
 						nColor,
@@ -7002,7 +6971,7 @@ var elm$core$Dict$insertHelp = F3(
 						nValue,
 						A3(elm$core$Dict$insertHelp, key, value, nLeft),
 						nRight);
-				case 'EQ':
+				case 1:
 					return A5(elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
 				default:
 					return A5(
@@ -7018,13 +6987,13 @@ var elm$core$Dict$insertHelp = F3(
 var elm$core$Dict$insert = F3(
 	function (key, value, dict) {
 		var _n0 = A3(elm$core$Dict$insertHelp, key, value, dict);
-		if ((_n0.$ === 'RBNode_elm_builtin') && (_n0.a.$ === 'Red')) {
+		if ((_n0.$ === -1) && (!_n0.a)) {
 			var _n1 = _n0.a;
 			var k = _n0.b;
 			var v = _n0.c;
 			var l = _n0.d;
 			var r = _n0.e;
-			return A5(elm$core$Dict$RBNode_elm_builtin, elm$core$Dict$Black, k, v, l, r);
+			return A5(elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
 		} else {
 			var x = _n0;
 			return x;
@@ -7046,7 +7015,7 @@ var elm$core$Dict$foldl = F3(
 	function (func, acc, dict) {
 		foldl:
 		while (true) {
-			if (dict.$ === 'RBEmpty_elm_builtin') {
+			if (dict.$ === -2) {
 				return acc;
 			} else {
 				var key = dict.b;
@@ -7174,7 +7143,7 @@ var elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.pids,
+			state.aH,
 			elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, elm$core$Dict$empty, _List_Nil));
 		var deadPids = _n0.a;
@@ -7203,7 +7172,7 @@ var elm$browser$Browser$Events$onEffects = F3(
 var elm$core$List$maybeCons = F3(
 	function (f, mx, xs) {
 		var _n0 = f(mx);
-		if (_n0.$ === 'Just') {
+		if (!_n0.$) {
 			var x = _n0.a;
 			return A2(elm$core$List$cons, x, xs);
 		} else {
@@ -7220,8 +7189,8 @@ var elm$core$List$filterMap = F2(
 	});
 var elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _n0, state) {
-		var key = _n0.key;
-		var event = _n0.event;
+		var key = _n0.bK;
+		var event = _n0.an;
 		var toMessage = function (_n2) {
 			var subKey = _n2.a;
 			var _n3 = _n2.b;
@@ -7230,7 +7199,7 @@ var elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _n3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : elm$core$Maybe$Nothing;
 		};
-		var messages = A2(elm$core$List$filterMap, toMessage, state.subs);
+		var messages = A2(elm$core$List$filterMap, toMessage, state.aX);
 		return A2(
 			elm$core$Task$andThen,
 			function (_n1) {
@@ -7260,16 +7229,16 @@ var elm$browser$Browser$Events$on = F3(
 		return elm$browser$Browser$Events$subscription(
 			A3(elm$browser$Browser$Events$MySub, node, name, decoder));
 	});
-var elm$browser$Browser$Events$onKeyDown = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'keydown');
-var elm$browser$Browser$Events$onKeyUp = A2(elm$browser$Browser$Events$on, elm$browser$Browser$Events$Document, 'keyup');
+var elm$browser$Browser$Events$onKeyDown = A2(elm$browser$Browser$Events$on, 0, 'keydown');
+var elm$browser$Browser$Events$onKeyUp = A2(elm$browser$Browser$Events$on, 0, 'keyup');
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$time$Time$Every = F2(
 	function (a, b) {
-		return {$: 'Every', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {processes: processes, taggers: taggers};
+		return {aL: processes, aY: taggers};
 	});
 var elm$time$Time$init = elm$core$Task$succeed(
 	A2(elm$time$Time$State, elm$core$Dict$empty, elm$core$Dict$empty));
@@ -7277,7 +7246,7 @@ var elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
 		while (true) {
-			if (dict.$ === 'RBEmpty_elm_builtin') {
+			if (dict.$ === -2) {
 				return elm$core$Maybe$Nothing;
 			} else {
 				var key = dict.b;
@@ -7285,14 +7254,14 @@ var elm$core$Dict$get = F2(
 				var left = dict.d;
 				var right = dict.e;
 				var _n1 = A2(elm$core$Basics$compare, targetKey, key);
-				switch (_n1.$) {
-					case 'LT':
+				switch (_n1) {
+					case 0:
 						var $temp$targetKey = targetKey,
 							$temp$dict = left;
 						targetKey = $temp$targetKey;
 						dict = $temp$dict;
 						continue get;
-					case 'EQ':
+					case 1:
 						return elm$core$Maybe$Just(value);
 					default:
 						var $temp$targetKey = targetKey,
@@ -7309,7 +7278,7 @@ var elm$time$Time$addMySub = F2(
 		var interval = _n0.a;
 		var tagger = _n0.b;
 		var _n1 = A2(elm$core$Dict$get, interval, state);
-		if (_n1.$ === 'Nothing') {
+		if (_n1.$ === 1) {
 			return A3(
 				elm$core$Dict$insert,
 				interval,
@@ -7327,14 +7296,14 @@ var elm$time$Time$addMySub = F2(
 	});
 var elm$core$Process$spawn = _Scheduler_spawn;
 var elm$time$Time$Name = function (a) {
-	return {$: 'Name', a: a};
+	return {$: 0, a: a};
 };
 var elm$time$Time$Offset = function (a) {
-	return {$: 'Offset', a: a};
+	return {$: 1, a: a};
 };
 var elm$time$Time$Zone = F2(
 	function (a, b) {
-		return {$: 'Zone', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var elm$time$Time$customZone = elm$time$Time$Zone;
 var elm$time$Time$setInterval = _Time_setInterval;
@@ -7362,7 +7331,7 @@ var elm$time$Time$spawnHelp = F3(
 	});
 var elm$time$Time$onEffects = F3(
 	function (router, subs, _n0) {
-		var processes = _n0.processes;
+		var processes = _n0.aL;
 		var rightStep = F3(
 			function (_n6, id, _n7) {
 				var spawns = _n7.a;
@@ -7409,7 +7378,7 @@ var elm$time$Time$onEffects = F3(
 			_Utils_Tuple3(
 				_List_Nil,
 				elm$core$Dict$empty,
-				elm$core$Task$succeed(_Utils_Tuple0)));
+				elm$core$Task$succeed(0)));
 		var spawnList = _n1.a;
 		var existingDict = _n1.b;
 		var killTask = _n1.c;
@@ -7426,15 +7395,13 @@ var elm$time$Time$onEffects = F3(
 				},
 				killTask));
 	});
-var elm$time$Time$Posix = function (a) {
-	return {$: 'Posix', a: a};
-};
-var elm$time$Time$millisToPosix = elm$time$Time$Posix;
+var elm$time$Time$Posix = elm$core$Basics$identity;
+var elm$time$Time$millisToPosix = elm$core$Basics$identity;
 var elm$time$Time$now = _Time_now(elm$time$Time$millisToPosix);
 var elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _n0 = A2(elm$core$Dict$get, interval, state.taggers);
-		if (_n0.$ === 'Nothing') {
+		var _n0 = A2(elm$core$Dict$get, interval, state.aY);
+		if (_n0.$ === 1) {
 			return elm$core$Task$succeed(state);
 		} else {
 			var taggers = _n0.a;
@@ -7486,16 +7453,16 @@ var author$project$Main$subscriptions = function (model) {
 				elm$browser$Browser$Events$onKeyDown(
 				A2(
 					elm$json$Json$Decode$map,
-					A2(author$project$Types$Control, model, author$project$Types$Pressed),
+					A2(author$project$Types$Control, model, 0),
 					author$project$Control$Player$keyDecoder)),
 				elm$browser$Browser$Events$onKeyUp(
 				A2(
 					elm$json$Json$Decode$map,
-					A2(author$project$Types$Control, model, author$project$Types$Released),
+					A2(author$project$Types$Control, model, 1),
 					author$project$Control$Player$keyDecoder)),
 				A2(
 				elm$time$Time$every,
-				model.frequence,
+				model.U,
 				function (_n0) {
 					return author$project$Types$Tick;
 				}),
@@ -7593,37 +7560,37 @@ var rtfeldman$elm_hex$Hex$unsafeToDigit = function (num) {
 	while (true) {
 		switch (num) {
 			case 0:
-				return _Utils_chr('0');
+				return '0';
 			case 1:
-				return _Utils_chr('1');
+				return '1';
 			case 2:
-				return _Utils_chr('2');
+				return '2';
 			case 3:
-				return _Utils_chr('3');
+				return '3';
 			case 4:
-				return _Utils_chr('4');
+				return '4';
 			case 5:
-				return _Utils_chr('5');
+				return '5';
 			case 6:
-				return _Utils_chr('6');
+				return '6';
 			case 7:
-				return _Utils_chr('7');
+				return '7';
 			case 8:
-				return _Utils_chr('8');
+				return '8';
 			case 9:
-				return _Utils_chr('9');
+				return '9';
 			case 10:
-				return _Utils_chr('a');
+				return 'a';
 			case 11:
-				return _Utils_chr('b');
+				return 'b';
 			case 12:
-				return _Utils_chr('c');
+				return 'c';
 			case 13:
-				return _Utils_chr('d');
+				return 'd';
 			case 14:
-				return _Utils_chr('e');
+				return 'e';
 			case 15:
-				return _Utils_chr('f');
+				return 'f';
 			default:
 				var $temp$num = num;
 				num = $temp$num;
@@ -7657,21 +7624,18 @@ var rtfeldman$elm_hex$Hex$toString = function (num) {
 	return elm$core$String$fromList(
 		(num < 0) ? A2(
 			elm$core$List$cons,
-			_Utils_chr('-'),
+			'-',
 			A2(rtfeldman$elm_hex$Hex$unsafePositiveToDigits, _List_Nil, -num)) : A2(rtfeldman$elm_hex$Hex$unsafePositiveToDigits, _List_Nil, num));
 };
 var TSFoster$elm_uuid$UUID$canonical = function (_n0) {
-	var bytes = _n0.a;
+	var bytes = _n0;
 	var strings = A2(
 		elm_community$string_extra$String$Extra$break,
 		4,
 		elm$core$String$concat(
 			A2(
 				elm$core$List$map,
-				A2(
-					elm$core$String$padLeft,
-					2,
-					_Utils_chr('0')),
+				A2(elm$core$String$padLeft, 2, '0'),
 				A2(elm$core$List$map, rtfeldman$elm_hex$Hex$toString, bytes))));
 	if ((((((((strings.b && strings.b.b) && strings.b.b.b) && strings.b.b.b.b) && strings.b.b.b.b.b) && strings.b.b.b.b.b.b) && strings.b.b.b.b.b.b.b) && strings.b.b.b.b.b.b.b.b) && (!strings.b.b.b.b.b.b.b.b.b)) {
 		var a = strings.a;
@@ -7697,65 +7661,65 @@ var TSFoster$elm_uuid$UUID$canonical = function (_n0) {
 var TSFoster$elm_uuid$UUID$toString = TSFoster$elm_uuid$UUID$canonical;
 var author$project$Control$Player$applyInput = F3(
 	function (model, event, action) {
-		var myPlayer = model.myPlayer;
-		var storedKeys = myPlayer.storedKeys;
-		var _n0 = model.state;
-		if (_n0.$ === 'Running') {
-			if (event.$ === 'Pressed') {
-				switch (action.$) {
-					case 'Forward':
+		var myPlayer = model.k;
+		var storedKeys = myPlayer.i;
+		var _n0 = model.aW;
+		if (_n0 === 2) {
+			if (!event) {
+				switch (action) {
+					case 0:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{forward: action})
+												{T: action})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Backward':
+					case 1:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{backward: action})
+												{R: action})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Left':
+					case 2:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{left: action})
+												{_: action})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Right':
+					case 3:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{right: action})
+												{ad: action})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
@@ -7763,60 +7727,60 @@ var author$project$Control$Player$applyInput = F3(
 						return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
 				}
 			} else {
-				switch (action.$) {
-					case 'Forward':
+				switch (action) {
+					case 0:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{forward: author$project$Types$Nothing})
+												{T: 4})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Backward':
+					case 1:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{backward: author$project$Types$Nothing})
+												{R: 4})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Left':
+					case 2:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{left: author$project$Types$Nothing})
+												{_: 4})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
-					case 'Right':
+					case 3:
 						return _Utils_Tuple2(
 							_Utils_update(
 								model,
 								{
-									myPlayer: _Utils_update(
+									k: _Utils_update(
 										myPlayer,
 										{
-											storedKeys: _Utils_update(
+											i: _Utils_update(
 												storedKeys,
-												{right: author$project$Types$Nothing})
+												{ad: 4})
 										})
 								}),
 							elm$core$Platform$Cmd$none);
@@ -7836,10 +7800,10 @@ var author$project$Control$Module$update = author$project$Control$Update$update;
 var author$project$Control$Player$convertInputToAngle = F2(
 	function (l, p) {
 		var angle = function () {
-			var _n2 = p.controlledObject.motion;
-			if (_n2.$ === 'Just') {
+			var _n2 = p.S.aC;
+			if (!_n2.$) {
 				var m = _n2.a;
-				return m.steeringAngle;
+				return m.cq;
 			} else {
 				return 0;
 			}
@@ -7847,10 +7811,10 @@ var author$project$Control$Player$convertInputToAngle = F2(
 		if (l.b) {
 			var x = l.a;
 			var xs = l.b;
-			switch (x.$) {
-				case 'Left':
+			switch (x) {
+				case 2:
 					return (-angle) + A2(author$project$Control$Player$convertInputToAngle, xs, p);
-				case 'Right':
+				case 3:
 					return angle + A2(author$project$Control$Player$convertInputToAngle, xs, p);
 				default:
 					return 0 + A2(author$project$Control$Player$convertInputToAngle, xs, p);
@@ -7865,10 +7829,10 @@ var author$project$Control$Player$convertInputToForce = function (l) {
 	} else {
 		var x = l.a;
 		var xs = l.b;
-		switch (x.$) {
-			case 'Forward':
+		switch (x) {
+			case 0:
 				return 2 + author$project$Control$Player$convertInputToForce(xs);
-			case 'Backward':
+			case 1:
 				return (-1) + author$project$Control$Player$convertInputToForce(xs);
 			default:
 				return 0 + author$project$Control$Player$convertInputToForce(xs);
@@ -7876,27 +7840,27 @@ var author$project$Control$Player$convertInputToForce = function (l) {
 	}
 };
 var author$project$Objects$Physics$restrictSpeed = function (gO) {
-	var _n0 = gO.motion;
-	if (_n0.$ === 'Just') {
+	var _n0 = gO.aC;
+	if (!_n0.$) {
 		var motion = _n0.a;
-		return A3(author$project$Objects$Physics$overwriteSpeedLimits, motion.maxForwardSpeed, motion.maxBackwardSpeed, gO);
+		return A3(author$project$Objects$Physics$overwriteSpeedLimits, motion.aA, motion.az, gO);
 	} else {
 		return gO;
 	}
 };
 var author$project$Objects$Physics$acceleration = F2(
 	function (acc, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
 			return author$project$Objects$Physics$restrictSpeed(
 				_Utils_update(
 					gO,
 					{
-						motion: elm$core$Maybe$Just(
+						aC: elm$core$Maybe$Just(
 							_Utils_update(
 								motion,
-								{speed: motion.speed + acc}))
+								{aV: motion.aV + acc}))
 					}));
 		} else {
 			return gO;
@@ -7904,10 +7868,10 @@ var author$project$Objects$Physics$acceleration = F2(
 	});
 var author$project$Objects$Physics$overwriteBrake = F2(
 	function (bra, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
-			return ((motion.speed - bra) > 0) ? A2(author$project$Objects$Physics$setSpeed, motion.speed - bra, gO) : (((motion.speed + bra) < 0) ? A2(author$project$Objects$Physics$setSpeed, motion.speed + bra, gO) : A2(author$project$Objects$Physics$setSpeed, 0, gO));
+			return ((motion.aV - bra) > 0) ? A2(author$project$Objects$Physics$setSpeed, motion.aV - bra, gO) : (((motion.aV + bra) < 0) ? A2(author$project$Objects$Physics$setSpeed, motion.aV + bra, gO) : A2(author$project$Objects$Physics$setSpeed, 0, gO));
 		} else {
 			return gO;
 		}
@@ -7915,10 +7879,10 @@ var author$project$Objects$Physics$overwriteBrake = F2(
 var author$project$Objects$Physics$autoBrake = F2(
 	function (force, gO) {
 		if (!force) {
-			var _n0 = gO.motion;
-			if (_n0.$ === 'Just') {
+			var _n0 = gO.aC;
+			if (!_n0.$) {
 				var motion = _n0.a;
-				return A2(author$project$Objects$Physics$overwriteBrake, (motion.maxForwardSpeed + motion.maxBackwardSpeed) / 60, gO);
+				return A2(author$project$Objects$Physics$overwriteBrake, (motion.aA + motion.az) / 60, gO);
 			} else {
 				return gO;
 			}
@@ -7928,15 +7892,15 @@ var author$project$Objects$Physics$autoBrake = F2(
 	});
 var author$project$Objects$Physics$counterforce = F2(
 	function (force, gO) {
-		var _n0 = gO.motion;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.aC;
+		if (!_n0.$) {
 			var motion = _n0.a;
-			return ((force >= 1) && (motion.speed < 0)) ? A2(author$project$Objects$Physics$autoBrake, 0, gO) : (((_Utils_cmp(force, -1) < 1) && (motion.speed > 0)) ? A2(author$project$Objects$Physics$autoBrake, 0, gO) : gO);
+			return ((force >= 1) && (motion.aV < 0)) ? A2(author$project$Objects$Physics$autoBrake, 0, gO) : (((_Utils_cmp(force, -1) < 1) && (motion.aV > 0)) ? A2(author$project$Objects$Physics$autoBrake, 0, gO) : gO);
 		} else {
 			return gO;
 		}
 	});
-var author$project$Types$Running = {$: 'Running'};
+var author$project$Types$Running = 2;
 var elm$core$Basics$cos = _Basics_cos;
 var elm$core$Basics$pi = _Basics_pi;
 var elm$core$Basics$degrees = function (angleInDegrees) {
@@ -7945,41 +7909,41 @@ var elm$core$Basics$degrees = function (angleInDegrees) {
 var elm$core$Basics$round = _Basics_round;
 var elm$core$Basics$sin = _Basics_sin;
 var author$project$Control$Player$update = function (model) {
-	var myPlayer = model.myPlayer;
+	var myPlayer = model.k;
 	var listKeys = _List_fromArray(
-		[myPlayer.storedKeys.forward, myPlayer.storedKeys.backward, myPlayer.storedKeys.left, myPlayer.storedKeys.right]);
-	var gO = myPlayer.controlledObject;
+		[myPlayer.i.T, myPlayer.i.R, myPlayer.i._, myPlayer.i.ad]);
+	var gO = myPlayer.S;
 	var calcY = F2(
 		function (p, m) {
-			return p.y - elm$core$Basics$round(
+			return p.a3 - elm$core$Basics$round(
 				((elm$core$Basics$cos(
-					elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4);
+					elm$core$Basics$degrees(gO.ae)) * m.aV) / model.U) * 4);
 		});
 	var calcX = F2(
 		function (p, m) {
-			return p.x + elm$core$Basics$round(
+			return p.a2 + elm$core$Basics$round(
 				((elm$core$Basics$sin(
-					elm$core$Basics$degrees(gO.rotate)) * m.speed) / model.frequence) * 4);
+					elm$core$Basics$degrees(gO.ae)) * m.aV) / model.U) * 4);
 		});
-	if (_Utils_eq(model.state, author$project$Types$Running)) {
-		var _n0 = gO.position;
-		if (_n0.$ === 'Just') {
+	if (model.aW === 2) {
+		var _n0 = gO.cc;
+		if (!_n0.$) {
 			var p = _n0.a;
-			var _n1 = gO.motion;
-			if (_n1.$ === 'Just') {
+			var _n1 = gO.aC;
+			if (!_n1.$) {
 				var m = _n1.a;
 				return _Utils_update(
 					model,
 					{
-						myPlayer: _Utils_update(
+						k: _Utils_update(
 							myPlayer,
 							{
-								controlledObject: A2(
+								S: A2(
 									author$project$Objects$Module$position,
 									elm$core$Maybe$Just(
 										{
-											x: A2(calcX, p, m),
-											y: A2(calcY, p, m)
+											a2: A2(calcX, p, m),
+											a3: A2(calcY, p, m)
 										}),
 									A2(
 										author$project$Objects$Physics$counterforce,
@@ -7996,9 +7960,9 @@ var author$project$Control$Player$update = function (model) {
 														elm$core$Basics$modBy,
 														360,
 														elm$core$Basics$round(
-															gO.rotate + A2(author$project$Control$Player$convertInputToAngle, listKeys, model.myPlayer))),
+															gO.ae + A2(author$project$Control$Player$convertInputToAngle, listKeys, model.k))),
 													gO))))),
-								time: myPlayer.time + elm$core$Basics$round(model.frequence)
+								aZ: myPlayer.aZ + elm$core$Basics$round(model.U)
 							})
 					});
 			} else {
@@ -8011,26 +7975,26 @@ var author$project$Control$Player$update = function (model) {
 		return model;
 	}
 };
-var author$project$Types$PrepareRace = {$: 'PrepareRace'};
+var author$project$Types$PrepareRace = 3;
 var author$project$Map$Track$Update$update = function (model) {
-	if (_Utils_eq(model.state, author$project$Types$PrepareRace) && (model.map.options.prepareRaceTime > 0)) {
-		var map = model.map;
-		var options = map.options;
+	if ((model.aW === 3) && (model.ay.b5.cd > 0)) {
+		var map = model.ay;
+		var options = map.b5;
 		var updatedMap = _Utils_update(
 			map,
 			{
-				options: _Utils_update(
+				b5: _Utils_update(
 					options,
-					{prepareRaceTime: map.options.prepareRaceTime - model.frequence})
+					{cd: map.b5.cd - model.U})
 			});
 		return _Utils_update(
 			model,
-			{map: updatedMap});
+			{ay: updatedMap});
 	} else {
-		if (_Utils_eq(model.state, author$project$Types$PrepareRace) && (model.map.options.prepareRaceTime <= 0)) {
+		if ((model.aW === 3) && (model.ay.b5.cd <= 0)) {
 			return _Utils_update(
 				model,
-				{state: author$project$Types$Running});
+				{aW: 2});
 		} else {
 			return model;
 		}
@@ -8046,7 +8010,7 @@ var elm$json$Json$Encode$list = F2(
 			A3(
 				elm$core$List$foldl,
 				_Json_addEntry(func),
-				_Json_emptyArray(_Utils_Tuple0),
+				_Json_emptyArray(0),
 				entries));
 	});
 var elm$json$Json$Encode$string = _Json_wrap;
@@ -8055,22 +8019,22 @@ var author$project$Network$Encode$encodeLobby = function (lobby) {
 		[
 			_Utils_Tuple2(
 			'identifier',
-			elm$json$Json$Encode$string(lobby.identifier)),
+			elm$json$Json$Encode$string(lobby.au)),
 			_Utils_Tuple2(
 			'maxPlayer',
-			elm$json$Json$Encode$int(lobby.maxPlayer)),
+			elm$json$Json$Encode$int(lobby.bX)),
 			_Utils_Tuple2(
 			'map',
-			elm$json$Json$Encode$string(lobby.map)),
+			elm$json$Json$Encode$string(lobby.ay)),
 			_Utils_Tuple2(
 			'onlinePlayers',
-			A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, lobby.onlinePlayers)),
+			A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, lobby.aF)),
 			_Utils_Tuple2(
 			'ttl',
-			elm$json$Json$Encode$float(lobby.ttl)),
+			elm$json$Json$Encode$float(lobby.cw)),
 			_Utils_Tuple2(
 			'running',
-			elm$json$Json$Encode$bool(lobby.running))
+			elm$json$Json$Encode$bool(lobby.ch))
 		]);
 };
 var elm$json$Json$Encode$object = function (pairs) {
@@ -8083,7 +8047,7 @@ var elm$json$Json$Encode$object = function (pairs) {
 					var v = _n0.b;
 					return A3(_Json_addField, k, v, obj);
 				}),
-			_Json_emptyObject(_Utils_Tuple0),
+			_Json_emptyObject(0),
 			pairs));
 };
 var author$project$Network$Commands$encodeLobby = function (lobby) {
@@ -8096,7 +8060,7 @@ var author$project$Network$Commands$encodeLobby = function (lobby) {
 var author$project$Network$Module$encodeLobby = author$project$Network$Commands$encodeLobby;
 var elm$core$Maybe$withDefault = F2(
 	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
+		if (!maybe.$) {
 			var value = maybe.a;
 			return value;
 		} else {
@@ -8104,63 +8068,63 @@ var elm$core$Maybe$withDefault = F2(
 		}
 	});
 var author$project$Network$Encode$encodePlayer = function (player) {
-	var gO = player.controlledObject;
+	var gO = player.S;
 	var gOPosition = A2(
 		elm$core$Maybe$withDefault,
-		{x: 0, y: 0},
-		gO.position);
-	var spriteMinimap = A2(elm$core$Maybe$withDefault, '', gO.spriteMinimap);
+		{a2: 0, a3: 0},
+		gO.cc);
+	var spriteMinimap = A2(elm$core$Maybe$withDefault, '', gO.cl);
 	return _List_fromArray(
 		[
 			_Utils_Tuple2(
 			'identifier',
-			elm$json$Json$Encode$string(player.identifier)),
+			elm$json$Json$Encode$string(player.au)),
 			_Utils_Tuple2(
 			'label',
-			elm$json$Json$Encode$string(player.label.text)),
+			elm$json$Json$Encode$string(player.bN.ct)),
 			_Utils_Tuple2(
 			'labelCol',
-			elm$json$Json$Encode$string(player.label.color)),
+			elm$json$Json$Encode$string(player.bN.bh)),
 			_Utils_Tuple2(
 			'labelSize',
-			elm$json$Json$Encode$int(player.label.size)),
+			elm$json$Json$Encode$int(player.bN.cj)),
 			_Utils_Tuple2(
 			'labelVisible',
-			elm$json$Json$Encode$bool(player.label.visible)),
+			elm$json$Json$Encode$bool(player.bN.cB)),
 			_Utils_Tuple2(
 			'currentLab',
-			elm$json$Json$Encode$int(player.currentLab)),
+			elm$json$Json$Encode$int(player.bj)),
 			_Utils_Tuple2(
 			'time',
-			elm$json$Json$Encode$int(player.time)),
+			elm$json$Json$Encode$int(player.aZ)),
 			_Utils_Tuple2(
 			'catchedCheckpoints',
 			elm$json$Json$Encode$int(
-				elm$core$List$length(player.catchedCheckpoints))),
+				elm$core$List$length(player.bd))),
 			_Utils_Tuple2(
 			'gOIdentifier',
-			elm$json$Json$Encode$string(gO.identifier)),
+			elm$json$Json$Encode$string(gO.au)),
 			_Utils_Tuple2(
 			'gOPositionX',
-			elm$json$Json$Encode$int(gOPosition.x)),
+			elm$json$Json$Encode$int(gOPosition.a2)),
 			_Utils_Tuple2(
 			'gOPositionY',
-			elm$json$Json$Encode$int(gOPosition.y)),
+			elm$json$Json$Encode$int(gOPosition.a3)),
 			_Utils_Tuple2(
 			'gOSprite',
-			elm$json$Json$Encode$string(gO.sprite)),
+			elm$json$Json$Encode$string(gO.ck)),
 			_Utils_Tuple2(
 			'gOSpriteMinimap',
 			elm$json$Json$Encode$string(spriteMinimap)),
 			_Utils_Tuple2(
 			'gORotate',
-			elm$json$Json$Encode$float(gO.rotate)),
+			elm$json$Json$Encode$float(gO.ae)),
 			_Utils_Tuple2(
 			'gOSizeHeight',
-			elm$json$Json$Encode$int(gO.size.height)),
+			elm$json$Json$Encode$int(gO.cj.bC)),
 			_Utils_Tuple2(
 			'gOSizeWidth',
-			elm$json$Json$Encode$int(gO.size.width))
+			elm$json$Json$Encode$int(gO.cj.cD))
 		]);
 };
 var author$project$Network$Commands$encodePlayer = function (player) {
@@ -8179,7 +8143,7 @@ var author$project$Network$Commands$run = function (m) {
 	return A2(
 		elm$core$Task$perform,
 		elm$core$Basics$always(m),
-		elm$core$Task$succeed(_Utils_Tuple0));
+		elm$core$Task$succeed(0));
 };
 var elm$core$String$trim = _String_trim;
 var author$project$Network$PredefinedMessages$sendJson2 = F2(
@@ -8187,7 +8151,7 @@ var author$project$Network$PredefinedMessages$sendJson2 = F2(
 		return elm$core$String$trim('{\"module\": \"WebSocket\", \"tag\": \"send\", \"args\": {\"key\": \"elminator\", \"message\":{ \"') + (field + ('\":' + (message + '}}}')));
 	});
 var author$project$Types$Send = function (a) {
-	return {$: 'Send', a: a};
+	return {$: 0, a: a};
 };
 var author$project$Network$Commands$send = F2(
 	function (field, message) {
@@ -8199,7 +8163,7 @@ var author$project$Network$Commands$send = F2(
 var author$project$Network$Module$send = author$project$Network$Commands$send;
 var author$project$Types$LobbyControl = F6(
 	function (identifier, playerId, join, start, finish, leave) {
-		return {finish: finish, identifier: identifier, join: join, leave: leave, playerId: playerId, start: start};
+		return {bq: finish, au: identifier, bJ: join, bS: leave, ca: playerId, cm: start};
 	});
 var elm$json$Json$Decode$bool = _Json_decodeBool;
 var elm_community$json_extra$Json$Decode$Extra$andMap = elm$json$Json$Decode$map2(elm$core$Basics$apR);
@@ -8224,7 +8188,7 @@ var author$project$Network$Decode$lobbyControlDecoder = A2(
 						elm$json$Json$Decode$succeed(author$project$Types$LobbyControl)))))));
 var author$project$Types$Lobby = F6(
 	function (identifier, maxPlayer, map, onlinePlayers, ttl, running) {
-		return {identifier: identifier, map: map, maxPlayer: maxPlayer, onlinePlayers: onlinePlayers, running: running, ttl: ttl};
+		return {au: identifier, ay: map, bX: maxPlayer, aF: onlinePlayers, ch: running, cw: ttl};
 	});
 var elm$json$Json$Decode$float = _Json_decodeFloat;
 var elm$json$Json$Decode$int = _Json_decodeInt;
@@ -8267,7 +8231,7 @@ var author$project$Types$SchemePlayer = function (identifier) {
 													return function (gORotate) {
 														return function (gOSizeHeight) {
 															return function (gOSizeWidth) {
-																return {catchedCheckpoints: catchedCheckpoints, currentLab: currentLab, gOIdentifier: gOIdentifier, gOPositionX: gOPositionX, gOPositionY: gOPositionY, gORotate: gORotate, gOSizeHeight: gOSizeHeight, gOSizeWidth: gOSizeWidth, gOSprite: gOSprite, gOSpriteMinimap: gOSpriteMinimap, identifier: identifier, label: label, labelCol: labelCol, labelSize: labelSize, labelVisible: labelVisible, time: time};
+																return {bd: catchedCheckpoints, bj: currentLab, bv: gOIdentifier, bw: gOPositionX, bx: gOPositionY, by: gORotate, bz: gOSizeHeight, bA: gOSizeWidth, ar: gOSprite, bB: gOSpriteMinimap, au: identifier, bN: label, bO: labelCol, bP: labelSize, bQ: labelVisible, aZ: time};
 															};
 														};
 													};
@@ -8335,7 +8299,7 @@ var author$project$Network$Decode$playerDecoder = A2(
 																elm$json$Json$Decode$succeed(author$project$Types$SchemePlayer)))))))))))))))));
 var author$project$Types$Message = F3(
 	function (lobby, player, lobbyControl) {
-		return {lobby: lobby, lobbyControl: lobbyControl, player: player};
+		return {bT: lobby, bU: lobbyControl, b9: player};
 	});
 var elm$json$Json$Decode$oneOf = _Json_oneOf;
 var elm$json$Json$Decode$maybe = function (decoder) {
@@ -8361,7 +8325,7 @@ var author$project$Network$Decode$messageDecoder = A2(
 			elm$json$Json$Decode$succeed(author$project$Types$Message))));
 var author$project$Types$Args = F2(
 	function (message, key) {
-		return {key: key, message: message};
+		return {bK: key, bY: message};
 	});
 var author$project$Network$Decode$argsDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
@@ -8376,39 +8340,39 @@ var author$project$Network$Decode$decode = function (json) {
 		elm$json$Json$Decode$decodeString,
 		A2(elm$json$Json$Decode$field, 'args', author$project$Network$Decode$argsDecoder),
 		json);
-	if (message.$ === 'Ok') {
+	if (!message.$) {
 		var m = message.a;
-		return elm$core$Maybe$Just(m.message);
+		return elm$core$Maybe$Just(m.bY);
 	} else {
 		return elm$core$Maybe$Nothing;
 	}
 };
 var author$project$Network$Ports$cmdPort = _Platform_outgoingPort('cmdPort', elm$core$Basics$identity);
 var author$project$Network$Ports$parse = _Platform_outgoingPort('parse', elm$json$Json$Encode$string);
-var author$project$Types$Other = {$: 'Other'};
+var author$project$Types$Other = 5;
 var author$project$Network$Scheme$player = function (p) {
 	var gameObject = {
-		collider: elm$core$Maybe$Nothing,
-		identifier: p.gOIdentifier,
-		kind: author$project$Types$Car,
-		motion: elm$core$Maybe$Nothing,
-		physics: elm$core$Maybe$Nothing,
-		position: elm$core$Maybe$Just(
-			{x: p.gOPositionX, y: p.gOPositionY}),
-		rotate: p.gORotate,
-		size: {height: p.gOSizeHeight, width: p.gOSizeWidth},
-		sprite: p.gOSprite,
-		spriteMinimap: elm$core$Maybe$Just(p.gOSprite)
+		bg: elm$core$Maybe$Nothing,
+		au: p.bv,
+		bL: 2,
+		aC: elm$core$Maybe$Nothing,
+		b8: elm$core$Maybe$Nothing,
+		cc: elm$core$Maybe$Just(
+			{a2: p.bw, a3: p.bx}),
+		ae: p.by,
+		cj: {bC: p.bz, cD: p.bA},
+		ck: p.ar,
+		cl: elm$core$Maybe$Just(p.ar)
 	};
 	var playerRecord = {
-		assignedKeys: {action: author$project$Types$Other, backward: author$project$Types$Other, forward: author$project$Types$Other, left: author$project$Types$Other, right: author$project$Types$Other},
-		catchedCheckpoints: _List_Nil,
-		controlledObject: gameObject,
-		currentLab: p.currentLab,
-		identifier: p.identifier,
-		label: {color: p.labelCol, size: p.labelSize, text: p.label, visible: p.labelVisible},
-		storedKeys: {backward: author$project$Types$Nothing, forward: author$project$Types$Nothing, left: author$project$Types$Nothing, right: author$project$Types$Nothing},
-		time: p.time
+		a7: {a5: 5, R: 5, T: 5, _: 5, ad: 5},
+		bd: _List_Nil,
+		S: gameObject,
+		bj: p.bj,
+		au: p.au,
+		bN: {bh: p.bO, cj: p.bP, ct: p.bN, cB: p.bQ},
+		i: {R: 4, T: 4, _: 4, ad: 4},
+		aZ: p.aZ
 	};
 	return playerRecord;
 };
@@ -8425,16 +8389,16 @@ var elm$core$List$filter = F2(
 	});
 var author$project$Network$Update$addPlayerToOwnLobby = F2(
 	function (model, uuid) {
-		var ownLobby = model.ownLobby;
+		var ownLobby = model.b7;
 		return (_Utils_cmp(
-			ownLobby.maxPlayer,
-			elm$core$List$length(ownLobby.onlinePlayers)) > 0) ? _Utils_update(
+			ownLobby.bX,
+			elm$core$List$length(ownLobby.aF)) > 0) ? _Utils_update(
 			model,
 			{
-				ownLobby: _Utils_update(
+				b7: _Utils_update(
 					ownLobby,
 					{
-						onlinePlayers: A2(
+						aF: A2(
 							elm$core$List$cons,
 							uuid,
 							A2(
@@ -8442,7 +8406,7 @@ var author$project$Network$Update$addPlayerToOwnLobby = F2(
 								function (x) {
 									return !_Utils_eq(x, uuid);
 								},
-								model.ownLobby.onlinePlayers))
+								model.b7.aF))
 					})
 			}) : model;
 	});
@@ -8451,22 +8415,22 @@ var author$project$Network$Encode$encodeLobbyControl = function (lobbyControl) {
 		[
 			_Utils_Tuple2(
 			'identifier',
-			elm$json$Json$Encode$string(lobbyControl.identifier)),
+			elm$json$Json$Encode$string(lobbyControl.au)),
 			_Utils_Tuple2(
 			'playerId',
-			elm$json$Json$Encode$string(lobbyControl.playerId)),
+			elm$json$Json$Encode$string(lobbyControl.ca)),
 			_Utils_Tuple2(
 			'join',
-			elm$json$Json$Encode$bool(lobbyControl.join)),
+			elm$json$Json$Encode$bool(lobbyControl.bJ)),
 			_Utils_Tuple2(
 			'start',
-			elm$json$Json$Encode$bool(lobbyControl.start)),
+			elm$json$Json$Encode$bool(lobbyControl.cm)),
 			_Utils_Tuple2(
 			'finish',
-			elm$json$Json$Encode$bool(lobbyControl.finish)),
+			elm$json$Json$Encode$bool(lobbyControl.bq)),
 			_Utils_Tuple2(
 			'leave',
-			elm$json$Json$Encode$bool(lobbyControl.leave))
+			elm$json$Json$Encode$bool(lobbyControl.bS))
 		]);
 };
 var author$project$Network$Commands$encodeLobbyControl = function (lobbyControl) {
@@ -8478,24 +8442,24 @@ var author$project$Network$Commands$encodeLobbyControl = function (lobbyControl)
 };
 var author$project$Types$ChangeTo = F2(
 	function (a, b) {
-		return {$: 'ChangeTo', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var author$project$Types$SceneManager = function (a) {
-	return {$: 'SceneManager', a: a};
+	return {$: 3, a: a};
 };
 var author$project$Network$Update$checkLobbyState = function (model) {
-	var ownLobby = model.ownLobby;
-	var oL = model.ownLobby;
-	var lobbyControlMessageStart = {finish: false, identifier: ownLobby.identifier, join: false, leave: false, playerId: model.myPlayer.identifier, start: true};
+	var ownLobby = model.b7;
+	var oL = model.b7;
+	var lobbyControlMessageStart = {bq: false, au: ownLobby.au, bJ: false, bS: false, ca: model.k.au, cm: true};
 	if (_Utils_cmp(
-		ownLobby.maxPlayer,
-		elm$core$List$length(ownLobby.onlinePlayers)) < 1) {
+		ownLobby.bX,
+		elm$core$List$length(ownLobby.aF)) < 1) {
 		var updatedModel = _Utils_update(
 			model,
 			{
-				ownLobby: _Utils_update(
+				b7: _Utils_update(
 					oL,
-					{running: true})
+					{ch: true})
 			});
 		return _Utils_Tuple2(
 			updatedModel,
@@ -8508,7 +8472,7 @@ var author$project$Network$Update$checkLobbyState = function (model) {
 						author$project$Network$Commands$encodeLobbyControl(lobbyControlMessageStart)),
 						author$project$Network$Commands$run(
 						author$project$Types$SceneManager(
-							A2(author$project$Types$ChangeTo, updatedModel, author$project$Types$PrepareRace)))
+							A2(author$project$Types$ChangeTo, updatedModel, 3)))
 					])));
 	} else {
 		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
@@ -8516,101 +8480,101 @@ var author$project$Network$Update$checkLobbyState = function (model) {
 };
 var author$project$Network$Update$removePlayerFromLobby = F2(
 	function (model, lobbyControl) {
-		var ownLobby = model.ownLobby;
+		var ownLobby = model.b7;
 		return _Utils_update(
 			model,
 			{
-				ownLobby: _Utils_update(
+				b7: _Utils_update(
 					ownLobby,
 					{
-						onlinePlayers: A2(
+						aF: A2(
 							elm$core$List$filter,
 							function (x) {
-								return !_Utils_eq(x, lobbyControl.playerId);
+								return !_Utils_eq(x, lobbyControl.ca);
 							},
-							ownLobby.onlinePlayers)
+							ownLobby.aF)
 					})
 			});
 	});
 var author$project$Network$Update$updateLobbyPool = F2(
 	function (model, lobby) {
-		var network = model.network;
+		var network = model.b0;
 		return _Utils_update(
 			model,
 			{
-				network: _Utils_update(
+				b0: _Utils_update(
 					network,
 					{
-						lobbyPool: A2(
+						bV: A2(
 							elm$core$List$cons,
 							lobby,
 							A2(
 								elm$core$List$filter,
 								function (x) {
-									return !_Utils_eq(x.identifier, lobby.identifier);
+									return !_Utils_eq(x.au, lobby.au);
 								},
-								network.lobbyPool))
+								network.bV))
 					})
 			});
 	});
 var author$project$Network$Update$update = F2(
 	function (wsMessage, model) {
 		switch (wsMessage.$) {
-			case 'Process':
+			case 1:
 				var v = wsMessage.a;
 				var message = A2(elm$json$Json$Encode$encode, 0, v);
 				return _Utils_Tuple2(
 					model,
 					author$project$Network$Ports$cmdPort(v));
-			case 'Receive':
+			case 2:
 				var v = wsMessage.a;
 				var message = author$project$Network$Decode$decode(
 					A2(elm$json$Json$Encode$encode, 0, v));
-				if (message.$ === 'Just') {
+				if (!message.$) {
 					var m = message.a;
-					var _n2 = _Utils_Tuple3(m.player, m.lobby, m.lobbyControl);
-					if (_n2.a.$ === 'Just') {
+					var _n2 = _Utils_Tuple3(m.b9, m.bT, m.bU);
+					if (!_n2.a.$) {
 						var player = _n2.a.a;
 						var p = author$project$Network$Scheme$player(player);
 						return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 							_Utils_update(
 								model,
 								{
-									onlinePlayers: A2(
+									aF: A2(
 										elm$core$List$cons,
 										p,
 										A2(
 											elm$core$List$filter,
 											function (x) {
-												return !_Utils_eq(x.identifier, p.identifier);
+												return !_Utils_eq(x.au, p.au);
 											},
-											model.onlinePlayers))
+											model.aF))
 								}));
 					} else {
-						if (_n2.b.$ === 'Just') {
+						if (!_n2.b.$) {
 							var lobby = _n2.b.a;
 							return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 								A2(author$project$Network$Update$updateLobbyPool, model, lobby));
 						} else {
-							if (_n2.c.$ === 'Just') {
+							if (!_n2.c.$) {
 								var lobbyControl = _n2.c.a;
-								var senderId = lobbyControl.playerId;
-								var ownLobby = model.ownLobby;
-								var ownLobbyId = ownLobby.identifier;
-								var lobbyId = lobbyControl.identifier;
-								return (lobbyControl.finish && (_Utils_eq(lobbyControl.identifier, model.network.session) || _Utils_eq(lobbyControl.identifier, ownLobbyId))) ? A2(
+								var senderId = lobbyControl.ca;
+								var ownLobby = model.b7;
+								var ownLobbyId = ownLobby.au;
+								var lobbyId = lobbyControl.au;
+								return (lobbyControl.bq && (_Utils_eq(lobbyControl.au, model.b0.ci) || _Utils_eq(lobbyControl.au, ownLobbyId))) ? A2(
 									Janiczek$cmd_extra$Cmd$Extra$withCmd,
 									author$project$Network$Commands$run(
 										author$project$Types$SceneManager(
-											A2(author$project$Types$ChangeTo, model, author$project$Types$Finished))),
-									model) : ((_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.join) ? author$project$Network$Update$checkLobbyState(
-									A2(author$project$Network$Update$addPlayerToOwnLobby, model, senderId)) : ((_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.leave) ? _Utils_Tuple2(
+											A2(author$project$Types$ChangeTo, model, 1))),
+									model) : ((_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.bJ) ? author$project$Network$Update$checkLobbyState(
+									A2(author$project$Network$Update$addPlayerToOwnLobby, model, senderId)) : ((_Utils_eq(lobbyId, ownLobbyId) && lobbyControl.bS) ? _Utils_Tuple2(
 									A2(author$project$Network$Update$removePlayerFromLobby, model, lobbyControl),
-									elm$core$Platform$Cmd$none) : ((lobbyControl.start && _Utils_eq(lobbyControl.identifier, model.network.session)) ? A2(
+									elm$core$Platform$Cmd$none) : ((lobbyControl.cm && _Utils_eq(lobbyControl.au, model.b0.ci)) ? A2(
 									Janiczek$cmd_extra$Cmd$Extra$withCmd,
 									author$project$Network$Commands$run(
 										author$project$Types$SceneManager(
-											A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace))),
+											A2(author$project$Types$ChangeTo, model, 3))),
 									model) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model))));
 							} else {
 								return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
@@ -8629,30 +8593,30 @@ var author$project$Network$Update$update = F2(
 	});
 var author$project$Network$Module$update = author$project$Network$Update$update;
 var author$project$Network$Module$updateTtl = function (model) {
-	var network = model.network;
-	var lobbyPool = network.lobbyPool;
+	var network = model.b0;
+	var lobbyPool = network.bV;
 	var decreaseTll = function (l) {
 		return A2(
 			elm$core$List$filter,
 			function (x) {
-				return x.ttl > 0;
+				return x.cw > 0;
 			},
 			A2(
 				elm$core$List$map,
 				function (x) {
 					return _Utils_update(
 						x,
-						{ttl: x.ttl - model.frequence});
+						{cw: x.cw - model.U});
 				},
 				l));
 	};
 	return _Utils_update(
 		model,
 		{
-			network: _Utils_update(
+			b0: _Utils_update(
 				network,
 				{
-					lobbyPool: decreaseTll(lobbyPool)
+					bV: decreaseTll(lobbyPool)
 				})
 		});
 };
@@ -8662,37 +8626,36 @@ var author$project$Objects$Physics$addImpact = F2(
 		while (true) {
 			var checkToRemoveBackgroundImpact = function (list) {
 				var filterBackgroundImpact = function (impact) {
-					var i = impact.a;
-					return (!(i.identifier === 'background')) && i.overrideBackgroundImpact;
+					var i = impact;
+					return (!(i.au === 'background')) && i.b6;
 				};
 				return (elm$core$List$length(list) > 1) ? A2(elm$core$List$filter, filterBackgroundImpact, list) : list;
 			};
 			var addImpactHelper = F2(
 				function (physics, collider) {
 					var updateUnmodifiedGameobject = function (impact) {
-						var i = impact.a;
-						return author$project$Types$Impact(
-							_Utils_update(
-								i,
-								{
-									unmodifiedObject: elm$core$Maybe$Just(gO)
-								}));
+						var i = impact;
+						return _Utils_update(
+							i,
+							{
+								a0: elm$core$Maybe$Just(gO)
+							});
 					};
-					if (collider.$ === 'Just') {
+					if (!collider.$) {
 						var c = collider.a;
-						if (c.$ === 'Rect') {
+						if (!c.$) {
 							var r = c.a;
-							var _n4 = r.impactFunction;
-							if (_n4.$ === 'Just') {
+							var _n4 = r.bE;
+							if (!_n4.$) {
 								var impact = _n4.a;
 								return _Utils_update(
 									physics,
 									{
-										impacts: checkToRemoveBackgroundImpact(
+										t: checkToRemoveBackgroundImpact(
 											A2(
 												elm$core$List$cons,
 												updateUnmodifiedGameobject(impact),
-												physics.impacts))
+												physics.t))
 									});
 							} else {
 								return physics;
@@ -8707,15 +8670,15 @@ var author$project$Objects$Physics$addImpact = F2(
 			if (l.b) {
 				var x = l.a;
 				var xs = l.b;
-				var _n1 = gO.physics;
-				if (_n1.$ === 'Just') {
+				var _n1 = gO.b8;
+				if (!_n1.$) {
 					var p = _n1.a;
 					var $temp$l = xs,
 						$temp$gO = _Utils_update(
 						gO,
 						{
-							physics: elm$core$Maybe$Just(
-								A2(addImpactHelper, p, x.collider))
+							b8: elm$core$Maybe$Just(
+								A2(addImpactHelper, p, x.bg))
 						});
 					l = $temp$l;
 					gO = $temp$gO;
@@ -8734,20 +8697,20 @@ var author$project$Objects$Physics$checkCollision = F2(
 		while (true) {
 			var compareBorders = F2(
 				function (gO1, gO2) {
-					if (!_Utils_eq(gO1.identifier, gO2.identifier)) {
-						var _n2 = _Utils_Tuple2(gO1.collider, gO2.collider);
-						if ((_n2.a.$ === 'Just') && (_n2.b.$ === 'Just')) {
+					if (!_Utils_eq(gO1.au, gO2.au)) {
+						var _n2 = _Utils_Tuple2(gO1.bg, gO2.bg);
+						if ((!_n2.a.$) && (!_n2.b.$)) {
 							var c1 = _n2.a.a;
 							var c2 = _n2.b.a;
-							var _n3 = _Utils_Tuple2(gO1.position, gO2.position);
-							if ((_n3.a.$ === 'Just') && (_n3.b.$ === 'Just')) {
+							var _n3 = _Utils_Tuple2(gO1.cc, gO2.cc);
+							if ((!_n3.a.$) && (!_n3.b.$)) {
 								var p1 = _n3.a.a;
 								var p2 = _n3.b.a;
 								var _n4 = _Utils_Tuple2(c1, c2);
-								if ((_n4.a.$ === 'Rect') && (_n4.b.$ === 'Rect')) {
+								if ((!_n4.a.$) && (!_n4.b.$)) {
 									var r1 = _n4.a.a;
 									var r2 = _n4.b.a;
-									return (!((_Utils_cmp(p2.x + r2.position.x, (p1.x + r1.position.x) + r1.width) > 0) || ((_Utils_cmp((p2.x + r2.position.x) + r2.width, p1.x + r1.position.x) < 0) || ((_Utils_cmp(p2.y + r2.position.y, (p1.y + r1.position.y) + r1.height) > 0) || (_Utils_cmp((p2.y + r2.position.y) + r2.height, p1.y + r1.position.y) < 0))))) ? elm$core$Maybe$Just(gO2) : elm$core$Maybe$Nothing;
+									return (!((_Utils_cmp(p2.a2 + r2.cc.a2, (p1.a2 + r1.cc.a2) + r1.cD) > 0) || ((_Utils_cmp((p2.a2 + r2.cc.a2) + r2.cD, p1.a2 + r1.cc.a2) < 0) || ((_Utils_cmp(p2.a3 + r2.cc.a3, (p1.a3 + r1.cc.a3) + r1.bC) > 0) || (_Utils_cmp((p2.a3 + r2.cc.a3) + r2.bC, p1.a3 + r1.cc.a3) < 0))))) ? elm$core$Maybe$Just(gO2) : elm$core$Maybe$Nothing;
 								} else {
 									return elm$core$Maybe$Nothing;
 								}
@@ -8765,7 +8728,7 @@ var author$project$Objects$Physics$checkCollision = F2(
 				var x = l.a;
 				var xs = l.b;
 				var _n1 = A2(compareBorders, gO, x);
-				if (_n1.$ === 'Just') {
+				if (!_n1.$) {
 					var gameObject = _n1.a;
 					return A2(
 						elm$core$List$cons,
@@ -8791,15 +8754,12 @@ var author$project$Objects$Physics$runImpact = function (gO) {
 				if (l.b) {
 					var x = l.a;
 					var xs = l.b;
-					var impact = x.a;
-					var _n2 = impact._function;
-					if (_n2.$ === 'Just') {
+					var impact = x;
+					var _n2 = impact.bu;
+					if (!_n2.$) {
 						var f = _n2.a;
 						var $temp$l = xs,
-							$temp$gameObject = A2(
-							f,
-							author$project$Types$Impact(impact),
-							gameObject);
+							$temp$gameObject = A2(f, impact, gameObject);
 						l = $temp$l;
 						gameObject = $temp$gameObject;
 						continue iterateThroughImpact;
@@ -8811,10 +8771,10 @@ var author$project$Objects$Physics$runImpact = function (gO) {
 				}
 			}
 		});
-	var _n3 = gO.physics;
-	if (_n3.$ === 'Just') {
+	var _n3 = gO.b8;
+	if (!_n3.$) {
 		var p = _n3.a;
-		return A2(iterateThroughImpact, p.impacts, gO);
+		return A2(iterateThroughImpact, p.t, gO);
 	} else {
 		return gO;
 	}
@@ -8822,30 +8782,29 @@ var author$project$Objects$Physics$runImpact = function (gO) {
 var author$project$Objects$Physics$updateImpacts = F2(
 	function (model, gO) {
 		var removeExpiredImpacts = function (impact) {
-			var i = impact.a;
-			return i.duration > 0;
+			var i = impact;
+			return i.O > 0;
 		};
 		var reduceDuration = function (impact) {
-			var i = impact.a;
-			return (i.duration > 0) ? author$project$Types$Impact(
-				_Utils_update(
-					i,
-					{duration: i.duration - model.frequence})) : impact;
+			var i = impact;
+			return (i.O > 0) ? _Utils_update(
+				i,
+				{O: i.O - model.U}) : impact;
 		};
-		var _n0 = gO.physics;
-		if (_n0.$ === 'Just') {
+		var _n0 = gO.b8;
+		if (!_n0.$) {
 			var p = _n0.a;
 			return _Utils_update(
 				gO,
 				{
-					physics: elm$core$Maybe$Just(
+					b8: elm$core$Maybe$Just(
 						_Utils_update(
 							p,
 							{
-								impacts: A2(
+								t: A2(
 									elm$core$List$filter,
 									removeExpiredImpacts,
-									A2(elm$core$List$map, reduceDuration, p.impacts))
+									A2(elm$core$List$map, reduceDuration, p.t))
 							}))
 				});
 		} else {
@@ -8859,13 +8818,13 @@ var author$project$Objects$Trigger$run = F3(
 			if (l.b) {
 				var x = l.a;
 				var xs = l.b;
-				var _n1 = x.collider;
-				if (_n1.$ === 'Just') {
+				var _n1 = x.bg;
+				if (!_n1.$) {
 					var collider = _n1.a;
-					if (collider.$ === 'Rect') {
+					if (!collider.$) {
 						var r = collider.a;
-						var _n3 = r.triggerFunction;
-						if (_n3.$ === 'Just') {
+						var _n3 = r.a$;
+						if (!_n3.$) {
 							var f = _n3.a;
 							return A2(f, x, m);
 						} else {
@@ -8902,31 +8861,31 @@ var author$project$Objects$Trigger$run = F3(
 	});
 var author$project$Objects$Physics$update = function (model) {
 	var objectList = _Utils_ap(
-		model.map.gameObjects.trigger,
+		model.ay.Q.cv,
 		_Utils_ap(
-			model.map.gameObjects.decor,
-			_Utils_ap(model.map.gameObjects.roads, model.map.gameObjects.background)));
-	var myPlayer = model.myPlayer;
-	var controlledObject = model.myPlayer.controlledObject;
+			model.ay.Q.bl,
+			_Utils_ap(model.ay.Q.cf, model.ay.Q.ba)));
+	var myPlayer = model.k;
+	var controlledObject = model.k.S;
 	var approvedCollision = {
-		impacts: A2(author$project$Objects$Physics$checkCollision, controlledObject, objectList),
-		trigger: A2(author$project$Objects$Physics$checkCollision, controlledObject, model.map.gameObjects.trigger)
+		t: A2(author$project$Objects$Physics$checkCollision, controlledObject, objectList),
+		cv: A2(author$project$Objects$Physics$checkCollision, controlledObject, model.ay.Q.cv)
 	};
 	return A3(
 		author$project$Objects$Trigger$run,
 		controlledObject,
-		approvedCollision.trigger,
+		approvedCollision.cv,
 		_Utils_update(
 			model,
 			{
-				myPlayer: _Utils_update(
+				k: _Utils_update(
 					myPlayer,
 					{
-						controlledObject: A2(
+						S: A2(
 							author$project$Objects$Physics$updateImpacts,
 							model,
 							author$project$Objects$Physics$runImpact(
-								A2(author$project$Objects$Physics$addImpact, approvedCollision.impacts, controlledObject)))
+								A2(author$project$Objects$Physics$addImpact, approvedCollision.t, controlledObject)))
 					})
 			}));
 };
@@ -8937,25 +8896,23 @@ var author$project$Ui$Scenes$FinishMenu$Update$update = F2(
 var author$project$Ui$Scenes$FinishMenu$Module$update = author$project$Ui$Scenes$FinishMenu$Update$update;
 var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 	function (model, gO) {
-		var myPlayer = model.myPlayer;
+		var myPlayer = model.k;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					myPlayer: _Utils_update(
+					k: _Utils_update(
 						myPlayer,
-						{controlledObject: gO})
+						{S: gO})
 				}),
 			elm$core$Platform$Cmd$none);
 	});
-var author$project$Types$LobbyUUID = {$: 'LobbyUUID'};
+var author$project$Types$LobbyUUID = 1;
 var author$project$Types$SetUUID = F2(
 	function (a, b) {
-		return {$: 'SetUUID', a: a, b: b};
+		return {$: 8, a: a, b: b};
 	});
-var elm$random$Random$Generate = function (a) {
-	return {$: 'Generate', a: a};
-};
+var elm$random$Random$Generate = elm$core$Basics$identity;
 var elm$random$Random$initialSeed = function (x) {
 	var _n0 = elm$random$Random$next(
 		A2(elm$random$Random$Seed, 0, 1013904223));
@@ -8966,7 +8923,7 @@ var elm$random$Random$initialSeed = function (x) {
 		A2(elm$random$Random$Seed, state2, incr));
 };
 var elm$time$Time$posixToMillis = function (_n0) {
-	var millis = _n0.a;
+	var millis = _n0;
 	return millis;
 };
 var elm$random$Random$init = A2(
@@ -8979,7 +8936,7 @@ var elm$random$Random$init = A2(
 	elm$time$Time$now);
 var elm$random$Random$step = F2(
 	function (_n0, seed) {
-		var generator = _n0.a;
+		var generator = _n0;
 		return generator(seed);
 	});
 var elm$random$Random$onEffects = F3(
@@ -8987,7 +8944,7 @@ var elm$random$Random$onEffects = F3(
 		if (!commands.b) {
 			return elm$core$Task$succeed(seed);
 		} else {
-			var generator = commands.a.a;
+			var generator = commands.a;
 			var rest = commands.b;
 			var _n1 = A2(elm$random$Random$step, generator, seed);
 			var value = _n1.a;
@@ -9006,89 +8963,87 @@ var elm$random$Random$onSelfMsg = F3(
 	});
 var elm$random$Random$cmdMap = F2(
 	function (func, _n0) {
-		var generator = _n0.a;
-		return elm$random$Random$Generate(
-			A2(elm$random$Random$map, func, generator));
+		var generator = _n0;
+		return A2(elm$random$Random$map, func, generator);
 	});
 _Platform_effectManagers['Random'] = _Platform_createManager(elm$random$Random$init, elm$random$Random$onEffects, elm$random$Random$onSelfMsg, elm$random$Random$cmdMap);
 var elm$random$Random$command = _Platform_leaf('Random');
 var elm$random$Random$generate = F2(
 	function (tagger, generator) {
 		return elm$random$Random$command(
-			elm$random$Random$Generate(
-				A2(elm$random$Random$map, tagger, generator)));
+			A2(elm$random$Random$map, tagger, generator));
 	});
 var author$project$Ui$Scenes$MainMenu$Update$changeGameType = function (model) {
-	var n = model.network;
-	var l = model.ownLobby;
-	return n.multiplayer ? _Utils_Tuple2(
+	var n = model.b0;
+	var l = model.b7;
+	return n.b_ ? _Utils_Tuple2(
 		_Utils_update(
 			model,
-			{network: author$project$InitialModel$initialModel.network, ownLobby: author$project$InitialModel$initialModel.ownLobby}),
+			{b0: author$project$InitialModel$initialModel.b0, b7: author$project$InitialModel$initialModel.b7}),
 		A2(
 			elm$random$Random$generate,
-			author$project$Types$SetUUID(author$project$Types$LobbyUUID),
+			author$project$Types$SetUUID(1),
 			TSFoster$elm_uuid$UUID$generator)) : _Utils_Tuple2(
 		_Utils_update(
 			model,
 			{
-				network: _Utils_update(
+				b0: _Utils_update(
 					n,
-					{multiplayer: true, session: model.ownLobby.identifier}),
-				ownLobby: _Utils_update(
+					{b_: true, ci: model.b7.au}),
+				b7: _Utils_update(
 					l,
 					{
-						onlinePlayers: A2(elm$core$List$cons, model.myPlayer.identifier, l.onlinePlayers),
-						running: false
+						aF: A2(elm$core$List$cons, model.k.au, l.aF),
+						ch: false
 					})
 			}),
 		elm$core$Platform$Cmd$none);
 };
 var author$project$Ui$Scenes$MainMenu$Update$changeMap = F2(
 	function (model, m) {
-		var l = model.ownLobby;
+		var l = model.b7;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					map: m,
-					ownLobby: _Utils_update(
+					ay: m,
+					b7: _Utils_update(
 						l,
-						{map: m.meta.name})
+						{ay: m.bZ.b$})
 				}),
 			elm$core$Platform$Cmd$none);
 	});
 var author$project$Ui$Scenes$MainMenu$Update$changeName = F2(
 	function (model, name) {
-		var myPlayer = model.myPlayer;
-		var label = model.myPlayer.label;
+		var myPlayer = model.k;
+		var label = model.k.bN;
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					myPlayer: _Utils_update(
+					k: _Utils_update(
 						myPlayer,
 						{
-							label: _Utils_update(
+							bN: _Utils_update(
 								label,
-								{text: name})
+								{ct: name})
 						})
 				}),
 			elm$core$Platform$Cmd$none);
 	});
 var author$project$Ui$Scenes$MainMenu$Update$changePlayerCount = F2(
 	function (model, c) {
-		var l = model.ownLobby;
+		var l = model.b7;
 		var _n0 = elm$core$String$toInt(c);
-		if (_n0.$ === 'Just') {
+		if (!_n0.$) {
 			var count = _n0.a;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						ownLobby: _Utils_update(
+						b7: _Utils_update(
 							l,
-							{maxPlayer: count})
+							{bX: count})
 					}),
 				elm$core$Platform$Cmd$none);
 		} else {
@@ -9096,9 +9051,9 @@ var author$project$Ui$Scenes$MainMenu$Update$changePlayerCount = F2(
 				_Utils_update(
 					model,
 					{
-						ownLobby: _Utils_update(
+						b7: _Utils_update(
 							l,
-							{maxPlayer: 1})
+							{bX: 1})
 					}),
 				elm$core$Platform$Cmd$none);
 		}
@@ -9106,15 +9061,15 @@ var author$project$Ui$Scenes$MainMenu$Update$changePlayerCount = F2(
 var author$project$Network$Module$encodeLobbyControl = author$project$Network$Commands$encodeLobbyControl;
 var author$project$Ui$Scenes$MainMenu$Update$joinLobby = F2(
 	function (model, lobby) {
-		var n = model.network;
-		var lobbyControl = {finish: false, identifier: lobby.identifier, join: true, leave: false, playerId: model.myPlayer.identifier, start: false};
+		var n = model.b0;
+		var lobbyControl = {bq: false, au: lobby.au, bJ: true, bS: false, ca: model.k.au, cm: false};
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					network: _Utils_update(
+					b0: _Utils_update(
 						n,
-						{session: lobby.identifier})
+						{ci: lobby.au})
 				}),
 			A2(
 				author$project$Network$Module$send,
@@ -9123,15 +9078,15 @@ var author$project$Ui$Scenes$MainMenu$Update$joinLobby = F2(
 	});
 var author$project$Ui$Scenes$MainMenu$Update$leaveLobby = F2(
 	function (model, lobby) {
-		var n = model.network;
-		var lobbyControl = {finish: false, identifier: lobby.identifier, join: false, leave: true, playerId: model.myPlayer.identifier, start: false};
+		var n = model.b0;
+		var lobbyControl = {bq: false, au: lobby.au, bJ: false, bS: true, ca: model.k.au, cm: false};
 		return _Utils_Tuple2(
 			_Utils_update(
 				model,
 				{
-					network: _Utils_update(
+					b0: _Utils_update(
 						n,
-						{session: ''})
+						{ci: ''})
 				}),
 			A2(
 				author$project$Network$Module$send,
@@ -9141,21 +9096,21 @@ var author$project$Ui$Scenes$MainMenu$Update$leaveLobby = F2(
 var author$project$Ui$Scenes$MainMenu$Update$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'ChangeCar':
+			case 0:
 				var gO = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$changeCar, model, gO);
-			case 'ChangeMap':
+			case 1:
 				var m = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$changeMap, model, m);
-			case 'ChangeName':
+			case 2:
 				var name = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$changeName, model, name);
-			case 'ChangePlayerCount':
+			case 3:
 				var c = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$changePlayerCount, model, c);
-			case 'ChangeGameType':
+			case 4:
 				return author$project$Ui$Scenes$MainMenu$Update$changeGameType(model);
-			case 'JoinLobby':
+			case 5:
 				var lobby = msg.b;
 				return A2(author$project$Ui$Scenes$MainMenu$Update$joinLobby, model, lobby);
 			default:
@@ -9169,7 +9124,7 @@ var author$project$Ui$Scenes$Update$changeTo = F2(
 		return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 			_Utils_update(
 				model,
-				{state: state}));
+				{aW: state}));
 	});
 var author$project$Ui$Scenes$Update$update = F2(
 	function (msg, model) {
@@ -9183,12 +9138,12 @@ var author$project$Ui$Scenes$Module$update = F2(
 	});
 var author$project$Ui$Scenes$Playground$Update$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'ChangeColliderVisibility') {
+		if (msg.$ === 1) {
 			var m = msg.a;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{debug: !m.debug}),
+					{bk: !m.bk}),
 				elm$core$Platform$Cmd$none);
 		} else {
 			return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
@@ -9198,62 +9153,62 @@ var author$project$Ui$Scenes$Playground$Module$update = author$project$Ui$Scenes
 var author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
-			case 'SyncLobbies':
-				return model.network.multiplayer ? A2(
+			case 9:
+				return model.b0.b_ ? A2(
 					Janiczek$cmd_extra$Cmd$Extra$withCmd,
 					A2(
 						author$project$Network$Module$send,
 						'lobby',
-						author$project$Network$Module$encodeLobby(model.ownLobby)),
+						author$project$Network$Module$encodeLobby(model.b7)),
 					author$project$Network$Module$updateTtl(model)) : Janiczek$cmd_extra$Cmd$Extra$withNoCmd(model);
-			case 'SyncPlayer':
+			case 10:
 				return A2(
 					Janiczek$cmd_extra$Cmd$Extra$withCmd,
 					A2(
 						author$project$Network$Module$send,
 						'player',
-						author$project$Network$Module$encodePlayer(model.myPlayer)),
+						author$project$Network$Module$encodePlayer(model.k)),
 					model);
-			case 'Tick':
+			case 6:
 				return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 					author$project$Objects$Physics$update(
 						author$project$Control$Player$update(
 							author$project$Network$Module$updateTtl(
 								author$project$Map$Track$Module$update(model)))));
-			case 'Control':
+			case 5:
 				var event = msg.b;
 				var action = msg.c;
 				return A3(author$project$Control$Module$update, event, action, model);
-			case 'Playground':
+			case 4:
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$Playground$Module$update, m, model);
-			case 'MainMenu':
+			case 1:
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$MainMenu$Module$update, m, model);
-			case 'FinishMenu':
+			case 2:
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$FinishMenu$Module$update, m, model);
-			case 'SceneManager':
+			case 3:
 				var m = msg.a;
 				return A2(author$project$Ui$Scenes$Module$update, m, model);
-			case 'Websocket':
+			case 7:
 				var m = msg.a;
 				return A2(author$project$Network$Module$update, m, model);
-			case 'SetUUID':
+			case 8:
 				var t = msg.a;
 				var uuid = msg.b;
-				var p = model.myPlayer;
-				var n = model.network;
-				var l = model.ownLobby;
-				if (t.$ === 'PlayerUUID') {
+				var p = model.k;
+				var n = model.b0;
+				var l = model.b7;
+				if (!t) {
 					return Janiczek$cmd_extra$Cmd$Extra$withNoCmd(
 						_Utils_update(
 							model,
 							{
-								myPlayer: _Utils_update(
+								k: _Utils_update(
 									p,
 									{
-										identifier: TSFoster$elm_uuid$UUID$toString(uuid)
+										au: TSFoster$elm_uuid$UUID$toString(uuid)
 									})
 							}));
 				} else {
@@ -9261,15 +9216,15 @@ var author$project$Main$update = F2(
 						_Utils_update(
 							model,
 							{
-								network: _Utils_update(
+								b0: _Utils_update(
 									n,
 									{
-										session: TSFoster$elm_uuid$UUID$toString(uuid)
+										ci: TSFoster$elm_uuid$UUID$toString(uuid)
 									}),
-								ownLobby: _Utils_update(
+								b7: _Utils_update(
 									l,
 									{
-										identifier: TSFoster$elm_uuid$UUID$toString(uuid)
+										au: TSFoster$elm_uuid$UUID$toString(uuid)
 									})
 							}));
 				}
@@ -9342,25 +9297,25 @@ var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
 	var sortFunction = F2(
 		function (a, b) {
-			var bRoundStr = elm$core$String$fromInt(b.currentLab);
+			var bRoundStr = elm$core$String$fromInt(b.bj);
 			var bCheckpointsStr = elm$core$String$fromInt(
-				elm$core$List$length(b.catchedCheckpoints));
+				elm$core$List$length(b.bd));
 			var bValue = _Utils_ap(bRoundStr, bCheckpointsStr);
-			var aRoundStr = elm$core$String$fromInt(a.currentLab);
+			var aRoundStr = elm$core$String$fromInt(a.bj);
 			var aCheckpointsStr = elm$core$String$fromInt(
-				elm$core$List$length(a.catchedCheckpoints));
+				elm$core$List$length(a.bd));
 			var aValue = _Utils_ap(aRoundStr, aCheckpointsStr);
 			var _n0 = A2(elm$core$Basics$compare, aValue, bValue);
-			switch (_n0.$) {
-				case 'LT':
-					return elm$core$Basics$GT;
-				case 'EQ':
-					return elm$core$Basics$EQ;
+			switch (_n0) {
+				case 0:
+					return 2;
+				case 1:
+					return 1;
 				default:
-					return elm$core$Basics$LT;
+					return 0;
 			}
 		});
-	var playerList = A2(elm$core$List$cons, model.myPlayer, model.onlinePlayers);
+	var playerList = A2(elm$core$List$cons, model.k, model.aF);
 	var sortedList = A2(
 		elm$core$List$sortWith,
 		sortFunction,
@@ -9369,8 +9324,8 @@ var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
 			function (x) {
 				return A2(
 					elm$core$List$member,
-					x.identifier,
-					A2(elm$core$List$cons, model.myPlayer.identifier, model.ownLobby.onlinePlayers));
+					x.au,
+					A2(elm$core$List$cons, model.k.au, model.b7.aF));
 			},
 			playerList));
 	var highScoreItem = function (p) {
@@ -9394,7 +9349,7 @@ var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
 						]),
 					_List_fromArray(
 						[
-							elm$html$Html$text(p.label.text)
+							elm$html$Html$text(p.bN.ct)
 						])),
 					A2(
 					elm$html$Html$div,
@@ -9406,7 +9361,7 @@ var author$project$Ui$Scenes$FinishMenu$View$highScoreList = function (model) {
 						[
 							elm$html$Html$text(
 							elm$core$String$fromInt(
-								author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(p.time)) + (':' + (author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(p.time) + ' s')))
+								author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(p.aZ)) + (':' + (author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(p.aZ) + ' s')))
 						]))
 				]));
 	};
@@ -9483,7 +9438,7 @@ var elm$html$Html$Attributes$src = function (url) {
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
+	return {$: 0, a: a};
 };
 var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var elm$html$Html$Events$on = F2(
@@ -9540,10 +9495,10 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 									[
 										elm$html$Html$text(
 										elm$core$String$fromInt(
-											author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(model.myPlayer.time))),
+											author$project$Ui$Scenes$FinishMenu$View$getDriveTimeSeconds(model.k.aZ))),
 										elm$html$Html$text(':'),
 										elm$html$Html$text(
-										author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(model.myPlayer.time)),
+										author$project$Ui$Scenes$FinishMenu$View$getDriveTimeMilliSeconds(model.k.aZ)),
 										elm$html$Html$text(' seconds')
 									]))
 							])),
@@ -9572,7 +9527,7 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 						[
 							elm$html$Html$Events$onClick(
 							author$project$Types$SceneManager(
-								A2(author$project$Types$ChangeTo, author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel, author$project$Types$Menu)))
+								A2(author$project$Types$ChangeTo, author$project$Ui$Scenes$FinishMenu$Update$restoreInitialModel, 0)))
 						])),
 				_List_fromArray(
 					[
@@ -9583,14 +9538,14 @@ var author$project$Ui$Scenes$FinishMenu$View$view = function (model) {
 var author$project$Ui$Scenes$FinishMenu$Module$view = author$project$Ui$Scenes$FinishMenu$View$view;
 var author$project$Types$ChangeName = F2(
 	function (a, b) {
-		return {$: 'ChangeName', a: a, b: b};
+		return {$: 2, a: a, b: b};
 	});
 var author$project$Types$MainMenu = function (a) {
-	return {$: 'MainMenu', a: a};
+	return {$: 1, a: a};
 };
 var author$project$Types$ChangeCar = F2(
 	function (a, b) {
-		return {$: 'ChangeCar', a: a, b: b};
+		return {$: 0, a: a, b: b};
 	});
 var author$project$Ui$Scenes$MainMenu$Style$carSelectionInnerContainer = _List_fromArray(
 	[
@@ -9602,7 +9557,7 @@ var author$project$Ui$Scenes$MainMenu$Style$carSelectionInnerContainer = _List_f
 var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 	function (l, model) {
 		var renderCar = function (car) {
-			var checkSelection = _Utils_eq(car.identifier, model.myPlayer.controlledObject.identifier) ? _List_fromArray(
+			var checkSelection = _Utils_eq(car.au, model.k.S.au) ? _List_fromArray(
 				[
 					A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.4)')
 				]) : _List_Nil;
@@ -9630,13 +9585,13 @@ var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 								_List_Nil,
 								_List_fromArray(
 									[
-										elm$html$Html$text(car.identifier)
+										elm$html$Html$text(car.au)
 									])),
 								A2(
 								elm$html$Html$img,
 								_List_fromArray(
 									[
-										elm$html$Html$Attributes$src(car.sprite),
+										elm$html$Html$Attributes$src(car.ck),
 										A2(elm$html$Html$Attributes$style, 'height', '25px')
 									]),
 								_List_Nil)
@@ -9655,14 +9610,14 @@ var author$project$Ui$Scenes$MainMenu$CarPicker$renderCars = F2(
 		}
 	});
 var author$project$Ui$Scenes$MainMenu$CarPicker$view = function (model) {
-	return A2(author$project$Ui$Scenes$MainMenu$CarPicker$renderCars, model.availableCars, model);
+	return A2(author$project$Ui$Scenes$MainMenu$CarPicker$renderCars, model.a8, model);
 };
 var author$project$Types$ChangeGameType = function (a) {
-	return {$: 'ChangeGameType', a: a};
+	return {$: 4, a: a};
 };
 var author$project$Types$ChangePlayerCount = F2(
 	function (a, b) {
-		return {$: 'ChangePlayerCount', a: a, b: b};
+		return {$: 3, a: a, b: b};
 	});
 var author$project$Ui$Scenes$MainMenu$Style$input = _List_fromArray(
 	[
@@ -9681,7 +9636,7 @@ var elm$html$Html$Events$alwaysStop = function (x) {
 	return _Utils_Tuple2(x, true);
 };
 var elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
-	return {$: 'MayStopPropagation', a: a};
+	return {$: 1, a: a};
 };
 var elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
@@ -9709,7 +9664,7 @@ var elm$html$Html$Events$onInput = function (tagger) {
 			A2(elm$json$Json$Decode$map, tagger, elm$html$Html$Events$targetValue)));
 };
 var author$project$Ui$Scenes$MainMenu$GameOptions$view = function (model) {
-	var multiplayer = model.network.multiplayer ? 'true' : 'false';
+	var multiplayer = model.b0.b_ ? 'true' : 'false';
 	return A2(
 		elm$html$Html$div,
 		_Utils_ap(
@@ -9770,7 +9725,7 @@ var author$project$Ui$Scenes$MainMenu$GameOptions$view = function (model) {
 							_List_fromArray(
 								[
 									elm$html$Html$Attributes$value(
-									elm$core$String$fromInt(model.ownLobby.maxPlayer)),
+									elm$core$String$fromInt(model.b7.bX)),
 									elm$html$Html$Events$onInput(
 									function (x) {
 										return author$project$Types$MainMenu(
@@ -9783,15 +9738,15 @@ var author$project$Ui$Scenes$MainMenu$GameOptions$view = function (model) {
 };
 var author$project$Types$JoinLobby = F2(
 	function (a, b) {
-		return {$: 'JoinLobby', a: a, b: b};
+		return {$: 5, a: a, b: b};
 	});
 var author$project$Types$LeaveLobby = F2(
 	function (a, b) {
-		return {$: 'LeaveLobby', a: a, b: b};
+		return {$: 6, a: a, b: b};
 	});
 var author$project$Ui$Scenes$MainMenu$LobbyPicker$lobbyAction = F2(
 	function (model, lobby) {
-		return _Utils_eq(model.network.session, lobby.identifier) ? author$project$Types$MainMenu(
+		return _Utils_eq(model.b0.ci, lobby.au) ? author$project$Types$MainMenu(
 			A2(author$project$Types$LeaveLobby, model, lobby)) : author$project$Types$MainMenu(
 			A2(author$project$Types$JoinLobby, model, lobby));
 	});
@@ -9827,7 +9782,7 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$lobbyListEmpty = function (l) 
 };
 var author$project$Ui$Scenes$MainMenu$LobbyPicker$renderLoadingAnimation = F2(
 	function (model, lobby) {
-		return _Utils_eq(model.network.session, lobby.identifier) ? _List_fromArray(
+		return _Utils_eq(model.b0.ci, lobby.au) ? _List_fromArray(
 			[
 				A2(
 				elm$html$Html$img,
@@ -9863,8 +9818,8 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 					_List_fromArray(
 						[
 							elm$html$Html$text(
-							lobby.map + (' #' + (A3(elm$core$String$slice, 0, 4, lobby.identifier) + (' (' + (elm$core$String$fromInt(
-								elm$core$List$length(lobby.onlinePlayers)) + (' / ' + (elm$core$String$fromInt(lobby.maxPlayer) + ')')))))))
+							lobby.ay + (' #' + (A3(elm$core$String$slice, 0, 4, lobby.au) + (' (' + (elm$core$String$fromInt(
+								elm$core$List$length(lobby.aF)) + (' / ' + (elm$core$String$fromInt(lobby.bX) + ')')))))))
 						])),
 					A2(
 					elm$html$Html$div,
@@ -9896,25 +9851,25 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 				A2(
 					elm$core$List$filter,
 					function (lobby) {
-						return _Utils_eq(lobby.map, model.map.meta.name) && (!lobby.running);
+						return _Utils_eq(lobby.ay, model.ay.bZ.b$) && (!lobby.ch);
 					},
-					model.network.lobbyPool)),
+					model.b0.bV)),
 			renderLobbies(
 				A2(
 					elm$core$List$filter,
 					function (lobby) {
-						return _Utils_eq(lobby.map, model.map.meta.name) && (!lobby.running);
+						return _Utils_eq(lobby.ay, model.ay.bZ.b$) && (!lobby.ch);
 					},
-					model.network.lobbyPool))));
+					model.b0.bV))));
 };
 var author$project$Types$ChangeMap = F2(
 	function (a, b) {
-		return {$: 'ChangeMap', a: a, b: b};
+		return {$: 1, a: a, b: b};
 	});
 var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 	function (l, model) {
 		var renderMap = function (map) {
-			var checkSelection = _Utils_eq(map.meta.name, model.map.meta.name) ? _List_fromArray(
+			var checkSelection = _Utils_eq(map.bZ.b$, model.ay.bZ.b$) ? _List_fromArray(
 				[
 					A2(elm$html$Html$Attributes$style, 'background-color', 'rgba(255,255,255, 0.4)')
 				]) : _List_Nil;
@@ -9940,14 +9895,14 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 							]),
 						_List_fromArray(
 							[
-								elm$html$Html$text(map.meta.name)
+								elm$html$Html$text(map.bZ.b$)
 							])),
 						A2(
 						elm$html$Html$div,
 						_List_Nil,
 						_List_fromArray(
 							[
-								elm$html$Html$text(map.meta.description)
+								elm$html$Html$text(map.bZ.bm)
 							]))
 					]));
 		};
@@ -9963,7 +9918,7 @@ var author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps = F2(
 		}
 	});
 var author$project$Ui$Scenes$MainMenu$MapPicker$view = function (model) {
-	return A2(author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps, model.availableMaps, model);
+	return A2(author$project$Ui$Scenes$MainMenu$MapPicker$renderMaps, model.a9, model);
 };
 var author$project$Ui$Scenes$MainMenu$Style$logo = _List_fromArray(
 	[
@@ -9987,7 +9942,7 @@ var elm$html$Html$Attributes$boolProperty = F2(
 	});
 var elm$html$Html$Attributes$disabled = elm$html$Html$Attributes$boolProperty('disabled');
 var author$project$Ui$Scenes$MainMenu$View$showStartButton = function (model) {
-	return (!model.network.multiplayer) ? A2(
+	return (!model.b0.b_) ? A2(
 		elm$html$Html$button,
 		_Utils_ap(
 			author$project$Ui$Scenes$Style$button,
@@ -9995,8 +9950,8 @@ var author$project$Ui$Scenes$MainMenu$View$showStartButton = function (model) {
 				[
 					elm$html$Html$Events$onClick(
 					author$project$Types$SceneManager(
-						A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace))),
-					elm$html$Html$Attributes$disabled(model.network.multiplayer)
+						A2(author$project$Types$ChangeTo, model, 3))),
+					elm$html$Html$Attributes$disabled(model.b0.b_)
 				])),
 		_List_fromArray(
 			[
@@ -10045,7 +10000,7 @@ var author$project$Ui$Scenes$MainMenu$View$view = function (model) {
 							_List_fromArray(
 								[
 									elm$html$Html$Attributes$placeholder('Unnamed Driver'),
-									elm$html$Html$Attributes$value(model.myPlayer.label.text),
+									elm$html$Html$Attributes$value(model.k.bN.ct),
 									elm$html$Html$Events$onInput(
 									function (x) {
 										return author$project$Types$MainMenu(
@@ -10127,15 +10082,15 @@ var author$project$Objects$Render$collider = F2(
 					_List_fromArray(
 						[gO2]))) ? 'green' : 'red';
 			});
-		if (g.$ === 'Just') {
+		if (!g.$) {
 			var gO = g.a;
-			var _n1 = gO.position;
-			if (_n1.$ === 'Just') {
+			var _n1 = gO.cc;
+			if (!_n1.$) {
 				var pos = _n1.a;
-				var _n2 = gO.collider;
-				if (_n2.$ === 'Just') {
+				var _n2 = gO.bg;
+				if (!_n2.$) {
 					var c = _n2.a;
-					if (c.$ === 'Rect') {
+					if (!c.$) {
 						var r = c.a;
 						return _List_fromArray(
 							[
@@ -10144,13 +10099,13 @@ var author$project$Objects$Render$collider = F2(
 								_List_fromArray(
 									[
 										elm$svg$Svg$Attributes$width(
-										elm$core$String$fromInt(r.width)),
+										elm$core$String$fromInt(r.cD)),
 										elm$svg$Svg$Attributes$height(
-										elm$core$String$fromInt(r.height)),
+										elm$core$String$fromInt(r.bC)),
 										elm$svg$Svg$Attributes$x(
-										elm$core$String$fromInt(pos.x + r.position.x)),
+										elm$core$String$fromInt(pos.a2 + r.cc.a2)),
 										elm$svg$Svg$Attributes$y(
-										elm$core$String$fromInt(pos.y + r.position.y)),
+										elm$core$String$fromInt(pos.a3 + r.cc.a3)),
 										elm$svg$Svg$Attributes$stroke(
 										A2(collisionDetected, p, gO)),
 										elm$svg$Svg$Attributes$fillOpacity('0')
@@ -10182,9 +10137,9 @@ var author$project$Objects$Render$player = F2(
 			if (!labelsEnabled) {
 				return _List_Nil;
 			} else {
-				if (p.label.visible) {
-					var _n0 = p.controlledObject.position;
-					if (_n0.$ === 'Just') {
+				if (p.bN.cB) {
+					var _n0 = p.S.cc;
+					if (!_n0.$) {
 						var pos = _n0.a;
 						return _List_fromArray(
 							[
@@ -10193,19 +10148,19 @@ var author$project$Objects$Render$player = F2(
 								_List_fromArray(
 									[
 										elm$svg$Svg$Attributes$x(
-										elm$core$String$fromInt(pos.x + ((p.controlledObject.size.width / 2) | 0))),
+										elm$core$String$fromInt(pos.a2 + ((p.S.cj.cD / 2) | 0))),
 										elm$svg$Svg$Attributes$y(
-										elm$core$String$fromInt(pos.y - 10)),
+										elm$core$String$fromInt(pos.a3 - 10)),
 										elm$svg$Svg$Attributes$fontFamily('Arial'),
-										elm$svg$Svg$Attributes$fill(p.label.color),
+										elm$svg$Svg$Attributes$fill(p.bN.bh),
 										elm$svg$Svg$Attributes$stroke('#000'),
 										elm$svg$Svg$Attributes$fontSize(
-										elm$core$String$fromInt(p.label.size)),
+										elm$core$String$fromInt(p.bN.cj)),
 										elm$svg$Svg$Attributes$textAnchor('middle')
 									]),
 								_List_fromArray(
 									[
-										elm$svg$Svg$text(p.label.text)
+										elm$svg$Svg$text(p.bN.ct)
 									]))
 							]);
 					} else {
@@ -10234,15 +10189,15 @@ var author$project$Objects$Render$playground = F5(
 		while (true) {
 			var getSprite = function (gO) {
 				if (minimapMode) {
-					var _n2 = gO.spriteMinimap;
-					if (_n2.$ === 'Just') {
+					var _n2 = gO.cl;
+					if (!_n2.$) {
 						var a = _n2.a;
 						return a;
 					} else {
 						return '';
 					}
 				} else {
-					return gO.sprite;
+					return gO.ck;
 				}
 			};
 			var getCollider = function (gO) {
@@ -10253,8 +10208,8 @@ var author$project$Objects$Render$playground = F5(
 			} else {
 				var x = l.a;
 				var xs = l.b;
-				var _n1 = x.position;
-				if (_n1.$ === 'Nothing') {
+				var _n1 = x.cc;
+				if (_n1.$ === 1) {
 					var $temp$l = xs,
 						$temp$p = p,
 						$temp$minimapMode = minimapMode,
@@ -10278,15 +10233,15 @@ var author$project$Objects$Render$playground = F5(
 										elm$svg$Svg$Attributes$xlinkHref(
 										getSprite(x)),
 										elm$svg$Svg$Attributes$width(
-										elm$core$String$fromInt(x.size.width)),
+										elm$core$String$fromInt(x.cj.cD)),
 										elm$svg$Svg$Attributes$height(
-										elm$core$String$fromInt(x.size.height)),
+										elm$core$String$fromInt(x.cj.bC)),
 										elm$svg$Svg$Attributes$x(
-										elm$core$String$fromInt(posX.x)),
+										elm$core$String$fromInt(posX.a2)),
 										elm$svg$Svg$Attributes$y(
-										elm$core$String$fromInt(posX.y)),
+										elm$core$String$fromInt(posX.a3)),
 										elm$svg$Svg$Attributes$transform(
-										' rotate(' + (elm$core$String$fromFloat(x.rotate) + (' ' + (elm$core$String$fromFloat(posX.x + (x.size.width / 2)) + (' ' + (elm$core$String$fromFloat(posX.y + (x.size.height / 2)) + ')'))))))
+										' rotate(' + (elm$core$String$fromFloat(x.ae) + (' ' + (elm$core$String$fromFloat(posX.a2 + (x.cj.cD / 2)) + (' ' + (elm$core$String$fromFloat(posX.a3 + (x.cj.bC / 2)) + ')'))))))
 									]),
 								_List_Nil)
 							]),
@@ -10294,7 +10249,7 @@ var author$project$Objects$Render$playground = F5(
 							A2(
 								author$project$Objects$Render$collider,
 								getCollider(x),
-								p.controlledObject),
+								p.S),
 							_Utils_ap(
 								A5(author$project$Objects$Render$playground, xs, p, minimapMode, debug, labelsEnabled),
 								A2(author$project$Objects$Render$player, p, labelsEnabled))));
@@ -10302,12 +10257,12 @@ var author$project$Objects$Render$playground = F5(
 			}
 		}
 	});
-var author$project$Objects$Module$render = {collider: author$project$Objects$Render$collider, player: author$project$Objects$Render$player, playground: author$project$Objects$Render$playground};
+var author$project$Objects$Module$render = {bg: author$project$Objects$Render$collider, b9: author$project$Objects$Render$player, cb: author$project$Objects$Render$playground};
 var author$project$Types$ChangeColliderVisibility = function (a) {
-	return {$: 'ChangeColliderVisibility', a: a};
+	return {$: 1, a: a};
 };
 var author$project$Types$Playground = function (a) {
-	return {$: 'Playground', a: a};
+	return {$: 4, a: a};
 };
 var author$project$Ui$Scenes$Playground$Cockpit$minimapMode = true;
 var author$project$Ui$Scenes$Playground$Cockpit$showCollider = false;
@@ -10636,8 +10591,8 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 		});
 	var motion = A2(
 		elm$core$Maybe$withDefault,
-		{maxBackwardSpeed: 0, maxForwardSpeed: 0, speed: 0, steeringAngle: 0},
-		model.myPlayer.controlledObject.motion);
+		{az: 0, aA: 0, aV: 0, cq: 0},
+		model.k.S.aC);
 	var speedometer = function () {
 		var boolToString = function (b) {
 			return b ? 'true' : 'false';
@@ -10655,16 +10610,16 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 				[
 					A3(
 					author$project$Ui$Scenes$Playground$Speedometer$element,
-					elm$core$Basics$round(motion.speed),
+					elm$core$Basics$round(motion.aV),
 					0,
-					elm$core$Basics$round(motion.maxForwardSpeed)),
+					elm$core$Basics$round(motion.aA)),
 					A2(
 					elm$html$Html$input,
 					_List_fromArray(
 						[
 							elm$html$Html$Attributes$type_('checkbox'),
 							elm$html$Html$Attributes$value(
-							boolToString(model.debug)),
+							boolToString(model.bk)),
 							elm$html$Html$Events$onInput(
 							function (x) {
 								return author$project$Types$Playground(
@@ -10677,20 +10632,20 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 	var miniMap = function () {
 		var currentLobby = A2(
 			elm$core$Maybe$withDefault,
-			{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, running: false, ttl: 0},
+			{au: 'none', ay: 'none', bX: 0, aF: _List_Nil, ch: false, cw: 0},
 			elm$core$List$head(
 				A2(
 					elm$core$List$filter,
 					function (x) {
-						return _Utils_eq(x.identifier, model.network.session);
+						return _Utils_eq(x.au, model.b0.ci);
 					},
-					A2(elm$core$List$cons, model.ownLobby, model.network.lobbyPool))));
+					A2(elm$core$List$cons, model.b7, model.b0.bV))));
 		var currentPlayer = A2(
 			elm$core$List$filter,
 			function (player) {
-				return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+				return A2(elm$core$List$member, player.au, currentLobby.aF);
 			},
-			model.onlinePlayers);
+			model.aF);
 		return A2(
 			elm$svg$Svg$svg,
 			_Utils_ap(
@@ -10699,30 +10654,30 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 					[
 						A2(elm$html$Html$Attributes$style, 'justify-content', 'center'),
 						elm$svg$Svg$Attributes$viewBox(
-						'0 0 ' + (elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.width) + (' ' + elm$core$String$fromInt(model.map.dimension.tileSize * model.map.dimension.height))))
+						'0 0 ' + (elm$core$String$fromInt(model.ay.p.B * model.ay.p.cD) + (' ' + elm$core$String$fromInt(model.ay.p.B * model.ay.p.bC))))
 					])),
 			_Utils_ap(
 				A5(
-					author$project$Objects$Module$render.playground,
+					author$project$Objects$Module$render.cb,
 					_Utils_ap(
-						model.map.gameObjects.roads,
+						model.ay.Q.cf,
 						_Utils_ap(
 							_List_fromArray(
-								[model.myPlayer.controlledObject]),
+								[model.k.S]),
 							A2(
 								elm$core$List$map,
 								function (player) {
-									return player.controlledObject;
+									return player.S;
 								},
 								currentPlayer))),
-					model.myPlayer,
+					model.k,
 					author$project$Ui$Scenes$Playground$Cockpit$minimapMode,
 					author$project$Ui$Scenes$Playground$Cockpit$showCollider,
 					author$project$Ui$Scenes$Playground$Cockpit$showLabels),
 				A2(
 					elm$core$List$concatMap,
 					function (x) {
-						return A2(author$project$Objects$Module$render.player, x, true);
+						return A2(author$project$Objects$Module$render.b9, x, true);
 					},
 					currentPlayer)));
 	}();
@@ -10754,16 +10709,16 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 				_List_fromArray(
 					[
 						elm$html$Html$text(
-						elm$core$String$fromInt(model.myPlayer.currentLab) + (' | ' + elm$core$String$fromInt(model.map.options.labs)))
+						elm$core$String$fromInt(model.k.bj) + (' | ' + elm$core$String$fromInt(model.ay.b5.bR)))
 					]))
 			]));
-	var getDriveTimeSeconds = (!model.myPlayer.time) ? 0 : ((model.myPlayer.time / 1000) | 0);
+	var getDriveTimeSeconds = (!model.k.aZ) ? 0 : ((model.k.aZ / 1000) | 0);
 	var getDriveTimeMilliSeconds = function () {
-		if (!model.myPlayer.time) {
+		if (!model.k.aZ) {
 			return '0';
 		} else {
 			var ms = elm$core$String$fromInt(
-				elm$core$Basics$round((model.myPlayer.time - (getDriveTimeSeconds * 1000)) / 10));
+				elm$core$Basics$round((model.k.aZ - (getDriveTimeSeconds * 1000)) / 10));
 			return (elm$core$String$length(ms) === 1) ? ('0' + ms) : ms;
 		}
 	}();
@@ -10821,7 +10776,7 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 						A2(elm$html$Html$Attributes$style, 'align-self', 'center')
 					]),
 				_List_Nil),
-				A2(placement, '1', model.myPlayer.label.text),
+				A2(placement, '1', model.k.bN.ct),
 				lapInfo,
 				timeInfo
 			]));
@@ -10833,10 +10788,10 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 };
 var author$project$Map$Generator$map = function (m) {
 	return _Utils_ap(
-		m.gameObjects.background,
+		m.Q.ba,
 		_Utils_ap(
-			m.gameObjects.roads,
-			_Utils_ap(m.gameObjects.decor, m.gameObjects.trigger)));
+			m.Q.cf,
+			_Utils_ap(m.Q.bl, m.Q.cv)));
 };
 var author$project$Ui$Scenes$Playground$TrafficLight$height = 40;
 var author$project$Ui$Scenes$Playground$TrafficLight$circle = F2(
@@ -10860,9 +10815,9 @@ var elm$svg$Svg$Attributes$rx = _VirtualDom_attribute('rx');
 var elm$svg$Svg$Attributes$ry = _VirtualDom_attribute('ry');
 var author$project$Ui$Scenes$Playground$TrafficLight$element = F3(
 	function (model, px, py) {
-		var initialPrepareRaceTime = author$project$InitialModel$initialModel.map.options.prepareRaceTime;
-		var currentPrepareRactime = model.map.options.prepareRaceTime;
-		return _Utils_eq(model.state, author$project$Types$PrepareRace) ? _List_fromArray(
+		var initialPrepareRaceTime = author$project$InitialModel$initialModel.ay.b5.cd;
+		var currentPrepareRactime = model.ay.b5.cd;
+		return (model.aW === 3) ? _List_fromArray(
 			[
 				A2(
 				elm$svg$Svg$svg,
@@ -10920,16 +10875,16 @@ var author$project$Ui$Scenes$Playground$View$widthSvg = 1000;
 var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 	var currentLobby = A2(
 		elm$core$Maybe$withDefault,
-		{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, running: false, ttl: 0},
+		{au: 'none', ay: 'none', bX: 0, aF: _List_Nil, ch: false, cw: 0},
 		elm$core$List$head(
 			A2(
 				elm$core$List$filter,
 				function (x) {
-					return _Utils_eq(x.identifier, model.network.session);
+					return _Utils_eq(x.au, model.b0.ci);
 				},
-				A2(elm$core$List$cons, model.ownLobby, model.network.lobbyPool))));
-	var _n0 = model.myPlayer.controlledObject.position;
-	if (_n0.$ === 'Just') {
+				A2(elm$core$List$cons, model.b7, model.b0.bV))));
+	var _n0 = model.k.S.cc;
+	if (!_n0.$) {
 		var p = _n0.a;
 		return A2(
 			elm$svg$Svg$svg,
@@ -10943,35 +10898,35 @@ var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 					A2(elm$html$Html$Attributes$style, 'border-radius', '10px'),
 					elm$svg$Svg$Attributes$viewBox(
 					elm$core$String$fromInt(
-						p.x - elm$core$Basics$round((author$project$Ui$Scenes$Playground$View$widthSvg / 2) / model.map.dimension.viewScale)) + (' ' + (elm$core$String$fromInt(
-						p.y - elm$core$Basics$round((author$project$Ui$Scenes$Playground$View$heightSvg / 2) / model.map.dimension.viewScale)) + (' ' + (elm$core$String$fromInt(
-						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$widthSvg / model.map.dimension.viewScale)) + (' ' + elm$core$String$fromInt(
-						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$heightSvg / model.map.dimension.viewScale))))))))
+						p.a2 - elm$core$Basics$round((author$project$Ui$Scenes$Playground$View$widthSvg / 2) / model.ay.p.cA)) + (' ' + (elm$core$String$fromInt(
+						p.a3 - elm$core$Basics$round((author$project$Ui$Scenes$Playground$View$heightSvg / 2) / model.ay.p.cA)) + (' ' + (elm$core$String$fromInt(
+						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$widthSvg / model.ay.p.cA)) + (' ' + elm$core$String$fromInt(
+						elm$core$Basics$round(author$project$Ui$Scenes$Playground$View$heightSvg / model.ay.p.cA))))))))
 				]),
 			_Utils_ap(
 				A5(
-					author$project$Objects$Module$render.playground,
+					author$project$Objects$Module$render.cb,
 					_Utils_ap(
-						author$project$Map$Generator$map(model.map),
+						author$project$Map$Generator$map(model.ay),
 						_Utils_ap(
-							model.myPlayer.catchedCheckpoints,
+							model.k.bd,
 							_Utils_ap(
 								A2(
 									elm$core$List$map,
 									function (x) {
-										return x.controlledObject;
+										return x.S;
 									},
 									A2(
 										elm$core$List$filter,
 										function (player) {
-											return A2(elm$core$List$member, player.identifier, currentLobby.onlinePlayers);
+											return A2(elm$core$List$member, player.au, currentLobby.aF);
 										},
-										model.onlinePlayers)),
+										model.aF)),
 								_List_fromArray(
-									[model.myPlayer.controlledObject])))),
-					model.myPlayer,
+									[model.k.S])))),
+					model.k,
 					author$project$Ui$Scenes$Playground$View$minimapMode,
-					model.debug,
+					model.bk,
 					author$project$Ui$Scenes$Playground$View$showLabel),
 				A3(author$project$Ui$Scenes$Playground$TrafficLight$element, model, ((author$project$Ui$Scenes$Playground$View$widthSvg / 2) | 0) - 100, 0)));
 	} else {
@@ -11017,13 +10972,13 @@ var author$project$Ui$Scenes$Playground$View$view = function (model) {
 };
 var author$project$Ui$Scenes$Playground$Module$view = author$project$Ui$Scenes$Playground$View$view;
 var author$project$Main$view = function (model) {
-	var _n0 = model.state;
-	switch (_n0.$) {
-		case 'Running':
+	var _n0 = model.aW;
+	switch (_n0) {
+		case 2:
 			return author$project$Ui$Scenes$Playground$Module$view(model);
-		case 'PrepareRace':
+		case 3:
 			return author$project$Ui$Scenes$Playground$Module$view(model);
-		case 'Menu':
+		case 0:
 			return author$project$Ui$Scenes$MainMenu$View$view(model);
 		default:
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
@@ -11034,11 +10989,11 @@ var author$project$Network$Commands$open = author$project$Network$Commands$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
 var author$project$Network$Module$open = author$project$Network$Commands$open;
-var author$project$Types$PlayerUUID = {$: 'PlayerUUID'};
+var author$project$Types$PlayerUUID = 0;
 var elm$browser$Browser$element = _Browser_element;
 var author$project$Main$main = elm$browser$Browser$element(
 	{
-		init: function (_n0) {
+		bH: function (_n0) {
 			return _Utils_Tuple2(
 				author$project$InitialModel$initialModel,
 				elm$core$Platform$Cmd$batch(
@@ -11047,17 +11002,17 @@ var author$project$Main$main = elm$browser$Browser$element(
 							author$project$Network$Module$open,
 							A2(
 							elm$random$Random$generate,
-							author$project$Types$SetUUID(author$project$Types$LobbyUUID),
+							author$project$Types$SetUUID(1),
 							TSFoster$elm_uuid$UUID$generator),
 							A2(
 							elm$random$Random$generate,
-							author$project$Types$SetUUID(author$project$Types$PlayerUUID),
+							author$project$Types$SetUUID(0),
 							TSFoster$elm_uuid$UUID$generator)
 						])));
 		},
-		subscriptions: author$project$Main$subscriptions,
-		update: author$project$Main$update,
-		view: author$project$Main$view
+		cs: author$project$Main$subscriptions,
+		cx: author$project$Main$update,
+		cz: author$project$Main$view
 	});
 _Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
+	elm$json$Json$Decode$succeed(0))(0)}});}(this));
