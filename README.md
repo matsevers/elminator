@@ -4,6 +4,8 @@ In diesem Projekt wurde ein Rennspiel mit Elm realisiert. Hierbei wurde Elm ind 
 
 Auf Grund von Verwendung der Elm Ports, muss eine angepasste `index.html` verwendet werden. Bei Änderungen kann daher nicht mehr der `elm reactor` verwendet werden. Das Erzeugen der neuen Version erfolgt mir dem Befehl  `elm make src/main.elm --output src/js/elm.js`
 
+Die Darstellung ist für die Browser Chrome optimiert.
+
 ## Verwendete Techniken
 Auf Grund des Projektumfangs wurde die gesamte Applikation in Untermodule unterteilt, die durch einen Router in der `Main.elm` die entsprechenden Messages erhalten um darauf zu reagieren.
 
