@@ -176,6 +176,7 @@ type alias Lobby =
     , map : String
     , onlinePlayers : List String
     , ttl : Float
+    , running : Bool
     }
 
 

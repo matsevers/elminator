@@ -1,8 +1,11 @@
 module Ui.Scenes.MainMenu.Update exposing (changeCar, changeMap, update)
 
+import InitialModel
 import Network.Module
+import Random
 import String
 import Types
+import UUID
 
 
 update : Types.MainMenuMessage -> Types.Model -> ( Types.Model, Cmd Types.Msg )
@@ -140,10 +143,10 @@ changeGameType model =
     in
     if n.multiplayer then
         ( { model
-            | network =
-                { n | multiplayer = False, session = "" }
+            | network = InitialModel.initialModel.network
+            , ownLobby = InitialModel.initialModel.ownLobby
           }
-        , Cmd.none
+        , Random.generate (Types.SetUUID Types.LobbyUUID) UUID.generator
         )
 
     else
@@ -153,7 +156,13 @@ changeGameType model =
                     | multiplayer = True
                     , session = model.ownLobby.identifier
                 }
-            , ownLobby = { l | onlinePlayers = model.myPlayer.identifier :: l.onlinePlayers }
+            , ownLobby =
+                { l
+                    | onlinePlayers =
+                        model.myPlayer.identifier
+                            :: l.onlinePlayers
+                    , running = False
+                }
           }
         , Cmd.none
         )

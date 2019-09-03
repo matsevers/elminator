@@ -147,6 +147,9 @@ checkLobbyState model =
         ownLobby =
             model.ownLobby
 
+        oL =
+            model.ownLobby
+
         lobbyControlMessageStart : Types.LobbyControl
         lobbyControlMessageStart =
             { identifier = ownLobby.identifier
@@ -158,13 +161,19 @@ checkLobbyState model =
             }
     in
     if ownLobby.maxPlayer <= List.length ownLobby.onlinePlayers then
-        ( model
+        let
+            updatedModel =
+                { model | ownLobby = { oL | running = True } }
+        in
+        ( updatedModel
         , Cmd.batch
             [ Network.Commands.send
                 "lobbyControl"
                 (Network.Commands.encodeLobbyControl lobbyControlMessageStart)
             , Network.Commands.run
-                (Types.SceneManager (Types.ChangeTo model Types.PrepareRace))
+                (Types.SceneManager
+                    (Types.ChangeTo updatedModel Types.PrepareRace)
+                )
             ]
         )
 

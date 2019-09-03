@@ -77,6 +77,8 @@ lobbyDecoder =
             (Json.Decode.field "onlinePlayers" (Json.Decode.list string))
         |> Json.Decode.Extra.andMap
             (Json.Decode.field "ttl" Json.Decode.float)
+        |> Json.Decode.Extra.andMap
+            (Json.Decode.field "running" Json.Decode.bool)
 
 
 lobbyControlDecoder : Decoder LobbyControl

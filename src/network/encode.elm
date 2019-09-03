@@ -16,6 +16,7 @@ encodeLobby lobby =
     , ( "map", Json.Encode.string lobby.map )
     , ( "onlinePlayers", Json.Encode.list Json.Encode.string lobby.onlinePlayers )
     , ( "ttl", Json.Encode.float lobby.ttl )
+    , ( "running", Json.Encode.bool lobby.running )
     ]
 
 

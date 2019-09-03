@@ -85,8 +85,7 @@ endCheckpoint gO m =
                 [] ->
                     True
     in
-    if Debug.log "finish " (approved neededCheckpoints) then
-        --if (approved neededCheckpoints) then
+    if approved neededCheckpoints then
         if m.myPlayer.currentLab < m.map.options.labs then
             { m
                 | myPlayer =

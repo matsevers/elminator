@@ -69,6 +69,7 @@ playground model =
                 , maxPlayer = 0
                 , onlinePlayers = []
                 , ttl = 0
+                , running = False
                 }
                 (List.head <|
                     List.filter

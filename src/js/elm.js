@@ -5409,7 +5409,6 @@ var author$project$Map$Track$DustRace$decor = _Utils_ap(
 								]))))))));
 var author$project$Types$Finished = {$: 'Finished'};
 var elm$core$Basics$and = _Basics_and;
-var elm$core$Debug$log = _Debug_log;
 var author$project$Objects$Trigger$endCheckpoint = F2(
 	function (gO, m) {
 		var myPlayer = m.myPlayer;
@@ -5455,10 +5454,7 @@ var author$project$Objects$Trigger$endCheckpoint = F2(
 				return true;
 			}
 		};
-		return A2(
-			elm$core$Debug$log,
-			'finish ',
-			approved(neededCheckpoints)) ? ((_Utils_cmp(m.myPlayer.currentLab, m.map.options.labs) < 0) ? _Utils_update(
+		return approved(neededCheckpoints) ? ((_Utils_cmp(m.myPlayer.currentLab, m.map.options.labs) < 0) ? _Utils_update(
 			m,
 			{
 				myPlayer: _Utils_update(
@@ -6157,7 +6153,7 @@ var author$project$InitialModel$initialModel = {
 	},
 	network: {lobbyPool: _List_Nil, multiplayer: false, session: '', webSocketConnected: false},
 	onlinePlayers: _List_Nil,
-	ownLobby: {identifier: 'ownLobby', map: 'Dust Race', maxPlayer: 2, onlinePlayers: _List_Nil, ttl: (author$project$InitialModel$frequence * 50) + 1},
+	ownLobby: {identifier: 'ownLobby', map: 'Dust Race', maxPlayer: 2, onlinePlayers: _List_Nil, running: false, ttl: (author$project$InitialModel$frequence * 50) + 1},
 	state: author$project$Types$Menu
 };
 var author$project$Types$Backward = {$: 'Backward'};
@@ -8041,6 +8037,7 @@ var author$project$Map$Track$Update$update = function (model) {
 	}
 };
 var author$project$Map$Track$Module$update = author$project$Map$Track$Update$update;
+var elm$json$Json$Encode$bool = _Json_wrap;
 var elm$json$Json$Encode$float = _Json_wrap;
 var elm$json$Json$Encode$int = _Json_wrap;
 var elm$json$Json$Encode$list = F2(
@@ -8070,7 +8067,10 @@ var author$project$Network$Encode$encodeLobby = function (lobby) {
 			A2(elm$json$Json$Encode$list, elm$json$Json$Encode$string, lobby.onlinePlayers)),
 			_Utils_Tuple2(
 			'ttl',
-			elm$json$Json$Encode$float(lobby.ttl))
+			elm$json$Json$Encode$float(lobby.ttl)),
+			_Utils_Tuple2(
+			'running',
+			elm$json$Json$Encode$bool(lobby.running))
 		]);
 };
 var elm$json$Json$Encode$object = function (pairs) {
@@ -8103,7 +8103,6 @@ var elm$core$Maybe$withDefault = F2(
 			return _default;
 		}
 	});
-var elm$json$Json$Encode$bool = _Json_wrap;
 var author$project$Network$Encode$encodePlayer = function (player) {
 	var gO = player.controlledObject;
 	var gOPosition = A2(
@@ -8223,32 +8222,35 @@ var author$project$Network$Decode$lobbyControlDecoder = A2(
 						elm_community$json_extra$Json$Decode$Extra$andMap,
 						A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
 						elm$json$Json$Decode$succeed(author$project$Types$LobbyControl)))))));
-var author$project$Types$Lobby = F5(
-	function (identifier, maxPlayer, map, onlinePlayers, ttl) {
-		return {identifier: identifier, map: map, maxPlayer: maxPlayer, onlinePlayers: onlinePlayers, ttl: ttl};
+var author$project$Types$Lobby = F6(
+	function (identifier, maxPlayer, map, onlinePlayers, ttl, running) {
+		return {identifier: identifier, map: map, maxPlayer: maxPlayer, onlinePlayers: onlinePlayers, running: running, ttl: ttl};
 	});
 var elm$json$Json$Decode$float = _Json_decodeFloat;
 var elm$json$Json$Decode$int = _Json_decodeInt;
 var elm$json$Json$Decode$list = _Json_decodeList;
 var author$project$Network$Decode$lobbyDecoder = A2(
 	elm_community$json_extra$Json$Decode$Extra$andMap,
-	A2(elm$json$Json$Decode$field, 'ttl', elm$json$Json$Decode$float),
+	A2(elm$json$Json$Decode$field, 'running', elm$json$Json$Decode$bool),
 	A2(
 		elm_community$json_extra$Json$Decode$Extra$andMap,
-		A2(
-			elm$json$Json$Decode$field,
-			'onlinePlayers',
-			elm$json$Json$Decode$list(elm$json$Json$Decode$string)),
+		A2(elm$json$Json$Decode$field, 'ttl', elm$json$Json$Decode$float),
 		A2(
 			elm_community$json_extra$Json$Decode$Extra$andMap,
-			A2(elm$json$Json$Decode$field, 'map', elm$json$Json$Decode$string),
+			A2(
+				elm$json$Json$Decode$field,
+				'onlinePlayers',
+				elm$json$Json$Decode$list(elm$json$Json$Decode$string)),
 			A2(
 				elm_community$json_extra$Json$Decode$Extra$andMap,
-				A2(elm$json$Json$Decode$field, 'maxPlayer', elm$json$Json$Decode$int),
+				A2(elm$json$Json$Decode$field, 'map', elm$json$Json$Decode$string),
 				A2(
 					elm_community$json_extra$Json$Decode$Extra$andMap,
-					A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
-					elm$json$Json$Decode$succeed(author$project$Types$Lobby))))));
+					A2(elm$json$Json$Decode$field, 'maxPlayer', elm$json$Json$Decode$int),
+					A2(
+						elm_community$json_extra$Json$Decode$Extra$andMap,
+						A2(elm$json$Json$Decode$field, 'identifier', elm$json$Json$Decode$string),
+						elm$json$Json$Decode$succeed(author$project$Types$Lobby)))))));
 var author$project$Types$SchemePlayer = function (identifier) {
 	return function (label) {
 		return function (labelCol) {
@@ -8483,22 +8485,34 @@ var author$project$Types$SceneManager = function (a) {
 };
 var author$project$Network$Update$checkLobbyState = function (model) {
 	var ownLobby = model.ownLobby;
+	var oL = model.ownLobby;
 	var lobbyControlMessageStart = {finish: false, identifier: ownLobby.identifier, join: false, leave: false, playerId: model.myPlayer.identifier, start: true};
-	return (_Utils_cmp(
+	if (_Utils_cmp(
 		ownLobby.maxPlayer,
-		elm$core$List$length(ownLobby.onlinePlayers)) < 1) ? _Utils_Tuple2(
-		model,
-		elm$core$Platform$Cmd$batch(
-			_List_fromArray(
-				[
-					A2(
-					author$project$Network$Commands$send,
-					'lobbyControl',
-					author$project$Network$Commands$encodeLobbyControl(lobbyControlMessageStart)),
-					author$project$Network$Commands$run(
-					author$project$Types$SceneManager(
-						A2(author$project$Types$ChangeTo, model, author$project$Types$PrepareRace)))
-				]))) : _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		elm$core$List$length(ownLobby.onlinePlayers)) < 1) {
+		var updatedModel = _Utils_update(
+			model,
+			{
+				ownLobby: _Utils_update(
+					oL,
+					{running: true})
+			});
+		return _Utils_Tuple2(
+			updatedModel,
+			elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						A2(
+						author$project$Network$Commands$send,
+						'lobbyControl',
+						author$project$Network$Commands$encodeLobbyControl(lobbyControlMessageStart)),
+						author$project$Network$Commands$run(
+						author$project$Types$SceneManager(
+							A2(author$project$Types$ChangeTo, updatedModel, author$project$Types$PrepareRace)))
+					])));
+	} else {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	}
 };
 var author$project$Network$Update$removePlayerFromLobby = F2(
 	function (model, lobbyControl) {
@@ -8934,18 +8948,87 @@ var author$project$Ui$Scenes$MainMenu$Update$changeCar = F2(
 				}),
 			elm$core$Platform$Cmd$none);
 	});
+var author$project$Types$LobbyUUID = {$: 'LobbyUUID'};
+var author$project$Types$SetUUID = F2(
+	function (a, b) {
+		return {$: 'SetUUID', a: a, b: b};
+	});
+var elm$random$Random$Generate = function (a) {
+	return {$: 'Generate', a: a};
+};
+var elm$random$Random$initialSeed = function (x) {
+	var _n0 = elm$random$Random$next(
+		A2(elm$random$Random$Seed, 0, 1013904223));
+	var state1 = _n0.a;
+	var incr = _n0.b;
+	var state2 = (state1 + x) >>> 0;
+	return elm$random$Random$next(
+		A2(elm$random$Random$Seed, state2, incr));
+};
+var elm$time$Time$posixToMillis = function (_n0) {
+	var millis = _n0.a;
+	return millis;
+};
+var elm$random$Random$init = A2(
+	elm$core$Task$andThen,
+	function (time) {
+		return elm$core$Task$succeed(
+			elm$random$Random$initialSeed(
+				elm$time$Time$posixToMillis(time)));
+	},
+	elm$time$Time$now);
+var elm$random$Random$step = F2(
+	function (_n0, seed) {
+		var generator = _n0.a;
+		return generator(seed);
+	});
+var elm$random$Random$onEffects = F3(
+	function (router, commands, seed) {
+		if (!commands.b) {
+			return elm$core$Task$succeed(seed);
+		} else {
+			var generator = commands.a.a;
+			var rest = commands.b;
+			var _n1 = A2(elm$random$Random$step, generator, seed);
+			var value = _n1.a;
+			var newSeed = _n1.b;
+			return A2(
+				elm$core$Task$andThen,
+				function (_n2) {
+					return A3(elm$random$Random$onEffects, router, rest, newSeed);
+				},
+				A2(elm$core$Platform$sendToApp, router, value));
+		}
+	});
+var elm$random$Random$onSelfMsg = F3(
+	function (_n0, _n1, seed) {
+		return elm$core$Task$succeed(seed);
+	});
+var elm$random$Random$cmdMap = F2(
+	function (func, _n0) {
+		var generator = _n0.a;
+		return elm$random$Random$Generate(
+			A2(elm$random$Random$map, func, generator));
+	});
+_Platform_effectManagers['Random'] = _Platform_createManager(elm$random$Random$init, elm$random$Random$onEffects, elm$random$Random$onSelfMsg, elm$random$Random$cmdMap);
+var elm$random$Random$command = _Platform_leaf('Random');
+var elm$random$Random$generate = F2(
+	function (tagger, generator) {
+		return elm$random$Random$command(
+			elm$random$Random$Generate(
+				A2(elm$random$Random$map, tagger, generator)));
+	});
 var author$project$Ui$Scenes$MainMenu$Update$changeGameType = function (model) {
 	var n = model.network;
 	var l = model.ownLobby;
 	return n.multiplayer ? _Utils_Tuple2(
 		_Utils_update(
 			model,
-			{
-				network: _Utils_update(
-					n,
-					{multiplayer: false, session: ''})
-			}),
-		elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+			{network: author$project$InitialModel$initialModel.network, ownLobby: author$project$InitialModel$initialModel.ownLobby}),
+		A2(
+			elm$random$Random$generate,
+			author$project$Types$SetUUID(author$project$Types$LobbyUUID),
+			TSFoster$elm_uuid$UUID$generator)) : _Utils_Tuple2(
 		_Utils_update(
 			model,
 			{
@@ -8955,7 +9038,8 @@ var author$project$Ui$Scenes$MainMenu$Update$changeGameType = function (model) {
 				ownLobby: _Utils_update(
 					l,
 					{
-						onlinePlayers: A2(elm$core$List$cons, model.myPlayer.identifier, l.onlinePlayers)
+						onlinePlayers: A2(elm$core$List$cons, model.myPlayer.identifier, l.onlinePlayers),
+						running: false
 					})
 			}),
 		elm$core$Platform$Cmd$none);
@@ -9779,8 +9863,8 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 					_List_fromArray(
 						[
 							elm$html$Html$text(
-							lobby.map + (' (' + (elm$core$String$fromInt(
-								elm$core$List$length(lobby.onlinePlayers)) + (' / ' + (elm$core$String$fromInt(lobby.maxPlayer) + ')')))))
+							lobby.map + (' #' + (A3(elm$core$String$slice, 0, 4, lobby.identifier) + (' (' + (elm$core$String$fromInt(
+								elm$core$List$length(lobby.onlinePlayers)) + (' / ' + (elm$core$String$fromInt(lobby.maxPlayer) + ')')))))))
 						])),
 					A2(
 					elm$html$Html$div,
@@ -9812,14 +9896,14 @@ var author$project$Ui$Scenes$MainMenu$LobbyPicker$view = function (model) {
 				A2(
 					elm$core$List$filter,
 					function (lobby) {
-						return _Utils_eq(lobby.map, model.map.meta.name);
+						return _Utils_eq(lobby.map, model.map.meta.name) && (!lobby.running);
 					},
 					model.network.lobbyPool)),
 			renderLobbies(
 				A2(
 					elm$core$List$filter,
 					function (lobby) {
-						return _Utils_eq(lobby.map, model.map.meta.name);
+						return _Utils_eq(lobby.map, model.map.meta.name) && (!lobby.running);
 					},
 					model.network.lobbyPool))));
 };
@@ -10565,7 +10649,7 @@ var author$project$Ui$Scenes$Playground$Cockpit$element = function (model) {
 	var miniMap = function () {
 		var currentLobby = A2(
 			elm$core$Maybe$withDefault,
-			{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, ttl: 0},
+			{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, running: false, ttl: 0},
 			elm$core$List$head(
 				A2(
 					elm$core$List$filter,
@@ -10800,7 +10884,7 @@ var author$project$Ui$Scenes$Playground$View$widthSvg = 1000;
 var author$project$Ui$Scenes$Playground$View$playground = function (model) {
 	var currentLobby = A2(
 		elm$core$Maybe$withDefault,
-		{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, ttl: 0},
+		{identifier: 'none', map: 'none', maxPlayer: 0, onlinePlayers: _List_Nil, running: false, ttl: 0},
 		elm$core$List$head(
 			A2(
 				elm$core$List$filter,
@@ -10914,78 +10998,8 @@ var author$project$Network$Commands$open = author$project$Network$Commands$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
 var author$project$Network$Module$open = author$project$Network$Commands$open;
-var author$project$Types$LobbyUUID = {$: 'LobbyUUID'};
 var author$project$Types$PlayerUUID = {$: 'PlayerUUID'};
-var author$project$Types$SetUUID = F2(
-	function (a, b) {
-		return {$: 'SetUUID', a: a, b: b};
-	});
 var elm$browser$Browser$element = _Browser_element;
-var elm$random$Random$Generate = function (a) {
-	return {$: 'Generate', a: a};
-};
-var elm$random$Random$initialSeed = function (x) {
-	var _n0 = elm$random$Random$next(
-		A2(elm$random$Random$Seed, 0, 1013904223));
-	var state1 = _n0.a;
-	var incr = _n0.b;
-	var state2 = (state1 + x) >>> 0;
-	return elm$random$Random$next(
-		A2(elm$random$Random$Seed, state2, incr));
-};
-var elm$time$Time$posixToMillis = function (_n0) {
-	var millis = _n0.a;
-	return millis;
-};
-var elm$random$Random$init = A2(
-	elm$core$Task$andThen,
-	function (time) {
-		return elm$core$Task$succeed(
-			elm$random$Random$initialSeed(
-				elm$time$Time$posixToMillis(time)));
-	},
-	elm$time$Time$now);
-var elm$random$Random$step = F2(
-	function (_n0, seed) {
-		var generator = _n0.a;
-		return generator(seed);
-	});
-var elm$random$Random$onEffects = F3(
-	function (router, commands, seed) {
-		if (!commands.b) {
-			return elm$core$Task$succeed(seed);
-		} else {
-			var generator = commands.a.a;
-			var rest = commands.b;
-			var _n1 = A2(elm$random$Random$step, generator, seed);
-			var value = _n1.a;
-			var newSeed = _n1.b;
-			return A2(
-				elm$core$Task$andThen,
-				function (_n2) {
-					return A3(elm$random$Random$onEffects, router, rest, newSeed);
-				},
-				A2(elm$core$Platform$sendToApp, router, value));
-		}
-	});
-var elm$random$Random$onSelfMsg = F3(
-	function (_n0, _n1, seed) {
-		return elm$core$Task$succeed(seed);
-	});
-var elm$random$Random$cmdMap = F2(
-	function (func, _n0) {
-		var generator = _n0.a;
-		return elm$random$Random$Generate(
-			A2(elm$random$Random$map, func, generator));
-	});
-_Platform_effectManagers['Random'] = _Platform_createManager(elm$random$Random$init, elm$random$Random$onEffects, elm$random$Random$onSelfMsg, elm$random$Random$cmdMap);
-var elm$random$Random$command = _Platform_leaf('Random');
-var elm$random$Random$generate = F2(
-	function (tagger, generator) {
-		return elm$random$Random$command(
-			elm$random$Random$Generate(
-				A2(elm$random$Random$map, tagger, generator)));
-	});
 var author$project$Main$main = elm$browser$Browser$element(
 	{
 		init: function (_n0) {

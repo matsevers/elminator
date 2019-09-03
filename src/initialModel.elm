@@ -59,5 +59,6 @@ initialModel =
         , onlinePlayers = []
         , map = "Dust Race"
         , ttl = frequence * 50 + 1
+        , running = False
         }
     }

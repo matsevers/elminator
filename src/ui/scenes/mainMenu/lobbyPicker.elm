@@ -33,6 +33,8 @@ view model =
                 [ Html.div [ Html.Attributes.style "flex" "20" ]
                     [ Html.text
                         (lobby.map
+                            ++ " #"
+                            ++ String.slice 0 4 lobby.identifier
                             ++ " ("
                             ++ String.fromInt
                                 (List.length lobby.onlinePlayers)
@@ -47,8 +49,23 @@ view model =
     in
     Html.div []
         (lobbyListEmpty
-            (List.filter (\lobby -> lobby.map == model.map.meta.name) model.network.lobbyPool)
-            :: renderLobbies (List.filter (\lobby -> lobby.map == model.map.meta.name) model.network.lobbyPool)
+            (List.filter
+                (\lobby ->
+                    lobby.map
+                        == model.map.meta.name
+                        && not lobby.running
+                )
+                model.network.lobbyPool
+            )
+            :: renderLobbies
+                (List.filter
+                    (\lobby ->
+                        lobby.map
+                            == model.map.meta.name
+                            && not lobby.running
+                    )
+                    model.network.lobbyPool
+                )
         )
 
 
