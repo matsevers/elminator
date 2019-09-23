@@ -1,5 +1,5 @@
-
-
+# Spiel starten
+# [Spiel starten](https://matskockmeyer.github.io/elminator/src/)
 # Allgemein
 
 In diesem Projekt wurde ein Rennspiel mit Elm realisiert. Hierbei wurde Elm in der Version 0.19 verwendet. Die Darstellung des Spiels erfolgt mittels PNG Grafiken und SVG Elementen, die in einem festgelegtem Intervall aktualisiert werden.
