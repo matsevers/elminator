@@ -35,4 +35,5 @@ Bei paralleler Ausführung mehrere Elminator Instanzen verringert sich die FPS A
 Die Grafiken, welche in dieser Arbeit zu sehen sind, entstammen (mit Ausnahme des Logos) nicht unserer Arbeit, sondern wurden aus fremden Quellen verwendet.
 
 # Credits
-Car Sprites: http://unluckystudio.com/game-art-giveaway-7-top-down-vehicles-sprites-pack/
+- Car Sprites: http://unluckystudio.com/game-art-giveaway-7-top-down-vehicles-sprites-pack/
+- Track Sprites: https://free-game-assets.itch.io/free-race-track-tile-set , https://craftpix.net/freebies/free-race-track-2d-game-tile-set/
