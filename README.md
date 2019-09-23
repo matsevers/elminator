@@ -2,7 +2,7 @@
 
 # Allgemein
 
-In diesem Projekt wurde ein Rennspiel mit Elm realisiert. Hierbei wurde Elm ind er Version 0.19 verwendet. Die Darstellung des Spiels erfolgt mittels SVG Grafiken, die in einem festgelegtem Intervall aktualisiert werden.
+In diesem Projekt wurde ein Rennspiel mit Elm realisiert. Hierbei wurde Elm in der Version 0.19 verwendet. Die Darstellung des Spiels erfolgt mittels PNG Grafiken und SVG Elementen, die in einem festgelegtem Intervall aktualisiert werden.
 
 Auf Grund von Verwendung der Elm Ports, muss eine angepasste `index.html` verwendet werden. Bei Änderungen kann daher nicht mehr der `elm reactor` verwendet werden. Das Erzeugen der neuen Version erfolgt mir dem Befehl  `elm make src/main.elm --output src/js/elm.js`
 
