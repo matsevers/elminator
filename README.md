@@ -12,8 +12,6 @@ Auf Grund des Projektumfangs wurde die gesamte Applikation in Untermodule untert
 ### WebSockets
 Der Multiplayer wurde mit WebSockets realisiert. Hierfür existiert jedoch kein natives Modul von Elm, weswegen auf ein Community Package zurückgegriffen werden musste (billstclair/elm-websocket-client). Hierbei wird ein `Elm Port` verwendet, um die WebSocket Verbindung über JavaScript anzusprechen. 
 
-Das verwendete Beispiel (https://github.com/billstclair/elm-websocket-client/tree/4.1.0/example/src/simple.elm) enthielt leider einen Parsing Fehler. Diesen haben wir lokal behoben.
-
 ### JSON Encoding/Decoding
 Über den WebSocket werden lediglich Strings versendet, weswegen die einzelnen Nachrichten zunächst enkodiert/dekodiert werden müssen. Elm bietet prinzipiell die Möglichkeit Nachrichten zu einem JSON zu verarbeiten. Das Handling ist jedoch bei größere Objekten unkomfortabel, weswegen wir uns für die Verwendung des Pakets `elm-community/json-extra` entschieden haben, welches es ermöglicht verschiedene Decoder zu pipen.
 
