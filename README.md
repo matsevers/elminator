@@ -1,4 +1,6 @@
-# Funktionale Frontend Entwicklung: Projekt
+
+
+# Allgemein
 
 In diesem Projekt wurde ein Rennspiel mit Elm realisiert. Hierbei wurde Elm ind er Version 0.19 verwendet. Die Darstellung des Spiels erfolgt mittels SVG Grafiken, die in einem festgelegtem Intervall aktualisiert werden.
 
