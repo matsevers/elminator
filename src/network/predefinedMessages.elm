@@ -15,7 +15,7 @@ openJson =
          "tag": "open",
          "args":{
             "key": "elminator",
-            "url": "wss://echo.websocket.org"
+            "url": ""
             }
           }
         """
