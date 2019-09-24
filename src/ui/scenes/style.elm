@@ -19,7 +19,6 @@ globalContainer : List (Html.Attribute msg)
 globalContainer =
     [ Html.Attributes.style "height" "100vh"
     , Html.Attributes.style "background-color" "#141617"
-    , Html.Attributes.style "background-image" "url('assets/backgroundMenu.svg')"
     ]
 
 

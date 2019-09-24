@@ -9385,8 +9385,7 @@ var author$project$Ui$Scenes$Style$centeredText = _List_fromArray(
 var author$project$Ui$Scenes$Style$globalContainer = _List_fromArray(
 	[
 		A2(elm$html$Html$Attributes$style, 'height', '100vh'),
-		A2(elm$html$Html$Attributes$style, 'background-color', '#141617'),
-		A2(elm$html$Html$Attributes$style, 'background-image', 'url(\'assets/backgroundMenu.svg\')')
+		A2(elm$html$Html$Attributes$style, 'background-color', '#141617')
 	]);
 var author$project$Ui$Scenes$Style$menuContainer = _List_fromArray(
 	[
