@@ -10984,7 +10984,7 @@ var author$project$Main$view = function (model) {
 			return author$project$Ui$Scenes$FinishMenu$Module$view(model);
 	}
 };
-var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {\n         "module": "WebSocket",\n         "tag": "open",\n         "args":{\n            "key": "elminator",\n            "url": "ws://nas.janke.cloud:60000"\n            }\n          }\n        ');
+var author$project$Network$PredefinedMessages$openJson = elm$core$String$trim('\n         {\n         "module": "WebSocket",\n         "tag": "open",\n         "args":{\n            "key": "elminator",\n            "url": ""\n            }\n          }\n        ');
 var author$project$Network$Commands$open = author$project$Network$Commands$run(
 	author$project$Types$Websocket(
 		author$project$Types$Send(author$project$Network$PredefinedMessages$openJson)));
